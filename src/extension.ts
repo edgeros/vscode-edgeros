@@ -9,7 +9,7 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.window.registerTreeDataProvider('edgerDeviceView', edgerDeivceProvider);
 	vscode.commands.registerCommand('edgerDevices.refreshEntry', () => edgerDeivceProvider.refresh());
 	vscode.commands.registerCommand('edgerDevices.addEntry', () => edgerDeivceProvider.addDevice());
-	vscode.commands.registerCommand('edgerDevices.editEntry', (edger: Edger) => vscode.window.showInformationMessage(`Successfully called edit entry on ${edger.description}.`));
+	vscode.commands.registerCommand('edgerDevices.editEntry', (edger: Edger) => edgerDeivceProvider.updateDevice(edger));
 	vscode.commands.registerCommand('edgerDevices.deleteEntry', (edger: Edger) => edgerDeivceProvider.deleteDevice(edger));
 
 	const edgerApi = new EdgerApi(context);

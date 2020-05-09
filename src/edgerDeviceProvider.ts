@@ -48,24 +48,21 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
             prompt: "Edger Device IP Address.",
             placeHolder: "(device ip)"
         };
-
-        vscode.window.showInputBox(options).then(value => {
+        return vscode.window.showInputBox(options).then(value => {
             if (!value) {
                 return;
             }
-
             device_ip = value;
-            
             let device_name = '';
             let options: vscode.InputBoxOptions = {
                 prompt: "Edger Device Name.",
                 placeHolder: "(device name)"
             };
-            vscode.window.showInputBox(options).then(value => {
+            return vscode.window.showInputBox(options).then(value => {
                 if (value) {
                     device_name = value;
                 }
-                
+
                 let edgers = this._context.workspaceState.get(edger_key);
                 //save edger ip to worksapce
                 if (!edgers) {
@@ -77,6 +74,22 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
                 this.refresh();
             });
         });
+    }
+
+    updateDevice(edger: Edger) {
+        let state = this._context.workspaceState.get(edger_key);
+        if (state) {
+            let edgers = state as Array<Edger>;
+            const index = edgers.indexOf(edger);
+            if (index >= 0) {
+                this.addDevice().then(() => {
+                    edgers.splice(index, 1);
+                    this._context.workspaceState.update(edger_key, edgers);
+                    console.log(`Edger device: ${edger.deviceName} - ${edger.deviceIP} removed.`);
+                    this.refresh();
+                });
+            }
+        }
     }
 
     deleteDevice(edger: Edger) {
