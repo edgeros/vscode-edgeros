@@ -2,21 +2,23 @@
 import AdmZip = require('adm-zip');
 import FormData = require('form-data');
 import * as vscode from 'vscode';
-import axios from "axios";
 import * as fs from "fs";
+import axios from "axios";
 
 import { Edger, edger_key } from './edgerDeviceProvider';
 
 export class EdgerApi {
 	_context: vscode.ExtensionContext;
 
-	constructor(private context: vscode.ExtensionContext) {
+	constructor(context: vscode.ExtensionContext) {
 		this._context = context;
 	}
 
 	async install(edger: Edger): Promise<void> {
-		const edger_ip : string = edger.deviceIP;
+		const edger_ip: string = edger.deviceIP;
 		console.log('edger_key:' + edger_key);
+
+		const devicePass = '';
 
 		// compress files as an EAP archive
 		var eap = new AdmZip();
@@ -29,7 +31,7 @@ export class EdgerApi {
 			var projectRootFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
 			console.log(`workspace path: ${projectRootFolder}`);
 			eap.addLocalFolder(projectRootFolder);
-			eap_path = projectRootFolder + "/edger.eap";
+			eap_path = projectRootFolder + '/' + vscode.workspace.name + ".eap";
 			eap.writeZip(eap_path);
 			console.log('making eap succeeded.');
 		} catch (error) {
@@ -44,7 +46,7 @@ export class EdgerApi {
 			baseURL: `http://${edger_ip}:82/`,
 			auth: {
 				username: 'edger',
-				password: '630010'
+				password: devicePass
 			},
 			headers: form.getHeaders(),
 		};
@@ -62,7 +64,7 @@ export class EdgerApi {
 			baseURL: `http://${edger_ip}:82/`,
 			auth: {
 				username: 'edger',
-				password: '783533'
+				password: devicePass
 			},
 			headers: {
 				common: {
