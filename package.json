@@ -23,7 +23,7 @@
 			}]
 		},
 		"commands": [{
-				"command": "edgerDevices.refreshEntry",
+				"command": "edgerDevices.refreshDevice",
 				"title": "Refresh",
 				"icon": {
 					"light": "resources/light/refresh.svg",
@@ -31,11 +31,11 @@
 				}
 			},
 			{
-				"command": "edgerDevices.addEntry",
+				"command": "edgerDevices.addDevice",
 				"title": "Add"
 			},
 			{
-				"command": "edgerDevices.editEntry",
+				"command": "edgerDevices.updateDevice",
 				"title": "Edit",
 				"icon": {
 					"light": "resources/light/edit.svg",
@@ -43,7 +43,7 @@
 				}
 			},
 			{
-				"command": "edgerDevices.deleteEntry",
+				"command": "edgerDevices.deleteDevice",
 				"title": "Delete"
 			},
 			{
@@ -53,12 +53,12 @@
 		],
 		"menus": {
 			"view/title": [{
-					"command": "edgerDevices.refreshEntry",
+					"command": "edgerDevices.refreshDevice",
 					"when": "view == edgerDeviceView",
 					"group": "navigation"
 				},
 				{
-					"command": "edgerDevices.addEntry",
+					"command": "edgerDevices.addDevice",
 					"when": "view == edgerDeviceView"
 				}
 			],
@@ -67,18 +67,18 @@
 					"when": "view == edgerDeviceView && viewItem == edger",
 					"group": "inline"
 				}, {
-					"command": "edgerDevices.editEntry",
+					"command": "edgerDevices.updateDevice",
 					"when": "view == edgerDeviceView && viewItem == edger"
 				},
 				{
-					"command": "edgerDevices.deleteEntry",
+					"command": "edgerDevices.deleteDevice",
 					"when": "view == edgerDeviceView && viewItem == edger"
 				}
 			]
 		},
 		"viewsWelcome": [{
 			"view": "edgerDeviceView",
-			"contents": "No edger devices found [learn more](https://www.edgeros.com/).\n[Add Edger Device](command:nodeDependencies.addEntry)"
+			"contents": "No edger devices found [learn more](https://www.edgeros.com/).\n[Add Edger Device](command:edgerDevices.addDevice)"
 		}]
 	},
 	"scripts": {

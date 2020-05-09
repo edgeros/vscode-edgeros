@@ -42,38 +42,42 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
         }
     }
 
-    addDevice() {
+    async addDevice(edger?: Edger) {
         let device_ip = '';
-        let options: vscode.InputBoxOptions = {
+        let ip_options: vscode.InputBoxOptions = {
+            value: edger ? edger.deviceIP : '',
             prompt: "Edger Device IP Address.",
             placeHolder: "(device ip)"
         };
-        return vscode.window.showInputBox(options).then(value => {
-            if (!value) {
-                return;
-            }
-            device_ip = value;
-            let device_name = '';
-            let options: vscode.InputBoxOptions = {
-                prompt: "Edger Device Name.",
-                placeHolder: "(device name)"
-            };
-            return vscode.window.showInputBox(options).then(value => {
-                if (value) {
-                    device_name = value;
-                }
+        const cancel_add = 'Cancelled adding device.';
+        const ip_value = await vscode.window.showInputBox(ip_options);
+        if (!ip_value) {
+            throw new Error(cancel_add);
+        }
+        device_ip = ip_value;
+        let device_name = '';
+        let name_options: vscode.InputBoxOptions = {
+            value: edger ? edger.deviceName : '',
+            prompt: "Edger Device Name.",
+            placeHolder: "(device name)"
+        };
 
-                let edgers = this._context.workspaceState.get(edger_key);
-                //save edger ip to worksapce
-                if (!edgers) {
-                    edgers = new Array<Edger>();
-                }
-                (edgers as Array<Edger>).push(new Edger(device_name, device_ip, '', vscode.TreeItemCollapsibleState.None));
-                this._context.workspaceState.update(edger_key, edgers);
-                console.log(`Edger device: ${device_name} - ${device_ip} added.`);
-                this.refresh();
-            });
-        });
+        const name_value = await vscode.window.showInputBox(name_options);
+        if (!name_value) {
+            throw new Error(cancel_add);
+        }
+        device_name = name_value;
+        let edgers = this._context.workspaceState.get(edger_key);
+        //save edger ip to worksapce
+        if (!edgers) {
+            edgers = new Array<Edger>();
+        }
+        (edgers as Array<Edger>).push(new Edger(device_name, device_ip, '', vscode.TreeItemCollapsibleState.None));
+        this._context.workspaceState.update(edger_key, edgers);
+        console.log(`Edger device: ${device_name} - ${device_ip} added.`);
+
+        this.refresh();
+        return true;
     }
 
     updateDevice(edger: Edger) {
@@ -81,14 +85,13 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
         if (state) {
             let edgers = state as Array<Edger>;
             const index = edgers.indexOf(edger);
-            if (index >= 0) {
-                this.addDevice().then(() => {
-                    edgers.splice(index, 1);
-                    this._context.workspaceState.update(edger_key, edgers);
-                    console.log(`Edger device: ${edger.deviceName} - ${edger.deviceIP} removed.`);
-                    this.refresh();
-                });
-            }
+            this.addDevice(edger).then(() => {
+                edgers.splice(index, 1);
+                this._context.workspaceState.update(edger_key, edgers);
+                console.log(`Edger device: ${edger.deviceName} - ${edger.deviceIP} removed.`);
+                this.refresh();
+            })
+                .catch(error => console.info(error));
         }
     }
 
