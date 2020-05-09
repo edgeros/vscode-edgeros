@@ -2,6 +2,7 @@
 	"name": "edgeros",
 	"displayName": "edgeros",
 	"description": "",
+	"enableProposedApi": true,
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.44.0"
@@ -10,16 +11,75 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:edgeros.installApp"
+		"onCommand:edgeros.installApp",
+		"onView:edgerDeviceView"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": [
+		"views": {
+			"explorer": [{
+				"id": "edgerDeviceView",
+				"name": "Edger Devices"
+			}]
+		},
+		"commands": [{
+				"command": "edgerDevices.refreshEntry",
+				"title": "Refresh",
+				"icon": {
+					"light": "resources/light/refresh.svg",
+					"dark": "resources/dark/refresh.svg"
+				}
+			},
 			{
-				"command": "edgeros.installApp",
-				"title": "Install  Edger App"
+				"command": "edgerDevices.addEntry",
+				"title": "Add"
+			},
+			{
+				"command": "edgerDevices.editEntry",
+				"title": "Edit",
+				"icon": {
+					"light": "resources/light/edit.svg",
+					"dark": "resources/dark/edit.svg"
+				}
+			},
+			{
+				"command": "edgerDevices.deleteEntry",
+				"title": "Delete"
+			},
+			{
+				"command": "edgerDevices.installApp",
+				"title": "Install"
 			}
-		]
+		],
+		"menus": {
+			"view/title": [{
+					"command": "edgerDevices.refreshEntry",
+					"when": "view == edgerDeviceView",
+					"group": "navigation"
+				},
+				{
+					"command": "edgerDevices.addEntry",
+					"when": "view == edgerDeviceView"
+				}
+			],
+			"view/item/context": [{
+					"command": "edgerDevices.installApp",
+					"when": "view == edgerDeviceView && viewItem == edger",
+					"group": "inline"
+				}, {
+					"command": "edgerDevices.editEntry",
+					"when": "view == edgerDeviceView && viewItem == edger"
+				},
+				{
+					"command": "edgerDevices.deleteEntry",
+					"when": "view == edgerDeviceView && viewItem == edger"
+				}
+			]
+		},
+		"viewsWelcome": [{
+			"view": "edgerDeviceView",
+			"contents": "No edger devices found [learn more](https://www.edgeros.com/).\n[Add Edger Device](command:nodeDependencies.addEntry)"
+		}]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
