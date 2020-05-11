@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { ExtensionContext } from 'vscode';
-const Telnet = require('telnet-client');
+var net = require('net');
 
 export const edger_key: string = 'edgers';
 
@@ -114,22 +114,19 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
         if (!edger) {
             return;
         }
-        let conn = new Telnet();
-        let params = {
-            host: edger.deviceIP,
-            port: 83,
-            shllPrompt: '/ # ',
-            timeout: 1500
-        };
 
-        try {
-            await conn.connect(params);
-        } catch (error) {
-            console.error(error);
-        }
-        const channel = vscode.window.createOutputChannel('Edger console');
+        const channel = vscode.window.createOutputChannel('Edger Console');
         channel.show();
-        channel.appendLine('abc');
+        var client = new net.Socket();
+        client.connect(83, edger.deviceIP, function () {
+            console.log('remote console connected.');
+        });
+        client.on('data', function (data: string) {
+            channel.appendLine(data);
+        });
+        client.on('close', function () {
+            console.log('remote console closed.');
+        });
     }
 }
 
