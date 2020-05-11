@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { ExtensionContext } from 'vscode';
+const Telnet = require('telnet-client');
 
 export const edger_key: string = 'edgers';
 
@@ -107,6 +108,28 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
                 this.refresh();
             }
         }
+    }
+
+    async openConsole(edger: Edger) {
+        if (!edger) {
+            return;
+        }
+        let conn = new Telnet();
+        let params = {
+            host: edger.deviceIP,
+            port: 83,
+            shllPrompt: '/ # ',
+            timeout: 1500
+        };
+
+        try {
+            await conn.connect(params);
+        } catch (error) {
+            console.error(error);
+        }
+        const channel = vscode.window.createOutputChannel('Edger console');
+        channel.show();
+        channel.appendLine('abc');
     }
 }
 

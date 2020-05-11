@@ -17,12 +17,15 @@
 	"main": "./out/extension.js",
 	"contributes": {
 		"views": {
-			"explorer": [{
-				"id": "edgerDeviceView",
-				"name": "Edger Devices"
-			}]
+			"explorer": [
+				{
+					"id": "edgerDeviceView",
+					"name": "Edger Devices"
+				}
+			]
 		},
-		"commands": [{
+		"commands": [
+			{
 				"command": "edgerDevices.refreshDevice",
 				"title": "Refresh",
 				"icon": {
@@ -49,10 +52,15 @@
 			{
 				"command": "edgerDevices.installApp",
 				"title": "Install"
+			},
+			{
+				"command": "edgerDevices.openConsole",
+				"title": "Console"
 			}
 		],
 		"menus": {
-			"view/title": [{
+			"view/title": [
+				{
 					"command": "edgerDevices.refreshDevice",
 					"when": "view == edgerDeviceView",
 					"group": "navigation"
@@ -62,24 +70,35 @@
 					"when": "view == edgerDeviceView"
 				}
 			],
-			"view/item/context": [{
+			"view/item/context": [
+				{
 					"command": "edgerDevices.installApp",
 					"when": "view == edgerDeviceView && viewItem == edger",
 					"group": "inline"
-				}, {
+				},
+				{
 					"command": "edgerDevices.updateDevice",
-					"when": "view == edgerDeviceView && viewItem == edger"
+					"when": "view == edgerDeviceView && viewItem == edger",
+					"group": "@1"
 				},
 				{
 					"command": "edgerDevices.deleteDevice",
-					"when": "view == edgerDeviceView && viewItem == edger"
+					"when": "view == edgerDeviceView && viewItem == edger",
+					"group": "@1"
+				},
+				{
+					"command": "edgerDevices.openConsole",
+					"when": "view == edgerDeviceView && viewItem == edger",
+					"group": "@2"
 				}
 			]
 		},
-		"viewsWelcome": [{
-			"view": "edgerDeviceView",
-			"contents": "No edger devices found [learn more](https://www.edgeros.com/).\n[Add Edger Device](command:edgerDevices.addDevice)"
-		}]
+		"viewsWelcome": [
+			{
+				"view": "edgerDeviceView",
+				"contents": "No edger devices found [learn more](https://www.edgeros.com/).\n[Add Edger Device](command:edgerDevices.addDevice)"
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
@@ -91,13 +110,13 @@
 	},
 	"devDependencies": {
 		"@types/adm-zip": "^0.4.33",
+		"@types/form-data": "^2.5.0",
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^7.0.2",
 		"@types/node": "^13.11.0",
 		"@types/vscode": "^1.44.0",
 		"@typescript-eslint/eslint-plugin": "^2.26.0",
 		"@typescript-eslint/parser": "^2.26.0",
-		"@types/form-data": "^2.5.0",
 		"eslint": "^6.8.0",
 		"glob": "^7.1.6",
 		"mocha": "^7.1.1",
@@ -106,7 +125,8 @@
 	},
 	"dependencies": {
 		"adm-zip": "^0.4.14",
-		"form-data": "^3.0.0",
-		"axios": "^0.19.2"
+		"axios": "^0.19.2",
+		"telnet-client": "^1.4.1",
+		"form-data": "^3.0.0"
 	}
 }
