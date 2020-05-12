@@ -18,6 +18,8 @@ export class EdgerApi {
 	}
 
 	async install(edger: Edger): Promise<void> {
+		// TODO: check app desc.json
+		
 		// ask for device password
 		let pass_options: vscode.InputBoxOptions = {
 			value: edger ? edger.devicePass : '',
