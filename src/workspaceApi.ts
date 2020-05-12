@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 import { Edger } from './edgerDeviceProvider';
-import { edger_key } from './contants';
+import { edger_key, eap_desc_json_file_name } from './contants';
 
 export class WorkspaceApi {
     _context: vscode.ExtensionContext;
@@ -56,5 +56,35 @@ export class WorkspaceApi {
         } else {
             return [];
         }
+    }
+
+    async checkDescJson(projectRoot: string): Promise<void> {
+        await vscode.workspace.openTextDocument(vscode.Uri.file(`${projectRoot}/${eap_desc_json_file_name}`))
+            .then((document) => {
+                // console.log(document.getText());
+                let desc = JSON.parse(document.getText());
+                let id = desc.id;
+                if (!id) {
+                    throw new Error('id is missing');
+                }
+                let name = desc.name;
+                if (!name) {
+                    throw new Error('name is missing');
+                }
+                let ico = desc.ico;
+                if (!ico) {
+                    throw new Error('ico is missing');
+                }
+                let program = desc.program;
+                if (!program) {
+                    throw new Error('program is missing');
+                }
+                let vendor = desc.vendor;
+                if (!vendor) {
+                    throw new Error('vendor is missing');
+                }
+            }, (err) => {
+                throw new Error(err);
+            });
     }
 }

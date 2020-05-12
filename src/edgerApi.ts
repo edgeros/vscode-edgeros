@@ -7,19 +7,32 @@ import axios from "axios";
 
 import { Edger, EdgerDeivceProvider } from './edgerDeviceProvider';
 import { edger_ide_port } from './contants';
+import { WorkspaceApi } from './workspaceApi';
 
 export class EdgerApi {
 	_context: vscode.ExtensionContext;
 	_edgerDeviceProvider: EdgerDeivceProvider;
+	_workspace: WorkspaceApi;
 
 	constructor(context: vscode.ExtensionContext) {
 		this._context = context;
 		this._edgerDeviceProvider = new EdgerDeivceProvider(context);
+		this._workspace = new WorkspaceApi(context);
 	}
 
 	async install(edger: Edger): Promise<void> {
+		const edger_ip: string = edger.deviceIP;
+		if (!edger_ip || !vscode.workspace.workspaceFolders) {
+			return;
+		}
+
+		var projectRootFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
 		// TODO: check app desc.json
-		
+		await this._workspace.checkDescJson(projectRootFolder).then(undefined, (err) => {
+			console.log(err);
+			throw new Error(err);
+		});
+
 		// ask for device password
 		let pass_options: vscode.InputBoxOptions = {
 			value: edger ? edger.devicePass : '',
@@ -34,17 +47,10 @@ export class EdgerApi {
 		// save device password
 		this._edgerDeviceProvider.updatePassword(edger, dev_pass);
 
-		const edger_ip: string = edger.deviceIP;
-
 		// compress files as an EAP archive
 		var eap = new AdmZip();
 		var eap_path = '';
 		try {
-			if (!edger_ip || !vscode.workspace.workspaceFolders) {
-				return;
-			}
-
-			var projectRootFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
 			console.log(`workspace path: ${projectRootFolder}`);
 			eap.addLocalFolder(projectRootFolder);
 			eap_path = projectRootFolder + '/' + vscode.workspace.name + ".eap";
@@ -55,9 +61,14 @@ export class EdgerApi {
 		}
 
 		// upload eap to edger device
+		await this.uploadEap(eap_path, edger_ip, dev_pass);
+		// install/update eap on edger device
+		await this.installEap(edger_ip, dev_pass);
+	}
+
+	private async uploadEap(eap_path: string, edger_ip: string, dev_pass: string) {
 		const form = new FormData();
 		form.append('eap', fs.createReadStream(eap_path));
-
 		const uploadApiConfig = {
 			baseURL: `http://${edger_ip}:${edger_ide_port}/`,
 			auth: {
@@ -67,15 +78,15 @@ export class EdgerApi {
 			headers: form.getHeaders(),
 		};
 		await axios.post('/upload', form, uploadApiConfig)
-			.then(
-				function (response) {
-					console.log(`eap upload succeeded: ${response.statusText}`);
-				})
+			.then(function (response) {
+				console.log(`eap upload succeeded: ${response.statusText}`);
+			})
 			.catch(function (error) {
 				console.log(`eap upload failed: ${error.statusText}`);
 			});
+	}
 
-		// install/update eap on edger device
+	private async installEap(edger_ip: string, dev_pass: string) {
 		const installApiConfig = {
 			baseURL: `http://${edger_ip}:${edger_ide_port}/`,
 			auth: {
