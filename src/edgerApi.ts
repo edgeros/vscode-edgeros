@@ -5,7 +5,8 @@ import * as vscode from 'vscode';
 import * as fs from "fs";
 import axios from "axios";
 
-import { Edger, edger_key } from './edgerDeviceProvider';
+import { Edger } from './edgerDeviceProvider';
+import { edger_key, edger_ide_port } from './contants';
 
 export class EdgerApi {
 	_context: vscode.ExtensionContext;
@@ -15,10 +16,20 @@ export class EdgerApi {
 	}
 
 	async install(edger: Edger): Promise<void> {
+		// ask for device password
+		let pass_options: vscode.InputBoxOptions = {
+			value: edger ? edger.devicePass : '',
+			prompt: "Edger Device Password.",
+			placeHolder: "(device password)"
+		};
+		const dev_pass = await vscode.window.showInputBox(pass_options);
+		if (dev_pass === undefined) {
+			console.log('Installation cancelled.');
+			return;
+		}
+
 		const edger_ip: string = edger.deviceIP;
 		console.log('edger_key:' + edger_key);
-
-		const devicePass = '';
 
 		// compress files as an EAP archive
 		var eap = new AdmZip();
@@ -43,10 +54,10 @@ export class EdgerApi {
 		form.append('eap', fs.createReadStream(eap_path));
 
 		const uploadApiConfig = {
-			baseURL: `http://${edger_ip}:82/`,
+			baseURL: `http://${edger_ip}:${edger_ide_port}/`,
 			auth: {
 				username: 'edger',
-				password: devicePass
+				password: dev_pass
 			},
 			headers: form.getHeaders(),
 		};
@@ -61,10 +72,10 @@ export class EdgerApi {
 
 		// install/update eap on edger device
 		const installApiConfig = {
-			baseURL: `http://${edger_ip}:82/`,
+			baseURL: `http://${edger_ip}:${edger_ide_port}/`,
 			auth: {
 				username: 'edger',
-				password: devicePass
+				password: dev_pass
 			},
 			headers: {
 				common: {

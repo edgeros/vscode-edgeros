@@ -3,12 +3,16 @@ import * as path from 'path';
 import { ExtensionContext } from 'vscode';
 var net = require('net');
 
-export const edger_key: string = 'edgers';
+import { WorkspaceApi } from './workspaceApi';
+import { edger_console_port } from './contants';
+
 
 export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
     _context: ExtensionContext;
+    _workspace: WorkspaceApi;
     constructor(context: ExtensionContext) {
         this._context = context;
+        this._workspace = new WorkspaceApi(context);
     }
 
     getTreeItem(element: Edger): vscode.TreeItem {
@@ -24,22 +28,10 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
 
     getChildren(_element?: Edger): Thenable<Edger[]> {
         if (this._context) {
-            return Promise.resolve(this.getEdgerDevices(this._context));
+            return Promise.resolve(this._workspace.getEdgerDevices());
         }
         else {
             return Promise.resolve([]);
-        }
-    }
-
-    /**
-     * Given workspace context, read all edger devices.
-     */
-    private getEdgerDevices(context: ExtensionContext): Edger[] {
-        if (context.workspaceState) {
-            const edgers = context.workspaceState.get(edger_key) as Array<Edger>;
-            return edgers;
-        } else {
-            return [];
         }
     }
 
@@ -68,46 +60,23 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
             throw new Error(cancel_add);
         }
         device_name = name_value;
-        let edgers = this._context.workspaceState.get(edger_key);
-        //save edger ip to worksapce
-        if (!edgers) {
-            edgers = new Array<Edger>();
-        }
-        (edgers as Array<Edger>).push(new Edger(device_name, device_ip, '', vscode.TreeItemCollapsibleState.None));
-        this._context.workspaceState.update(edger_key, edgers);
-        console.log(`Edger device: ${device_name} - ${device_ip} added.`);
+        this._workspace.addEdger2Workspace(device_name, device_ip);
 
         this.refresh();
         return true;
     }
 
     updateDevice(edger: Edger) {
-        let state = this._context.workspaceState.get(edger_key);
-        if (state) {
-            let edgers = state as Array<Edger>;
-            const index = edgers.indexOf(edger);
-            this.addDevice(edger).then(() => {
-                edgers.splice(index, 1);
-                this._context.workspaceState.update(edger_key, edgers);
-                console.log(`Edger device: ${edger.deviceName} - ${edger.deviceIP} removed.`);
-                this.refresh();
-            })
-                .catch(error => console.info(error));
-        }
+        this.addDevice(edger).then(() => {
+            this._workspace.deleteEdgerFromWorkspace(edger);
+            this.refresh();
+        })
+            .catch(error => console.info(error));
     }
 
     deleteDevice(edger: Edger) {
-        let state = this._context.workspaceState.get(edger_key);
-        if (state) {
-            let edgers = state as Array<Edger>;
-            const index = edgers.indexOf(edger);
-            if (index >= 0) {
-                edgers.splice(index, 1);
-                this._context.workspaceState.update(edger_key, edgers);
-                console.log(`Edger device: ${edger.deviceName} - ${edger.deviceIP} removed.`);
-                this.refresh();
-            }
-        }
+        this._workspace.deleteEdgerFromWorkspace(edger);
+        this.refresh();
     }
 
     async openConsole(edger: Edger) {
@@ -118,7 +87,7 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
         const channel = vscode.window.createOutputChannel('Edger Console');
         channel.show();
         var client = new net.Socket();
-        client.connect(83, edger.deviceIP, function () {
+        client.connect(edger_console_port, edger.deviceIP, function () {
             console.log('remote console connected.');
         });
         client.on('data', function (data: string) {
@@ -134,8 +103,8 @@ export class Edger extends vscode.TreeItem {
     constructor(
         public readonly deviceName: string,
         public deviceIP: string,
-        public devicePass: string,
-        public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+        public devicePass?: string,
+        public readonly collapsibleState?: vscode.TreeItemCollapsibleState,
         public readonly command?: vscode.Command
     ) {
         super(deviceName, collapsibleState);
