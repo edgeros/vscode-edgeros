@@ -34,16 +34,14 @@ export class WorkspaceApi {
         }
     }
 
-    saveEdgerPassword(edger: Edger, device_pass: string) {
+    updateEdgerPassword(edger: Edger, device_pass: string) {
         let edgers = this._context.workspaceState.get(edger_key) as Array<Edger>;
         if (edgers) {
             const index = edgers.indexOf(edger);
             if (index >= 0) {
-                edgers.splice(index, 1);
-                edger.devicePass = device_pass;
-                edgers.push(edger);
+                edgers[index].devicePass = device_pass;
                 this._context.workspaceState.update(edger_key, edgers);
-                console.log(`Edger device: ${edger.deviceName} - ${edger.deviceIP} password saved.`);
+                console.log(`Edger device: ${edger.deviceName} - ${edger.deviceIP} password updated.`);
             }
         }
     }

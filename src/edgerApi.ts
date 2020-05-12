@@ -5,17 +5,16 @@ import * as vscode from 'vscode';
 import * as fs from "fs";
 import axios from "axios";
 
-import { Edger } from './edgerDeviceProvider';
-import { WorkspaceApi } from './workspaceApi';
+import { Edger, EdgerDeivceProvider } from './edgerDeviceProvider';
 import { edger_ide_port } from './contants';
 
 export class EdgerApi {
 	_context: vscode.ExtensionContext;
-	_workspace: WorkspaceApi;
+	_edgerDeviceProvider: EdgerDeivceProvider;
 
 	constructor(context: vscode.ExtensionContext) {
 		this._context = context;
-		this._workspace = new WorkspaceApi(context);
+		this._edgerDeviceProvider = new EdgerDeivceProvider(context);
 	}
 
 	async install(edger: Edger): Promise<void> {
@@ -31,7 +30,7 @@ export class EdgerApi {
 			return;
 		}
 		// save device password
-		this._workspace.saveEdgerPassword(edger, dev_pass);
+		this._edgerDeviceProvider.updatePassword(edger, dev_pass);
 
 		const edger_ip: string = edger.deviceIP;
 

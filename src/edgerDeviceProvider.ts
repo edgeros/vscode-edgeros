@@ -79,11 +79,12 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
         this.refresh();
     }
 
-    async openConsole(edger: Edger) {
-        if (!edger) {
-            return;
-        }
+    updatePassword(edger: Edger, pass: string) {
+        this._workspace.updateEdgerPassword(edger, pass);
+        this.refresh();
+    }
 
+    async openConsole(edger: Edger) {
         const channel = vscode.window.createOutputChannel('Edger Console');
         channel.show();
         var client = new net.Socket();
