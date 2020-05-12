@@ -1,3 +1,15 @@
+/*
+ * Copyright (c) 2019 EdgerOS Team.
+ * All rights reserved.
+ *
+ * Detailed license information can be found in the LICENSE file.
+ *
+ * File: extension.ts, extension main file.
+ *
+ * Author: Li Qiang <liqiang@acoinfo.com>
+ *
+ */
+
 import * as vscode from 'vscode';
 
 import { Edger, EdgerDeivceProvider } from './edgerDeviceProvider';

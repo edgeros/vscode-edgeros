@@ -1,7 +1,19 @@
+/*
+ * Copyright (c) 2019 EdgerOS Team.
+ * All rights reserved.
+ *
+ * Detailed license information can be found in the LICENSE file.
+ *
+ * File: workspaceApi.ts, vscode workspace related api.
+ *
+ * Author: Li Qiang <liqiang@acoinfo.com>
+ *
+ */
+
 import * as vscode from 'vscode';
 
 import { Edger } from './edgerDeviceProvider';
-import { edger_key, eap_desc_json_file_name } from './contants';
+import { edger_key, eap_desc_json_file_name } from './constants';
 
 export class WorkspaceApi {
     _context: vscode.ExtensionContext;

@@ -1,3 +1,14 @@
+/*
+ * Copyright (c) 2019 EdgerOS Team.
+ * All rights reserved.
+ *
+ * Detailed license information can be found in the LICENSE file.
+ *
+ * File: edgerApi.ts, Edger API client.
+ *
+ * Author: Li Qiang <liqiang@acoinfo.com>
+ *
+ */
 
 import AdmZip = require('adm-zip');
 import FormData = require('form-data');
@@ -6,7 +17,7 @@ import * as fs from "fs";
 import axios from "axios";
 
 import { Edger, EdgerDeivceProvider } from './edgerDeviceProvider';
-import { edger_ide_port } from './contants';
+import { edger_ide_port } from './constants';
 import { WorkspaceApi } from './workspaceApi';
 
 export class EdgerApi {

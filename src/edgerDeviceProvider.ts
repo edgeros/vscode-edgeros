@@ -1,10 +1,22 @@
+/*
+ * Copyright (c) 2019 EdgerOS Team.
+ * All rights reserved.
+ *
+ * Detailed license information can be found in the LICENSE file.
+ *
+ * File: edgerDeviceProvider.ts, Edger device data provider.
+ *
+ * Author: Li Qiang <liqiang@acoinfo.com>
+ *
+ */
+
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { ExtensionContext } from 'vscode';
 var net = require('net');
 
 import { WorkspaceApi } from './workspaceApi';
-import { edger_console_port } from './contants';
+import { edger_console_port } from './constants';
 
 
 export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
