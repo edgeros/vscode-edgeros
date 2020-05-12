@@ -6,13 +6,16 @@ import * as fs from "fs";
 import axios from "axios";
 
 import { Edger } from './edgerDeviceProvider';
-import { edger_key, edger_ide_port } from './contants';
+import { WorkspaceApi } from './workspaceApi';
+import { edger_ide_port } from './contants';
 
 export class EdgerApi {
 	_context: vscode.ExtensionContext;
+	_workspace: WorkspaceApi;
 
 	constructor(context: vscode.ExtensionContext) {
 		this._context = context;
+		this._workspace = new WorkspaceApi(context);
 	}
 
 	async install(edger: Edger): Promise<void> {
@@ -27,9 +30,10 @@ export class EdgerApi {
 			console.log('Installation cancelled.');
 			return;
 		}
+		// save device password
+		this._workspace.saveEdgerPassword(edger, dev_pass);
 
 		const edger_ip: string = edger.deviceIP;
-		console.log('edger_key:' + edger_key);
 
 		// compress files as an EAP archive
 		var eap = new AdmZip();

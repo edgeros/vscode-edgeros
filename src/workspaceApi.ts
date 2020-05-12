@@ -23,14 +23,27 @@ export class WorkspaceApi {
     }
 
     deleteEdgerFromWorkspace(edger: Edger) {
-        let state = this._context.workspaceState.get(edger_key);
-        if (state) {
-            let edgers = state as Array<Edger>;
+        let edgers = this._context.workspaceState.get(edger_key) as Array<Edger>;
+        if (edgers) {
             const index = edgers.indexOf(edger);
             if (index >= 0) {
                 edgers.splice(index, 1);
                 this._context.workspaceState.update(edger_key, edgers);
                 console.log(`Edger device: ${edger.deviceName} - ${edger.deviceIP} removed.`);
+            }
+        }
+    }
+
+    saveEdgerPassword(edger: Edger, device_pass: string) {
+        let edgers = this._context.workspaceState.get(edger_key) as Array<Edger>;
+        if (edgers) {
+            const index = edgers.indexOf(edger);
+            if (index >= 0) {
+                edgers.splice(index, 1);
+                edger.devicePass = device_pass;
+                edgers.push(edger);
+                this._context.workspaceState.update(edger_key, edgers);
+                console.log(`Edger device: ${edger.deviceName} - ${edger.deviceIP} password saved.`);
             }
         }
     }
