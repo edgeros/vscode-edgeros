@@ -72,9 +72,17 @@ export class EdgerApi {
 		}
 
 		// upload eap to edger device
-		await this.uploadEap(eap_path, edger_ip, dev_pass);
+		await this.uploadEap(eap_path, edger_ip, dev_pass).then(() => {
+			vscode.window.showInformationMessage('Upload completed.');
+		}).catch((err) => {
+			vscode.window.showErrorMessage(`Upload failed - ${err.message}`);
+		});
 		// install/update eap on edger device
-		await this.installEap(edger_ip, dev_pass);
+		await this.installEap(edger_ip, dev_pass).then(() => {
+			vscode.window.showInformationMessage('Installation completed.');
+		}).catch((err) => {
+			vscode.window.showErrorMessage(`Installation failed - ${err.message}`);
+		});
 	}
 
 	private async uploadEap(eap_path: string, edger_ip: string, dev_pass: string) {
@@ -90,10 +98,11 @@ export class EdgerApi {
 		};
 		await axios.post('/upload', form, uploadApiConfig)
 			.then(function (response) {
-				console.log(`eap upload succeeded: ${response.statusText}`);
+				console.log(`Upload succeeded: ${response}`);
 			})
-			.catch(function (error) {
-				console.log(`eap upload failed: ${error.statusText}`);
+			.catch(function (err) {
+				console.log(`Upload failed: ${err}`);
+				throw new Error(err);
 			});
 	}
 
@@ -114,10 +123,11 @@ export class EdgerApi {
 			eap: 'edger.eap'
 		}, installApiConfig)
 			.then(function (response) {
-				console.log(`eap installatiioin succeeded: ${response}`);
+				console.log(`Installation succeeded: ${response}`);
 			})
-			.catch(function (error) {
-				console.log(`eap installation failed: ${error}`);
+			.catch(function (err) {
+				console.log(`Installation failed: ${err}`);
+				throw new Error(err);
 			});
 	}
 } 
