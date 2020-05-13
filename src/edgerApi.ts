@@ -38,7 +38,7 @@ export class EdgerApi {
 		}
 
 		var projectRootFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
-		// TODO: check app desc.json
+		// check if app's desc.json is valid
 		await this._workspace.checkDescJson(projectRootFolder).then(undefined, (err) => {
 			console.log(err);
 			throw new Error(err);
@@ -86,7 +86,7 @@ export class EdgerApi {
 				username: 'edger',
 				password: dev_pass
 			},
-			headers: form.getHeaders(),
+			headers: form.getHeaders()
 		};
 		await axios.post('/upload', form, uploadApiConfig)
 			.then(function (response) {
