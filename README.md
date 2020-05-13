@@ -20,6 +20,8 @@ By clicking the "Add Edger Device" button or "Add" menu item, enter the ip addre
 
 Device information can be edited via context menu on device item in the tree view.
 
+![context menu](media/menu-items.png)
+
 Right click on your device item, then click on the "Edit" menu item. Update the ip address or device nickname as you need.
 
 ![edit device](media/edit-device.gif)
