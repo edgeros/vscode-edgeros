@@ -17,7 +17,7 @@ import * as fs from "fs";
 import axios from "axios";
 
 import { Edger, EdgerDeivceProvider } from './edgerDeviceProvider';
-import { edger_ide_port } from './constants';
+import { edger_ide_port, eap_desc_json_file_name } from './constants';
 import { WorkspaceApi } from './workspaceApi';
 
 export class EdgerApi {
@@ -59,20 +59,23 @@ export class EdgerApi {
 		this._edgerDeviceProvider.updatePassword(edger, dev_pass);
 
 		// compress files as an EAP archive
-		var eap = new AdmZip();
-		var eap_path = '';
+		var admZip = new AdmZip();
+		var eap_file_path = '';
 		try {
 			console.log(`workspace path: ${projectRootFolder}`);
-			eap.addLocalFolder(projectRootFolder);
-			eap_path = projectRootFolder + '/' + vscode.workspace.name + ".eap";
-			eap.writeZip(eap_path);
+			eap_file_path = projectRootFolder + '/' + vscode.workspace.name + ".eap";
+			if (fs.existsSync(eap_file_path)) {
+				fs.unlinkSync(eap_file_path);
+			}
+			admZip.addLocalFolder(projectRootFolder);
+			admZip.writeZip(eap_file_path);
 			console.log('making eap succeeded.');
 		} catch (error) {
 			console.log(`making eap failed: ${error}`);
 		}
 
 		// upload eap to edger device
-		await this.uploadEap(eap_path, edger_ip, dev_pass).then(() => {
+		await this.uploadEap(eap_file_path, edger_ip, dev_pass).then(() => {
 			vscode.window.showInformationMessage('Upload completed.');
 		}).catch((err) => {
 			vscode.window.showErrorMessage(`Upload failed - ${err.message}`);
@@ -88,6 +91,7 @@ export class EdgerApi {
 	private async uploadEap(eap_path: string, edger_ip: string, dev_pass: string) {
 		const form = new FormData();
 		form.append('eap', fs.createReadStream(eap_path));
+		console.log(`device pass is: ${dev_pass}`);
 		const uploadApiConfig = {
 			baseURL: `http://${edger_ip}:${edger_ide_port}/`,
 			auth: {
