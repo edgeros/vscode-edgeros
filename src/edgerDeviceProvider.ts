@@ -13,7 +13,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { ExtensionContext } from 'vscode';
-var net = require('net');
+import * as net from 'net';
 
 import { WorkspaceApi } from './workspaceApi';
 import { edger_console_port } from './constants';
@@ -99,15 +99,19 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
     async openConsole(edger: Edger) {
         const channel = vscode.window.createOutputChannel('Edger Console');
         channel.show();
-        var client = new net.Socket();
-        client.connect(edger_console_port, edger.deviceIP, function () {
-            console.log('remote console connected.');
+
+        const client = net.createConnection({ port: edger_console_port, host: edger.deviceIP }, () => {
+            // 'connect' listener.
+            console.log('connected to server!');
         });
-        client.on('data', function (data: string) {
-            channel.appendLine(data);
+        client.on('data', (data: { toString: () => any; }) => {
+            let str: string = data.toString().trim();
+            console.log(str);
+            channel.appendLine(str);
+            // client.end();
         });
-        client.on('close', function () {
-            console.log('remote console closed.');
+        client.on('end', () => {
+            console.log('disconnected from server');
         });
     }
 }

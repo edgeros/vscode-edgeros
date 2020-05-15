@@ -59,11 +59,12 @@ export class EdgerApi {
 		this._edgerDeviceProvider.updatePassword(edger, dev_pass);
 
 		// compress files as an EAP archive
+		let eap_name = vscode.workspace.name + '.eap';
 		var admZip = new AdmZip();
 		var eap_file_path = '';
 		try {
 			console.log(`workspace path: ${projectRootFolder}`);
-			eap_file_path = projectRootFolder + '/' + vscode.workspace.name + ".eap";
+			eap_file_path = projectRootFolder + '/' + eap_name;
 			if (fs.existsSync(eap_file_path)) {
 				fs.unlinkSync(eap_file_path);
 			}
@@ -81,7 +82,7 @@ export class EdgerApi {
 			vscode.window.showErrorMessage(`Upload failed - ${err.message}`);
 		});
 		// install/update eap on edger device
-		await this.installEap(edger_ip, dev_pass).then(() => {
+		await this.installEap(edger_ip, dev_pass, eap_name).then(() => {
 			vscode.window.showInformationMessage('Installation completed.');
 		}).catch((err) => {
 			vscode.window.showErrorMessage(`Installation failed - ${err.message}`);
@@ -110,7 +111,7 @@ export class EdgerApi {
 			});
 	}
 
-	private async installEap(edger_ip: string, dev_pass: string) {
+	private async installEap(edger_ip: string, dev_pass: string, eap_name: string) {
 		const installApiConfig = {
 			baseURL: `http://${edger_ip}:${edger_ide_port}/`,
 			auth: {
@@ -124,7 +125,7 @@ export class EdgerApi {
 			},
 		};
 		await axios.post('/install', {
-			eap: 'edger.eap'
+			eap: eap_name
 		}, installApiConfig)
 			.then(function (response) {
 				console.log(`Installation succeeded: ${response}`);
