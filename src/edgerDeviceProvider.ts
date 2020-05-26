@@ -35,7 +35,7 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
     readonly onDidChangeTreeData: vscode.Event<Edger | undefined> = this._onDidChangeTreeData.event;
 
     refresh(): void {
-        this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire(undefined);
     }
 
     getChildren(_element?: Edger): Thenable<Edger[]> {
