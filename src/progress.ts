@@ -24,7 +24,7 @@ export class EdgerProgress {
       const increment = (num - this.cumulative) || 0;
       this.cumulative = increment + this.cumulative;
       msg = `${msg} (${this.cumulative}%)`
-      this.event.emit('progress', msg, num);
+      this.event.emit('progress', msg, increment);
       return;
     }
 
