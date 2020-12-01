@@ -15,6 +15,9 @@ import * as vscode from 'vscode';
 import { Edger, EdgerDeivceProvider } from './edgerDeviceProvider';
 import { EdgerApi } from './edgerApi';
 
+process.on('uncaughtException', function (err) {
+  console.error( err);
+});
 
 export function activate(context: vscode.ExtensionContext) {
 	const edgerDeivceProvider = new EdgerDeivceProvider(context);
@@ -24,9 +27,9 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand('edgerDevices.updateDevice', (edger: Edger) => edgerDeivceProvider.updateDevice(edger));
 	vscode.commands.registerCommand('edgerDevices.deleteDevice', (edger: Edger) => edgerDeivceProvider.deleteDevice(edger));
 	vscode.commands.registerCommand('edgerDevices.openConsole', (edger: Edger) => edgerDeivceProvider.openConsole(edger));
-
 	const edgerApi = new EdgerApi(context);
 	vscode.commands.registerCommand('edgerDevices.installApp', (edger: Edger) => edgerApi.install(edger));
+	vscode.commands.registerCommand('edgerDevices.archive', () => edgerApi.archive());
 }
 
 export function deactivate() { }

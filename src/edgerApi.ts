@@ -14,7 +14,7 @@ import FormData = require('form-data');
 import * as vscode from 'vscode';
 import * as fs from "fs";
 import axios from "axios";
-import * as path from 'path'
+import * as path from 'path';
 
 import { Edger, EdgerDeivceProvider } from './edgerDeviceProvider';
 import { edger_ide_port } from './constants';
@@ -66,17 +66,17 @@ export class EdgerApi extends EventEmitter {
 
 		// compress files as an EAP archive
 		let eap_name = vscode.workspace.name + '.eap';
-		const {dir, name} = path.parse(projectRootFolder);
+		const { dir, name } = path.parse(projectRootFolder);
 		const eap_file_path = path.join(dir, eap_name);
-	 
+
 		try {
 			console.log(`workspace path: ${dir}/${name}`);
 			const zipRes = await zipAsync(dir, eap_file_path, [name], this._progress);
-       if(!zipRes){
+			if (!zipRes) {
 				console.error('making zip error.');
 				return;
-			 }
-			 console.log('making eap succeeded.');
+			}
+			console.log('making eap succeeded.');
 		} catch (error) {
 			console.log(`making eap failed: ${error}`);
 			return;
@@ -93,6 +93,47 @@ export class EdgerApi extends EventEmitter {
 			vscode.window.showInformationMessage('Installation completed.');
 		}).catch((err) => {
 			vscode.window.showErrorMessage(`Installation failed - ${err.message}`);
+		});
+	}
+
+	archive(): Promise<string> {
+		return new Promise(async (resolve) => {
+			if (!vscode.workspace.workspaceFolders) {
+				resolve();
+				throw new Error("Can't open workspace.");
+			}
+			var projectRootFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
+			// check if app's desc.json is valid
+			await this._workspace.checkDescJson(projectRootFolder);
+
+			var eap_file_path = '';
+			try {
+				// compress files as an EAP archive
+				let eap_name = vscode.workspace.name + '.eap';
+				const { dir, name } = path.parse(projectRootFolder);
+				const eap_file_path = path.join(dir, eap_name);
+
+				try {
+					console.log(`workspace path: ${dir}/${name}`);
+					const zipRes = await zipAsync(dir, eap_file_path, [name], this._progress);
+					if (!zipRes) {
+						console.error('making zip error.');
+						return;
+					}
+					console.log('making eap succeeded.');
+				} catch (error) {
+					console.log(`making eap failed: ${error}`);
+					resolve();
+					return;
+				}
+
+				vscode.window.showInformationMessage(`Archiving eap succeeded: ${eap_name}`);
+			}
+			catch (error) {
+				vscode.window.showErrorMessage(`Archiving eap failed - ${error.message}`);
+				throw new Error(error);
+			}
+			resolve(eap_file_path);
 		});
 	}
 
