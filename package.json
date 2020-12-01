@@ -3,19 +3,19 @@
 	"displayName": "edgeros",
 	"description": "EdgerOS development extension for VSC.",
 	"enableProposedApi": false,
-	"version": "0.0.6",
+	"version": "0.0.8",
 	"publisher": "edgeros",
 	"repository": "https://github.com/edgeros/vsce.git",
 	"icon": "media/icon.png",
 	"engines": {
 		"vscode": "^1.44.0"
 	},
- 
 	"categories": [
 		"Other"
 	],
 	"activationEvents": [
-		"*"
+		"onCommand:edgeros.installApp",
+		"onView:edgerDeviceView"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -39,6 +39,10 @@
 			{
 				"command": "edgerDevices.addDevice",
 				"title": "Add"
+			},
+			{
+				"command": "edgerDevices.archive",
+				"title": "Archive"
 			},
 			{
 				"command": "edgerDevices.updateDevice",
@@ -71,6 +75,11 @@
 				{
 					"command": "edgerDevices.addDevice",
 					"when": "view == edgerDeviceView"
+				},
+				{
+					"command": "edgerDevices.archive",
+					"when": "view == edgerDeviceView",
+					"group": "navigation"
 				}
 			],
 			"view/item/context": [
@@ -99,11 +108,12 @@
 		"viewsWelcome": [
 			{
 				"view": "edgerDeviceView",
-				"contents": "No edger devices found [learn more](https://www.edgeros.com/).\n[Add Edger Device](command:edgerDevices.addDevice)"
+				"contents": "No EdgerOS device is found [learn more](https://www.edgeros.com/).\n[Add EdgerOS Device](command:edgerDevices.addDevice)"
 			}
 		]
 	},
 	"scripts": {
+		"pack": "vsce package",
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
 		"lint": "eslint src --ext ts",
@@ -127,6 +137,12 @@
 	},
 	"dependencies": {
 		"axios": "^0.19.2",
-		"form-data": "^3.0.0"
+		"form-data": "^3.0.0",
+		"findit2": "^2.2.3",
+		"pipe-io": "^4.0.0",
+		"try-to-catch": "^3.0.0",
+		"mkdirp": "^1.0.3",
+		"yauzl": "^2.6.0",
+		"yazl": "^2.4.1"
 	}
 }
