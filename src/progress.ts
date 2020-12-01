@@ -1,12 +1,12 @@
-import { Progress, ProgressLocation, ProgressOptions, window } from "vscode";
+import { Progress, ProgressLocation, ProgressOptions } from "vscode";
 
 import * as vscode from 'vscode';
 import { EventEmitter } from 'events';
 
 export class EdgerProgress {
 
-  cumulative: number;
-  event: EventEmitter;
+  private cumulative: number;
+  private event: EventEmitter;
   constructor(_event: EventEmitter) {
     this.event = _event;
     this.cumulative = 0;

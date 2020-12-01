@@ -16,9 +16,9 @@ const superfind = require('./superfind');
 
 inherits(OneZip, EventEmitter);
 
-module.exports = onezip;
-module.exports.pack = onezip('pack');
-module.exports.extract = onezip('extract');
+// module.exports = onezip;
+export const pack = onezip('pack');
+export const extract = onezip('extract');
 
 function check(from: string, to: string, files?: string[]) {
     assert(typeof from === 'string', 'from should be a string!');
@@ -42,7 +42,7 @@ function onezip(operation: string) {
     };
 }
 
-function OneZip(operation: string, from: string, to: string, files: string[]) {
+export function OneZip(operation: string, from: string, to: string, files: string[]) {
     if (operation === 'extract')
         check(from, to);
     else

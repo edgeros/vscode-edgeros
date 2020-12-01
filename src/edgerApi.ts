@@ -17,17 +17,17 @@ import axios from "axios";
 import * as path from 'path'
 
 import { Edger, EdgerDeivceProvider } from './edgerDeviceProvider';
-import { edger_ide_port, eap_desc_json_file_name } from './constants';
+import { edger_ide_port } from './constants';
 import { WorkspaceApi } from './workspaceApi';
-import { ZipAsync } from './zipeap';
+import { zipAsync } from './zipeap';
 import { EventEmitter } from 'events';
 import { EdgerProgress } from './progress';
 
 export class EdgerApi extends EventEmitter {
-	_context: vscode.ExtensionContext;
-	_edgerDeviceProvider: EdgerDeivceProvider;
-	_workspace: WorkspaceApi;
-	_progress: EdgerProgress;
+	private _context: vscode.ExtensionContext;
+	private _edgerDeviceProvider: EdgerDeivceProvider;
+	private _workspace: WorkspaceApi;
+	private _progress: EdgerProgress;
 
 	constructor(context: vscode.ExtensionContext) {
 		super();
@@ -46,7 +46,7 @@ export class EdgerApi extends EventEmitter {
 		var projectRootFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
 		// check if app's desc.json is valid
 		await this._workspace.checkDescJson(projectRootFolder).then(undefined, (err) => {
-			console.log(err);
+			console.error(err);
 			throw new Error(err);
 		});
 
@@ -71,13 +71,15 @@ export class EdgerApi extends EventEmitter {
 	 
 		try {
 			console.log(`workspace path: ${dir}/${name}`);
-			const zipRes = await ZipAsync(dir, eap_file_path, [name], this._progress);
+			const zipRes = await zipAsync(dir, eap_file_path, [name], this._progress);
        if(!zipRes){
-           throw new Error('zip error.');
+				console.error('making zip error.');
+				return;
 			 }
 			 console.log('making eap succeeded.');
 		} catch (error) {
 			console.log(`making eap failed: ${error}`);
+			return;
 		}
 
 		// upload eap to edger device

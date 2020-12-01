@@ -1,5 +1,5 @@
 import { EdgerProgress } from "./progress";
-var onezip = require('./utils/onezip.js');
+import * as  onezip from './utils/onezip';
 
 
 export type ProgressState = 'progress' | 'error' | 'end' | 'start';
@@ -11,10 +11,10 @@ interface doZipOption {
   files?: Array<string>;
 }
 
-export function ZipAsync(from: string, to: string,files:string[], progress: EdgerProgress): Promise<boolean> {
+export function zipAsync(from: string, to: string,files:string[], progress: EdgerProgress): Promise<boolean> {
   return new Promise((resole) => {
    
-    DoZip({ from, to, files }, (state: ProgressState, pNum: string) => {
+    doZip({ from, to, files }, (state: ProgressState, pNum: string) => {
       
       if (state === 'end') {
         progress.hide();
@@ -36,7 +36,7 @@ export function ZipAsync(from: string, to: string,files:string[], progress: Edge
   })
 }
 
-export function DoZip(opt: doZipOption, progressFn: (state: ProgressState, progress: string) => void) {
+export function doZip(opt: doZipOption, progressFn: (state: ProgressState, progress: string) => void) {
 
   if (!opt) opt = {};
 
@@ -44,7 +44,6 @@ export function DoZip(opt: doZipOption, progressFn: (state: ProgressState, progr
   if (!from || !to) {
     return;
   }
-  console.warn('DoZip, doZipOption: ', JSON.stringify(opt));
   const pack = onezip.pack(from, to, files);
 
   pack.on('progress', (percent: string) => {
