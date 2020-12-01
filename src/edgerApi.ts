@@ -10,25 +10,31 @@
  *
  */
 
-import AdmZip = require('adm-zip');
 import FormData = require('form-data');
 import * as vscode from 'vscode';
 import * as fs from "fs";
 import axios from "axios";
+import * as path from 'path'
 
 import { Edger, EdgerDeivceProvider } from './edgerDeviceProvider';
 import { edger_ide_port, eap_desc_json_file_name } from './constants';
 import { WorkspaceApi } from './workspaceApi';
+import { ZipAsync } from './zipeap';
+import { EventEmitter } from 'events';
+import { EdgerProgress } from './progress';
 
-export class EdgerApi {
+export class EdgerApi extends EventEmitter {
 	_context: vscode.ExtensionContext;
 	_edgerDeviceProvider: EdgerDeivceProvider;
 	_workspace: WorkspaceApi;
+	_progress: EdgerProgress;
 
 	constructor(context: vscode.ExtensionContext) {
+		super();
 		this._context = context;
 		this._edgerDeviceProvider = new EdgerDeivceProvider(context);
 		this._workspace = new WorkspaceApi(context);
+		this._progress = new EdgerProgress(this);
 	}
 
 	async install(edger: Edger): Promise<void> {
@@ -60,17 +66,16 @@ export class EdgerApi {
 
 		// compress files as an EAP archive
 		let eap_name = vscode.workspace.name + '.eap';
-		var admZip = new AdmZip();
-		var eap_file_path = '';
+		const {dir, name} = path.parse(projectRootFolder);
+		const eap_file_path = path.join(dir, eap_name);
+	 
 		try {
-			console.log(`workspace path: ${projectRootFolder}`);
-			eap_file_path = projectRootFolder + '/' + eap_name;
-			if (fs.existsSync(eap_file_path)) {
-				fs.unlinkSync(eap_file_path);
-			}
-			admZip.addLocalFolder(projectRootFolder);
-			admZip.writeZip(eap_file_path);
-			console.log('making eap succeeded.');
+			console.log(`workspace path: ${dir}/${name}`);
+			const zipRes = await ZipAsync(dir, eap_file_path, [name], this._progress);
+       if(!zipRes){
+           throw new Error('zip error.');
+			 }
+			 console.log('making eap succeeded.');
 		} catch (error) {
 			console.log(`making eap failed: ${error}`);
 		}

@@ -23,36 +23,36 @@ export class WorkspaceApi {
     }
 
     addEdger2Workspace(device_name: string, device_ip: string, device_pass?: string) {
-        let edgers = this._context.workspaceState.get(edger_key) as Array<Edger>;
+        let edgers = this._context.globalState.get(edger_key) as Array<Edger>;
         const edger: Edger = new Edger(device_name, device_ip, device_pass);
         //save edger device info to worksapce
         if (!edgers) {
             edgers = new Array<Edger>();
         }
         edgers.push(edger);
-        this._context.workspaceState.update(edger_key, edgers);
+        this._context.globalState.update(edger_key, edgers);
         console.log(`Edger device: ${device_name} - ${device_ip} saved.`);
     }
 
     deleteEdgerFromWorkspace(edger: Edger) {
-        let edgers = this._context.workspaceState.get(edger_key) as Array<Edger>;
+        let edgers = this._context.globalState.get(edger_key) as Array<Edger>;
         if (edgers) {
             const index = edgers.indexOf(edger);
             if (index >= 0) {
                 edgers.splice(index, 1);
-                this._context.workspaceState.update(edger_key, edgers);
+                this._context.globalState.update(edger_key, edgers);
                 console.log(`Edger device: ${edger.deviceName} - ${edger.deviceIP} removed.`);
             }
         }
     }
 
     updateEdgerPassword(edger: Edger, device_pass: string) {
-        let edgers = this._context.workspaceState.get(edger_key) as Array<Edger>;
+        let edgers = this._context.globalState.get(edger_key) as Array<Edger>;
         if (edgers) {
             const index = edgers.indexOf(edger);
             if (index >= 0) {
                 edgers[index].devicePass = device_pass;
-                this._context.workspaceState.update(edger_key, edgers);
+                this._context.globalState.update(edger_key, edgers);
                 console.log(`Edger device: ${edger.deviceName} - ${edger.deviceIP} password updated.`);
             }
         }
@@ -63,7 +63,7 @@ export class WorkspaceApi {
      */
     getEdgerDevices(): Edger[] {
         if (this._context.workspaceState) {
-            const edgers = this._context.workspaceState.get(edger_key) as Array<Edger>;
+            const edgers = this._context.globalState.get(edger_key) as Array<Edger>;
             return edgers;
         } else {
             return [];
