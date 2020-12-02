@@ -1,0 +1,9 @@
+{
+  "disconnected_to_server.text":"已断开服务器连接",
+  "connected_to_server.text":"已连接到服务器",
+  "edger_device_name.text":"爱智设备名称",
+  "device_name.text":"设备名称",
+  "device_ip_address.text":"设备IP地址",
+  "device_ip.text":"设备IP",
+  "cancelled_adding_device.text":"取消了设备添加."
+}

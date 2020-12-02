@@ -6,6 +6,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.0.5] - 2020-12-20
+
+### Added
+
+- Archive progress bar.
+- Support Chinese and English.
+
 ## [0.0.4] - 2020-10-20
 
 ### Added

@@ -1,7 +1,7 @@
 {
 	"name": "edgeros",
-	"displayName": "edgeros",
-	"description": "EdgerOS development extension for VSC.",
+	"displayName": "%edgeros.vsix.displayName%",
+	"description": "%edgeros.vsix.description%",
 	"enableProposedApi": false,
 	"version": "0.0.8",
 	"publisher": "edgeros",
@@ -14,8 +14,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:edgeros.installApp",
-		"onView:edgerDeviceView"
+		"*"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -23,14 +22,14 @@
 			"explorer": [
 				{
 					"id": "edgerDeviceView",
-					"name": "Edger Devices"
+					"name": "%edgeros.vsix.contributes.explorer.name%"
 				}
 			]
 		},
 		"commands": [
 			{
 				"command": "edgerDevices.refreshDevice",
-				"title": "Refresh",
+				"title": "%edgeros.vsix.commands.refresh%",
 				"icon": {
 					"light": "resources/light/refresh.svg",
 					"dark": "resources/dark/refresh.svg"
@@ -38,15 +37,15 @@
 			},
 			{
 				"command": "edgerDevices.addDevice",
-				"title": "Add"
+				"title": "%edgeros.vsix.commands.add%"
 			},
 			{
 				"command": "edgerDevices.archive",
-				"title": "Archive"
+				"title": "%edgeros.vsix.commands.archive%"
 			},
 			{
 				"command": "edgerDevices.updateDevice",
-				"title": "Edit",
+				"title": "%edgeros.vsix.commands.edit%",
 				"icon": {
 					"light": "resources/light/edit.svg",
 					"dark": "resources/dark/edit.svg"
@@ -54,15 +53,15 @@
 			},
 			{
 				"command": "edgerDevices.deleteDevice",
-				"title": "Delete"
+				"title": "%edgeros.vsix.commands.delete%"
 			},
 			{
 				"command": "edgerDevices.installApp",
-				"title": "Deploy"
+				"title": "%edgeros.vsix.commands.deploy%"
 			},
 			{
 				"command": "edgerDevices.openConsole",
-				"title": "Console"
+				"title": "%edgeros.vsix.commands.console%"
 			}
 		],
 		"menus": {
@@ -108,7 +107,7 @@
 		"viewsWelcome": [
 			{
 				"view": "edgerDeviceView",
-				"contents": "No EdgerOS device is found [learn more](https://www.edgeros.com/).\n[Add EdgerOS Device](command:edgerDevices.addDevice)"
+				"contents": "%edgeros.vsix.viewsWelcome.contents% [%edgeros.vsix.viewsWelcome.contents.linkTitle%](https://www.edgeros.com/).\n[%edgeros.vsix.viewsWelcome.contents.addDevice%](command:edgerDevices.addDevice)"
 			}
 		]
 	},
@@ -133,15 +132,17 @@
 		"glob": "^7.1.6",
 		"mocha": "^7.2.0",
 		"typescript": "^3.9.3",
+		"vscode-nls-dev": "^3.3.2",
 		"vscode-test": "^1.3.0"
 	},
 	"dependencies": {
 		"axios": "^0.19.2",
-		"form-data": "^3.0.0",
 		"findit2": "^2.2.3",
+		"form-data": "^3.0.0",
+		"mkdirp": "^1.0.3",
 		"pipe-io": "^4.0.0",
 		"try-to-catch": "^3.0.0",
-		"mkdirp": "^1.0.3",
+		"vscode-nls": "^3.2.5",
 		"yauzl": "^2.6.0",
 		"yazl": "^2.4.1"
 	}

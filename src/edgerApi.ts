@@ -10,11 +10,15 @@
  *
  */
 
+import * as nls from 'vscode-nls';
+const localize = nls.config({ messageFormat: nls.MessageFormat.file })();
 import FormData = require('form-data');
 import * as vscode from 'vscode';
 import * as fs from "fs";
 import axios from "axios";
 import * as path from 'path';
+
+
 
 import { Edger, EdgerDeivceProvider } from './edgerDeviceProvider';
 import { edger_ide_port } from './constants';
@@ -53,12 +57,12 @@ export class EdgerApi extends EventEmitter {
 		// ask for device password
 		let pass_options: vscode.InputBoxOptions = {
 			value: edger ? edger.devicePass : '',
-			prompt: "Edger Device Password.",
-			placeHolder: "(device password)"
+			prompt: localize('prompt_title.text', "Edger Device Password."),
+			placeHolder: localize('device_password.text', "(device password)")
 		};
 		const dev_pass = await vscode.window.showInputBox(pass_options);
 		if (dev_pass === undefined) {
-			console.log('Installation cancelled.');
+			console.log(localize('installation_cancelled.text', 'Installation cancelled.'));
 			return;
 		}
 		// save device password
@@ -70,29 +74,29 @@ export class EdgerApi extends EventEmitter {
 		const eap_file_path = path.join(dir, eap_name);
 
 		try {
-			console.log(`workspace path: ${dir}/${name}`);
+			// console.log(`workspace path: ${dir}/${name}`);
 			const zipRes = await zipAsync(dir, eap_file_path, [name], this._progress);
 			if (!zipRes) {
-				console.error('making zip error.');
+				console.error(localize('zip_error.text', "making zip error."));
 				return;
 			}
-			console.log('making eap succeeded.');
+			console.log(localize('eap_succeeded.text', "making eap succeeded."));
 		} catch (error) {
-			console.log(`making eap failed: ${error}`);
+			console.log(`${localize('eap_failed.text', "making eap failed")}: ${error}`);
 			return;
 		}
 
 		// upload eap to edger device
 		await this.uploadEap(eap_file_path, edger_ip, dev_pass).then(() => {
-			vscode.window.showInformationMessage('Upload completed.');
+			vscode.window.showInformationMessage(localize('upload_completed.text', 'Upload completed.'));
 		}).catch((err) => {
-			vscode.window.showErrorMessage(`Upload failed - ${err.message}`);
+			vscode.window.showErrorMessage(`${localize('upload_failed.text', 'Upload failed.')} - ${err.message}`);
 		});
 		// install/update eap on edger device
 		await this.installEap(edger_ip, dev_pass, eap_name).then(() => {
-			vscode.window.showInformationMessage('Installation completed.');
+			vscode.window.showInformationMessage(localize('installation_completed.text', 'Installation completed.'));
 		}).catch((err) => {
-			vscode.window.showErrorMessage(`Installation failed - ${err.message}`);
+			vscode.window.showErrorMessage(`${localize('installation_failed.text', 'Installation failed.')} - ${err.message}`);
 		});
 	}
 
@@ -114,23 +118,23 @@ export class EdgerApi extends EventEmitter {
 				const eap_file_path = path.join(dir, eap_name);
 
 				try {
-					console.log(`workspace path: ${dir}/${name}`);
+					// console.log(`workspace path: ${dir}/${name}`);
 					const zipRes = await zipAsync(dir, eap_file_path, [name], this._progress);
 					if (!zipRes) {
-						console.error('making zip error.');
+						console.error(localize('zip_error.text', "making zip error."));
 						return;
 					}
-					console.log('making eap succeeded.');
+					console.log(localize('eap_succeeded.text', "making eap succeeded."));
 				} catch (error) {
-					console.log(`making eap failed: ${error}`);
+					console.log(`${localize('eap_failed.text', "making eap failed")}: ${error}`);
 					resolve();
 					return;
 				}
 
-				vscode.window.showInformationMessage(`Archiving eap succeeded: ${eap_name}`);
+				vscode.window.showInformationMessage(`${localize('eap_succeeded.text', "making eap Succeeded")}: ${eap_name}`);
 			}
 			catch (error) {
-				vscode.window.showErrorMessage(`Archiving eap failed - ${error.message}`);
+				vscode.window.showErrorMessage(`${localize('eap_failed.text', "making eap failed")} - ${error.message}`);
 				throw new Error(error);
 			}
 			resolve(eap_file_path);
@@ -151,10 +155,10 @@ export class EdgerApi extends EventEmitter {
 		};
 		await axios.post('/upload', form, uploadApiConfig)
 			.then(function (response) {
-				console.log(`Upload succeeded: ${response}`);
+				console.log(`${localize('upload_completed.text', 'Upload completed.')}: ${response}`);
 			})
 			.catch(function (err) {
-				console.log(`Upload failed: ${err}`);
+				console.log(`${localize('upload_failed.text', 'Upload Failed.')}: ${err}`);
 				throw new Error(err);
 			});
 	}
@@ -176,10 +180,10 @@ export class EdgerApi extends EventEmitter {
 			eap: eap_name
 		}, installApiConfig)
 			.then(function (response) {
-				console.log(`Installation succeeded: ${response}`);
+				console.log(`${localize('installation_completed.text', 'Installation completed.')}: ${response}`);
 			})
 			.catch(function (err) {
-				console.log(`Installation failed: ${err}`);
+				console.log(`${localize('installation_failed.text', 'Installation failed.')}: ${err}`);
 				throw new Error(err);
 			});
 	}
