@@ -1,0 +1,12 @@
+{
+  "installation_failed.text":"上传失败",
+  "installation_completed.text":"上传成功",
+  "upload_failed.text":"上传失败",
+  "upload_completed.text":"上传成功",
+  "prompt_title.text":"爱智设备密码.",
+  "device_password.text":"设备密码",
+  "installation_cancelled.text":"安装被取消了",
+  "zip_error.text":"文件压缩出错",
+  "eap_failed.text":"压缩失败",
+  "eap_succeeded.text":"压缩成功"
+}

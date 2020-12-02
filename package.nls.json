@@ -1,0 +1,16 @@
+{
+	"edgeros.vsix.displayName": "edgeros",
+	"edgeros.vsix.description": "EdgerOS development extension for VSC.",
+	"edgeros.vsix.contributes.explorer.name": "Edger Devices",
+	"edgeros.vsix.commands.refresh": "Refresh",
+	"edgeros.vsix.commands.add": "Add",
+	"edgeros.vsix.commands.archive": "Archive",
+	"edgeros.vsix.commands.edit": "Edit",
+	"edgeros.vsix.commands.delete": "Delete",
+	"edgeros.vsix.commands.deploy": "Deploy",
+	"edgeros.vsix.commands.console": "Console",
+	"edgeros.vsix.viewsWelcome.contents": "No EdgerOS device is found",
+	"edgeros.vsix.viewsWelcome.contents.linkTitle": "learn more",
+	"edgeros.vsix.viewsWelcome.contents.addDevice": "Add EdgerOS Device"
+	 
+}

@@ -1,9 +1,11 @@
+import * as nls from 'vscode-nls';
+const localize = nls.config({ messageFormat: nls.MessageFormat.file })();
 import { EdgerProgress } from "./progress";
 import * as  onezip from './utils/onezip';
 
 
 export type ProgressState = 'progress' | 'error' | 'end' | 'start';
-const zipTitle: string = '压缩中'
+const zipTitle: string = localize('archive_doing.text', "archiving");
 
 interface doZipOption {
   from?: string;
@@ -18,12 +20,12 @@ export function zipAsync(from: string, to: string,files:string[], progress: Edge
       
       if (state === 'end') {
         progress.hide();
-        resole(true)
+        resole(true);
         return;
       }
       if (state === 'error') {
         progress.hide();
-        resole(false)
+        resole(false);
       }
       if (state === 'start') {
         progress.show({ num: 0, msg: zipTitle });
@@ -33,12 +35,12 @@ export function zipAsync(from: string, to: string,files:string[], progress: Edge
       const num = parseInt(pNum, 10);
       progress.show({ num, msg: zipTitle });
     });
-  })
+  });
 }
 
 export function doZip(opt: doZipOption, progressFn: (state: ProgressState, progress: string) => void) {
 
-  if (!opt) opt = {};
+  if (!opt) {opt = {};}
 
   let { from = '', to = '', files = [] } = opt;
   if (!from || !to) {
@@ -47,18 +49,18 @@ export function doZip(opt: doZipOption, progressFn: (state: ProgressState, progr
   const pack = onezip.pack(from, to, files);
 
   pack.on('progress', (percent: string) => {
-    progressFn('progress', percent)
+    progressFn('progress', percent);
   });
   pack.on('error', (error: Error) => {
     console.error(error);
-    progressFn('error', '0')
+    progressFn('error', '0');
   });
   pack.on('start', (percent: string) => {
-    progressFn('start', '0')
+    progressFn('start', '0');
   });
 
   pack.on('end', () => {
-    progressFn('end', '100')
+    progressFn('end', '100');
   });
 
 }

@@ -9,7 +9,8 @@
  * Author: Li Qiang <liqiang@acoinfo.com>
  *
  */
-
+import * as nls from 'vscode-nls';
+const localize = nls.config({ messageFormat: nls.MessageFormat.file })();
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { ExtensionContext } from 'vscode';
@@ -48,13 +49,15 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
     }
 
     async addDevice(edger?: Edger) {
+        const ipAddr = localize('device_ip_address.text', "Edger Device IP Address.");
+        const deviceIp = localize('device_ip.text', "(device ip)");
         let device_ip = '';
         let ip_options: vscode.InputBoxOptions = {
             value: edger ? edger.deviceIP : '',
-            prompt: "Edger Device IP Address.",
-            placeHolder: "(device ip)"
+            prompt: ipAddr,
+            placeHolder: deviceIp
         };
-        const cancel_add = 'Cancelled adding device.';
+        const cancel_add = localize('cancelled_adding_device.text', 'Cancelled adding device.');
         const ip_value = await vscode.window.showInputBox(ip_options);
         if (!ip_value) {
             throw new Error(cancel_add);
@@ -63,8 +66,8 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
         let device_name = '';
         let name_options: vscode.InputBoxOptions = {
             value: edger ? edger.deviceName : '',
-            prompt: "Edger Device Name.",
-            placeHolder: "(device name)"
+            prompt: localize('edger_device_name.text', "Edger Device Name."),
+            placeHolder: localize('device_name.text', "(device name)")
         };
 
         const name_value = await vscode.window.showInputBox(name_options);
@@ -102,7 +105,7 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
 
         const client = net.createConnection({ port: edger_console_port, host: edger.deviceIP }, () => {
             // 'connect' listener.
-            console.log('connected to server!');
+            console.log(localize('connected_to_server.text', 'connected to server!'));
         });
         client.on('data', (data: { toString: () => any; }) => {
             let str: string = data.toString().trim();
@@ -111,7 +114,7 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
             // client.end();
         });
         client.on('end', () => {
-            console.log('disconnected from server');
+            console.log(localize('disconnected_to_server.text', 'disconnected from server'));
         });
     }
 }
