@@ -11,7 +11,7 @@
  */
 
 import * as nls from 'vscode-nls';
-const localize = nls.config({ messageFormat: nls.MessageFormat.file })();
+const localize = nls.loadMessageBundle();
 import FormData = require('form-data');
 import * as vscode from 'vscode';
 import * as fs from "fs";

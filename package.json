@@ -1,7 +1,8 @@
 {
 	"name": "edgeros",
-	"displayName": "%edgeros.vsix.displayName%",
-	"description": "%edgeros.vsix.description%",
+	"private": true,
+	"displayName": "%extension.displayName%",
+	"description": "%extension.description%",
 	"enableProposedApi": false,
 	"version": "0.0.8",
 	"publisher": "edgeros",
@@ -22,14 +23,14 @@
 			"explorer": [
 				{
 					"id": "edgerDeviceView",
-					"name": "%edgeros.vsix.contributes.explorer.name%"
+					"name": "%extension.explorer.name%"
 				}
 			]
 		},
 		"commands": [
 			{
 				"command": "edgerDevices.refreshDevice",
-				"title": "%edgeros.vsix.commands.refresh%",
+				"title": "%extension.commands.refresh%",
 				"icon": {
 					"light": "resources/light/refresh.svg",
 					"dark": "resources/dark/refresh.svg"
@@ -37,15 +38,15 @@
 			},
 			{
 				"command": "edgerDevices.addDevice",
-				"title": "%edgeros.vsix.commands.add%"
+				"title": "%extension.commands.add%"
 			},
 			{
 				"command": "edgerDevices.archive",
-				"title": "%edgeros.vsix.commands.archive%"
+				"title": "%extension.commands.archive%"
 			},
 			{
 				"command": "edgerDevices.updateDevice",
-				"title": "%edgeros.vsix.commands.edit%",
+				"title": "%extension.commands.edit%",
 				"icon": {
 					"light": "resources/light/edit.svg",
 					"dark": "resources/dark/edit.svg"
@@ -53,15 +54,15 @@
 			},
 			{
 				"command": "edgerDevices.deleteDevice",
-				"title": "%edgeros.vsix.commands.delete%"
+				"title": "%extension.commands.delete%"
 			},
 			{
 				"command": "edgerDevices.installApp",
-				"title": "%edgeros.vsix.commands.deploy%"
+				"title": "%extension.commands.deploy%"
 			},
 			{
 				"command": "edgerDevices.openConsole",
-				"title": "%edgeros.vsix.commands.console%"
+				"title": "%extension.commands.console%"
 			}
 		],
 		"menus": {
@@ -107,7 +108,7 @@
 		"viewsWelcome": [
 			{
 				"view": "edgerDeviceView",
-				"contents": "%edgeros.vsix.viewsWelcome.contents% [%edgeros.vsix.viewsWelcome.contents.linkTitle%](https://www.edgeros.com/).\n[%edgeros.vsix.viewsWelcome.contents.addDevice%](command:edgerDevices.addDevice)"
+				"contents": "%extension.contents% [%extension.contents.linkTitle%](https://www.extension.com/).\n[%extension.contents.addDevice%](command:edgerDevices.addDevice)"
 			}
 		]
 	},

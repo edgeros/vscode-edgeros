@@ -12,6 +12,7 @@
 
 import * as nls from 'vscode-nls';
 nls.config({ messageFormat: nls.MessageFormat.file })();
+
 import * as vscode from 'vscode';
 import { Edger, EdgerDeivceProvider } from './edgerDeviceProvider';
 import { EdgerApi } from './edgerApi';
