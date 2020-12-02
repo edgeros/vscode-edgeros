@@ -1,5 +1,5 @@
 import * as nls from 'vscode-nls';
-const localize = nls.config({ messageFormat: nls.MessageFormat.file })();
+const localize = nls.loadMessageBundle();
 import { EdgerProgress } from "./progress";
 import * as  onezip from './utils/onezip';
 

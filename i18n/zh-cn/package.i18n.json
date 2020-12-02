@@ -1,16 +1,15 @@
 {
-	"edgeros.vsix.displayName": "爱智",
-	"edgeros.vsix.description": "爱智开发 VSCode 插件",
-	"edgeros.vsix.contributes.explorer.name": "爱智设备列表",
-	"edgeros.vsix.commands.refresh": "刷新",
-	"edgeros.vsix.commands.add": "添加",
-	"edgeros.vsix.commands.archive": "压缩",
-	"edgeros.vsix.commands.edit": "编辑",
-	"edgeros.vsix.commands.delete": "删除",
-	"edgeros.vsix.commands.deploy": "发布",
-	"edgeros.vsix.commands.console": "输出",
-	"edgeros.vsix.viewsWelcome.contents": "没有找到爱智设备",
-	"edgeros.vsix.viewsWelcome.contents.linkTitle": "更多参考",
-	"edgeros.vsix.viewsWelcome.contents.addDevice": "添加爱智设备"
-	 
+	"extension.displayName": "爱智",
+	"extension.description": "爱智开发 VSCode 插件",
+	"extension.explorer.name": "爱智设备列表",
+	"extension.commands.refresh": "刷新",
+	"extension.commands.add": "添加",
+	"extension.commands.archive": "压缩",
+	"extension.commands.edit": "编辑",
+	"extension.commands.delete": "删除",
+	"extension.commands.deploy": "发布",
+	"extension.commands.console": "输出",
+	"extension.contents": "没有找到爱智设备",
+	"extension.contents.linkTitle": "更多参考",
+	"extension.contents.addDevice": "添加爱智设备"
 }
