@@ -1,11 +1,10 @@
-import * as nls from 'vscode-nls';
-const localize = nls.loadMessageBundle();
+ 
+import { init, localize }   from "./utils/locale";
 import { EdgerProgress } from "./progress";
 import * as  onezip from './utils/onezip';
 
-
 export type ProgressState = 'progress' | 'error' | 'end' | 'start';
-const zipTitle: string = localize('archive_doing.text', "archiving");
+
 
 interface doZipOption {
   from?: string;
@@ -14,6 +13,7 @@ interface doZipOption {
 }
 
 export function zipAsync(from: string, to: string,files:string[], progress: EdgerProgress): Promise<boolean> {
+  const zipTitle: string = localize('archive_doing.text', "Archiving");
   return new Promise((resole) => {
    
     doZip({ from, to, files }, (state: ProgressState, pNum: string) => {

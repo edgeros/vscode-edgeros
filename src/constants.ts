@@ -14,3 +14,5 @@ export const edger_ide_port: number = 82;
 export const edger_console_port: number = 81;
 export const edger_key: string = 'edgers';
 export const eap_desc_json_file_name: string = 'desc.json';
+
+export type LocaleFn = (key:string,...args:string[])=>string;

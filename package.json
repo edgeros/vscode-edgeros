@@ -12,6 +12,7 @@
 		"vscode": "^1.44.0"
 	},
 	"categories": [
+		"Language Packs",
 		"Other"
 	],
 	"activationEvents": [
@@ -113,6 +114,9 @@
 		]
 	},
 	"scripts": {
+		"clean": "gulp clean",
+		"cp": "gulp compile",
+		"gp": "gulp package",
 		"pack": "vsce package",
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
@@ -133,7 +137,7 @@
 		"glob": "^7.1.6",
 		"mocha": "^7.2.0",
 		"typescript": "^3.9.3",
-		"vscode-nls-dev": "^3.3.2",
+		"vsce": "^1.79.5",
 		"vscode-test": "^1.3.0"
 	},
 	"dependencies": {
@@ -143,7 +147,6 @@
 		"mkdirp": "^1.0.3",
 		"pipe-io": "^4.0.0",
 		"try-to-catch": "^3.0.0",
-		"vscode-nls": "^3.2.5",
 		"yauzl": "^2.6.0",
 		"yazl": "^2.4.1"
 	}

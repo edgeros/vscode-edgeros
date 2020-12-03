@@ -10,8 +10,8 @@
  *
  */
 
-import * as nls from 'vscode-nls';
-const localize = nls.loadMessageBundle();
+ 
+import { init, localize }   from "./utils/locale";
 import FormData = require('form-data');
 import * as vscode from 'vscode';
 import * as fs from "fs";
@@ -77,12 +77,12 @@ export class EdgerApi extends EventEmitter {
 			// console.log(`workspace path: ${dir}/${name}`);
 			const zipRes = await zipAsync(dir, eap_file_path, [name], this._progress);
 			if (!zipRes) {
-				console.error(localize('zip_error.text', "making zip error."));
+				console.error(localize('zip_error.text', "Making zip error."));
 				return;
 			}
-			console.log(localize('eap_succeeded.text', "making eap succeeded."));
+			console.log(localize('eap_succeeded.text', "Making eap succeeded."));
 		} catch (error) {
-			console.log(`${localize('eap_failed.text', "making eap failed")}: ${error}`);
+			console.log(`${localize('eap_failed.text', "Making eap failed")}: ${error}`);
 			return;
 		}
 
@@ -121,20 +121,20 @@ export class EdgerApi extends EventEmitter {
 					// console.log(`workspace path: ${dir}/${name}`);
 					const zipRes = await zipAsync(dir, eap_file_path, [name], this._progress);
 					if (!zipRes) {
-						console.error(localize('zip_error.text', "making zip error."));
+						console.error(localize('zip_error.text', "Making zip error."));
 						return;
 					}
-					console.log(localize('eap_succeeded.text', "making eap succeeded."));
+					console.log(localize('eap_succeeded.text', "Making eap succeeded."));
 				} catch (error) {
-					console.log(`${localize('eap_failed.text', "making eap failed")}: ${error}`);
+					console.log(`${localize('eap_failed.text', "Making eap failed")}: ${error}`);
 					resolve();
 					return;
 				}
 
-				vscode.window.showInformationMessage(`${localize('eap_succeeded.text', "making eap Succeeded")}: ${eap_name}`);
+				vscode.window.showInformationMessage(`${localize('eap_succeeded.text', "Making eap Succeeded")}: ${eap_name}`);
 			}
 			catch (error) {
-				vscode.window.showErrorMessage(`${localize('eap_failed.text', "making eap failed")} - ${error.message}`);
+				vscode.window.showErrorMessage(`${localize('eap_failed.text', "Making eap failed")} - ${error.message}`);
 				throw new Error(error);
 			}
 			resolve(eap_file_path);
