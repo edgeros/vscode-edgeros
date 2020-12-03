@@ -9,9 +9,7 @@
  * Author: Li Qiang <liqiang@acoinfo.com>
  *
  */
-
-import * as nls from 'vscode-nls';
-nls.config({ messageFormat: nls.MessageFormat.file })();
+import { init, localize }   from "./utils/locale";
 
 import * as vscode from 'vscode';
 import { Edger, EdgerDeivceProvider } from './edgerDeviceProvider';
@@ -23,6 +21,7 @@ process.on('uncaughtException', function (err) {
 });
 
 export function activate(context: vscode.ExtensionContext) {
+ 	init(context.extensionPath);
 	const edgerDeivceProvider = new EdgerDeivceProvider(context);
 	vscode.window.registerTreeDataProvider('edgerDeviceView', edgerDeivceProvider);
 	vscode.commands.registerCommand('edgerDevices.refreshDevice', () => edgerDeivceProvider.refresh());

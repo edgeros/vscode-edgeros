@@ -9,8 +9,8 @@
  * Author: Li Qiang <liqiang@acoinfo.com>
  *
  */
-import * as nls from 'vscode-nls';
-const localize = nls.loadMessageBundle();
+ 
+import { init, localize }   from "./utils/locale";
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { ExtensionContext } from 'vscode';
@@ -23,7 +23,8 @@ import { edger_console_port } from './constants';
 export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
     _context: ExtensionContext;
     _workspace: WorkspaceApi;
-    constructor(context: ExtensionContext) {
+     
+    constructor(context: ExtensionContext ) {
         this._context = context;
         this._workspace = new WorkspaceApi(context);
     }
