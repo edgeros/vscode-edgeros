@@ -8,6 +8,7 @@
 	"extension.commands.edit": "编辑",
 	"extension.commands.delete": "删除",
 	"extension.commands.deploy": "发布",
+	"extension.commands.preview": "预览",
 	"extension.commands.console": "输出",
 	"extension.contents": "没有找到爱智设备",
 	"extension.contents.linkTitle": "更多参考",
