@@ -109,8 +109,9 @@
 		"viewsWelcome": [
 			{
 				"view": "edgerDeviceView",
-				"contents": "%extension.contents% [%extension.contents.linkTitle%](https://www.extension.com/).\n[%extension.contents.addDevice%](command:edgerDevices.addDevice)"
+				"contents": "%extension.contents% [%extension.contents.linkTitle%](https://www.extension.com/).\n[%模拟器下载%](https://www.extension.com/).\n[%extension.contents.addDevice%](command:edgerDevices.addDevice)"
 			}
+
 		]
 	},
 	"scripts": {
