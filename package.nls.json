@@ -8,6 +8,7 @@
 	"extension.commands.edit": "Edit",
 	"extension.commands.delete": "Delete",
 	"extension.commands.deploy": "Deploy",
+	"extension.commands.preview": "Preview",
 	"extension.commands.console": "Console",
 	"extension.contents": "No EdgerOS device is found",
 	"extension.contents.linkTitle": "learn more",
