@@ -118,7 +118,12 @@
 		"viewsWelcome": [
 			{
 				"view": "edgerDeviceView",
-				"contents": "%extension.contents% [%extension.contents.linkTitle%](https://www.extension.com/).\n[%extension.contents.addDevice%](command:edgerDevices.addDevice)"
+				"contents": "%extension.contents% [%extension.contents.linkTitle%](https://www.extension.com/)."
+		
+			},
+			{
+				"view": "edgerDeviceView",
+				"contents": "[%extension.contents.addDevice%](command:edgerDevices.addDevice)"
 			}
 
 		]

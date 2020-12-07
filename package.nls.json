@@ -12,6 +12,7 @@
 	"extension.commands.console": "Console",
 	"extension.contents": "No EdgerOS device is found",
 	"extension.contents.linkTitle": "learn more",
-	"extension.contents.addDevice": "Add EdgerOS Device"
+	"extension.contents.addDevice": "Add EdgerOS Device",
+	"extension.contents.operateEmulator": "Open Emulator"
 	 
 }
