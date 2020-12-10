@@ -20,6 +20,32 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"languages": [
+			{
+				"id": "Log",
+				"aliases": [
+					"log"
+				],
+				"extensions": [
+					".log"
+				],
+				"configuration": "./log.configuration.json",
+				"mimetypes": [
+					"log",
+					"text/log",
+					"text/x-log",
+					"text/x-code-output",
+					"x-code-output"
+				]
+			}
+		],
+		"grammars": [
+			{
+				"language": "Log",
+				"scopeName": "code.log",
+				"path": "./src/syntaxes/log.tmLanguage"
+			}
+		],
 		"views": {
 			"explorer": [
 				{
@@ -125,13 +151,9 @@
 				"view": "edgerDeviceView",
 				"contents": "[%extension.contents.addDevice%](command:edgerDevices.addDevice)"
 			}
-
 		]
 	},
 	"scripts": {
-		"clean": "gulp clean",
-		"cp": "gulp compile",
-		"gp": "gulp package",
 		"pack": "vsce package",
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
@@ -159,6 +181,7 @@
 		"axios": "^0.19.2",
 		"findit2": "^2.2.3",
 		"form-data": "^3.0.0",
+		"iconv-lite": "^0.6.2",
 		"mkdirp": "^1.0.3",
 		"pipe-io": "^4.0.0",
 		"try-to-catch": "^3.0.0",
