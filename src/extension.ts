@@ -16,7 +16,6 @@ import { Edger, EdgerDeivceProvider } from './edgerDeviceProvider';
 import { EdgerApi } from './edgerApi';
 import { showPhone } from './mobile/mobile.browser';
 import { MobileType } from './mobile/model';
-import { debug } from 'console';
 
 process.on('uncaughtException', function (err) {
   console.error(err);
@@ -29,6 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
     'edgerDeviceView',
     edgerDeivceProvider
   );
+  
   vscode.commands.registerCommand('edgerDevices.refreshDevice', () =>
     edgerDeivceProvider.refresh()
   );
@@ -50,6 +50,18 @@ export function activate(context: vscode.ExtensionContext) {
   );
   vscode.commands.registerCommand('edgerDevices.archive', () =>
     edgerApi.archive()
+  );
+  vscode.commands.registerCommand('edgeros.propmtNewProject', () =>
+    edgerApi.propmtNewProject()
+  );
+  vscode.commands.registerCommand('edgeros.newProject', (tplname: string, projectName: string) =>
+    edgerApi.newProject(tplname, projectName)
+  );
+  vscode.commands.registerCommand('edgeros.openSettings', (tplname: string, projectName: string) =>
+    edgerApi.openSettings()
+  );
+  vscode.commands.registerCommand('edgeros.openSettingsUI', (tplname: string, projectName: string) =>
+    edgerApi.openSettingsUI()
   );
   //
   const mobilePreview = vscode.commands.registerCommand(

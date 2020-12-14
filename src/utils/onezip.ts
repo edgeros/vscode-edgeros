@@ -25,18 +25,18 @@ function check(from: string, to: string, files?: string[]) {
     assert(/string|object/.test(typeof to), 'to should be string or object!');
 
     if (arguments.length > 2)
-        assert(Array.isArray(files), 'files should be an array!');
+        {assert(Array.isArray(files), 'files should be an array!');}
 }
 
 function checkOperation(operation: string) {
     if (!/^(pack|extract)$/.test(operation))
-        throw Error('operations could be "pack" or "extract" only!');
+        {throw Error('operations could be "pack" or "extract" only!');}
 }
 
 function onezip(operation: string) {
     checkOperation(operation);
 
-    return (from: string, to: string, files: string[]) => {
+    return (from: string, to: string, files?: string[]) => {
         // @ts-ignore
         return new OneZip(operation, from, to, files);
     };
@@ -44,9 +44,9 @@ function onezip(operation: string) {
 
 export function OneZip(operation: string, from: string, to: string, files: string[]) {
     if (operation === 'extract')
-        check(from, to);
+        {check(from, to);}
     else
-        check(from, to, files);
+        {check(from, to, files);}
 
     process.nextTick(async () => {
         // @ts-ignore
@@ -64,12 +64,12 @@ export function OneZip(operation: string, from: string, to: string, files: strin
             this._to = to;
 
             if (!files.length)
-                return this.emit('error', Error('Nothing to pack!'));
+                {return this.emit('error', Error('Nothing to pack!'));}
 
             await this._parallel(from, files);
 
             if (this._abort)
-                return this.emit('end');
+                {return this.emit('end');}
 
             this._pack();
 
@@ -82,7 +82,7 @@ export function OneZip(operation: string, from: string, to: string, files: strin
         const [error] = await tryToCatch(this._parse.bind(this), from);
 
         if (error)
-            return this.emit('error', error);
+            {return this.emit('error', error);}
 
         this._extract(from);
     });
@@ -141,7 +141,7 @@ OneZip.prototype._pack = async function () {
         filename = tmp.join('/');
         const [error, data] = await tryToCatch(stat, _name);
         if (error)
-            return this.emit('error', error);
+            {return this.emit('error', error);}
 
         if (data.isDirectory()) {
             zipfile.addEmptyDirectory(filename);
@@ -167,10 +167,10 @@ OneZip.prototype._pack = async function () {
     ]);
 
     if (errorPipe)
-        return this.emit('error', errorPipe);
+        {return this.emit('error', errorPipe);}
 
     if (!this._abort)
-        return this.emit('end');
+        {return this.emit('end');}
 
     await this._unlink(_to);
 };
@@ -186,7 +186,7 @@ OneZip.prototype._createReadStream = function (filename: string, end: any) {
 OneZip.prototype._onOpenReadStream = function (success: (rs: any) => void) {
     return (error: Error, readStream = {}) => {
         if (error)
-            return this.emit('error', error);
+            {return this.emit('error', error);}
 
         success(readStream);
     };
@@ -196,7 +196,7 @@ OneZip.prototype._unlink = async function (to: string) {
     const [error] = await tryToCatch(unlink, to);
 
     if (error)
-        return this.emit('error', error);
+        {return this.emit('error', error);}
 
     this.emit('end');
 };
@@ -204,7 +204,7 @@ OneZip.prototype._unlink = async function (to: string) {
 OneZip.prototype._parse = promisify(function (from: string, fn: Function) {
     yauzl.open(from, (error: Error, zipfile:any) => {
         if (error)
-            return fn(error);
+            {return fn(error);}
 
         zipfile.on('entry', () => {
             ++this._n;
@@ -230,14 +230,14 @@ OneZip.prototype._extract = function (from: string) {
         };
 
         if (error)
-            return handleError(error);
+            {return handleError(error);}
 
         zipfile.readEntry();
         zipfile.on('entry', async (entry:any) => {
             const { fileName } = entry;
             const fn = (error: Error) => {
                 if (error)
-                    return handleError(error);
+                    {return handleError(error);}
 
                 this._progress();
                 this.emit('file', fileName);
@@ -289,7 +289,7 @@ function endSlash(str: string) {
     const last = str.length - 1;
 
     if (str[last] === path.sep)
-        return str;
+        {return str;}
 
     return str + path.sep;
 }

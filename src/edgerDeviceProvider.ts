@@ -10,17 +10,15 @@
  *
  */
 
-import { init, localize } from './utils/locale';
+import { localize } from './utils/locale';
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { ExtensionContext } from 'vscode';
 import * as net from 'net';
-import * as iconvlite from 'iconv-lite';
 
 import { WorkspaceApi } from './workspaceApi';
 import { edger_console_port } from './constants';
 import { debug } from 'console';
-import { tmpdir } from 'os';
 
 let channel: vscode.OutputChannel;
 const tmpArr = [
@@ -31,7 +29,8 @@ const tmpArr = [
   '[0;33m[JSRE-CON]Warning:[0;37mwarn title msg warn context.111',
   '[0;31m[JSRE-CON]Error:[0;37merror title msg error context.111',
 ];
-export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
+export class EdgerDeivceProvider
+  implements vscode.TreeDataProvider<vscode.TreeItem> {
   _context: ExtensionContext;
   _workspace: WorkspaceApi;
 
@@ -40,13 +39,14 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
     this._workspace = new WorkspaceApi(context);
   }
 
-  getTreeItem(element: Edger): vscode.TreeItem {
-    return new Edger(
-      element.deviceName,
-      element.deviceIP,
-      '',
-      element.collapsibleState
-    );
+  getTreeItem(element: Edger | EdgerMenuItem): vscode.TreeItem {
+    // @ts-ignore
+    const { deviceName = '', deviceIP = '', name, command } = element;
+    if (deviceName && deviceIP) {
+      return new Edger(deviceName, deviceIP, '', element.collapsibleState);
+    } else {
+      return new EdgerMenuItem(name, command);
+    }
   }
 
   private _onDidChangeTreeData: vscode.EventEmitter<
@@ -59,9 +59,15 @@ export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
     this._onDidChangeTreeData.fire(undefined);
   }
 
-  getChildren(_element?: Edger): Thenable<Edger[]> {
+  getChildren(_element?: Edger): Thenable<vscode.TreeItem[]> {
     if (this._context) {
-      return Promise.resolve(this._workspace.getEdgerDevices());
+      const dataItems = this._workspace.getEdgerDevices();
+      const newProjectBtn = new EdgerMenuItem('new', {
+        title: 'new Project.',
+        command: 'edgeros.propmtNewProject',
+      });
+      dataItems.push(newProjectBtn);
+      return Promise.resolve(dataItems);
     } else {
       return Promise.resolve([]);
     }
@@ -188,7 +194,35 @@ export class Edger extends vscode.TreeItem {
       '..',
       'resources',
       'light',
-      'dependency.svg'
+      'router.svg'
+    ),
+    dark: path.join(__filename, '..', '..', 'resources', 'dark', 'router.svg'),
+  };
+
+  contextValue = 'edger';
+}
+
+export class EdgerMenuItem extends vscode.TreeItem {
+  constructor(
+    public readonly name: string,
+    public readonly command?: vscode.Command
+  ) {
+    super(name);
+  }
+
+  label = localize(`extension.commands.${this.name}`,  this.name) as string;
+  tooltip = localize(`extension.commands.${this.name}`,  this.name) as string;
+  description = localize(`extension.commands.${this.name}`,  this.name) as string;
+
+ 
+  iconPath = {
+    light: path.join(
+      __filename,
+      '..',
+      '..',
+      'resources',
+      'light',
+      this.name + '.svg'
     ),
     dark: path.join(
       __filename,
@@ -196,9 +230,8 @@ export class Edger extends vscode.TreeItem {
       '..',
       'resources',
       'dark',
-      'dependency.svg'
+      this.name + '.svg'
     ),
   };
 
-  contextValue = 'edger';
 }

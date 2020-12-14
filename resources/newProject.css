@@ -1,0 +1,138 @@
+body {
+  color: beige;
+  cursor: default;
+}
+
+.row {
+  height: auto;
+}
+
+.row .tit {
+  width: 80px;
+  display: inline-block;
+  margin-right: auto;
+  padding: 0.3rem 0px;
+  margin: 0.5rem auto;
+  height: 14px;
+  line-height: 14px;
+  text-align: left;
+}
+
+.row .con {
+  text-align: left;
+}
+
+.row .type {
+  max-width: 800px;
+  height: 40px;
+  border: none;
+  user-select: none;
+  line-height: 40px;
+  margin-top: 30px;
+}
+
+.row .type span {
+  vertical-align: top;
+  padding: 0px 10px;
+  height: 35px;
+  line-height: 35px;
+  border-bottom: 5px solid transparent;
+  display: inline-block;
+}
+
+.row .type span.on,
+.row .type span:hover {
+  border-color: #4977ce;
+}
+
+.row .single {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-width: 800px;
+  max-height: 350px;
+  border: 1px solid #dddddd;
+}
+
+.row .single .template {
+  display: inline-block;
+  width: 160px;
+  height: 160px;
+  overflow: hidden;
+  vertical-align: top;
+  text-align: center;
+  position: relative;
+  margin: 5px;
+  border: 1px solid transparent;
+}
+.row .single .template .img {
+  width: 140px;
+  height: 160px;
+  vertical-align: middle;
+  text-align: center;
+  margin: 0 auto;
+  display: inline-block;
+}
+.row .single .template .img img {
+  width: 100%;
+  height: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+.row .single .template h6 {
+  color: white;
+  bottom: 0px;
+  width: 100%;
+  height: 18px;
+  line-height: 18px;
+  text-align: center;
+  position: absolute;
+}
+
+.row .single .template.on,
+.row .single .template:hover
+ {
+  border: 1px solid #4977ce;
+}
+
+.row .single .template.on h6,
+.row .single .template:hover h6 {
+  background-color: #4977ce;
+}
+
+.template h6,
+.template p {
+  margin: 0px;
+  padding: 0px;
+}
+
+.template p {
+  font-size: 9px;
+}
+
+.inputTxt {
+  text-align: left;
+}
+
+.inputTxt .selectDir {
+  width: 80px;
+}
+
+.inputTxt input {
+  background-color: wheat;
+  border: 0px;
+  padding: 0.3rem 1rem;
+  min-width: 240px;
+  display: inline-block;
+  margin: 0.5rem auto;
+  height: 14px;
+  line-height: 14px;
+}
+
+.newbtn {
+  display: inline-block;
+  background-color: cornflowerblue;
+  color: white;
+  border: 0px;
+  padding: 0.5rem 1rem;
+  user-select: none;
+}

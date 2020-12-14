@@ -12,7 +12,25 @@
 	"extension.commands.console": "Console",
 	"extension.contents": "No EdgerOS device is found",
 	"extension.contents.linkTitle": "learn more",
-	"extension.contents.addDevice": "Add EdgerOS Device",
-	"extension.contents.operateEmulator": "Open Emulator"
-	 
+	"extension.contents.operateEmulator": "Open Emulator",
+	"extension.commands.new": "New Project",
+	"extension.commands.openSettings": "EdgerOS Settings",
+	"archive_doing.text": "Archiving",
+	"disconnected_to_server.text": "Disconnected to server",
+	"connected_to_server.text": "Connected to server",
+	"edger_device_name.text": "Edger device name",
+	"device_name.text": "Device name",
+	"device_ip_address.text": "Device IP address",
+	"device_ip.text": "Device IP",
+	"cancelled_adding_device.text": "Cancelled adding device.",
+	"installation_failed.text": "Installation Failed",
+	"installation_completed.text": "Installation Completed",
+	"upload_failed.text": "Upload failed",
+	"upload_completed.text": "Upload_completed",
+	"prompt_title.text": "Prompt Title.",
+	"device_password.text": "Device Password",
+	"installation_cancelled.text": "Installation Cancelled",
+	"zip_error.text": "zip Error",
+	"eap_failed.text": "EAP Failed",
+	"eap_succeeded.text": "EAP Succeeded"
 }
