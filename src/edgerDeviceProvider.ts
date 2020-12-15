@@ -66,8 +66,12 @@ export class EdgerDeivceProvider
         title: 'new Project.',
         command: 'edgeros.propmtNewProject',
       });
-      dataItems.push(newProjectBtn);
-      return Promise.resolve(dataItems);
+      const staticDataItems = dataItems.filter((item) => {
+       return item.command?.command !== 'edgeros.propmtNewProject';
+      });
+    
+      staticDataItems.push(newProjectBtn);
+      return Promise.resolve(staticDataItems);
     } else {
       return Promise.resolve([]);
     }
@@ -210,11 +214,13 @@ export class EdgerMenuItem extends vscode.TreeItem {
     super(name);
   }
 
-  label = localize(`extension.commands.${this.name}`,  this.name) as string;
-  tooltip = localize(`extension.commands.${this.name}`,  this.name) as string;
-  description = localize(`extension.commands.${this.name}`,  this.name) as string;
+  label = localize(`extension.commands.${this.name}`, this.name) as string;
+  tooltip = localize(`extension.commands.${this.name}`, this.name) as string;
+  description = localize(
+    `extension.commands.${this.name}`,
+    this.name
+  ) as string;
 
- 
   iconPath = {
     light: path.join(
       __filename,
@@ -233,5 +239,4 @@ export class EdgerMenuItem extends vscode.TreeItem {
       this.name + '.svg'
     ),
   };
-
 }

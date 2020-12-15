@@ -4,10 +4,10 @@
 	"displayName": "%extension.displayName%",
 	"description": "%extension.description%",
 	"enableProposedApi": false,
-	"version": "0.0.8",
+	"version": "0.0.5",
 	"publisher": "edgeros",
 	"repository": "https://github.com/edgeros/vsce.git",
-	"icon": "./media/icon.png",
+	"icon": "media/icon.png",
 	"engines": {
 		"vscode": "^1.44.0"
 	},

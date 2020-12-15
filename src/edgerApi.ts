@@ -14,7 +14,6 @@ import { init, localize } from './utils/locale';
 import FormData = require('form-data');
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import * as os from 'os';
 import axios from 'axios';
 import * as path from 'path';
 
@@ -24,10 +23,8 @@ import { WorkspaceApi } from './workspaceApi';
 import { zipAsync } from './zipeap';
 import { EventEmitter } from 'events';
 import { EdgerProgress } from './progress';
-import { showNewProjectPage } from './showNewProject';
-import { debug } from 'console';
 import { showEdgerOSSettings } from './settingsUI';
-import { newProject } from './project';
+import { doNewProject, showNewProjectPage } from './project';
 
 export class EdgerApi extends EventEmitter {
   private _context: vscode.ExtensionContext;
@@ -49,8 +46,7 @@ export class EdgerApi extends EventEmitter {
   }
 
   newProject(params: any) {
-    //
-    newProject(this._context, params);
+    doNewProject(this._context, params);
   }
 
   async openSettings() {
