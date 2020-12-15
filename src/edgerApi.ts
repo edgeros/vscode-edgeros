@@ -48,9 +48,9 @@ export class EdgerApi extends EventEmitter {
     showNewProjectPage(this._context);
   }
 
-  newProject(tplname: string, projectName: string) {
+  newProject(params: any) {
     //
-    newProject(this._context, tplname, projectName);
+    newProject(this._context, params);
   }
 
   async openSettings() {

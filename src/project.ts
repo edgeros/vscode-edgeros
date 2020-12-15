@@ -1,5 +1,5 @@
 import * as path from 'path';
-import * as http from 'http';
+import * as https from 'https';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
 //
@@ -10,47 +10,54 @@ const templateUpdateUrl = `http://localhost:5000/tpls.json`;
 
 export async function newProject(
   context: vscode.ExtensionContext,
-  projectName: string,
-  templateName: string
+  params: any
 ): Promise<boolean> {
-  if ('cancel' === templateName) {
-    console.warn('cancel select template.');
+  const { projectName, saveDir, template  } = params;
+  const { name = '', origin = [] } = template as ITemplate;
+
+  if ('cancel' === name) {
+    return false;
+  }
+
+  if (!projectName) {
+    vscode.window.showWarningMessage('请输入项目名称！');
+    return false;
+  }
+
+  if (!name) {
+    vscode.window.showWarningMessage('请输选择模板！');
+    return false;
+  }
+
+  if (!saveDir) {
+    vscode.window.showWarningMessage('请输选择保存路径！');
     return false;
   }
 
   const templateConf = vscode.workspace.getConfiguration('edgeros.template');
-  const tplList = templateConf.get('list') as ITemplate[];
   const tplUsing = templateConf.get('originUsing') as string;
-  let template: any = null;
-  tplList.forEach((item: ITemplate) => {
-    if (item.name === templateName) {
-      template = item;
-    }
-  });
 
-  if (!template) {
-    console.warn('Not found assgin template:', templateName);
-    return false;
-  }
-
-  let origins = template.origin;
   let tUrl = '';
-  origins.forEach((item: TemplateOrigin) => {
+  origin.forEach((item: TemplateOrigin) => {
     if (item.name === tplUsing) {
       tUrl = item.url;
     }
   });
 
-  //
-  // download
-  let templateDir: string = path.join(__dirname, '..');
-  let zipPath: string = path.join(__dirname, '..', 'tmp.zip');
-  await downloadZip(tUrl, zipPath);
+  try {
+    //
+    // download
+    let zipPath: string = path.join(__dirname, '..', 'tmp.zip');
+    await downloadZip(tUrl, zipPath);
 
-  // unzip
-  const savePath: string = path.join(templateDir, projectName);
-  await unzip(zipPath, savePath);
-  return true;
+    // unzip
+    const savePath: string = path.join(saveDir, projectName);
+    await unzip(zipPath, savePath);
+    return true;
+  } catch (err) {
+    console.error(JSON.stringify(err));
+    return false;
+  }
 }
 
 function unzip(from: string, to: string): Promise<void> {
@@ -84,7 +91,9 @@ function unzip(from: string, to: string): Promise<void> {
 function downloadZip(url: string, saveDir: string): Promise<void> {
   return new Promise((resolve) => {
     var writeStream = fs.createWriteStream(saveDir);
-    http.get(url, (data) => {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+    https.get(url, (data) => {
       data.on('data', (chunk) => {
         writeStream.write(chunk);
       });
@@ -104,7 +113,9 @@ export async function updateTemplate(
 ) {
   return new Promise((resolve) => {
     const tmp: string[] = [];
-    http.get(url, (data) => {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+    https.get(url, (data) => {
       data.on('data', (chunk) => {
         console.log('chunk:', chunk);
         tmp.push(chunk);

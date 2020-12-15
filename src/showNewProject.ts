@@ -15,7 +15,7 @@ export async function showNewProjectPage(context: vscode.ExtensionContext) {
   );
   const dir = context.extensionPath;
   //
-  //
+ 
   const jspath = getPath(panel, dir, 'resources', `newProject.js`);
   const csspath = getPath(panel, dir, 'resources', `newProject.css`);
   const templateConf = vscode.workspace.getConfiguration('edgeros.template');
@@ -32,17 +32,32 @@ export async function showNewProjectPage(context: vscode.ExtensionContext) {
 
   // panel.webview.postMessage({ command: 'refactor' });
   panel.webview.onDidReceiveMessage((message) => {
-    const { tplname, projectName, command } = message;
-    debugger;
+    const {  command } = message;
+
     switch (command) {
-      case 'newProjectCommand':
-        console.log(command);
-        // vscode.commands.executeCommand(
-        //   'edgeros.newProject',
-        //   tplname,
-        //   projectName
-        // );
-        // panel.dispose();
+      case 'selectSavePath':
+        vscode.window
+          .showOpenDialog({
+            title: '选择文件夹',
+            openLabel: '选择',
+            canSelectFolders: true,
+            canSelectFiles: false,
+          })
+          .then((res: vscode.Uri[] | undefined) => {
+            if (!res) {
+              return;
+            }
+            const { path } = res[0];
+            const savePath = path.replace(/^\//gim, '');
+            panel.webview.postMessage({ savePath });
+          });
+        return;
+      case 'copyDemo':
+        vscode.commands.executeCommand(
+          'edgeros.newProject',
+          message
+        );
+        panel.dispose();
         return;
     }
   });
@@ -60,16 +75,26 @@ function getHtmlStr(opt: HTMLPageOptions): string {
     itemType.forEach((typee) => {
       tplTypeObject[typee] = 1;
     });
+ 
+    const tplStr = JSON.stringify(item1);
+    var base64Str =  Buffer.from(tplStr).toString('base64');
+ 
+    //
+    templateStr.push(`<span class="template ${itemType.join(' ')}" >`);
     templateStr.push(
-      `<span class="template" >`
+      `<div class="img"><img onClick="changeTpl(this, 2 , '${item1.discription}', '${base64Str}' )" src="${item1.icon}" /></div>`
     );
-    templateStr.push(`<div class="img"><img onClick="changeTpl(this, '${item1.name}', 2)" src="${item1.icon}" /></div>`);
-    templateStr.push(`<h6 onClick="changeTpl(this, '${item1.name}', 1)" >${item1.displayName}</h6>`);
+    templateStr.push(
+      `<h6 onClick="changeTpl(this, 1, '${item1.discription}', '${base64Str}' )" >${item1.displayName}</h6>`
+    );
     templateStr.push(`</span>`);
   });
 
   let tplTypes: string[] = Object.keys(tplTypeObject);
   const tplsStr: string[] = [];
+  tplsStr.push(
+    `<span class="on" onClick="changeType(this, 'all')" >All</span>`
+  );
   tplTypes?.forEach((item2) => {
     tplsStr.push(
       `<span onClick="changeType(this, '${item2}')" >${item2}</span>`
@@ -78,15 +103,16 @@ function getHtmlStr(opt: HTMLPageOptions): string {
 
   const bodyHtml: string = `
     <section id="section">
-    <body class="main-layout ">
     <div class="row">
     <div>
     <div class="type">
     ${tplsStr.join('')}
     </div>
-    <div class="single">
+    <div class="single" >
    ${templateStr.join('')}
-</div></div>
+</div>
+
+</div>
 </div>
 
 <div class="row">
@@ -105,15 +131,19 @@ function getHtmlStr(opt: HTMLPageOptions): string {
 
 <div class="row ">
 <span class="tit">选择目录:</span>
-<span class="con inputTxt">
-<input class="projectDir" placeholder="输入项目名称" value="${projectDir}" type="text" /><span class="selectDir">选择目录</span>
+<span class="con inputTxt selectDirWarp">
+<input class="projectDir" placeholder="输入项目名称" value="${projectDir}" type="text" />
+<span class="selectDir" onClick="selectDirFn()" >选择目录</span>
 </span>
  
 </div>
 
 <div class="row">
+<div class="newBtnWarp">
     <button class="newbtn" onClick="submitNew()">新建</button>
 </div>
+</div>
+</section>
   `;
 
   return getPageStruct(opt, bodyHtml);

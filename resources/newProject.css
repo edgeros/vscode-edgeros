@@ -1,25 +1,34 @@
 body {
-  color: beige;
+  color: whitesmoke;
   cursor: default;
+}
+
+section {
+  margin: 0px auto;
+  display: block;
+  width: 700px;
 }
 
 .row {
   height: auto;
+  display: flex;
+  text-align: left;
 }
 
 .row .tit {
   width: 80px;
   display: inline-block;
-  margin-right: auto;
-  padding: 0.3rem 0px;
-  margin: 0.5rem auto;
-  height: 14px;
-  line-height: 14px;
+  margin-left: 0px;
+  height: 40px;
+  line-height: 40px;
   text-align: left;
+  color: #ffffff7a;
 }
 
 .row .con {
   text-align: left;
+  margin-right: auto;
+  width: 100%;
 }
 
 .row .type {
@@ -33,11 +42,12 @@ body {
 
 .row .type span {
   vertical-align: top;
-  padding: 0px 10px;
+  padding: 0px 40px;
   height: 35px;
   line-height: 35px;
   border-bottom: 5px solid transparent;
   display: inline-block;
+  cursor: pointer;
 }
 
 .row .type span.on,
@@ -48,9 +58,11 @@ body {
 .row .single {
   overflow-y: scroll;
   overflow-x: hidden;
-  max-width: 800px;
-  max-height: 350px;
-  border: 1px solid #dddddd;
+  width: 710px;
+  height: 350px;
+  cursor: pointer;
+  border: 1px solid #75757540;
+  background-color: #75757552;
 }
 
 .row .single .template {
@@ -62,7 +74,7 @@ body {
   text-align: center;
   position: relative;
   margin: 5px;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
 }
 .row .single .template .img {
   width: 140px;
@@ -79,7 +91,6 @@ body {
   vertical-align: middle;
 }
 .row .single .template h6 {
-  color: white;
   bottom: 0px;
   width: 100%;
   height: 18px;
@@ -89,9 +100,8 @@ body {
 }
 
 .row .single .template.on,
-.row .single .template:hover
- {
-  border: 1px solid #4977ce;
+.row .single .template:hover {
+  border: 2px solid #4977ce;
 }
 
 .row .single .template.on h6,
@@ -109,30 +119,49 @@ body {
   font-size: 9px;
 }
 
-.inputTxt {
-  text-align: left;
+.selectDirWarp {
+  position: relative;
 }
+.selectDirWarp .projectDir {
+  width: calc(100% - 100px);
 
-.inputTxt .selectDir {
+}
+.selectDirWarp .selectDir {
   width: 80px;
+  position: absolute;
+  right: 0px;
+  top: 8px;
+  height: 24px;
+  line-height: 24px;
+  color: whitesmoke;
+  background-color: #4977ce75;
+  text-align: center;
+  cursor: pointer;
 }
 
 .inputTxt input {
-  background-color: wheat;
+  width: calc(100% - 100px);
+  color: whitesmoke;
+  background-color: #ffffff29;
   border: 0px;
-  padding: 0.3rem 1rem;
-  min-width: 240px;
+  padding: 5px 10px;
+  min-width: 200px;
   display: inline-block;
   margin: 0.5rem auto;
   height: 14px;
   line-height: 14px;
 }
 
+.newBtnWarp {
+  text-align: center;
+  margin: 0 auto;
+}
+
 .newbtn {
   display: inline-block;
+  color: whitesmoke;
   background-color: cornflowerblue;
-  color: white;
   border: 0px;
-  padding: 0.5rem 1rem;
+  padding: 5px 20px;
   user-select: none;
 }

@@ -54,8 +54,8 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand('edgeros.propmtNewProject', () =>
     edgerApi.propmtNewProject()
   );
-  vscode.commands.registerCommand('edgeros.newProject', (tplname: string, projectName: string) =>
-    edgerApi.newProject(tplname, projectName)
+  vscode.commands.registerCommand('edgeros.newProject', (params:any) =>
+    edgerApi.newProject(params)
   );
   vscode.commands.registerCommand('edgeros.openSettings', (tplname: string, projectName: string) =>
     edgerApi.openSettings()

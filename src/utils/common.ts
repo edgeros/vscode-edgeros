@@ -32,8 +32,9 @@ export interface HTMLPageOptions {
   mobPng?: vscode.Uri;
 }
 
-export function getPageStruct(opt: any, bodyHtml: string) {
+export function getPageStruct(opt: HTMLPageOptions, bodyHtml: string) {
   const { csspath, jspath } = opt;
+ 
   var html = [];
   html.push('<!DOCTYPE html>');
   html.push('<html lang="en">');
@@ -45,11 +46,11 @@ export function getPageStruct(opt: any, bodyHtml: string) {
   html.push('<title>MobileView</title>');
   html.push(`<link rel="stylesheet" href="${csspath}" />`);
   html.push('<script>');
-  html.push(`window.np = JSON.parse('${JSON.stringify(opt)}');`);
+  html.push(`window.edgeros = ${JSON.stringify(opt)};`);
   html.push('</script>');
   html.push('</head>');
   html.push(`<body>`);
-  html.push(bodyHtml);
+  html.push(`${bodyHtml}`);
   html.push(`</body>`);
   html.push(`<script src="${jspath}" ></script>`);
   html.push(`	</html>`);
