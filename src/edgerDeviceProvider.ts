@@ -66,9 +66,12 @@ export class EdgerDeivceProvider
         title: 'new Project.',
         command: 'edgeros.propmtNewProject',
       });
-      const staticDataItems = dataItems.filter((item) => {
-       return item.command?.command !== 'edgeros.propmtNewProject';
-      });
+      let staticDataItems:vscode.TreeItem[] = [];
+      if(dataItems && dataItems.length){
+        staticDataItems = dataItems.filter((item) => {
+          return item.command?.command !== 'edgeros.propmtNewProject';
+        });
+      }
     
       staticDataItems.push(newProjectBtn);
       return Promise.resolve(staticDataItems);
