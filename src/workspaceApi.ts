@@ -61,10 +61,9 @@ export class WorkspaceApi {
     /**
      * Given workspace context, read all edger devices.
      */
-    getEdgerDevices(): Edger[] {
+    getEdgerDevices(): vscode.TreeItem[] {
         if (this._context.workspaceState) {
-            const edgers = this._context.globalState.get(edger_key) as Array<Edger>;
-            return edgers;
+            return this._context.globalState.get(edger_key) as Array<vscode.TreeItem>;
         } else {
             return [];
         }

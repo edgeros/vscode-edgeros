@@ -9,8 +9,8 @@
  * Author: Li Qiang <liqiang@acoinfo.com>
  *
  */
- 
-import { init, localize }   from "./utils/locale";
+
+import { localize } from './utils/locale';
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { ExtensionContext } from 'vscode';
@@ -18,131 +18,228 @@ import * as net from 'net';
 
 import { WorkspaceApi } from './workspaceApi';
 import { edger_console_port } from './constants';
+import { debug } from 'console';
 
+let channel: vscode.OutputChannel;
+const tmpArr = [
+  '<span class="mtk5">[0;37m[JSRE-CON][0;37mlog</span>正常输出 log中文内容111',
+  '[0;37m[JSRE-CON][0;37mlog正常输出 log中文内容111',
+  '[0;32m[JSRE-CON]Info:[0;37m正常输出 中文内容111',
+  '[0;32m[JSRE-CON]Info:[0;37minfo normal title info yingwen test.111',
+  '[0;33m[JSRE-CON]Warning:[0;37mwarn title msg warn context.111',
+  '[0;31m[JSRE-CON]Error:[0;37merror title msg error context.111',
+];
+export class EdgerDeivceProvider
+  implements vscode.TreeDataProvider<vscode.TreeItem> {
+  _context: ExtensionContext;
+  _workspace: WorkspaceApi;
 
-export class EdgerDeivceProvider implements vscode.TreeDataProvider<Edger> {
-    _context: ExtensionContext;
-    _workspace: WorkspaceApi;
-     
-    constructor(context: ExtensionContext ) {
-        this._context = context;
-        this._workspace = new WorkspaceApi(context);
+  constructor(context: ExtensionContext) {
+    this._context = context;
+    this._workspace = new WorkspaceApi(context);
+  }
+
+  getTreeItem(element: Edger | EdgerMenuItem): vscode.TreeItem {
+    // @ts-ignore
+    const { deviceName = '', deviceIP = '', name, command } = element;
+    if (deviceName && deviceIP) {
+      return new Edger(deviceName, deviceIP, '', element.collapsibleState);
+    } else {
+      return new EdgerMenuItem(name, command);
     }
+  }
 
-    getTreeItem(element: Edger): vscode.TreeItem {
-        return new Edger(element.deviceName, element.deviceIP, '', element.collapsibleState);
+  private _onDidChangeTreeData: vscode.EventEmitter<
+    Edger | undefined
+  > = new vscode.EventEmitter<Edger | undefined>();
+  readonly onDidChangeTreeData: vscode.Event<Edger | undefined> = this
+    ._onDidChangeTreeData.event;
+
+  refresh(): void {
+    this._onDidChangeTreeData.fire(undefined);
+  }
+
+  getChildren(_element?: Edger): Thenable<vscode.TreeItem[]> {
+    if (this._context) {
+      const dataItems = this._workspace.getEdgerDevices();
+      const newProjectBtn = new EdgerMenuItem('new', {
+        title: 'new Project.',
+        command: 'edgeros.propmtNewProject',
+      });
+      let staticDataItems:vscode.TreeItem[] = [];
+      if(dataItems && dataItems.length){
+        staticDataItems = dataItems.filter((item) => {
+          return item.command?.command !== 'edgeros.propmtNewProject';
+        });
+      }
+    
+      staticDataItems.push(newProjectBtn);
+      return Promise.resolve(staticDataItems);
+    } else {
+      return Promise.resolve([]);
     }
+  }
 
-    private _onDidChangeTreeData: vscode.EventEmitter<Edger | undefined> = new vscode.EventEmitter<Edger | undefined>();
-    readonly onDidChangeTreeData: vscode.Event<Edger | undefined> = this._onDidChangeTreeData.event;
-
-    refresh(): void {
-        this._onDidChangeTreeData.fire(undefined);
+  async addDevice(edger?: Edger) {
+    const ipAddr = localize(
+      'device_ip_address.text',
+      'Edger Device IP Address.'
+    );
+    const deviceIp = localize('device_ip.text', '(device ip)');
+    let device_ip = '';
+    let ip_options: vscode.InputBoxOptions = {
+      value: edger ? edger.deviceIP : '',
+      prompt: ipAddr,
+      placeHolder: deviceIp,
+    };
+    const cancel_add = localize(
+      'cancelled_adding_device.text',
+      'Cancelled adding device.'
+    );
+    const ip_value = await vscode.window.showInputBox(ip_options);
+    if (!ip_value) {
+      throw new Error(cancel_add);
     }
+    device_ip = ip_value;
+    let device_name = '';
+    let name_options: vscode.InputBoxOptions = {
+      value: edger ? edger.deviceName : '',
+      prompt: localize('edger_device_name.text', 'Edger Device Name.'),
+      placeHolder: localize('device_name.text', '(device name)'),
+    };
 
-    getChildren(_element?: Edger): Thenable<Edger[]> {
-        if (this._context) {
-            return Promise.resolve(this._workspace.getEdgerDevices());
-        }
-        else {
-            return Promise.resolve([]);
-        }
+    const name_value = await vscode.window.showInputBox(name_options);
+    if (!name_value) {
+      throw new Error(cancel_add);
     }
+    device_name = name_value;
+    this._workspace.addEdger2Workspace(device_name, device_ip);
 
-    async addDevice(edger?: Edger) {
-        const ipAddr = localize('device_ip_address.text', "Edger Device IP Address.");
-        const deviceIp = localize('device_ip.text', "(device ip)");
-        let device_ip = '';
-        let ip_options: vscode.InputBoxOptions = {
-            value: edger ? edger.deviceIP : '',
-            prompt: ipAddr,
-            placeHolder: deviceIp
-        };
-        const cancel_add = localize('cancelled_adding_device.text', 'Cancelled adding device.');
-        const ip_value = await vscode.window.showInputBox(ip_options);
-        if (!ip_value) {
-            throw new Error(cancel_add);
-        }
-        device_ip = ip_value;
-        let device_name = '';
-        let name_options: vscode.InputBoxOptions = {
-            value: edger ? edger.deviceName : '',
-            prompt: localize('edger_device_name.text', "Edger Device Name."),
-            placeHolder: localize('device_name.text', "(device name)")
-        };
+    this.refresh();
+    return true;
+  }
 
-        const name_value = await vscode.window.showInputBox(name_options);
-        if (!name_value) {
-            throw new Error(cancel_add);
-        }
-        device_name = name_value;
-        this._workspace.addEdger2Workspace(device_name, device_ip);
-
-        this.refresh();
-        return true;
-    }
-
-    updateDevice(edger: Edger) {
-        this.addDevice(edger).then(() => {
-            this._workspace.deleteEdgerFromWorkspace(edger);
-            this.refresh();
-        })
-            .catch(error => console.info(error));
-    }
-
-    deleteDevice(edger: Edger) {
+  updateDevice(edger: Edger) {
+    this.addDevice(edger)
+      .then(() => {
         this._workspace.deleteEdgerFromWorkspace(edger);
         this.refresh();
-    }
+      })
+      .catch((error) => console.info(error));
+  }
 
-    updatePassword(edger: Edger, pass: string) {
-        this._workspace.updateEdgerPassword(edger, pass);
-        this.refresh();
-    }
+  deleteDevice(edger: Edger) {
+    this._workspace.deleteEdgerFromWorkspace(edger);
+    this.refresh();
+  }
 
-    async openConsole(edger: Edger) {
-        const channel = vscode.window.createOutputChannel('Edger Console');
-        channel.show();
+  updatePassword(edger: Edger, pass: string) {
+    this._workspace.updateEdgerPassword(edger, pass);
+    this.refresh();
+  }
 
-        const client = net.createConnection({ port: edger_console_port, host: edger.deviceIP }, () => {
-            // 'connect' listener.
-            console.log(localize('connected_to_server.text', 'connected to server!'));
-        });
-        client.on('data', (data: { toString: () => any; }) => {
-            let str: string = data.toString().trim();
-            console.log(str);
-            channel.appendLine(str);
-            // client.end();
-        });
-        client.on('end', () => {
-            console.log(localize('disconnected_to_server.text', 'disconnected from server'));
-        });
+  async openConsole(edger: Edger) {
+    if (!channel) {
+      channel = vscode.window.createOutputChannel('Edger Console');
     }
+    channel.show();
+    tmpArr.forEach((str1) => {
+      str1 = replaceSpacielChar(str1);
+      channel.appendLine(str1);
+    });
+
+    const client = net.createConnection(
+      { port: edger_console_port, host: edger.deviceIP }, // edger.deviceIP
+      () => {
+        // 'connect' listener.
+        console.log(
+          localize('connected_to_server.text', 'connected to server!')
+        );
+      }
+    );
+    client.on('data', (data: Buffer) => {
+      let str: string = data.toString('UTF-8', 0, data.length - 1);
+      str = replaceSpacielChar(str);
+      channel.append(str);
+    });
+    client.on('end', () => {
+      console.log(
+        localize('disconnected_to_server.text', 'disconnected from server')
+      );
+    });
+  }
+}
+
+function replaceSpacielChar(str: string): string {
+  str = str.replace(/\[0;37m|/gim, '');
+  str = str.replace(/\[0;31m|/gim, '');
+  str = str.replace(/\[0;32m|/gim, '');
+  str = str.replace(/\[0;33m|/gim, '');
+  str = str.replace(//gim, '');
+
+  return str;
 }
 
 export class Edger extends vscode.TreeItem {
-    constructor(
-        public readonly deviceName: string,
-        public deviceIP: string,
-        public devicePass?: string,
-        public readonly collapsibleState?: vscode.TreeItemCollapsibleState,
-        public readonly command?: vscode.Command
-    ) {
-        super(deviceName, collapsibleState);
-    }
+  constructor(
+    public readonly deviceName: string,
+    public deviceIP: string,
+    public devicePass?: string,
+    public readonly collapsibleState?: vscode.TreeItemCollapsibleState,
+    public readonly command?: vscode.Command
+  ) {
+    super(deviceName, collapsibleState);
+  }
 
-    get tooltip(): string {
-        return `${this.deviceName} - ${this.deviceIP}`;
-    }
+  tooltip = `${this.deviceName} - ${this.deviceIP}`;
+  description = `${this.deviceIP}`;
 
-    get description(): string {
-        return `${this.deviceIP}`;
-    }
+  iconPath = {
+    light: path.join(
+      __filename,
+      '..',
+      '..',
+      'resources',
+      'light',
+      'router.svg'
+    ),
+    dark: path.join(__filename, '..', '..', 'resources', 'dark', 'router.svg'),
+  };
 
-    iconPath = {
-        light: path.join(__filename, '..', '..', 'resources', 'light', 'dependency.svg'),
-        dark: path.join(__filename, '..', '..', 'resources', 'dark', 'dependency.svg')
-    };
+  contextValue = 'edger';
+}
 
-    contextValue = 'edger';
+export class EdgerMenuItem extends vscode.TreeItem {
+  constructor(
+    public readonly name: string,
+    public readonly command?: vscode.Command
+  ) {
+    super(name);
+  }
+
+  label = localize(`extension.commands.${this.name}`, this.name) as string;
+  tooltip = localize(`extension.commands.${this.name}`, this.name) as string;
+  description = localize(
+    `extension.commands.${this.name}`,
+    this.name
+  ) as string;
+
+  iconPath = {
+    light: path.join(
+      __filename,
+      '..',
+      '..',
+      'resources',
+      'light',
+      this.name + '.svg'
+    ),
+    dark: path.join(
+      __filename,
+      '..',
+      '..',
+      'resources',
+      'dark',
+      this.name + '.svg'
+    ),
+  };
 }

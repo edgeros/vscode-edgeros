@@ -1,0 +1,23 @@
+ 
+h4 {
+  text-align: center;
+  color: gray;
+}
+button {
+  font-size: 1.2rem;
+  background-color: white;
+  color: #306bd6;
+  cursor: pointer;
+  border: 0px;
+  padding: 1rem 2rem;
+}
+
+.active {
+  background-color: #306bd6;
+  color: white;
+}
+
+section div {
+  text-align: center;
+ 
+}

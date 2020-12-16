@@ -1,0 +1,167 @@
+body {
+  color: whitesmoke;
+  cursor: default;
+}
+
+section {
+  margin: 0px auto;
+  display: block;
+  width: 700px;
+}
+
+.row {
+  height: auto;
+  display: flex;
+  text-align: left;
+}
+
+.row .tit {
+  width: 80px;
+  display: inline-block;
+  margin-left: 0px;
+  height: 40px;
+  line-height: 40px;
+  text-align: left;
+  color: #ffffff7a;
+}
+
+.row .con {
+  text-align: left;
+  margin-right: auto;
+  width: 100%;
+}
+
+.row .type {
+  max-width: 800px;
+  height: 40px;
+  border: none;
+  user-select: none;
+  line-height: 40px;
+  margin-top: 30px;
+}
+
+.row .type span {
+  vertical-align: top;
+  padding: 0px 40px;
+  height: 35px;
+  line-height: 35px;
+  border-bottom: 5px solid transparent;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.row .type span.on,
+.row .type span:hover {
+  border-color: #4977ce;
+}
+
+.row .single {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 710px;
+  height: 350px;
+  cursor: pointer;
+  border: 1px solid #75757540;
+  background-color: #75757552;
+}
+
+.row .single .template {
+  display: inline-block;
+  width: 160px;
+  height: 160px;
+  overflow: hidden;
+  vertical-align: top;
+  text-align: center;
+  position: relative;
+  margin: 5px;
+  border: 2px solid transparent;
+}
+.row .single .template .img {
+  width: 140px;
+  height: 160px;
+  vertical-align: middle;
+  text-align: center;
+  margin: 0 auto;
+  display: inline-block;
+}
+.row .single .template .img img {
+  width: 100%;
+  height: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+.row .single .template h6 {
+  bottom: 0px;
+  width: 100%;
+  height: 18px;
+  line-height: 18px;
+  text-align: center;
+  position: absolute;
+}
+
+.row .single .template.on,
+.row .single .template:hover {
+  border: 2px solid #4977ce;
+}
+
+.row .single .template.on h6,
+.row .single .template:hover h6 {
+  background-color: #4977ce;
+}
+
+.template h6,
+.template p {
+  margin: 0px;
+  padding: 0px;
+}
+
+.template p {
+  font-size: 9px;
+}
+
+.selectDirWarp {
+  position: relative;
+}
+.selectDirWarp .projectDir {
+  width: calc(100% - 100px);
+
+}
+.selectDirWarp .selectDir {
+  width: 80px;
+  position: absolute;
+  right: 0px;
+  top: 8px;
+  height: 24px;
+  line-height: 24px;
+  color: whitesmoke;
+  background-color: #4977ce75;
+  text-align: center;
+  cursor: pointer;
+}
+
+.inputTxt input {
+  width: calc(100% - 100px);
+  color: whitesmoke;
+  background-color: #ffffff29;
+  border: 0px;
+  padding: 5px 10px;
+  min-width: 200px;
+  display: inline-block;
+  margin: 0.5rem auto;
+  height: 14px;
+  line-height: 14px;
+}
+
+.newBtnWarp {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.newbtn {
+  display: inline-block;
+  color: whitesmoke;
+  background-color: cornflowerblue;
+  border: 0px;
+  padding: 5px 20px;
+  user-select: none;
+}

@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
+import { getPath } from '../utils/common';
+
 import { MobileOptions, MobileType, getMobileTemplate } from './model';
 
 export function showPhone(
@@ -62,7 +63,3 @@ export function showPhone(
   );
 }
 
-function getPath(panel: vscode.WebviewPanel, dir: string, ...args: string[]) {
-  const uri = vscode.Uri.file(path.join(dir, ...args));
-  return panel.webview.asWebviewUri(uri);
-}
