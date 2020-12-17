@@ -158,27 +158,30 @@ function getHtmlStr(opt: HTMLPageOptions): string {
 export async function doNewProject(
   context: vscode.ExtensionContext,
   params: any
-): Promise<boolean> {
+): Promise<{
+  state: boolean;
+  projectDir?: string;
+}> {
   const { projectName, saveDir, template } = params;
   const { name = '', origin = [] } = template as ITemplate;
 
   if ('cancel' === name) {
-    return false;
+    return {state:false};
   }
 
   if (!projectName) {
     vscode.window.showWarningMessage('请输入项目名称！');
-    return false;
+    return {state:false};
   }
 
   if (!name) {
     vscode.window.showWarningMessage('请输选择模板！');
-    return false;
+    return {state:false};
   }
 
   if (!saveDir) {
     vscode.window.showWarningMessage('请输选择保存路径！');
-    return false;
+    return {state:false};
   }
 
   const templateConf = vscode.workspace.getConfiguration('edgeros.template');
@@ -200,12 +203,15 @@ export async function doNewProject(
     // unzip
     const savePath: string = path.join(saveDir, projectName);
     await unzip(zipPath, savePath);
-    return true;
+    return {
+      state: true,
+      projectDir: savePath,
+    };
   } catch (err) {
     const str = JSON.stringify(err);
     console.error(str);
     vscode.window.showErrorMessage('Erorr: New Project.');
-    return false;
+    return {state:false};
   }
 }
 

@@ -45,8 +45,18 @@ export class EdgerApi extends EventEmitter {
     showNewProjectPage(this._context);
   }
 
-  newProject(params: any) {
-    doNewProject(this._context, params);
+  async newProject(params: any) {
+    const { state, projectDir } = await doNewProject(this._context, params);
+    if (projectDir) {
+      let uri = vscode.Uri.file(projectDir);
+      let success = await vscode.commands.executeCommand(
+        'vscode.openFolder',
+        uri
+      );
+      if (!success) {
+        vscode.window.showErrorMessage('New Project is error.');
+      }
+    }
   }
 
   async openSettings() {
