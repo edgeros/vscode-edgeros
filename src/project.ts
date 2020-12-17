@@ -113,30 +113,40 @@ export async function doNewProject(
 
   try {
     //
+    const userTmpDir = os.homedir();
     // download
-    const zipPath: string = path.join(__dirname, '..', 'tmp.zip');
+    const zipPath: string = path.join(userTmpDir, 'tmp.zip');
     const fileName = await downloadZip(tUrl, zipPath, tplUsing);
 
     // unzip
-    const saveTmpPath: string = path.join(__dirname, '..', 'tmp');
+    const saveTmpPath: string = path.join(userTmpDir, 'tmp');
     await unzip(zipPath, saveTmpPath);
 
     // copy
     const sourceDir: string = path.join(saveTmpPath, fileName);
     const savePath: string = path.join(saveDir, projectName);
-    ncp(sourceDir, savePath,  (err)=> {
-      if (err) {
-        return console.error(err);
-      }
-      fs.unlinkSync(zipPath);
-      fs.unlinkSync(saveTmpPath);
-      console.log('done!');
-    });
 
-    return {
-      state: true,
-      projectDir: savePath,
-    };
+    return new Promise((resolve, reject)=>{
+
+      ncp(sourceDir, savePath,  (err)=> {
+        if (err) {
+          return console.error(err);
+        }
+        fs.unlink(zipPath,(err)=>{
+          fs.unlink(saveTmpPath,(err2)=>{
+            console.warn(err2);
+          });
+        });
+        resolve({
+          state: true,
+          projectDir: savePath,
+        });
+      });
+  
+     
+
+    });
+   
   } catch (err) {
     const str = JSON.stringify(err);
     console.error(str);
