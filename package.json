@@ -24,8 +24,8 @@
 			"title": "EdgerOS",
 			"properties": {
 				"edgeros.template.originUsing": {
-					"type": "string",
 					"scope": "window",
+					"type": "string",
 					"default": "github",
 					"description": "Template origin."
 				},
@@ -44,7 +44,7 @@
 							"origin": [
 								{
 									"name": "zoho",
-									"url": "httttttt"
+									"url": "https://files.zohopublic.com.cn/public/workdrive-public/download/g86ih408d86a6fb5f4f1b9809d786ed36f9a1"
 								},
 								{
 									"name": "github",
@@ -297,11 +297,13 @@
 		"vscode-test": "^1.3.0"
 	},
 	"dependencies": {
+		"@types/ncp": "^2.0.4",
 		"axios": "^0.19.2",
 		"findit2": "^2.2.3",
 		"form-data": "^3.0.0",
 		"iconv-lite": "^0.6.2",
 		"mkdirp": "^1.0.3",
+		"ncp": "^2.0.0",
 		"pipe-io": "^4.0.0",
 		"try-to-catch": "^3.0.0",
 		"yauzl": "^2.6.0",
