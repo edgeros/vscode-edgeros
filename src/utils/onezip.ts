@@ -132,7 +132,12 @@ OneZip.prototype._pack = async function () {
     };
     for (const _name of _names) {
         let filename = _name.replace(_from, '');
-        let tmp = filename.split(/\\/i);
+        let tmp:string[] = [];
+        if(process.platform==='win32'){
+            tmp = filename.split(/\\/i);
+        }else{
+            tmp = filename.split(/\//i);
+        }
         tmp.shift();
         if (!tmp.length) {
             end(_name);
