@@ -275,6 +275,7 @@
 	"scripts": {
 		"pack": "vsce package",
 		"vscode:prepublish": "npm run compile",
+		"build": "tsc -p ./",
 		"compile": "tsc -p ./",
 		"lint": "eslint src --ext ts",
 		"watch": "tsc -watch -p ./",

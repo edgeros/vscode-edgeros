@@ -188,7 +188,7 @@ export class EdgerApi extends EventEmitter {
           return;
         }
 
-        const openBtn:string = 'Open in Explorer'
+        const openBtn:string = 'Reveal file in OS';
 
         vscode.window.showInformationMessage(
           `${localize(
