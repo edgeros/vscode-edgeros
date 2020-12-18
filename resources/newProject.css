@@ -130,6 +130,9 @@ section {
   width: calc(100% - 10px);
 
 }
+.selectDirWarp .selectDir:hover {
+  background-color: #e0e0e06b;
+}
 .selectDirWarp .selectDir {
   width: 80px;
   position: absolute;
@@ -168,8 +171,11 @@ section {
   border: 0px;
   padding: 5px 20px;
   user-select: none;
+  cursor: pointer;
 }
-
+.newbtn:hover {
+  background-color: rgb(63, 107, 189);
+}
 .icon {
   width: 1em;
   height: 1em;
