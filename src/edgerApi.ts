@@ -188,12 +188,20 @@ export class EdgerApi extends EventEmitter {
           return;
         }
 
+        const openBtn:string = 'Open in Explorer'
+
         vscode.window.showInformationMessage(
           `${localize(
             'eap_succeeded.text',
-            'Making eap Succeeded'
-          )}: ${eap_name}`
-        );
+            `Making eap Succeeded`
+          )}: ${eap_file_path}`,
+          openBtn
+        ).then((refBtn)=>{
+          if(refBtn === openBtn){ 
+            const _uri:vscode.Uri = vscode.Uri.parse(eap_file_path);
+            vscode.commands.executeCommand("revealFileInOS", _uri); // explorer.openAndPassFocus
+          }
+        });
       } catch (error) {
         vscode.window.showErrorMessage(
           `${localize('eap_failed.text', 'Making eap failed')} - ${
