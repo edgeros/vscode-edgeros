@@ -15,7 +15,6 @@ import {
   TemplateOrigin,
 } from './utils/common';
 import { IncomingMessage } from 'http';
-import { debug } from 'console';
 
 export async function showNewProjectPage(context: vscode.ExtensionContext) {
   const panel = vscode.window.createWebviewPanel(
@@ -30,6 +29,7 @@ export async function showNewProjectPage(context: vscode.ExtensionContext) {
   //
   const jspath = getPath(panel, resPath, 'resources', `newProject.js`);
   const csspath = getPath(panel, resPath, 'resources', `newProject.css`);
+  const folderIcon = getPath(panel, resPath, 'resources', `iconfont.js`);
   const templateConf = vscode.workspace.getConfiguration('edgeros.template');
   const templates = templateConf.get('list') as ITemplate[];
 
@@ -38,6 +38,7 @@ export async function showNewProjectPage(context: vscode.ExtensionContext) {
     csspath,
     templates,
     projectDir,
+    folderIcon,
   };
   // And set its HTML content
   panel.webview.html = getHtmlStr(pOpt);
@@ -255,7 +256,7 @@ export async function updateTemplate(
 
 function getHtmlStr(opt: HTMLPageOptions): string {
   // FUNCTIONS
-  const { projectDir, templates } = opt;
+  const { projectDir, templates, folderIcon } = opt;
   let tplTypeObject: { [key: string]: number } = {};
   const templateStr: string[] = [];
 
@@ -323,7 +324,9 @@ function getHtmlStr(opt: HTMLPageOptions): string {
 <span class="tit">选择目录:</span>
 <span class="con inputTxt selectDirWarp">
 <input class="projectDir" placeholder="输入项目名称" value="${projectDir}" type="text" />
-<span class="selectDir" onClick="selectDirFn()" >选择目录</span>
+<span class="selectDir" onClick="selectDirFn()" >
+<svg t="1608277092094" class="icon" viewBox="0 0 1170 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="728" width="200" height="200"><path d="M45.48608 344.795429h33.792V45.494857A45.860571 45.860571 0 0 1 124.772937 0h336.896a44.836571 44.836571 0 0 1 34.450286 16.530286l156.379428 170.349714h393.362286a45.787429 45.787429 0 0 1 45.494857 44.836571v112.347429h34.450286a44.690286 44.690286 0 0 1 44.763429 44.836571 28.306286 28.306286 0 0 1-0.658286 7.314286l-71.68 581.266286a48.64 48.64 0 0 1-20.699429 33.133714 43.885714 43.885714 0 0 1-31.670857 13.092572H124.772937a43.154286 43.154286 0 0 1-31.012571-12.434286 51.2 51.2 0 0 1-21.357715-35.181714L0.43008 395.264a43.885714 43.885714 0 0 1 38.546286-49.664h1.389714z m124.342857 0h831.268572v-66.56H632.530651v-0.658286a44.324571 44.324571 0 0 1-32.402285-14.628572L441.700937 91.282286H169.536366z" fill="#FFD13A" p-id="729"></path></svg>
+浏览</span>
 </span>
  
 </div>

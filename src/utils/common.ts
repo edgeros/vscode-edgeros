@@ -30,10 +30,11 @@ export interface HTMLPageOptions {
   tplUsing?: string;
   projectDir?: string;
   mobPng?: vscode.Uri;
+  folderIcon?: vscode.Uri;
 }
 
 export function getPageStruct(opt: HTMLPageOptions, bodyHtml: string) {
-  const { csspath, jspath } = opt;
+  const { csspath, jspath, folderIcon='' } = opt;
  
   var html = [];
   html.push('<!DOCTYPE html>');
@@ -53,6 +54,9 @@ export function getPageStruct(opt: HTMLPageOptions, bodyHtml: string) {
   html.push(`${bodyHtml}`);
   html.push(`</body>`);
   html.push(`<script src="${jspath}" ></script>`);
+  if(folderIcon){
+    html.push(`<script src="${folderIcon}" ></script>`);
+  }
   html.push(`	</html>`);
 
   return html.join('');

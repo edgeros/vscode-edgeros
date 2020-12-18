@@ -66,13 +66,13 @@ export class EdgerDeivceProvider
         title: 'new Project.',
         command: 'edgeros.propmtNewProject',
       });
-      let staticDataItems:vscode.TreeItem[] = [];
-      if(dataItems && dataItems.length){
+      let staticDataItems: vscode.TreeItem[] = [];
+      if (dataItems && dataItems.length) {
         staticDataItems = dataItems.filter((item) => {
           return item.command?.command !== 'edgeros.propmtNewProject';
         });
       }
-    
+
       staticDataItems.push(newProjectBtn);
       return Promise.resolve(staticDataItems);
     } else {
@@ -143,13 +143,51 @@ export class EdgerDeivceProvider
       channel = vscode.window.createOutputChannel('Edger Console');
     }
     channel.show();
-    tmpArr.forEach((str1) => {
-      str1 = replaceSpacielChar(str1);
-      channel.appendLine(str1);
-    });
+    // tmpArr.forEach((str1) => {
+    //   str1 = replaceSpacielChar(str1);
+    //   channel.appendLine(str1);
+    // });
 
-    const client = net.createConnection(
-      { port: edger_console_port, host: edger.deviceIP }, // edger.deviceIP
+    const client = await getTcpClientInstance(
+      { port: edger_console_port, host: edger.deviceIP } // edger.deviceIP
+    );
+    client.on('data', (data: Buffer) => {
+      let str: string = data.toString('UTF-8', 0, data.length - 1);
+      str = replaceSpacielChar(str);
+      channel.append(str);
+    });
+    // client.on('close', (had_error) => {
+    //   console.log('device connect close', had_error);
+    // });
+    // client.on('connect', () => {
+    //   console.log('device connect connecting');
+    // });
+    // client.on('drain', () => {
+    //   console.log('device connect drain');
+    // });
+    // client.on('end', () => {
+    //   console.log('device connect end');
+    // });
+    // client.on('error', (res) => {
+    //   console.log('device connect error', res);
+    // });
+  }
+}
+
+function getTcpClientInstance(
+  opt: net.SocketConnectOpts,
+  reconnection: number = 3
+): Promise<net.Socket> {
+  let tcpClient: net.Socket | null = null;
+  // let reconnection: number = 3;
+
+  const connectFn = (_tcpClient: net.Socket | null) => {
+    if (_tcpClient) {
+      return _tcpClient.connect(opt);
+    }
+
+    return net.createConnection(
+      opt, // edger.deviceIP
       () => {
         // 'connect' listener.
         console.log(
@@ -157,17 +195,33 @@ export class EdgerDeivceProvider
         );
       }
     );
-    client.on('data', (data: Buffer) => {
-      let str: string = data.toString('UTF-8', 0, data.length - 1);
-      str = replaceSpacielChar(str);
-      channel.append(str);
+  };
+
+  return new Promise((resolve) => {
+    if (tcpClient) {
+      resolve(tcpClient);
+      return;
+    }
+
+    tcpClient = connectFn(tcpClient);
+
+    // tcpClient.on('lookup', (res) => {
+    //   console.log('device connect lookup', res);
+    // });
+    // tcpClient.on('close', (res) => {
+    //   console.log('device connect lookup', res);
+    // });
+
+    tcpClient.on('timeout', () => {
+      console.log('device connect timeout:');
+      if (reconnection > 0) {
+        reconnection--;
+        tcpClient = connectFn(tcpClient);
+      }
     });
-    client.on('end', () => {
-      console.log(
-        localize('disconnected_to_server.text', 'disconnected from server')
-      );
-    });
-  }
+
+    resolve(tcpClient);
+  });
 }
 
 function replaceSpacielChar(str: string): string {
