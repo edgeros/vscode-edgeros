@@ -63,7 +63,6 @@ export class EdgerApi extends EventEmitter {
     vscode.commands
       .executeCommand('workbench.action.openSettings', 'EdgerOS')
       .then((res) => {});
-    // const comms = await vscode.commands.getCommands();
   }
 
   async openSettingsUI() {
