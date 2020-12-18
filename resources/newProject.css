@@ -4,7 +4,7 @@ body {
 }
 
 section {
-  margin: 0px auto;
+  /* margin: 0px auto; */
   display: block;
   width: 700px;
 }
@@ -22,7 +22,7 @@ section {
   height: 40px;
   line-height: 40px;
   text-align: left;
-  color: #ffffff7a;
+  color: whitesmoke;
 }
 
 .row .con {
@@ -91,6 +91,8 @@ section {
   vertical-align: middle;
 }
 .row .single .template h6 {
+  font-size: 12px;
+  font-weight: lighter;
   bottom: 0px;
   width: 100%;
   height: 18px;
@@ -108,7 +110,9 @@ section {
 .row .single .template:hover h6 {
   background-color: #4977ce;
 }
-
+.row .discription {
+  color: darkgray;
+}
 .template h6,
 .template p {
   margin: 0px;
@@ -123,24 +127,24 @@ section {
   position: relative;
 }
 .selectDirWarp .projectDir {
-  width: calc(100% - 100px);
+  width: calc(100% - 10px);
 
 }
 .selectDirWarp .selectDir {
   width: 80px;
   position: absolute;
-  right: 0px;
+  right: -10px;
   top: 8px;
   height: 24px;
   line-height: 24px;
   color: whitesmoke;
-  background-color: #4977ce75;
+  background-color: #d6d6d629;
   text-align: center;
   cursor: pointer;
 }
 
 .inputTxt input {
-  width: calc(100% - 100px);
+  width: calc(100% - 10px);
   color: whitesmoke;
   background-color: #ffffff29;
   border: 0px;
@@ -164,4 +168,12 @@ section {
   border: 0px;
   padding: 5px 20px;
   user-select: none;
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
 }
