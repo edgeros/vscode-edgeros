@@ -225,12 +225,13 @@ function getTcpClientInstance(
 }
 
 function replaceSpacielChar(str: string): string {
-  str = str.replace(/\[0;37m|/gim, '');
-  str = str.replace(/\[0;31m|/gim, '');
-  str = str.replace(/\[0;32m|/gim, '');
-  str = str.replace(/\[0;33m|/gim, '');
+  str = str.replace(/\[0;37m/gim, '');
+  str = str.replace(/\[0;37/gim, '');
+  str = str.replace(/\[0;31m/gim, '');
+  str = str.replace(/\[0;32m/gim, '');
+  str = str.replace(/\[0;32/gim, '');
+  str = str.replace(/\[0;33m/gim, '');
   str = str.replace(//gim, '');
-
   return str;
 }
 
