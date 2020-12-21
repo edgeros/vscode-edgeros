@@ -102,8 +102,13 @@ export async function doNewProject(
     return { state: false };
   }
 
+  var stat = fs.statSync(saveDir);
+  if (!stat) {
+    fs.mkdirSync(saveDir, { recursive: true });
+  }
+
   const templateConf = vscode.workspace.getConfiguration('edgeros.template');
-  const tplUsing = templateConf.get('originUsing') as string || 'github';
+  const tplUsing = (templateConf.get('originUsing') as string) || 'github';
 
   let tUrl = '';
   origin.forEach((item: TemplateOrigin) => {
@@ -127,14 +132,13 @@ export async function doNewProject(
     const sourceDir: string = path.join(saveTmpPath, fileName);
     const savePath: string = path.join(saveDir, projectName);
 
-    return new Promise((resolve, reject)=>{
-
-      ncp(sourceDir, savePath,  (err)=> {
+    return new Promise((resolve, reject) => {
+      ncp(sourceDir, savePath, (err) => {
         if (err) {
           return console.error(err);
         }
-        fs.unlink(zipPath,(err)=>{
-          fs.unlink(saveTmpPath,(err2)=>{
+        fs.unlink(zipPath, (err) => {
+          fs.unlink(saveTmpPath, (err2) => {
             console.warn(err2);
           });
         });
@@ -143,11 +147,7 @@ export async function doNewProject(
           projectDir: savePath,
         });
       });
-  
-     
-
     });
-   
   } catch (err) {
     const str = JSON.stringify(err);
     console.error(str);
