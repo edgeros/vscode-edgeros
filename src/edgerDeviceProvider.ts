@@ -66,6 +66,10 @@ export class EdgerDeivceProvider
         title: 'new Project.',
         command: 'edgeros.propmtNewProject',
       });
+      const newProjectBtn2 = new EdgerMenuItem('simulator', {
+        title: 'Simulator Download.',
+        command: 'edgeros.simulatorDownload',
+      });
       let staticDataItems: vscode.TreeItem[] = [];
       if (dataItems && dataItems.length) {
         staticDataItems = dataItems.filter((item) => {
@@ -74,6 +78,7 @@ export class EdgerDeivceProvider
       }
 
       staticDataItems.push(newProjectBtn);
+      staticDataItems.push(newProjectBtn2);
       return Promise.resolve(staticDataItems);
     } else {
       return Promise.resolve([]);

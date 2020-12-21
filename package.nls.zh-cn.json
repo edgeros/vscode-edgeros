@@ -13,6 +13,7 @@
 	"extension.contents": "没有找到爱智设备",
 	"extension.contents.linkTitle": "更多参考",
 	"extension.commands.new": "新建项目",
+	"extension.commands.simulator": "模拟器下载",
 	"extension.commands.openSettings": "设置EdgerOS插件",
 	"archive_doing.text": "压缩中",
 	"disconnected_to_server.text": "已断开服务器连接",

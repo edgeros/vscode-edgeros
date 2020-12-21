@@ -69,6 +69,11 @@ export class EdgerApi extends EventEmitter {
     showEdgerOSSettings(this._context);
   }
 
+  async simulatorDownload() {
+    const _url = vscode.Uri.parse('http://docs.edgeros.com/guides/');
+    vscode.env.openExternal(_url);
+  }
+
   async install(edger: Edger): Promise<void> {
     const edger_ip: string = edger.deviceIP;
     if (!edger_ip || !vscode.workspace.workspaceFolders) {

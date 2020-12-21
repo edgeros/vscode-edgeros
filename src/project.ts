@@ -102,8 +102,9 @@ export async function doNewProject(
     return { state: false };
   }
 
-  var stat = fs.statSync(saveDir);
-  if (!stat) {
+  try {
+    fs.statSync(saveDir);
+  } catch (err) {
     fs.mkdirSync(saveDir, { recursive: true });
   }
 
@@ -138,8 +139,8 @@ export async function doNewProject(
           return console.error(err);
         }
         fs.unlink(zipPath, (err) => {
-          fs.unlink(saveTmpPath, (err2) => {
-            console.warn(err2);
+          rmdir(saveTmpPath, () => {
+            console.log('删除临时文件！');
           });
         });
         resolve({
@@ -154,6 +155,26 @@ export async function doNewProject(
     vscode.window.showErrorMessage('Erorr: New Project.');
     return { state: false };
   }
+}
+
+function rmdir(dir: string, callback: fs.NoParamCallback) {
+  fs.readdir(dir, (err, files) => {
+    function next(index: number) {
+      if (index === files.length) {
+        return fs.rmdir(dir, callback);
+      }
+      let newPath = path.join(dir, files[index]);
+
+      fs.stat(newPath, (err, stat) => {
+        if (stat.isDirectory()) {
+          rmdir(newPath, () => next(index + 1));
+        } else {
+          fs.unlink(newPath, () => next(index + 1));
+        }
+      });
+    }
+    next(0);
+  });
 }
 
 function unzip(from: string, to: string): Promise<void> {

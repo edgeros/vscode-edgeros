@@ -14,6 +14,7 @@
 	"extension.contents.linkTitle": "learn more",
 	"extension.contents.operateEmulator": "Open Emulator",
 	"extension.commands.new": "New Project",
+	"extension.commands.simulator": "Simulator Download",
 	"extension.commands.openSettings": "EdgerOS Settings",
 	"archive_doing.text": "Archiving",
 	"disconnected_to_server.text": "Disconnected to server",
