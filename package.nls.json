@@ -24,6 +24,7 @@
 	"device_ip_address.text": "Device IP address",
 	"device_ip.text": "Device IP",
 	"cancelled_adding_device.text": "Cancelled adding device.",
+	"format_error_adding_device.text": "device IP format ERROR.",
 	"installation_failed.text": "Installation Failed",
 	"installation_completed.text": "Installation Completed",
 	"upload_failed.text": "Upload failed",

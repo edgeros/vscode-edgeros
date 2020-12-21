@@ -37,12 +37,12 @@ section {
   border: none;
   user-select: none;
   line-height: 40px;
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 .row .type span {
   vertical-align: top;
-  padding: 0px 40px;
+  padding: 0px 10px;
   height: 35px;
   line-height: 35px;
   border-bottom: 5px solid transparent;
@@ -77,8 +77,8 @@ section {
   border: 2px solid transparent;
 }
 .row .single .template .img {
-  width: 140px;
-  height: 160px;
+  width: 160px;
+  height: 140px;
   vertical-align: middle;
   text-align: center;
   margin: 0 auto;
@@ -86,7 +86,7 @@ section {
 }
 .row .single .template .img img {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: inline-block;
   vertical-align: middle;
 }
@@ -95,8 +95,8 @@ section {
   font-weight: lighter;
   bottom: 0px;
   width: 100%;
-  height: 18px;
-  line-height: 18px;
+  height: 24px;
+  line-height: 24px;
   text-align: center;
   position: absolute;
 }
@@ -112,6 +112,8 @@ section {
 }
 .row .discription {
   color: darkgray;
+  max-height: 80px;
+  overflow-y: scroll;
 }
 .template h6,
 .template p {
@@ -128,7 +130,6 @@ section {
 }
 .selectDirWarp .projectDir {
   width: calc(100% - 10px);
-
 }
 .selectDirWarp .selectDir:hover {
   background-color: #e0e0e06b;
@@ -170,6 +171,7 @@ section {
   background-color: cornflowerblue;
   border: 0px;
   padding: 5px 20px;
+  margin-top: 10px;
   user-select: none;
   cursor: pointer;
 }
