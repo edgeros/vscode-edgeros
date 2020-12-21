@@ -53,12 +53,41 @@ function changeTpl(ele, layer, discription, _templateStr) {
 
 
 function submitNew() {
-  const projectName = document.querySelector('.projectName').value;
+  let projectName = document.querySelector('.projectName').value;
+  
+  templateStr = templateStr.trim();
+  if(!templateStr ){
+    // tipingSelectTemplate
+    vscode.postMessage({
+      command: 'tipingSelectTemplate'
+    });
+    return;
+  }
+  //
   const template = JSON.parse(window.atob(templateStr));
+  projectName = projectName.trim();
+  if(!projectName ){
+    // tipingProjectName
+    vscode.postMessage({
+      command: 'tipingProjectName'
+    });
+    return;
+  }
+
+  let saveDir = projectDirInput.value;
+  saveDir = saveDir.trim();
+  if(!saveDir ){
+    // tipingSelectTemplate
+    vscode.postMessage({
+      command: 'tipingSelectSaveDir'
+    });
+    return;
+  }
+ 
   vscode.postMessage({
     command: 'copyDemo',
-    projectName: projectName || 'eap1',
-    saveDir: projectDirInput.value,
+    projectName,
+    saveDir,
     template
   });
 

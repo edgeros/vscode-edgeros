@@ -66,6 +66,10 @@ export class EdgerDeivceProvider
         title: 'new Project.',
         command: 'edgeros.propmtNewProject',
       });
+      const newProjectBtn2 = new EdgerMenuItem('simulator', {
+        title: 'Simulator Download.',
+        command: 'edgeros.simulatorDownload',
+      });
       let staticDataItems: vscode.TreeItem[] = [];
       if (dataItems && dataItems.length) {
         staticDataItems = dataItems.filter((item) => {
@@ -74,6 +78,7 @@ export class EdgerDeivceProvider
       }
 
       staticDataItems.push(newProjectBtn);
+      staticDataItems.push(newProjectBtn2);
       return Promise.resolve(staticDataItems);
     } else {
       return Promise.resolve([]);
@@ -96,8 +101,15 @@ export class EdgerDeivceProvider
       'cancelled_adding_device.text',
       'Cancelled adding device.'
     );
+    const format_error = localize(
+      'format_error_adding_device.text',
+      'device IP format ERROR.'
+    );
     const ip_value = await vscode.window.showInputBox(ip_options);
     if (!ip_value) {
+      throw new Error(cancel_add);
+    }
+    if(!/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/img.test(ip_value)){
       throw new Error(cancel_add);
     }
     device_ip = ip_value;

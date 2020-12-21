@@ -5,8 +5,8 @@ h4 {
 }
 button {
   font-size: 1.2rem;
-  background-color: white;
-  color: #306bd6;
+  background-color: rgb(196, 196, 196);
+  color: gray;
   cursor: pointer;
   border: 0px;
   padding: 1rem 2rem;

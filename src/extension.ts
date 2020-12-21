@@ -63,6 +63,9 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand('edgeros.openSettingsUI', (tplname: string, projectName: string) =>
     edgerApi.openSettingsUI()
   );
+  vscode.commands.registerCommand('edgeros.simulatorDownload', () =>
+    edgerApi.simulatorDownload()
+  );
   //
   const mobilePreview = vscode.commands.registerCommand(
     'mobile.preview',
