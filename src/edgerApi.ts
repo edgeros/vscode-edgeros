@@ -25,6 +25,7 @@ import { EventEmitter } from 'events';
 import { EdgerProgress } from './progress';
 import { showEdgerOSSettings } from './settingsUI';
 import { doNewProject, showNewProjectPage } from './project';
+import { exec, spawn } from 'child_process';
 
 export class EdgerApi extends EventEmitter {
   private _context: vscode.ExtensionContext;
@@ -201,9 +202,22 @@ export class EdgerApi extends EventEmitter {
           )}: ${eap_file_path}`,
           openBtn
         ).then((refBtn)=>{
+        
           if(refBtn === openBtn){ 
-            const _uri:vscode.Uri = vscode.Uri.parse(eap_file_path);
-            vscode.commands.executeCommand("revealFileInOS", _uri); // explorer.openAndPassFocus
+            const refPath = path.normalize(eap_file_path)
+            // const _uri:vscode.Uri = vscode.Uri.parse("D:\\_work\\apptest1");
+ 
+            let cmd = '';
+            if (process.platform === "win32") {
+              cmd = `${process.env.SystemRoot}\\explorer.exe /e,/select,${refPath}`;
+            } else if (process.platform === 'linux') {
+              cmd = 'xdg-open';
+            } else if (process.platform === 'darwin') {
+              cmd = `open -t ${refPath}`;
+            }
+
+            exec(`${cmd}`);
+          
           }
         });
       } catch (error) {

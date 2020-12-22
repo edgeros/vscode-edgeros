@@ -1,5 +1,5 @@
 {
-	"extension.displayName": "edgeros",
+	"extension.displayName": "EdgerOS",
 	"extension.description": "EdgerOS development extension for VSC.",
 	"extension.explorer.name": "Edger Devices",
 	"extension.commands.refresh": "Refresh",

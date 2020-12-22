@@ -55,13 +55,13 @@ export async function showNewProjectPage(context: vscode.ExtensionContext) {
         vscode.window.showWarningMessage('请选择模板！');
         break;
       case 'tipingProjectName':
-        vscode.window.showWarningMessage('请项目名称！');
+        vscode.window.showWarningMessage('请输入项目名称！');
         break;
       case 'selectSavePath':
         vscode.window
           .showOpenDialog({
             title: '选择文件夹',
-            openLabel: '选择',
+            openLabel: '选  择',
             canSelectFolders: true,
             canSelectFiles: false,
           })
@@ -382,7 +382,7 @@ function getHtmlStr(opt: HTMLPageOptions): string {
 
 <div class="row">
 <div class="newBtnWarp">
-    <button class="newbtn" onClick="submitNew()">新&nbsp;&nbsp;&nbsp;&nbsp;建</button>
+    <button class="newbtn" onClick="submitNew()">新&nbsp;&nbsp;建</button>
 </div>
 </div>
 </section>
