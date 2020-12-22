@@ -15,7 +15,7 @@
            
             <dict>
                 <key>match</key>
-                 <string>\b(?i:(warning|warn|test|debug|null|undefined|NaN))(\:|\b)</string>
+                 <string>\b(?i:(warning|warn|debug|null|undefined|NaN))(\:|\b)</string>
                 <key>name</key>
                 <string>string.quoted</string>
             </dict>
@@ -29,7 +29,7 @@
           
             <dict>
                 <key>match</key>
-                <string>\b(?i:(Down|Error|Failure|Fail|Fatal|failed|false))(\:|\b)</string>
+                <string>\b(?i:(Error|Failure|Fail|Fatal|failed|false))(\:|\b)</string>
                 <key>name</key>
                 <string>invalid.illegal</string>
             </dict>

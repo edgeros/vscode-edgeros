@@ -35,7 +35,10 @@
 					"default": [
 						{
 							"type": [
-								"base"
+								"Base",
+								"AI",
+								"Devices",
+								"Media"
 							],
 							"displayName": "Empty template",
 							"name": "empty",
@@ -143,7 +146,7 @@
 			{
 				"language": "Log",
 				"scopeName": "code.log",
-				"path": "./src/syntaxes/log.tmLanguage"
+				"path": "./resources/syntaxes/log.tmLanguage"
 			}
 		],
 		"views": {

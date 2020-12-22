@@ -18,8 +18,7 @@ import * as net from 'net';
 
 import { WorkspaceApi } from './workspaceApi';
 import { edger_console_port } from './constants';
-import { debug } from 'console';
-
+ 
 let channel: vscode.OutputChannel;
 const tmpArr = [
   '<span class="mtk5">[0;37m[JSRE-CON][0;37mlog</span>正常输出 log中文内容111',
@@ -190,7 +189,14 @@ function getTcpClientInstance(
   opt: net.SocketConnectOpts,
   reconnection: number = 3
 ): Promise<net.Socket> {
-  let tcpClient: net.Socket | null = null;
+  
+  let tcpClient:any = null;
+  // @ts-ignore
+  let ref = global["tcpClient"];
+  if(ref){
+    tcpClient = ref as net.Socket;
+  }
+ 
   // let reconnection: number = 3;
 
   const connectFn = (_tcpClient: net.Socket | null) => {
@@ -211,11 +217,15 @@ function getTcpClientInstance(
 
   return new Promise((resolve) => {
     if (tcpClient) {
+       // @ts-ignore
+    global["tcpClient"] = tcpClient;
       resolve(tcpClient);
       return;
     }
 
     tcpClient = connectFn(tcpClient);
+    // @ts-ignore
+    global["tcpClient"] = tcpClient;
 
     // tcpClient.on('lookup', (res) => {
     //   console.log('device connect lookup', res);
