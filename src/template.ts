@@ -6,7 +6,7 @@ import * as http from 'http';
 const updateUrl = `http://localhost:5000/tpls.json`;
 const tplsPath = path.join(__dirname, '..', 'templates', 'tpls.json');
 
-function updateTemplate(url: string) {
+function updateTemplate(url: string):Promise<boolean> {
   return new Promise((resolve) => {
     var writeStream = fs.createWriteStream(tplsPath);
     http.get(url, (data) => {
@@ -18,7 +18,7 @@ function updateTemplate(url: string) {
         writeStream.close();
         console.log(`更新模板完毕！`);
         console.log('\n');
-        resolve();
+        resolve(true);
       });
       //
     });
