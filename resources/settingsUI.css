@@ -3,6 +3,10 @@ h4 {
   text-align: center;
   color: gray;
 }
+input ,
+button {
+  outline-color:#4977ce;
+}
 button {
   font-size: 1.2rem;
   background-color: rgb(196, 196, 196);

@@ -2,7 +2,10 @@ body {
   color: whitesmoke;
   cursor: default;
 }
-
+input,
+button {
+  outline-color:#4977ce;
+}
 section {
   /* margin: 0px auto; */
   display: block;
@@ -112,8 +115,16 @@ section {
 }
 .row .discription {
   color: darkgray;
-  max-height: 80px;
-  overflow-y: scroll;
+    height: 60px;
+    margin-top: 5px;
+    overflow-y: scroll;
+}
+.row .discription p {
+  font-size: 14px;
+  height: 20px;
+  line-height: 20px;
+  margin: 0px;
+  padding: 0px;
 }
 .template h6,
 .template p {

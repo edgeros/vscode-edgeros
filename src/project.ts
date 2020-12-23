@@ -24,7 +24,7 @@ export async function showNewProjectPage(context: vscode.ExtensionContext) {
     { enableScripts: true } // Webview options. More on these later.
   );
 
-  const projectDir = path.join(os.homedir(), 'EdgerOS Apps');
+  const projectDir = path.join(os.homedir(), 'EdgerOSApps');
   const resPath = context.extensionPath;
   //
   const jspath = getPath(panel, resPath, 'resources', `newProject.js`);
@@ -329,7 +329,7 @@ export async function updateTemplate(
 
 function getHtmlStr(opt: HTMLPageOptions): string {
   // FUNCTIONS
-  const { projectDir, templates, folderIcon } = opt;
+  const { projectDir, templates } = opt;
   let tplTypeObject: { [key: string]: number } = {};
   const templateStr: string[] = [];
 

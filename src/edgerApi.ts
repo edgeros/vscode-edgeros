@@ -93,7 +93,7 @@ export class EdgerApi extends EventEmitter {
     // ask for device password
     let pass_options: vscode.InputBoxOptions = {
       value: edger ? edger.devicePass : '',
-      prompt: localize('prompt_title.text', 'Edger Device Password.'),
+      prompt: localize('prompt_title.text', 'Edger Device Password'),
       placeHolder: localize('device_password.text', '(device password)'),
     };
     const dev_pass = await vscode.window.showInputBox(pass_options);
