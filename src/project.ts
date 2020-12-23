@@ -69,18 +69,22 @@ export async function showNewProjectPage(context: vscode.ExtensionContext) {
             if (!res) {
               return;
             }
-            const { path } = res[0];
-            const savePath = path.replace(/^\//gim, '');
-            panel.webview.postMessage({ savePath });
+            let { path } = res[0];
+           
+            if(process.platform==='win32'){
+              path = path.replace(/^\//gim, '');
+            }
+           
+            panel.webview.postMessage({command :'selectFolder', savePath:path });
           });
         return;
       case 'copyDemo':
         const res = await verifyParam(message);
         if (res) {
+          panel.webview.postMessage({command :'disableSubmitBtn'  });
           vscode.commands.executeCommand('edgeros.newProject', message).then((res)=>{
             panel.dispose();
           });
-      
         }else{
           vscode.window.showWarningMessage('已存在该项目！');
         }

@@ -11,8 +11,13 @@ const discriptionWarp = document.querySelector("#discription_txt");
 window.onmessage = onMessageFn;
 
 function onMessageFn(event) {
-  const { savePath } = event.data;
-  projectDirInput.value = savePath;
+  const { savePath, command } = event.data;
+  if (command === 'selectFolder') {
+    projectDirInput.value = savePath;
+  }
+  if (command === 'disableSubmitBtn') {
+    document.querySelector('.newbtn').disabled = true;
+  }
 };
 
 function selectDirFn() {
@@ -54,9 +59,9 @@ function changeTpl(ele, layer, discription, _templateStr) {
 
 function submitNew() {
   let projectName = document.querySelector('.projectName').value;
-  
+
   templateStr = templateStr.trim();
-  if(!templateStr ){
+  if (!templateStr) {
     // tipingSelectTemplate
     vscode.postMessage({
       command: 'tipingSelectTemplate'
@@ -66,7 +71,7 @@ function submitNew() {
   //
   const template = JSON.parse(window.atob(templateStr));
   projectName = projectName.trim();
-  if(!projectName ){
+  if (!projectName) {
     // tipingProjectName
     vscode.postMessage({
       command: 'tipingProjectName'
@@ -76,14 +81,14 @@ function submitNew() {
 
   let saveDir = projectDirInput.value;
   saveDir = saveDir.trim();
-  if(!saveDir ){
+  if (!saveDir) {
     // tipingSelectTemplate
     vscode.postMessage({
       command: 'tipingSelectSaveDir'
     });
     return;
   }
- 
+
   vscode.postMessage({
     command: 'copyDemo',
     projectName,
