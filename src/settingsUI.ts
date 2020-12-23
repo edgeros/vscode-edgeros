@@ -37,8 +37,8 @@ export async function showEdgerOSSettings(context: vscode.ExtensionContext) {
     switch (command) {
       case 'changeTplOrigin':
         templateConf.update('originUsing', origin).then(() => {
-          panel.dispose();
-          vscode.commands.executeCommand('edgeros.openSettingsUI');
+         vscode.window.showInformationMessage(`模板下载来源切换为: ${origin}`)
+          
         });
 
         return;
@@ -58,9 +58,11 @@ function getHtmlStr(opt: HTMLPageOptions): string {
   htmlArr.push(`<h4>请选择模板下载站点</h4>`);
   htmlArr.push(`<div>`);
   tplOrigin?.forEach((item) => {
-    const active = item.name === tplUsing ? 'active' : '';
+    const active = item.name.toLowerCase()  === tplUsing?.toLowerCase() ? 'active' : '';
+    var name = item.name;
+    name =  name.slice(0,1).toUpperCase() + name.slice(1);
     htmlArr.push(
-      `<button type="button" class="${item.name} ${active}" onclick="submitTemplateOrigin('${item.name}')">${item.name}</button>`
+      `<button type="button" class="itemName ${name} ${active}" onclick="submitTemplateOrigin(this,'${name}')">${name}</button>`
     );
   });
   htmlArr.push(`</div>`);

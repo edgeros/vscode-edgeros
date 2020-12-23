@@ -77,8 +77,12 @@ export async function showNewProjectPage(context: vscode.ExtensionContext) {
       case 'copyDemo':
         const res = await verifyParam(message);
         if (res) {
-          vscode.commands.executeCommand('edgeros.newProject', message);
-          panel.dispose();
+          vscode.commands.executeCommand('edgeros.newProject', message).then((res)=>{
+            panel.dispose();
+          });
+      
+        }else{
+          vscode.window.showWarningMessage('已存在该项目！');
         }
         return;
     }
@@ -90,13 +94,13 @@ async function verifyParam(message: {
   [key: string]: any;
 }): Promise<boolean> {
   const { projectName, saveDir } = message;
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const tmpPath = path.join(saveDir, projectName);
     try {
       fs.statSync(tmpPath);
-      resolve(true);
+      resolve(false);
     } catch (e) {
-      reject(false);
+      resolve(true);
     }
   });
 }
@@ -141,17 +145,21 @@ export async function doNewProject(
 
   let tUrl = '';
   origin.forEach((item: TemplateOrigin) => {
-    if (item.name === tplUsing) {
+    if (item.name.toLowerCase() === tplUsing.toLowerCase()) {
       tUrl = item.url;
     }
   });
 
-  try {
+ 
     //
     const userTmpDir = os.homedir();
     // download
     const zipPath: string = path.join(userTmpDir, 'tmp.zip');
     const fileName = await downloadZip(tUrl, zipPath, tplUsing);
+    if(!fileName){
+      console.error("Download template error.", tUrl);
+      return {state:false};
+    }
 
     // unzip
     const saveTmpPath: string = path.join(userTmpDir, 'tmp');
@@ -160,29 +168,37 @@ export async function doNewProject(
     // copy
     const sourceDir: string = path.join(saveTmpPath, fileName);
     const savePath: string = path.join(saveDir, projectName);
+    return copyProject(sourceDir, savePath, zipPath, saveTmpPath);
+ 
+  
+}
 
-    return new Promise((resolve, reject) => {
-      ncp(sourceDir, savePath, (err) => {
-        if (err) {
-          return console.error(err);
-        }
-        fs.unlink(zipPath, (err) => {
-          rmdir(saveTmpPath, () => {
-            console.log('删除临时文件！');
-          });
-        });
-        resolve({
-          state: true,
-          projectDir: savePath,
+function copyProject(sourceDir:string, savePath:string, zipPath:string, saveTmpPath:string):Promise<{state:boolean,projectDir?:string}>{
+
+  return new Promise((resolve) => {
+    try {
+    ncp(sourceDir, savePath, (err) => {
+      if (err) {
+        return console.error(err);
+      }
+      fs.unlink(zipPath, (err) => {
+        rmdir(saveTmpPath, () => {
+          console.log('删除临时文件！');
         });
       });
+      resolve({
+        state: true,
+        projectDir: savePath,
+      });
     });
-  } catch (err) {
-    const str = JSON.stringify(err);
-    console.error(str);
-    vscode.window.showErrorMessage('Erorr: New Project.');
-    return { state: false };
-  }
+ 
+} catch (err) {
+  const str = JSON.stringify(err);
+  console.error(str);
+  vscode.window.showErrorMessage('Erorr: New Project.');
+  resolve( { state: false })
+}
+});
 }
 
 function rmdir(dir: string, callback: fs.NoParamCallback) {
@@ -261,9 +277,17 @@ function downloadZip(
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     let fileName = '';
     https.get(url, (data) => {
+      if(data.statusCode !== 200){
+        console.error(data);
+      }
       fileName = getFilenameForHeader(data, tplUsing);
       data.on('data', (chunk) => {
         writeStream.write(chunk);
+      });
+      data.on('error', (err) => {
+        const errStr:string = JSON.stringify(err);
+        console.error(err);
+        vscode.window.showErrorMessage(errStr);
       });
       //
       data.on('end', () => {
