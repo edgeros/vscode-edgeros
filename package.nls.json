@@ -1,4 +1,10 @@
 {
+	"template.new.text":"New Project",
+	"template.browse.text":"Browse ...",
+	"template.selectDirectory.text":"Directory:",
+	"template.projectName.input.text":"Please enter the project name:",
+	"template.projectName.text":"Project name:",
+	"template.discription.text":"Discription:",
 	"extension.displayName": "EdgerOS",
 	"extension.description": "EdgerOS development extension for VSC.",
 	"extension.explorer.name": "Edger Devices",

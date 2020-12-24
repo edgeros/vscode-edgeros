@@ -1,4 +1,10 @@
 {
+	"template.new.text":"新&nbsp;&nbsp;建",
+	"template.browse.text":"浏览...",
+	"template.selectDirectory.text":"选择目录:",
+	"template.projectName.input.text":"请输入项目名称:",
+	"template.projectName.text":"项目名称:",
+	"template.discription.text":"模板描述:",
 	"extension.displayName": "爱智",
 	"extension.description": "爱智开发 VSCode 插件",
 	"extension.explorer.name": "EdgerOS",

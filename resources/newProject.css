@@ -19,7 +19,7 @@ section {
 }
 
 .row .tit {
-  width: 80px;
+  width: 100px;
   display: inline-block;
   margin-left: 0px;
   height: 40px;
@@ -176,6 +176,22 @@ section {
   margin: 0 auto;
 }
 
+
+.newBtnWarp .loading {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: typing 1s linear infinite alternate;
+  margin: 0px auto;
+  position: relative;
+  left: 10px;
+}
+
+.newBtnWarp .loading {
+  display: none;
+ }
+
 .newbtn {
   display: inline-block;
   color: whitesmoke;
@@ -183,6 +199,7 @@ section {
   border: 0px;
   padding: 5px 20px;
   margin-top: 10px;
+  padding-left: 40px;
   user-select: none;
   cursor: pointer;
 }
@@ -195,4 +212,21 @@ section {
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+}
+
+@keyframes typing{
+ 0%{
+      background-color: rgba(255,255,255, 1);
+      box-shadow: 12px 0px 0px 0px rgba(255,255,255,0.2), 
+                  24px 0px 0px 0px rgba(255,255,255,0.2);
+    }
+  25%{ 
+      background-color: rgba(255,255,255, 0.4);
+      box-shadow: 12px 0px 0px 0px rgba(255,255,255,2), 
+                  24px 0px 0px 0px rgba(255,255,255,0.2);
+  }
+  75%{ background-color: rgba(255,255,255, 0.4);
+      box-shadow: 12px 0px 0px 0px rgba(255,255,255,0.2), 
+                  24px 0px 0px 0px rgba(255,255,255,1);
+    }
 }

@@ -45,7 +45,7 @@ export class EdgerProgress {
           progress.report({ increment: 0 });
           this.event.removeAllListeners('progress');
           this.event.removeAllListeners('hideProgress');
-          reslove();
+          reslove(true);
         });
 
       });

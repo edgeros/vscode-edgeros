@@ -7,6 +7,8 @@ const templateWarp = document.querySelector(".single");
 const projectDirInput = document.querySelector(".projectDir");
 projectDirInput.value = projectDir;
 const discriptionWarp = document.querySelector("#discription_txt");
+const submitBtn = document.querySelector('.newbtn');
+const loading = document.querySelector('.loading');
 
 window.onmessage = onMessageFn;
 
@@ -16,7 +18,7 @@ function onMessageFn(event) {
     projectDirInput.value = savePath;
   }
   if (command === 'disableSubmitBtn') {
-    document.querySelector('.newbtn').disabled = true;
+    submitBtn.disabled = true;
   }
 };
 
@@ -88,6 +90,8 @@ function submitNew() {
     });
     return;
   }
+
+  loading.style.display = 'inline-block';
 
   vscode.postMessage({
     command: 'copyDemo',

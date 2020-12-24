@@ -10,7 +10,7 @@
  *
  */
 
-import { init, localize } from './utils/locale';
+import { localize } from './utils/locale';
 import FormData = require('form-data');
 import * as vscode from 'vscode';
 import * as fs from 'fs';
