@@ -47,7 +47,7 @@ export async function showEdgerOSSettings(context: vscode.ExtensionContext) {
 }
 
 function getHtmlStr(opt: HTMLPageOptions): string {
-  const { jspath, csspath, templates, tplUsing } = opt;
+  const { templates, tplUsing } = opt;
   if (!templates) {
     return '';
   }

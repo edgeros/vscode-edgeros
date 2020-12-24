@@ -3,7 +3,7 @@
 	"extension.description": "EdgerOS development extension for VSC.",
 	"extension.explorer.name": "Edger Devices",
 	"extension.commands.refresh": "Refresh",
-	"extension.commands.add": "Add",
+	"extension.commands.add": "Add Devices",
 	"extension.commands.archive": "Archive",
 	"extension.commands.edit": "Edit",
 	"extension.commands.delete": "Delete",

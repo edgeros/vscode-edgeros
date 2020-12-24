@@ -20,14 +20,7 @@ import { WorkspaceApi } from './workspaceApi';
 import { edger_console_port } from './constants';
  
 let channel: vscode.OutputChannel;
-const tmpArr = [
-  '<span class="mtk5">[0;37m[JSRE-CON][0;37mlog</span>正常输出 log中文内容111',
-  '[0;37m[JSRE-CON][0;37mlog正常输出 log中文内容111',
-  '[0;32m[JSRE-CON]Info:[0;37m正常输出 中文内容111',
-  '[0;32m[JSRE-CON]Info:[0;37minfo normal title info yingwen test.111',
-  '[0;33m[JSRE-CON]Warning:[0;37mwarn title msg warn context.111',
-  '[0;31m[JSRE-CON]Error:[0;37merror title msg error context.111',
-];
+ 
 export class EdgerDeivceProvider
   implements vscode.TreeDataProvider<vscode.TreeItem> {
   _context: ExtensionContext;
@@ -156,10 +149,7 @@ export class EdgerDeivceProvider
       channel = vscode.window.createOutputChannel('Edger Console');
     }
     channel.show();
-    // tmpArr.forEach((str1) => {
-    //   str1 = replaceSpacielChar(str1);
-    //   channel.appendLine(str1);
-    // });
+    
 
     const client = await getTcpClientInstance(
       { port: edger_console_port, host: edger.deviceIP } // edger.deviceIP
@@ -169,21 +159,7 @@ export class EdgerDeivceProvider
       str = replaceSpacielChar(str);
       channel.append(str);
     });
-    // client.on('close', (had_error) => {
-    //   console.log('device connect close', had_error);
-    // });
-    // client.on('connect', () => {
-    //   console.log('device connect connecting');
-    // });
-    // client.on('drain', () => {
-    //   console.log('device connect drain');
-    // });
-    // client.on('end', () => {
-    //   console.log('device connect end');
-    // });
-    // client.on('error', (res) => {
-    //   console.log('device connect error', res);
-    // });
+    
   }
 }
 
