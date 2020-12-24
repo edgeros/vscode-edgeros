@@ -30,6 +30,7 @@ export interface HTMLPageOptions {
   tplUsing?: string;
   projectDir?: string;
   mobPng?: vscode.Uri;
+  loadingGif?: vscode.Uri;
   folderIcon?: vscode.Uri;
 }
 
