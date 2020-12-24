@@ -7,6 +7,7 @@ const templateWarp = document.querySelector(".single");
 const projectDirInput = document.querySelector(".projectDir");
 projectDirInput.value = projectDir;
 const discriptionWarp = document.querySelector("#discription_txt");
+const submitBtn = document.querySelector('.newbtn');
 
 window.onmessage = onMessageFn;
 
@@ -16,7 +17,7 @@ function onMessageFn(event) {
     projectDirInput.value = savePath;
   }
   if (command === 'disableSubmitBtn') {
-    document.querySelector('.newbtn').disabled = true;
+    submitBtn.disabled = true;
   }
 };
 
@@ -89,6 +90,8 @@ function submitNew() {
     return;
   }
 
+  submitBtn.innerText = "新建中...";
+  
   vscode.postMessage({
     command: 'copyDemo',
     projectName,

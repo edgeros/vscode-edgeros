@@ -187,7 +187,7 @@ function copyProject(sourceDir:string, savePath:string, zipPath:string, saveTmpP
       }
       fs.unlink(zipPath, (err) => {
         rmdir(saveTmpPath, () => {
-          console.log('删除临时文件！');
+          // console.log('删除临时文件！');
         });
       });
       resolve({
