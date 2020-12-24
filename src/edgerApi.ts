@@ -211,12 +211,12 @@ export class EdgerApi extends EventEmitter {
             if (process.platform === "win32") {
               cmd = `${process.env.SystemRoot}\\explorer.exe /e,/select,${refPath}`;
             } else if (process.platform === 'linux') {
-              cmd = 'xdg-open';
+              cmd = `nautilus ${dir}`;
             } else if (process.platform === 'darwin') {
-              cmd = `open -t ${refPath}`;
+              cmd = `open ${dir}`;
             }
 
-            exec(`${cmd}`);
+            exec(cmd);
           
           }
         });
