@@ -39,6 +39,6 @@
 	"device_password.text": "Device Password",
 	"installation_cancelled.text": "Installation Cancelled",
 	"zip_error.text": "zip Error",
-	"eap_failed.text": "EAP Failed",
-	"eap_succeeded.text": "EAP Succeeded"
+	"eap_failed.text": "App Failed",
+	"eap_succeeded.text": "App Succeeded"
 }
