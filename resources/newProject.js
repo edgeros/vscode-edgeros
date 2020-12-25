@@ -17,9 +17,19 @@ function onMessageFn(event) {
   const { savePath, command } = event.data;
   if (command === 'selectFolder') {
     projectDirInput.value = savePath;
+    return;
   }
   if (command === 'disableSubmitBtn') {
     submitBtn.disabled = true;
+    newicon.style.display = 'none';
+    loading.style.display = 'inline-block';
+    return;
+  }
+  if (command === 'activeNewProject') {
+    submitBtn.disabled = false;
+    newicon.style.display = 'inline-block';
+    loading.style.display = 'none';
+    return;
   }
 };
 
