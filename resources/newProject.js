@@ -9,6 +9,7 @@ projectDirInput.value = projectDir;
 const discriptionWarp = document.querySelector("#discription_txt");
 const submitBtn = document.querySelector('.newbtn');
 const loading = document.querySelector('.loading');
+const newicon = document.querySelector('.newicon');
 
 window.onmessage = onMessageFn;
 
@@ -91,6 +92,7 @@ function submitNew() {
     return;
   }
 
+  newicon.style.display = 'none';
   loading.style.display = 'inline-block';
 
   vscode.postMessage({

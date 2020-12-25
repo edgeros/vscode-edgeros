@@ -42,8 +42,8 @@
 							],
 							"displayName": "Empty template",
 							"name": "empty",
-							"discription": "Empty temp late Empty templateEmptytemplate Empty template Empty template",
-							"icon": "http://docs.edgeros.com/edgeros/api/assets/logo.png",
+							"discription": "Creates a new empty EdgerOS App.",
+							"icon": "https://edgeros-static-image.oss-cn-hangzhou.aliyuncs.com/icon_empty.png",
 							"origin": [
 								{
 									"name": "zoho",
