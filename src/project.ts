@@ -90,6 +90,7 @@ export async function showNewProjectPage(context: vscode.ExtensionContext) {
           });
         }else{
           vscode.window.showWarningMessage('已存在该项目！');
+          panel.webview.postMessage({command :'activeNewProject'  });
         }
         return;
     }

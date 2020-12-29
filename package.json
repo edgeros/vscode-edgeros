@@ -4,8 +4,8 @@
 	"displayName": "%extension.displayName%",
 	"description": "%extension.description%",
 	"enableProposedApi": false,
-	"version": "0.0.5",
-	"publisher": "edgeros",
+	"version": "0.0.6",
+	"publisher": "EdgerOS",
 	"repository": "https://github.com/edgeros/vsce.git",
 	"icon": "media/icon.png",
 	"engines": {
@@ -40,7 +40,7 @@
 								"Devices",
 								"Media"
 							],
-							"displayName": "Empty template",
+							"displayName": "Empty App",
 							"name": "empty",
 							"discription": "Creates a new empty EdgerOS App.",
 							"icon": "https://edgeros-static-image.oss-cn-hangzhou.aliyuncs.com/icon_empty.png",
@@ -237,11 +237,7 @@
 				}
 			],
 			"view/item/context": [
-				{
-					"command": "mobile.preview",
-					"when": "view == edgerDeviceView && viewItem == edger",
-					"group": "inline"
-				},
+			 
 				{
 					"command": "edgerDevices.installApp",
 					"when": "view == edgerDeviceView && viewItem == edger",

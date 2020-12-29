@@ -7,7 +7,7 @@
 	"template.discription.text":"Discription:",
 	"extension.displayName": "EdgerOS",
 	"extension.description": "EdgerOS development extension for VSC.",
-	"extension.explorer.name": "Edger Devices",
+	"extension.explorer.name": "EdgerOS",
 	"extension.commands.refresh": "Refresh",
 	"extension.commands.add": "Add Devices",
 	"extension.commands.archive": "Archive",
