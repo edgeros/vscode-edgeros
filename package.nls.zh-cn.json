@@ -1,4 +1,13 @@
 {
+	"project.tipingProjectName":"请输入项目名称！",
+	"project.tipingSelectTemplate":"请选择模板！",
+	"project.tipingSelectSaveDir":"请选保存目录！",
+	"project.new.error":"新建项目错误",
+	"project.exists":"项目已存在",
+	"project.open":"打开项目",
+	"project.select.folder":"选择文件夹",
+	"project.select":"选择",
+	"template.download.error":"下载模板错误",
 	"template.new.text":"新 建 项 目",
 	"template.browse.text":"浏览...",
 	"template.selectDirectory.text":"选择目录:",

@@ -4,7 +4,7 @@
 	"displayName": "%extension.displayName%",
 	"description": "%extension.description%",
 	"enableProposedApi": false,
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"publisher": "EdgerOS",
 	"repository": "https://github.com/edgeros/vsce.git",
 	"icon": "media/icon.png",
