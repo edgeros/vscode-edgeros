@@ -63,7 +63,7 @@ export class EdgerApi extends EventEmitter {
   async openSettings() {
     vscode.commands
       .executeCommand('workbench.action.openSettings', 'EdgerOS')
-      .then((res) => {});
+      .then((res) => { });
   }
 
   async openSettingsUI() {
@@ -135,7 +135,7 @@ export class EdgerApi extends EventEmitter {
       })
       .catch((err) => {
         vscode.window.showErrorMessage(
-          `${localize('upload_failed.text', 'Upload failed.')} - ${err.message}`
+          `${localize('upload_failed.text', 'Upload failed.')} - ${err.message.replace('connect ETIMEDOUT', 'Network connection timeout')}`
         );
       });
     // install/update eap on edger device
@@ -147,9 +147,7 @@ export class EdgerApi extends EventEmitter {
       })
       .catch((err) => {
         vscode.window.showErrorMessage(
-          `${localize('installation_failed.text', 'Installation failed.')} - ${
-            err.message
-          }`
+          `${localize('installation_failed.text', 'Installation failed.')} - ${err.message.replace('connect ETIMEDOUT', 'Network connection timeout')}`
         );
       });
   }
@@ -193,7 +191,7 @@ export class EdgerApi extends EventEmitter {
           return;
         }
 
-        const openBtn:string = 'Reveal file in OS';
+        const openBtn: string = 'Reveal file in OS';
 
         vscode.window.showInformationMessage(
           `${localize(
@@ -201,12 +199,12 @@ export class EdgerApi extends EventEmitter {
             `Making eap Succeeded`
           )}: ${eap_file_path}`,
           openBtn
-        ).then((refBtn)=>{
-        
-          if(refBtn === openBtn){ 
-            const refPath = path.normalize(eap_file_path)
+        ).then((refBtn) => {
+
+          if (refBtn === openBtn) {
+            const refPath = path.normalize(eap_file_path);
             // const _uri:vscode.Uri = vscode.Uri.parse("D:\\_work\\apptest1");
- 
+
             let cmd = '';
             if (process.platform === "win32") {
               cmd = `${process.env.SystemRoot}\\explorer.exe /e,/select,${refPath}`;
@@ -217,13 +215,12 @@ export class EdgerApi extends EventEmitter {
             }
 
             exec(cmd);
-          
+
           }
         });
       } catch (error) {
         vscode.window.showErrorMessage(
-          `${localize('eap_failed.text', 'Making eap failed')} - ${
-            error.message
+          `${localize('eap_failed.text', 'Making eap failed')} - ${error.message
           }`
         );
         throw new Error(error);

@@ -104,7 +104,7 @@ export class EdgerDeivceProvider
     if(!/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/img.test(ip_value)){
       vscode.window.showWarningMessage(format_error);
        this.addDevice(edger);
-       return
+       return;
     }
     device_ip = ip_value;
     let device_name = '';
