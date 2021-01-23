@@ -44,7 +44,7 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand('edgerDevices.openConsole', (edger: Edger) =>
     edgerDeivceProvider.openConsole(edger)
   );
-  const edgerApi = new EdgerApi(context);
+  const edgerApi = new EdgerApi(context, edgerDeivceProvider);
   vscode.commands.registerCommand('edgerDevices.installApp', (edger: Edger) =>
     edgerApi.install(edger)
   );
@@ -54,7 +54,7 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand('edgeros.propmtNewProject', () =>
     edgerApi.propmtNewProject()
   );
-  vscode.commands.registerCommand('edgeros.newProject', (params:any) =>
+  vscode.commands.registerCommand('edgeros.newProject', (params: any) =>
     edgerApi.newProject(params)
   );
   vscode.commands.registerCommand('edgeros.openSettings', (tplname: string, projectName: string) =>
@@ -100,4 +100,4 @@ interface IDeviceItem {
   };
 }
 
-export function deactivate() {}
+export function deactivate() { }

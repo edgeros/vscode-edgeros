@@ -49,7 +49,9 @@ export class WorkspaceApi {
     updateEdgerPassword(edger: Edger, device_pass: string) {
         let edgers = this._context.globalState.get(edger_key) as Array<Edger>;
         if (edgers) {
-            const index = edgers.indexOf(edger);
+            const index = edgers.findIndex(item => {
+                return item.label === edger.label && item.deviceName === edger.deviceName;
+            });
             if (index >= 0) {
                 edgers[index].devicePass = device_pass;
                 this._context.globalState.update(edger_key, edgers);

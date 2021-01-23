@@ -33,10 +33,10 @@ export class EdgerApi extends EventEmitter {
   private _workspace: WorkspaceApi;
   private _progress: EdgerProgress;
 
-  constructor(context: vscode.ExtensionContext) {
+  constructor(context: vscode.ExtensionContext, edgerDeviceProvider: EdgerDeivceProvider) {
     super();
     this._context = context;
-    this._edgerDeviceProvider = new EdgerDeivceProvider(context);
+    this._edgerDeviceProvider = edgerDeviceProvider;
     this._workspace = new WorkspaceApi(context);
     this._progress = new EdgerProgress(this);
   }

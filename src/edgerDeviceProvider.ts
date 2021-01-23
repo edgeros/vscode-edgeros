@@ -18,9 +18,9 @@ import * as net from 'net';
 
 import { WorkspaceApi } from './workspaceApi';
 import { edger_console_port } from './constants';
- 
+
 let channel: vscode.OutputChannel;
- 
+
 export class EdgerDeivceProvider
   implements vscode.TreeDataProvider<vscode.TreeItem> {
   _context: ExtensionContext;
@@ -102,10 +102,10 @@ export class EdgerDeivceProvider
       vscode.window.showWarningMessage(cancel_add);
       return;
     }
-    if(!/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/img.test(ip_value)){
+    if (!/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/img.test(ip_value)) {
       vscode.window.showWarningMessage(format_error);
-       this.addDevice(edger);
-       return;
+      this.addDevice(edger);
+      return;
     }
     device_ip = ip_value;
     let device_name = '';
@@ -151,7 +151,7 @@ export class EdgerDeivceProvider
       channel = vscode.window.createOutputChannel('Edger Console');
     }
     channel.show();
-    
+
 
     const client = await getTcpClientInstance(
       { port: edger_console_port, host: edger.deviceIP } // edger.deviceIP
@@ -161,7 +161,7 @@ export class EdgerDeivceProvider
       str = replaceSpacielChar(str);
       channel.append(str);
     });
-    
+
   }
 }
 
@@ -169,14 +169,14 @@ function getTcpClientInstance(
   opt: net.SocketConnectOpts,
   reconnection: number = 3
 ): Promise<net.Socket> {
-  
-  let tcpClient:any = null;
+
+  let tcpClient: any = null;
   // @ts-ignore
   let ref = global["tcpClient"];
-  if(ref){
+  if (ref) {
     tcpClient = ref as net.Socket;
   }
- 
+
   // let reconnection: number = 3;
 
   const connectFn = (_tcpClient: net.Socket | null) => {
@@ -197,8 +197,8 @@ function getTcpClientInstance(
 
   return new Promise((resolve) => {
     if (tcpClient) {
-       // @ts-ignore
-    global["tcpClient"] = tcpClient;
+      // @ts-ignore
+      global["tcpClient"] = tcpClient;
       resolve(tcpClient);
       return;
     }
