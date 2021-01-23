@@ -99,7 +99,8 @@ export class EdgerDeivceProvider
     );
     const ip_value = await vscode.window.showInputBox(ip_options);
     if (!ip_value) {
-      throw new Error(cancel_add);
+      vscode.window.showWarningMessage(cancel_add);
+      return;
     }
     if(!/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/img.test(ip_value)){
       vscode.window.showWarningMessage(format_error);
@@ -116,7 +117,8 @@ export class EdgerDeivceProvider
 
     const name_value = await vscode.window.showInputBox(name_options);
     if (!name_value) {
-      throw new Error(cancel_add);
+      vscode.window.showWarningMessage(cancel_add);
+      return;
     }
     device_name = name_value;
     this._workspace.addEdger2Workspace(device_name, device_ip);
