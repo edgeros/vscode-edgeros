@@ -14,7 +14,7 @@ import { localize } from './utils/locale';
 import FormData = require('form-data');
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import axios from 'axios';
+import httpClient from './utils/httpClient';
 import * as path from 'path';
 
 import { Edger, EdgerDeivceProvider } from './edgerDeviceProvider';
@@ -126,30 +126,16 @@ export class EdgerApi extends EventEmitter {
       return;
     }
 
-    // upload eap to edger device
-    await this.uploadEap(eap_file_path, edger_ip, dev_pass)
-      .then(() => {
-        vscode.window.showInformationMessage(
-          localize('upload_completed.text', 'Upload completed.')
-        );
-      })
-      .catch((err) => {
-        vscode.window.showErrorMessage(
-          `${localize('upload_failed.text', 'Upload failed.')} - ${err.message.replace('connect ETIMEDOUT', 'Network connection timeout')}`
-        );
-      });
-    // install/update eap on edger device
-    await this.installEap(edger_ip, dev_pass, eap_name)
-      .then(() => {
-        vscode.window.showInformationMessage(
-          localize('installation_completed.text', 'Installation completed.')
-        );
-      })
-      .catch((err) => {
-        vscode.window.showErrorMessage(
-          `${localize('installation_failed.text', 'Installation failed.')} - ${err.message.replace('connect ETIMEDOUT', 'Network connection timeout')}`
-        );
-      });
+    try {
+      // upload eap to edger device
+      await this.uploadEap(eap_file_path, edger_ip, dev_pass);
+      vscode.window.showInformationMessage(localize('upload_completed.text', 'Upload completed.'));
+      // install/update eap on edger device
+      await this.installEap(edger_ip, dev_pass, eap_name);
+      vscode.window.showInformationMessage(localize('installation_completed.text', 'Installation completed.'));
+    } catch (err) {
+      console.log(localize('edger_connect_postFailure.text', 'Post Failure.'), err);
+    }
   }
 
   archive(): Promise<string> {
@@ -229,7 +215,7 @@ export class EdgerApi extends EventEmitter {
     });
   }
 
-  private async uploadEap(
+  private uploadEap(
     eap_path: string,
     edger_ip: string,
     dev_pass: string
@@ -245,25 +231,28 @@ export class EdgerApi extends EventEmitter {
       },
       headers: form.getHeaders(),
     };
-    await axios
+    return httpClient
       .post('/upload', form, uploadApiConfig)
       .then(function (response) {
         console.log(
           `${localize(
             'upload_completed.text',
             'Upload completed.'
-          )}: ${response}`
+          )}: ${eap_path}`
         );
       })
       .catch(function (err) {
         console.log(
           `${localize('upload_failed.text', 'Upload Failed.')}: ${err}`
         );
-        throw new Error(err);
+        vscode.window.showErrorMessage(
+          `${localize('upload_failed.text', 'Upload failed.')} - ${err.message.replace('connect ETIMEDOUT', 'Network connection timeout')}`
+        );
+        throw err;
       });
   }
 
-  private async installEap(
+  private installEap(
     edger_ip: string,
     dev_pass: string,
     eap_name: string
@@ -280,30 +269,24 @@ export class EdgerApi extends EventEmitter {
         },
       },
     };
-    await axios
-      .post(
-        '/install',
-        {
-          eap: eap_name,
-        },
-        installApiConfig
-      )
+    return httpClient
+      .post('/install', { eap: eap_name, }, installApiConfig)
       .then(function (response) {
         console.log(
           `${localize(
             'installation_completed.text',
             'Installation completed.'
-          )}: ${response}`
+          )}: ${eap_name}`
         );
       })
       .catch(function (err) {
         console.log(
-          `${localize(
-            'installation_failed.text',
-            'Installation failed.'
-          )}: ${err}`
+          `${localize('installation_failed.text', 'Installation failed.')}: ${err}`
         );
-        throw new Error(err);
+        vscode.window.showErrorMessage(
+          `${localize('installation_failed.text', 'Installation failed.')} - ${err.message.replace('connect ETIMEDOUT', 'Network connection timeout')}`
+        );
+        throw err;
       });
   }
 }
