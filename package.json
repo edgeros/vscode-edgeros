@@ -237,7 +237,6 @@
 				}
 			],
 			"view/item/context": [
-			 
 				{
 					"command": "edgerDevices.installApp",
 					"when": "view == edgerDeviceView && viewItem == edger",
@@ -282,6 +281,7 @@
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
+		"@types/ejs": "^3.0.5",
 		"@types/form-data": "^2.5.0",
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^7.0.2",
@@ -299,6 +299,7 @@
 	"dependencies": {
 		"@types/ncp": "^2.0.4",
 		"axios": "^0.19.2",
+		"ejs": "^3.1.5",
 		"findit2": "^2.2.3",
 		"form-data": "^3.0.0",
 		"iconv-lite": "^0.6.2",

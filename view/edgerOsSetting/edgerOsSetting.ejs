@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MobileView</title>
+    <link rel="stylesheet" href="<%=cssFileUri%>">
+    </link>
+    <script>
+        var tplList = '<%- JSON.stringify(tplList) %>';
+        var tplUsing = '<%- JSON.stringify(tplUsing) %>';
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <section>
+            <h4>请选择模板下载站点</h4>
+            <div>
+                <button v-for="item in typeArray" type="button"
+                    :class="type==item?'itemName Github active':'itemName Github'"
+                    @click="submitTemplateOrigin(item)">{{item}}</button>
+            </div>
+        </section>
+    </div>
+</body>
+<script type="text/javascript" src="<%=vueFileUri%>"></script>
+<script type="text/javascript" src="<%=jsFileUri%>"></script>
+
+</html>
