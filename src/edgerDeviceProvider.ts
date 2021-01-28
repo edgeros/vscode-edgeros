@@ -19,7 +19,8 @@ import * as net from 'net';
 import { WorkspaceApi } from './workspaceApi';
 import { edger_console_port } from './constants';
 
-let channel: vscode.OutputChannel;
+var channel: vscode.OutputChannel;
+var tcpObjects: any = {};
 
 export class EdgerDeivceProvider
   implements vscode.TreeDataProvider<vscode.TreeItem> {
@@ -138,6 +139,9 @@ export class EdgerDeivceProvider
 
   deleteDevice(edger: Edger) {
     this._workspace.deleteEdgerFromWorkspace(edger);
+    if (tcpObjects[edger.deviceName]) {
+      tcpObjects[edger.deviceName].destroy();
+    }
     this.refresh();
   }
 
@@ -150,79 +154,62 @@ export class EdgerDeivceProvider
     if (!channel) {
       channel = vscode.window.createOutputChannel('Edger Console');
     }
-    channel.show();
-
-
-    const client = await getTcpClientInstance(
-      { port: edger_console_port, host: edger.deviceIP } // edger.deviceIP
-    );
-    client.on('data', (data: Buffer) => {
-      let str: string = data.toString('UTF-8', 0, data.length - 1);
-      str = replaceSpacielChar(str);
-      channel.append(str);
-    });
-
+    if (!tcpObjects[edger.deviceName]) {
+      getTcpClientInstance(edger, 1, channel);
+    } else {
+      console.log(`TCP the connection already exists deviceName[${edger.deviceName}]`);
+    }
   }
 }
 
 function getTcpClientInstance(
-  opt: net.SocketConnectOpts,
-  reconnection: number = 3
-): Promise<net.Socket> {
+  edger: Edger,
+  reconnection: number = 1,
+  channel: vscode.OutputChannel
+) {
 
-  let tcpClient: any = null;
-  // @ts-ignore
-  let ref = global["tcpClient"];
-  if (ref) {
-    tcpClient = ref as net.Socket;
-  }
+  let tcp_client = net.createConnection({ port: edger_console_port, host: edger.deviceIP }, () => {
+    channel.show();
+    reconnection = 1;
+    tcpObjects[edger.deviceName] = tcp_client;
+    console.log(localize('connected_to_server.text', 'connected to server!') + `:${edger.deviceIP} [TCP]`);
+  });
 
-  // let reconnection: number = 3;
+  // 接收数据
+  tcp_client.on('data', function (data) {
+    let str: string = data.toString('UTF-8', 0, data.length - 1);
+    str = replaceSpacielChar(str);
+    channel.append(str);
+  });
 
-  const connectFn = (_tcpClient: net.Socket | null) => {
-    if (_tcpClient) {
-      return _tcpClient.connect(opt);
+  tcp_client.on('end', function () {
+    console.log(`TCP ${edger.deviceName}:${edger.deviceIP} end disconnect [End]`);
+    delete tcpObjects[edger.deviceName];
+    tcp_client.end();
+  });
+
+  tcp_client.on('close', function () {
+    console.log(`TCP ${edger.deviceName}:${edger.deviceIP} end disconnect [Close]`);
+    delete tcpObjects[edger.deviceName];
+    tcp_client.end();
+  });
+
+  tcp_client.on('error', function (err) {
+    console.log(`TCP ${edger.deviceName}:${edger.deviceIP} end disconnect [Error]:`, err);
+    delete tcpObjects[edger.deviceName];
+    tcp_client.end();
+  });
+
+  tcp_client.on('timeout', function () {
+    if (reconnection > 3) {
+      console.log(`TCP the maximum number of connections is exceeded`);
+    } else {
+      console.log(`TCP Connect Relinking  2s[TimeOut] count:>${reconnection}`);
+      reconnection++;
+      setTimeout(() => {
+        getTcpClientInstance(edger, reconnection, channel);
+      }, 3000);
     }
-
-    return net.createConnection(
-      opt, // edger.deviceIP
-      () => {
-        // 'connect' listener.
-        console.log(
-          localize('connected_to_server.text', 'connected to server!')
-        );
-      }
-    );
-  };
-
-  return new Promise((resolve) => {
-    if (tcpClient) {
-      // @ts-ignore
-      global["tcpClient"] = tcpClient;
-      resolve(tcpClient);
-      return;
-    }
-
-    tcpClient = connectFn(tcpClient);
-    // @ts-ignore
-    global["tcpClient"] = tcpClient;
-
-    // tcpClient.on('lookup', (res) => {
-    //   console.log('device connect lookup', res);
-    // });
-    // tcpClient.on('close', (res) => {
-    //   console.log('device connect lookup', res);
-    // });
-
-    tcpClient.on('timeout', () => {
-      console.log('device connect timeout:');
-      if (reconnection > 0) {
-        reconnection--;
-        tcpClient = connectFn(tcpClient);
-      }
-    });
-
-    resolve(tcpClient);
   });
 }
 

@@ -53,5 +53,7 @@
 	"edger_connect_wrongPassword.text": "密码错误",
 	"edger_connect_authenticationFailed.text": "鉴权失败",
 	"edger_connect_tryAgentConnect.text": "请{0}秒后再试一次!",
-	"edger_connect_postFailure.text":"发布失败"
+	"edger_connect_postFailure.text":"发布失败",
+	"edger_connect_Forbidden.text":"禁止上传"
+
 }

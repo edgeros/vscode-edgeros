@@ -53,5 +53,6 @@
 	"edger_connect_wrongPassword.text": "password incorrect",
 	"edger_connect_authenticationFailed.text": "authentication failed",
 	"edger_connect_tryAgentConnect.text": "please try again in {0} secounds!",
-	"edger_connect_postFailure.text":"Post Failure"
+	"edger_connect_postFailure.text":"Post Failure",
+	"edger_connect_Forbidden.text":"Forbidden Upload"
 }
