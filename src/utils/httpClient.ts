@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-01-25 10:08:45 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-01-26 12:03:51
+ * @Last Modified time: 2021-01-28 19:15:53
  */
 
 import axios from "axios";
@@ -10,7 +10,11 @@ import { ListenOptions } from "net";
 import * as vscode from 'vscode';
 import { localize } from './locale';
 
-var httpClient = axios.create();
+var httpClient = axios.create({
+    maxContentLength: 50000000,
+    timeout: 30000,
+    maxRedirects: 5,
+});
 
 httpClient.interceptors.request.use(function (config) {
     return config;
