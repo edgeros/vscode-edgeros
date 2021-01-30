@@ -9,7 +9,7 @@
     </link>
     <script>
         var tplList = '<%- JSON.stringify(tplList) %>';
-        var tplUsing = '<%- JSON.stringify(tplUsing) %>';
+        var tplUsing = "<%- tplUsing %>";
     </script>
 </head>
 
@@ -19,8 +19,8 @@
             <h4>请选择模板下载站点</h4>
             <div>
                 <button v-for="item in typeArray" type="button"
-                    :class="type==item?'itemName Github active':'itemName Github'"
-                    @click="submitTemplateOrigin(item)">{{item}}</button>
+                    :class="type==item.value?'itemName Github active':'itemName Github'"
+                    @click="submitTemplateOrigin(item.value)">{{item.title}}</button>
             </div>
         </section>
     </div>

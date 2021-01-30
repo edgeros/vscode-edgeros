@@ -4,14 +4,20 @@ const vscode = acquireVsCodeApi();
 const app = new Vue({
     el: '#app',
     data: {
-        type: JSON.parse(tplUsing),
+        type: tplUsing,
         tplList: JSON.parse(tplList),
-        typeArray: ['Github', 'Zoho']
+        typeArray: [{
+            title: 'Github',
+            value: 'github'
+        }, {
+            title: 'Zoho',
+            value: 'zoho'
+        }]
     },
     filters: {},
     created() {
         const previousState = vscode.getState();
-        let type = previousState ? previousState.type : JSON.parse(tplUsing);
+        let type = previousState ? previousState.type : tplUsing;
         this.type = type;
     },
     methods: {
