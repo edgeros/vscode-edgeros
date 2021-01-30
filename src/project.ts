@@ -320,7 +320,7 @@ function downloadZip(
 ): Promise<string> {
   return new Promise((resolve) => {
     var writeStream = fs.createWriteStream(saveDir);
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     let fileName = '';
     https.get(url, (data) => {
       if (data.statusCode !== 200) {
