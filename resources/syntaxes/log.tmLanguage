@@ -17,28 +17,28 @@
                 <key>match</key>
                  <string>\b(?i:(warning|warn|debug|null|undefined|NaN))(\:|\b)</string>
                 <key>name</key>
-                <string>string.quoted</string>
+                <string>token.warn-token log.warning</string>
             </dict>
            
             <dict>
                 <key>match</key>
                  <string>\b(?i:(JSRE-CON))</string>
                 <key>name</key>
-                <string>markup.bold</string>
+                <string>token.info-token log.constant</string>
             </dict>
           
             <dict>
                 <key>match</key>
                 <string>\b(?i:(Error|Failure|Fail|Fatal|failed|false))(\:|\b)</string>
                 <key>name</key>
-                <string>invalid.illegal</string>
+                <string>token.error-token log.error</string>
             </dict>
 
             <dict>
                 <key>match</key>
                 <string>\b(?i:(hint|info|information|true|log))(\:|\b)</string>
                 <key>name</key>
-                <string>keyword</string>
+                <string>token.info-token log.info</string>
             </dict>
         
         </array>
