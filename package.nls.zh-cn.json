@@ -9,11 +9,11 @@
 	"project.select": "选择",
 	"template.download.error": "下载模板错误",
 	"template.new.text": "新 建 项 目",
-	"template.browse.text": "浏览...",
-	"template.selectDirectory.text": "选择目录:",
-	"template.projectName.input.text": "请输入项目名称:",
-	"template.projectName.text": "项目名称:",
-	"template.discription.text": "模板描述:",
+	"template.browse.text": "浏览",
+	"template.selectDirectory.text": "选择目录",
+	"template.projectName.input.text": "请输入项目名称",
+	"template.projectName.text": "项目名称",
+	"template.discription.text": "模板描述",
 	"extension.displayName": "爱智",
 	"extension.description": "爱智开发 VSCode 插件",
 	"extension.explorer.name": "EdgerOS",
@@ -54,6 +54,7 @@
 	"edger_connect_authenticationFailed.text": "鉴权失败",
 	"edger_connect_tryAgentConnect.text": "请{0}秒后再试一次!",
 	"edger_connect_postFailure.text":"发布失败",
-	"edger_connect_Forbidden.text":"禁止上传"
+	"edger_connect_Forbidden.text":"禁止上传",
+	"edger_view_settingUI_setDownSite.text": "请选择模板下载站点"
 
 }

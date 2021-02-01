@@ -45,7 +45,15 @@ export async function showNewProjectPage(context: vscode.ExtensionContext) {
     templates: templates,
     folderIcon: folderIcon,
     projectDir: path.join(os.homedir(), 'EdgerOSApps').replace(/\\/g, '/'),
-    vueFileUri: vueFileUri
+    vueFileUri: vueFileUri,
+    language: {
+      newProjectBut: localize('template.new.text'),
+      browseBut: localize('template.browse.text'),
+      selectDirectory: localize('template.selectDirectory.text'),
+      projectName: localize('template.projectName.text'),
+      projectInputName: localize('template.projectName.input.text'),
+      discription: localize('template.discription.text'),
+    }
   });
 
   // panel.webview.postMessage({ command: 'refactor' });

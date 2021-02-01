@@ -39,21 +39,28 @@
             </div>
 
             <div class="row">
-                <span class="tit">模板描述:</span>
+                <span class="tit">
+                    <%=language.discription%>:
+                </span>
                 <span class="con discription">
                     <p id="discription_txt">{{selectTemp?selectTemp.discription:''}}</p>
                 </span>
             </div>
 
             <div class="row ">
-                <span class="tit">项目名称:</span>
+                <span class="tit">
+                    <%=language.projectName%>:
+                </span>
                 <span class="con inputTxt">
-                    <input class="projectName" placeholder="请输入项目名称:" type="text" v-model="projectName" />
+                    <input class="projectName" placeholder="<%=language.projectInputName%>" type="text"
+                        v-model="projectName" />
                 </span>
             </div>
 
             <div class="row ">
-                <span class="tit">选择目录:</span>
+                <span class="tit">
+                    <%=language.selectDirectory%>:
+                </span>
                 <span class="con inputTxt selectDirWarp">
                     <input class="projectDir" v-model="savePath" type="text" />
                     <span class="selectDir" @click="selectDirFn()">
@@ -64,7 +71,7 @@
                                 p-id="729">
                             </path>
                         </svg>
-                        浏览...
+                        <%=language.browseBut%>...
                     </span>
                 </span>
 
@@ -98,7 +105,9 @@
                                 </path>
                             </svg>
                         </span>
-                        <button class="newbtn" @click="submitNew()" :disabled="newProjectRuning">新 建 项 目</button>
+                        <button class="newbtn" @click="submitNew()" :disabled="newProjectRuning">
+                            <%=language.newProjectBut%>
+                        </button>
                     </span>
                 </div>
             </div>
@@ -107,6 +116,6 @@
 </body>
 <script type="text/javascript" src="<%=vueFileUri%>"></script>
 <script type="text/javascript" src="<%=jspath%>"></script>
-<!-- <script src="<%=folderIcon%>"></script> -->
+<script type="text/javascript" src="<%=folderIcon%>"></script>
 
 </html>

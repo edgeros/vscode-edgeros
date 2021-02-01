@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
 import * as path from 'path';
-
+import { localize } from './utils/locale';
 import {
   getPageStruct,
   getPath,
@@ -35,6 +35,9 @@ export async function showEdgerOSSettings(context: vscode.ExtensionContext) {
     cssFileUri: cssFileUri,
     tplList: tplList,
     tplUsing: tplUsing,
+    language: {
+      setDownSite: localize('edger_view_settingUI_setDownSite.text'),
+    }
   };
   panel.webview.html = await ejs.renderFile(path.join(dir, 'view', 'edgerOsSetting/edgerOsSetting.ejs'), PugOptions);
 

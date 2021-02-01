@@ -16,7 +16,9 @@
 <body>
     <div id="app">
         <section>
-            <h4>请选择模板下载站点</h4>
+            <h4>
+                <%=language.setDownSite%>
+            </h4>
             <div>
                 <button v-for="item in typeArray" type="button"
                     :class="type==item.value?'itemName Github active':'itemName Github'"
