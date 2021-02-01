@@ -44,7 +44,7 @@ export async function showNewProjectPage(context: vscode.ExtensionContext) {
     csspath: csspath,
     templates: templates,
     folderIcon: folderIcon,
-    projectDir: path.join(os.homedir(), 'EdgerOSApps').replace(/\\/g,'/'),
+    projectDir: path.join(os.homedir(), 'EdgerOSApps').replace(/\\/g, '/'),
     vueFileUri: vueFileUri
   });
 
@@ -147,6 +147,7 @@ export async function doNewProject(
     return { state: false };
   }
 
+
   try {
     fs.statSync(saveDir);
   } catch (err) {
@@ -172,7 +173,6 @@ export async function doNewProject(
     vscode.window.showWarningMessage(localize('template.download.error', `Download template error ${tUrl}`));
     return { state: false };
   }
-
   // unzip
   const saveTmpPath: string = path.join(userTmpDir, 'tmp');
   await unzip(zipPath, saveTmpPath);
@@ -268,6 +268,9 @@ function rmdir(dir: string, callback: fs.NoParamCallback) {
 }
 
 function unzip(from: string, to: string): Promise<void> {
+  if (fs.existsSync(to)) {
+    rmdir(to, () => { });
+  }
   fs.mkdirSync(to, { recursive: true });
   const extract = onezip.extract(from, to);
 
@@ -319,7 +322,16 @@ function downloadZip(
   tplUsing: string
 ): Promise<string> {
   return new Promise((resolve) => {
-    var writeStream = fs.createWriteStream(saveDir);
+    if (fs.existsSync(saveDir)) {
+      fs.unlinkSync(saveDir);
+    }
+
+    let writeStream = fs.createWriteStream(saveDir);
+    writeStream.on('close', () => {
+      resolve(fileName);
+    });
+
+
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     let fileName = '';
     https.get(url, (data) => {
@@ -336,8 +348,7 @@ function downloadZip(
         vscode.window.showErrorMessage(errStr);
       });
       data.on('end', () => {
-        writeStream.close();
-        resolve(fileName);
+        writeStream.end();
       });
     });
   });
