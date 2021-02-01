@@ -11,7 +11,7 @@ import * as vscode from 'vscode';
 import { localize } from './locale';
 
 var httpClient = axios.create({
-    maxContentLength: 50000000,
+    maxContentLength: 268435456,//256MB
     timeout: 30000,
     maxRedirects: 5,
 });
