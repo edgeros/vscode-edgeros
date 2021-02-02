@@ -12,7 +12,7 @@ import { localize } from './locale';
 
 var httpClient = axios.create({
     maxContentLength: 268435456,//256MB
-    timeout: 30000,
+    timeout: 60000,
     maxRedirects: 5,
 });
 

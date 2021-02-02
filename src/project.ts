@@ -176,7 +176,13 @@ export async function doNewProject(
   const userTmpDir = os.homedir();
   // download
   const zipPath: string = path.join(userTmpDir, 'tmp.zip');
-  const fileName = await downloadZip(tUrl, zipPath, tplUsing);
+  let fileName = '';
+  try {
+    fileName = await downloadZip(tUrl, zipPath, tplUsing);
+  } catch (err) {
+    return { state: false };
+  }
+
   if (!fileName) {
     vscode.window.showWarningMessage(localize('template.download.error', `Download template error ${tUrl}`));
     return { state: false };
@@ -329,16 +335,12 @@ function downloadZip(
   saveDir: string,
   tplUsing: string
 ): Promise<string> {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     if (fs.existsSync(saveDir)) {
       fs.unlinkSync(saveDir);
     }
 
     let writeStream = fs.createWriteStream(saveDir);
-    writeStream.on('close', () => {
-      resolve(fileName);
-    });
-
 
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     let fileName = '';
@@ -351,12 +353,22 @@ function downloadZip(
         writeStream.write(chunk);
       });
       data.on('error', (err) => {
-        const errStr: string = JSON.stringify(err);
         console.error(err);
-        vscode.window.showErrorMessage(errStr);
+        vscode.window.showErrorMessage(err.message);
+        writeStream.end(() => {
+          reject(err);
+        });
       });
       data.on('end', () => {
-        writeStream.end();
+        writeStream.end(() => {
+          resolve(fileName);
+        });
+      });
+    }).on('error', (err) => {
+      console.error(err);
+      vscode.window.showErrorMessage(err.message);
+      writeStream.end(() => {
+        reject(err);
       });
     });
   });
