@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-01-25 10:08:45 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-01-28 19:15:53
+ * @Last Modified time: 2021-02-03 20:17:17
  */
 
 import axios from "axios";
@@ -12,7 +12,7 @@ import { localize } from './locale';
 
 var httpClient = axios.create({
     maxContentLength: 268435456,//256MB
-    timeout: 60000,
+    timeout: 300000,
     maxRedirects: 5,
 });
 
