@@ -43,7 +43,7 @@
 							"displayName": "Empty App",
 							"name": "empty",
 							"discription": "Creates a new empty EdgerOS App.",
-							"icon": "https://edgeros-static-image.oss-cn-hangzhou.aliyuncs.com/icon_empty.png",
+							"icon": "https://edgeros-static-image.oss-cn-hangzhou.aliyuncs.com/vsce_edgeros/icon_empty.png",
 							"origin": [
 								{
 									"name": "zoho",
