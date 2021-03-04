@@ -55,5 +55,6 @@
 	"edger_connect_tryAgentConnect.text": "please try again in {0} secounds!",
 	"edger_connect_postFailure.text": "Post Failure",
 	"edger_connect_Forbidden.text": "Forbidden Upload",
-	"edger_view_settingUI_setDownSite.text": "Select Download Site"
+	"edger_view_settingUI_setDownSite.text": "Select Download Site",
+	"edger_view_settingUI_switch_site.text":"Template download source changed to"
 }

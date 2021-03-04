@@ -55,6 +55,6 @@
 	"edger_connect_tryAgentConnect.text": "请{0}秒后再试一次!",
 	"edger_connect_postFailure.text":"发布失败",
 	"edger_connect_Forbidden.text":"禁止上传",
-	"edger_view_settingUI_setDownSite.text": "请选择模板下载站点"
-
+	"edger_view_settingUI_setDownSite.text": "请选择模板下载站点",
+	"edger_view_settingUI_switch_site.text":"模板下载来源切换为"
 }

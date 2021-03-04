@@ -47,7 +47,7 @@ export async function showEdgerOSSettings(context: vscode.ExtensionContext) {
     switch (command) {
       case 'changeTplOrigin':
         templateConf.update('originUsing', origin).then(() => {
-          vscode.window.showInformationMessage(`模板下载来源切换为: ${origin}`);
+          vscode.window.showInformationMessage(`${localize('edger_view_settingUI_switch_site.text')}: ${origin}`);
         });
         return;
     }

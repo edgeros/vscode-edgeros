@@ -1,6 +1,6 @@
 # EdgerOS VSC Extension README
 
-EdgerOS VSC Extension includes a set of tools for EdgerOS developers to **pack**, **upload**, **install** and **update** EdgerOS applications on your Edger devices. The extension can also validate your desc.json before deployment and monitor app execution status on your device.
+EdgerOS VSC Extension includes a set of tools for EdgerOS developers to **pack**,**create**, **upload**, **install** and **update** EdgerOS applications on your Edger devices. The extension can also validate your desc.json before deployment and monitor app execution status on your device.
 
 It also can manage your Edger devices, including device password. Make sure your Edger device **developer** mode is set on.
 
@@ -44,13 +44,25 @@ Device Console can be used to show the execution status of your app on target Ed
 
 Device Console can be open via Edger device context menu item "Console". Console message can be found in the **OUTPUT** window.
 
+![deploy app](media/output.gif)
+
+### Create a project
+You can quickly create an Edger OS development Project by clicking "New Project"
+
+![deploy app](media/create_project.gif)
+
+### Device Setting
+If the template is too slow to load, you can use "Edgeros Settings" to switch between the template download sites. The current sites are "GitHub" and "Zoho".
+
+![deploy app](media/setting.gif)
+
 ## Known Issues
 
 N/A
 
 ## Release Notes
 
-### 1.0.0
+### 0.0.9
 
 First release.
 
@@ -62,4 +74,4 @@ First release.
 
 **Enjoy!**
 
-EdgerOS Team, 2020.5
+EdgerOS Team, 2021.3
