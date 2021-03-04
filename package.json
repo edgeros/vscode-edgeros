@@ -192,7 +192,11 @@
 			},
 			{
 				"command": "edgerDevices.archive",
-				"title": "%extension.commands.archive%"
+				"title": "%extension.commands.archive%",
+				"icon": {
+					"light": "resources/light/compress.svg",
+					"dark": "resources/dark/compress.svg"
+				}
 			},
 			{
 				"command": "edgerDevices.updateDevice",
@@ -204,11 +208,19 @@
 			},
 			{
 				"command": "edgerDevices.deleteDevice",
-				"title": "%extension.commands.delete%"
+				"title": "%extension.commands.delete%",
+				"icon": {
+					"light": "resources/light/edit.svg",
+					"dark": "resources/dark/edit.svg"
+				}
 			},
 			{
 				"command": "edgerDevices.installApp",
-				"title": "%extension.commands.deploy%"
+				"title": "%extension.commands.deploy%",
+				"icon": {
+					"light": "resources/light/upload.svg",
+					"dark": "resources/dark/upload.svg"
+				}
 			},
 			{
 				"command": "edgerDevices.openConsole",
