@@ -9,13 +9,14 @@
  * Author: Li Qiang <liqiang@acoinfo.com>
  *
  */
-import { init } from './utils/locale';
-
 import * as vscode from 'vscode';
+import { from } from 'form-data';
+import { init } from './utils/locale';
 import { Edger, EdgerDeivceProvider } from './edgerDeviceProvider';
 import { EdgerApi } from './edgerApi';
 import { showPhone } from './mobile/mobile.browser';
 import { MobileType } from './mobile/model';
+import { EdgerOsCompletions } from './completions/edgerOs';
 
 process.on('uncaughtException', function (err) {
   console.error(err);
@@ -28,7 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
     'edgerDeviceView',
     edgerDeivceProvider
   );
-  
+
   vscode.commands.registerCommand('edgerDevices.refreshDevice', () =>
     edgerDeivceProvider.refresh()
   );
@@ -86,6 +87,9 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
   context.subscriptions.push(changeMobile);
+
+
+  EdgerOsCompletions(context);
 }
 
 interface IDeviceItem {
