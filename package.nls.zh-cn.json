@@ -56,5 +56,10 @@
 	"edger_connect_postFailure.text":"发布失败",
 	"edger_connect_Forbidden.text":"禁止上传",
 	"edger_view_settingUI_setDownSite.text": "请选择模板下载站点",
-	"edger_view_settingUI_switch_site.text":"模板下载来源切换为"
+	"edger_view_settingUI_switch_site.text":"模板下载来源切换为",
+
+	"TCP_Channal_Occupy.text": "TCP 通道被占用",
+	"click_disconnect.text":"断开连接",
+	"click_reconnect.text":"重新连接",
+	"click_connecting.text":"正在连接..."
 }

@@ -56,5 +56,10 @@
 	"edger_connect_postFailure.text": "Post Failure",
 	"edger_connect_Forbidden.text": "Forbidden Upload",
 	"edger_view_settingUI_setDownSite.text": "Select Download Site",
-	"edger_view_settingUI_switch_site.text":"Template download source changed to"
+	"edger_view_settingUI_switch_site.text": "Template download source changed to",
+	
+	"TCP_Channal_Occupy.text": "TCP Channal Occupy",
+	"click_disconnect.text":"disconnect",
+	"click_reconnect.text":"reconnect",
+	"click_connecting.text":"Connecting..."
 }

@@ -20,7 +20,10 @@ import { WorkspaceApi } from './workspaceApi';
 import { edger_console_port } from './constants';
 
 var channel: vscode.OutputChannel;
+var connectStatusBar: vscode.StatusBarItem;
+
 var tcpObjects: any = {};
+var initiativeClose: Boolean = false;
 
 export class EdgerDeivceProvider
   implements vscode.TreeDataProvider<vscode.TreeItem> {
@@ -140,6 +143,7 @@ export class EdgerDeivceProvider
   deleteDevice(edger: Edger) {
     this._workspace.deleteEdgerFromWorkspace(edger);
     if (tcpObjects[edger.deviceName]) {
+      initiativeClose = true;
       tcpObjects[edger.deviceName].destroy();
     }
     this.refresh();
@@ -152,12 +156,23 @@ export class EdgerDeivceProvider
 
   async openConsole(edger: Edger) {
     if (!channel) {
+      connectStatusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
       channel = vscode.window.createOutputChannel('Edger Console');
     }
-    if (!tcpObjects[edger.deviceName]) {
-      getTcpClientInstance(edger, 1, channel);
+
+    if (Object.keys(tcpObjects).length === 0) {
+      initiativeClose = false;
+      getTcpClientInstance(edger, 1, channel, connectStatusBar);
     } else {
+      vscode.window.showErrorMessage(localize('TCP_Channal_Occupy.text') + `${Object.keys(tcpObjects)[0]}`);
       console.log(`TCP the connection already exists deviceName[${edger.deviceName}]`);
+    }
+  }
+
+  async closeTCP() {
+    initiativeClose = true;
+    for (let key in tcpObjects) {
+      tcpObjects[key].destroy();
     }
   }
 }
@@ -165,14 +180,24 @@ export class EdgerDeivceProvider
 function getTcpClientInstance(
   edger: Edger,
   reconnection: number = 1,
-  channel: vscode.OutputChannel
+  channel: vscode.OutputChannel,
+  connectStatusBar: vscode.StatusBarItem
 ) {
 
-  let tcp_client = net.createConnection({ port: edger_console_port, host: edger.deviceIP }, () => {
+  let tcp_client = net.createConnection({
+    port: edger_console_port,
+    host: edger.deviceIP,
+    timeout: 3000
+  }, () => {
     channel.show();
     reconnection = 1;
     tcpObjects[edger.deviceName] = tcp_client;
     console.log(localize('connected_to_server.text', 'connected to server!') + `:${edger.deviceIP} [TCP]`);
+    connectStatusBar.text = `$(link)  [ ${edger.deviceName} : ${edger.deviceIP} ]`;
+    connectStatusBar.tooltip = localize('click_disconnect.text');
+    connectStatusBar.command = 'edgerDevices.closeTCP';
+    connectStatusBar.backgroundColor = new vscode.ThemeColor('statusBarItem.debuggingBackground');
+    connectStatusBar.show();
   });
 
   // 接收数据
@@ -182,36 +207,61 @@ function getTcpClientInstance(
     channel.append(str);
   });
 
-  tcp_client.on('end', function () {
-    console.log(`TCP ${edger.deviceName}:${edger.deviceIP} end disconnect [End]`);
-    delete tcpObjects[edger.deviceName];
-    tcp_client.end();
-  });
+  // tcp_client.on('end', function () {
+  //   console.log(`TCP ${edger.deviceName}:${edger.deviceIP} end disconnect [End]`);
+  //   delete tcpObjects[edger.deviceName];
+  //   tcp_client.end();
+  // });
 
   tcp_client.on('close', function () {
     console.log(`TCP ${edger.deviceName}:${edger.deviceIP} end disconnect [Close]`);
-    delete tcpObjects[edger.deviceName];
-    tcp_client.end();
-  });
-
-  tcp_client.on('error', function (err) {
-    console.log(`TCP ${edger.deviceName}:${edger.deviceIP} end disconnect [Error]:`, err);
-    delete tcpObjects[edger.deviceName];
-    tcp_client.end();
-  });
-
-  tcp_client.on('timeout', function () {
-    if (reconnection > 3) {
+    if (reconnection > 3 || initiativeClose) {
       console.log(`TCP the maximum number of connections is exceeded`);
+      connectStatusBar.text = `$(debug-disconnect)  [ ${edger.deviceName} : ${edger.deviceIP} ] `;
+      connectStatusBar.backgroundColor = new vscode.ThemeColor('statusBarItem.errorBackground');
+      connectStatusBar.tooltip = localize('click_reconnect.text');
+      connectStatusBar.command = "edgerDevices.openConsole";
+      connectStatusBar.show();
+      delete tcpObjects[edger.deviceName];
     } else {
       console.log(`TCP Connect Relinking  2s[TimeOut] count:>${reconnection}`);
+      connectStatusBar.text = `$(sync~spin) try connect ( ${reconnection} ) [ ${edger.deviceName} ]`;
+      connectStatusBar.backgroundColor = new vscode.ThemeColor('statusBarItem.errorBackground');
+      connectStatusBar.tooltip = localize("click_connecting.text");
+      connectStatusBar.command = undefined;
+      connectStatusBar.show();
+
       reconnection++;
       setTimeout(() => {
-        getTcpClientInstance(edger, reconnection, channel);
+        getTcpClientInstance(edger, reconnection, channel, connectStatusBar);
       }, 3000);
     }
   });
+
+  // tcp_client.on('error', function (err) {
+  //   connectStatusBar.text = `$(debug-disconnect)  [ ${edger.deviceName} ] -> ${edger.deviceIP}`;
+  //   connectStatusBar.backgroundColor = new vscode.ThemeColor('statusBarItem.errorBackground');
+  //   connectStatusBar.show();
+
+  //   console.log(`TCP ${edger.deviceName}:${edger.deviceIP} end disconnect [Error]:`, err);
+  //   delete tcpObjects[edger.deviceName];
+  //   tcp_client.end();
+  // });
+
+  // tcp_client.on('timeout', function () {
+  //   if (reconnection > 3) {
+  //     console.log(`TCP the maximum number of connections is exceeded`);
+  //   } else {
+  //     console.log(`TCP Connect Relinking  2s[TimeOut] count:>${reconnection}`);
+  //     reconnection++;
+  //     setTimeout(() => {
+  //       getTcpClientInstance(edger, reconnection, channel, connectStatusBar);
+  //     }, 3000);
+  //   }
+  // });
 }
+
+
 
 function replaceSpacielChar(str: string): string {
   str = str.replace(/\x1b\[(\d+|\d+;\d+)m{1}/gim, '');
