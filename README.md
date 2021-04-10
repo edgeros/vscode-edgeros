@@ -1,77 +1,65 @@
-# EdgerOS VSC Extension README
+# edgeros README
 
-EdgerOS VSC Extension includes a set of tools for EdgerOS developers to **pack**,**create**, **upload**, **install** and **update** EdgerOS applications on your Edger devices. The extension can also validate your desc.json before deployment and monitor app execution status on your device.
-
-It also can manage your Edger devices, including device password. Make sure your Edger device **developer** mode is set on.
+This is the README for your extension "edgeros". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 
-### Add Device
+Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
 
-Before deploying your app to Edger device, you should add it to your workspace first.
+For example if there is an image subfolder under your extension project workspace:
 
-By clicking the "Add Edger Device" button or "Add" menu item, enter the ip address of your Edger device, give it a nick name and you are good to go.
+\!\[feature X\]\(images/feature-x.png\)
 
-![add device](media/add-device.gif)
+> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
 
-> Tip: Make sure your computer and Edger devices are in the same network.
+## Requirements
 
-### Edit Device
+If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 
-Device information can be edited via context menu on device item in the tree view.
+## Extension Settings
 
-![context menu](media/menu-items.png)
+Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
 
-Right click on your device item, then click on the "Edit" menu item. Update the ip address or device nickname as you need.
+For example:
 
-![edit device](media/edit-device.gif)
+This extension contributes the following settings:
 
-### Delete Device
-
-The "Delete" context menu can be used to delete device from your device list.
-
-### Deploy App
-
-Once your app is ready to be deployed on your Edger device. You can select the target device and click on the "Deploy" button to deploy your app and test.
-
-Before deployment, device password will be asked and verified during deployment. The content of your app's desc.json will be validated as well.
-
-![deploy app](media/deploy.gif)
-
-### Device Console
-
-Device Console can be used to show the execution status of your app on target Edger device.
-
-Device Console can be open via Edger device context menu item "Console". Console message can be found in the **OUTPUT** window.
-
-![deploy app](media/output.gif)
-
-### Create a project
-You can quickly create an Edger OS development Project by clicking "New Project"
-
-![deploy app](media/create_project.gif)
-
-### Device Setting
-If the template is too slow to load, you can use "Edgeros Settings" to switch between the template download sites. The current sites are "GitHub" and "Zoho".
-
-![deploy app](media/setting.gif)
+* `myExtension.enable`: enable/disable this extension
+* `myExtension.thing`: set to `blah` to do something
 
 ## Known Issues
 
-N/A
+Calling out known issues can help limit users opening duplicate issues against your extension.
 
 ## Release Notes
 
-### 0.0.9
+Users appreciate release notes as you update your extension.
 
-First release.
+### 1.0.0
+
+Initial release of ...
+
+### 1.0.1
+
+Fixed issue #.
+
+### 1.1.0
+
+Added features X, Y, and Z.
 
 -----------------------------------------------------------------------------------------------------------
 
+## Working with Markdown
+
+**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
+
+* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
+* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
+* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
+
 ### For more information
 
-* [EdgerOS Official Site](https://www.edgeros.com)
+* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
+* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
 
 **Enjoy!**
-
-EdgerOS Team, 2021.3
