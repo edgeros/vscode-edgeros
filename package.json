@@ -10,7 +10,8 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:edgeros.helloWorld"
+		"onCommand:edgeros.helloWorld",
+		"onView:eosManageView"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -19,7 +20,15 @@
 				"command": "edgeros.helloWorld",
 				"title": "Hello World"
 			}
-		]
+		],
+		"views": {
+			"explorer": [
+				{
+					"id": "eosManageView",
+					"name": "EdgerOS"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
