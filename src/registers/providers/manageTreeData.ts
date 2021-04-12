@@ -6,17 +6,18 @@
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as fs from 'fs';
 /**
  *Edgeros device  view Tree
  */
 export = function (context: vscode.ExtensionContext) {
   if (vscode.workspace.workspaceFolders) {
-    vscode.window.registerTreeDataProvider(
-      'eosManageView',
-      new EOSManageViewProvider(vscode.workspace.workspaceFolders[0].uri.fsPath)
-    );
-  } else {
-    console.error("[edgeros plugin] No open workspace");
+    if (fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'edgeros.json'))) {
+      vscode.window.registerTreeDataProvider(
+        'eosManageView',
+        new EOSManageViewProvider(vscode.workspace.workspaceFolders[0].uri.fsPath)
+      );
+    }
   }
 };
 
@@ -96,8 +97,9 @@ class EOSTreeItem extends vscode.TreeItem {
   setCommand(type: string) {
     if (type === 'device') {
       this.command = {
-        "command": "edgeros.helloWorld",
-        "title": "Hello WorldXXXX"
+        command: "edgeros.helloWorld",
+        title: "Hello WorldXXXX",
+        arguments: [this.label]
       };
     }
   }
