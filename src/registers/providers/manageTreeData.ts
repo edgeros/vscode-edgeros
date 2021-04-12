@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 18:05:14 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-12 18:46:25
+ * @Last Modified time: 2021-04-12 20:23:26
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
@@ -108,16 +108,16 @@ class EOSTreeItem extends vscode.TreeItem {
     let iconBaseUrl = path.join(__dirname, '..', '..', '..', 'resources', 'icon');
     switch (type) {
       case "deviceList":
-        iconPath = { dark: path.join(iconBaseUrl, 'dark', 'deviceList.svg'), light: path.join(iconBaseUrl, 'light', 'deviceList.svg') };
+        iconPath = { dark: path.join(iconBaseUrl, 'dark', 'threeView_deviceList.svg'), light: path.join(iconBaseUrl, 'light', 'threeView_deviceList.svg') };
         break;
       case "other":
-        iconPath = { dark: path.join(iconBaseUrl, 'dark', 'other.svg'), light: path.join(iconBaseUrl, 'light', 'other.svg') };
+        iconPath = { dark: path.join(iconBaseUrl, 'dark', 'threeView_other.svg'), light: path.join(iconBaseUrl, 'light', 'threeView_other.svg') };
         break;
       case "device":
-        iconPath = { dark: path.join(iconBaseUrl, 'dark', 'device.svg'), light: path.join(iconBaseUrl, 'light', 'device.svg') };
+        iconPath = { dark: path.join(iconBaseUrl, 'dark', 'threeView_device.svg'), light: path.join(iconBaseUrl, 'light', 'threeView_device.svg') };
         break;
       default:
-        iconPath = { dark: path.join(iconBaseUrl, 'dark', 'other.svg'), light: path.join(iconBaseUrl, 'light', 'other.svg') };
+        iconPath = { dark: path.join(iconBaseUrl, 'dark', 'threeView_other.svg'), light: path.join(iconBaseUrl, 'light', 'threeView_other.svg') };
     }
     this.iconPath = iconPath;
   }

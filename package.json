@@ -19,6 +19,22 @@
 			{
 				"command": "edgeros.helloWorld",
 				"title": "Hello World"
+			},
+			{
+				"command": "edgeros.showAddDevView",
+				"title": "Add Device View",
+				"icon": {
+					"light": "resources/icon/light/command_addDevice.svg",
+					"dark": "resources/icon/dark/command_addDevice.svg"
+				}
+			},
+			{
+				"command": "edgeros.showCreateProject",
+				"title": "Create EdgerOS Project",
+				"icon": {
+					"light": "resources/icon/light/command_createProject.svg",
+					"dark": "resources/icon/dark/command_createProject.svg"
+				}
 			}
 		],
 		"views": {
@@ -29,10 +45,24 @@
 				}
 			]
 		},
+		"menus": {
+			"view/title": [
+				{
+					"command": "edgeros.showAddDevView",
+					"when": "view == eosManageView",
+					"group": "navigation"
+				},
+				{
+					"command": "edgeros.showCreateProject",
+					"when": "view == eosManageView",
+					"group": "navigation"
+				}
+			]
+		},
 		"viewsWelcome": [
 			{
 				"view": "eosManageView",
-				"contents": "此项目并非Edgeros Project.\n[访问官网](http://www.egeros.com)\n[创建项目](command:edgeros.helloWorld)"
+				"contents": "此项目并非Edgeros Project.\n[访问官网](http://www.egeros.com)\n[创建项目](command:edgeros.showCreateProject)"
 			}
 		]
 	},
