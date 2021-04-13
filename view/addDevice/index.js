@@ -1,13 +1,14 @@
 const vscode = acquireVsCodeApi();
+const previousState = vscode.getState();
 
 const app = new Vue({
   el: '#app',
   data: () => {
     return {
       form: {
-        devIp: '',
-        devName: '',
-        pwd: ''
+        devIp: previousState ? previousState.form.devIp : '',
+        devName: previousState ? previousState.form.devName : '',
+        pwd: previousState ? previousState.form.pwd : ''
       }
     };
   },
@@ -15,6 +16,15 @@ const app = new Vue({
   created() {
   },
   watch: {
+    "form.devIp": function () {
+      vscode.setState({ form: this.form });
+    },
+    "form.devName": function () {
+      vscode.setState({ form: this.form });
+    },
+    "form.pwd": function () {
+      vscode.setState({ form: this.form });
+    }
   },
   methods: {
     onSubmit() {

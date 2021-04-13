@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-13 19:34:46
+ * @Last Modified time: 2021-04-13 20:54:24
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -24,8 +24,6 @@ export = function (context: vscode.ExtensionContext) {
         currentPanel = vscode.window.createWebviewPanel('addDeviceView', 'Add Device', vscode.ViewColumn.One, {
           enableScripts: true
         });
-
-
         const webViewFileName = 'addDevice';
         let assetUris = await common.getWebViewBaseUris(webViewFileName, currentPanel, context);
         //set html str
@@ -37,6 +35,13 @@ export = function (context: vscode.ExtensionContext) {
             console.log("Message>>>", message);
           },
           undefined,
+          context.subscriptions
+        );
+        currentPanel.onDidDispose(
+          () => {
+            currentPanel = undefined;
+          },
+          null,
           context.subscriptions
         );
       }
