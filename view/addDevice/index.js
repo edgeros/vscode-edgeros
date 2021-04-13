@@ -4,8 +4,11 @@ const app = new Vue({
   el: '#app',
   data: () => {
     return {
-      title: 'isZe EgerOS device Page',
-      visible: false
+      form: {
+        devIp: '',
+        devName: '',
+        pwd: ''
+      }
     };
   },
   filters: {},
@@ -14,15 +17,8 @@ const app = new Vue({
   watch: {
   },
   methods: {
-    test: function (type) {
-      this.selectType = type;
-      vscode.setState({ data: this.$data });
-    },
-    onMessageFn: function (event) {
-      console.log('pugin send Message', event);
-    },
-    show: function () {
-      this.visible = true;
+    onSubmit() {
+      vscode.postMessage(this.form);
     }
   }
 });

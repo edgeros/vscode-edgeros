@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-13 15:56:22 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-13 19:50:30
+ * @Last Modified time: 2021-04-13 19:54:10
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -39,7 +39,7 @@ export async function getWebViewBaseUris(viewFileName: string, currentPanel: vsc
     ttfUri,
     woffUri
   });
-  let cssPath = path.join(context.extensionPath, 'view', viewFileName, 'tmp_element-ui.css');
+  let cssPath = path.join(context.extensionPath, 'view', viewFileName, 'z_element-ui.css');
   fs.writeFileSync(cssPath, cssStr);
   let elementUiCssUri = changeUri(currentPanel, cssPath);
   // 获取webview入口文件

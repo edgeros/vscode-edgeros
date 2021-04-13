@@ -8,19 +8,28 @@
   <link rel="stylesheet" href="<%=elementUiCssUri%>">
 </head>
 
-<body>
-  <div id="app">
-    hello Edgeros
-    {{title}}
-    <div>
-      <el-button @click="visible = true">Button</el-button>
-      <el-dialog :visible.sync="visible" title="Hello world">
-        <p>Try Element</p>
-      </el-dialog>
+<body style="background:#eaeaea;">
+  <div id="app" style="padding: 20%;">
+    <div style="width: 50%;margin: auto;">
+      <el-form ref="form" :model="form" label-width="80px">
+        <el-form-item label="设备IP">
+          <el-input placeholder="请输入设备IP" v-model="form.devIp"></el-input>
+        </el-form-item>
+        <el-form-item label="设备名称">
+          <el-input placeholder="请输入设备名称" v-model="form.devName"></el-input>
+        </el-form-item>
+        <el-form-item label="设备密码">
+          <el-input placeholder="请输入密码" v-model="form.password" show-password></el-input>
+        </el-form-item>
+      </el-form>
+      <div style="text-align: center;">
+        <el-button type="primary" style="margin: auto;" @click="onSubmit">立即创建</el-button>
+      </div>
     </div>
   </div>
 </body>
 <script type="text/javascript" src="<%=vueJsUri%>"></script>
 <script type="text/javascript" src="<%=elementUiJsUri%>"></script>
 <script type="text/javascript" src="<%=indexJsUri%>"></script>
+
 </html>
