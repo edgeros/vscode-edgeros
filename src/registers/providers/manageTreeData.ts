@@ -97,8 +97,8 @@ class EOSTreeItem extends vscode.TreeItem {
   setCommand(type: string) {
     if (type === 'device') {
       this.command = {
-        command: "edgeros.helloWorld",
-        title: "Hello WorldXXXX",
+        command: "edgeros.helloEdgerOS",
+        title: "Hello EdgerOS",
         arguments: [this.label]
       };
     }

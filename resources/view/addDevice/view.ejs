@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cat Coding ABC</title>
+  <link rel="stylesheet" href="<%=elementUiCssUri%>">
+</head>
+
+<body>
+  <div id="app">
+    hello Edgeros
+    {{title}}
+    <div>
+      <el-button @click="visible = true">Button</el-button>
+      <el-dialog :visible.sync="visible" title="Hello world">
+        <p>Try Element</p>
+      </el-dialog>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="<%=vueJsUri%>"></script>
+<script type="text/javascript" src="<%=elementUiJsUri%>"></script>
+<script type="text/javascript" src="<%=indexJs%>"></script>
+</html>

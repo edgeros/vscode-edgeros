@@ -6,10 +6,10 @@
  */
 import * as vscode from 'vscode';
 /**
- *command:  edgeros.helloWorld
+ *command:  edgeros.helloEdgerOS
  */
 export = function (context: vscode.ExtensionContext) {
-  let disposable = vscode.commands.registerCommand('edgeros.helloWorld', (...options: string[]) => {
+  let disposable = vscode.commands.registerCommand('edgeros.helloEdgerOS', (...options: string[]) => {
     console.log("触发指令后参数", options);
     vscode.window.showInformationMessage('Hello World from edgeros!');
   });

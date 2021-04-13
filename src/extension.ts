@@ -9,7 +9,7 @@ import * as vscode from 'vscode';
 import registers from './registers';
 
 export function activate(context: vscode.ExtensionContext) {
-	console.log("[edgeros plugin] start");
+	console.log("[EdgerOS Plugin] Start");
 	// registers all command
 	for (let command in registers.commands) {
 		registers.commands[command](context);

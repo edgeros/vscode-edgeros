@@ -6,10 +6,10 @@
  */
 import * as vscode from 'vscode';
 /**
- *command:  edgeros.helloWorld
+ *command:  edgeros.showCreateProView
  */
 export = function (context: vscode.ExtensionContext) {
-  let disposable = vscode.commands.registerCommand('edgeros.showCreateProject', (...options: string[]) => {
+  let disposable = vscode.commands.registerCommand('edgeros.showCreateProView', (...options: string[]) => {
     console.log("触发指令后参数", options);
     // vscode.window.showInformationMessage('Hello World from edgeros!');
     const panel = vscode.window.createWebviewPanel('CatCoding', 'Cat Coding', vscode.ViewColumn.One, {});
