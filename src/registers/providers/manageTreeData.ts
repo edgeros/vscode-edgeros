@@ -2,11 +2,12 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 18:05:14 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-12 20:23:26
+ * @Last Modified time: 2021-04-14 11:59:50
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as config from '../../lib/config';
 /**
  *Edgeros device  view Tree
  */
@@ -15,7 +16,7 @@ export = function (context: vscode.ExtensionContext) {
     if (fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'edgeros.json'))) {
       vscode.window.registerTreeDataProvider(
         'eosManageView',
-        new EOSManageViewProvider(vscode.workspace.workspaceFolders[0].uri.fsPath)
+        new EOSManageViewProvider(vscode.workspace.workspaceFolders[0].uri.fsPath, context)
       );
     }
   }
@@ -26,7 +27,8 @@ export = function (context: vscode.ExtensionContext) {
  * Eos Manage View Provider
  */
 class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
-  constructor(private workspaceRoot: string) {
+  constructor(private workspaceRoot: string, private context: vscode.ExtensionContext) {
+
   }
 
   getTreeItem(element: EOSTreeItem): vscode.TreeItem {
@@ -41,7 +43,7 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
       let children: EOSTreeItem[];
       switch (element.type) {
         case 'deviceList':
-          children = this.getDeviceList();
+          children = this.getDeviceList(this.context);
           break;
         case 'other':
           children = [];
@@ -58,11 +60,12 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
    * get local save device 
    * @returns 
    */
-  getDeviceList() {
-    let devices = [];
-    devices.push(new EOSTreeItem('mockDevice1', vscode.TreeItemCollapsibleState.None, 'device'));
-    devices.push(new EOSTreeItem('mockDevice2', vscode.TreeItemCollapsibleState.None, 'device'));
-    devices.push(new EOSTreeItem('mockDevice3', vscode.TreeItemCollapsibleState.None, 'device'));
+  getDeviceList(context: vscode.ExtensionContext) {
+    let devices: EOSTreeItem[] = [];
+    let devList: any[] = context.globalState.get(config.devsStateKey) || [];
+    devList.forEach((item: any) => {
+      devices.push(new EOSTreeItem(item.devName, vscode.TreeItemCollapsibleState.None, 'device'));
+    });
     return devices;
   }
 

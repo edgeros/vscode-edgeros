@@ -8,7 +8,7 @@ const app = new Vue({
       form: {
         devIp: previousState ? previousState.form.devIp : '',
         devName: previousState ? previousState.form.devName : '',
-        pwd: previousState ? previousState.form.pwd : ''
+        devPwd: previousState ? previousState.form.devPwd : ''
       }
     };
   },
@@ -22,13 +22,19 @@ const app = new Vue({
     "form.devName": function () {
       vscode.setState({ form: this.form });
     },
-    "form.pwd": function () {
+    "form.devPwd": function () {
       vscode.setState({ form: this.form });
     }
   },
   methods: {
     onSubmit() {
-      vscode.postMessage(this.form);
+      let cmdData = {
+        type: 'addDev',
+        data: {
+          ...this.form
+        }
+      };
+      vscode.postMessage(cmdData);
     }
   }
 });

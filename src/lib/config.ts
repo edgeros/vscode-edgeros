@@ -1,0 +1,1 @@
+export const devsStateKey: string = "EgerOs_Devs";
