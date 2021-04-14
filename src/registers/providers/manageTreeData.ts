@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 18:05:14 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-14 11:59:50
+ * @Last Modified time: 2021-04-14 16:18:40
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
@@ -14,9 +14,16 @@ import * as config from '../../lib/config';
 export = function (context: vscode.ExtensionContext) {
   if (vscode.workspace.workspaceFolders) {
     if (fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'edgeros.json'))) {
+      let threeViewProvider = new EOSManageViewProvider(vscode.workspace.workspaceFolders[0].uri.fsPath, context);
+
       vscode.window.registerTreeDataProvider(
         'eosManageView',
-        new EOSManageViewProvider(vscode.workspace.workspaceFolders[0].uri.fsPath, context)
+        threeViewProvider
+      );
+
+      //register Command
+      vscode.commands.registerCommand('edgeros.refreshThreeView', () =>
+        threeViewProvider.refresh()
       );
     }
   }
@@ -30,6 +37,8 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
   constructor(private workspaceRoot: string, private context: vscode.ExtensionContext) {
 
   }
+  private _onDidChangeTreeData: vscode.EventEmitter<EOSTreeItem | undefined | null | void> = new vscode.EventEmitter<EOSTreeItem | undefined | null | void>();
+  readonly onDidChangeTreeData: vscode.Event<EOSTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
 
   getTreeItem(element: EOSTreeItem): vscode.TreeItem {
     return element;
@@ -78,6 +87,13 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
     let devicesDir = new EOSTreeItem('其他功能', vscode.TreeItemCollapsibleState.Collapsed, 'other');
     return [newProject, devicesDir];
   }
+
+  /**
+   * refresh three view
+   */
+  refresh(): void {
+    this._onDidChangeTreeData.fire();
+  }
 }
 
 /**
@@ -100,8 +116,8 @@ class EOSTreeItem extends vscode.TreeItem {
   setCommand(type: string) {
     if (type === 'device') {
       this.command = {
-        command: "edgeros.helloEdgerOS",
-        title: "Hello EdgerOS",
+        command: "edgeros.showAddDevView",
+        title: "Show Devices Info",
         arguments: [this.label]
       };
     }

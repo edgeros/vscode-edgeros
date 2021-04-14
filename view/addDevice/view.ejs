@@ -9,13 +9,13 @@
 </head>
 
 <body style="background:#eaeaea;">
-  <div id="app" style="padding: 20%;">
-    <div style="width: 50%;margin: auto;">
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="设备IP">
-          <el-input placeholder="请输入设备IP" v-model="form.devIp"></el-input>
+  <div id="app">
+    <div style="width: 50%;margin: auto;margin-top: 20%;">
+      <el-form ref="form" :rules="rules" :model="form" label-width="80px">
+        <el-form-item label="设备IP" prop="devIp">
+          <el-input :disabled="viewType=='update'" placeholder="请输入设备IP" v-model="form.devIp"></el-input>
         </el-form-item>
-        <el-form-item label="设备名称">
+        <el-form-item label="设备名称" prop="devName">
           <el-input placeholder="请输入设备名称" v-model="form.devName"></el-input>
         </el-form-item>
         <el-form-item label="设备密码">
@@ -23,7 +23,9 @@
         </el-form-item>
       </el-form>
       <div style="text-align: center;">
-        <el-button type="primary" style="margin: auto;" @click="onSubmit">立即创建</el-button>
+        <el-button v-if="viewType=='add'" type="primary" style="margin: auto;" @click="onAddDevice">添加设备</el-button>
+        <el-button v-if="viewType=='update'" type="primary" style="margin: auto;" @click="onUpdate">更新设备</el-button>
+        <el-button v-if="viewType=='update'" type="danger" style="margin: auto;" @click="onDelete">删除设备</el-button>
       </div>
     </div>
   </div>
