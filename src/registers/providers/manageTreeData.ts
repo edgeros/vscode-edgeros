@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 18:05:14 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-14 16:18:40
+ * @Last Modified time: 2021-04-15 20:29:44
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
@@ -55,7 +55,7 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
           children = this.getDeviceList(this.context);
           break;
         case 'other':
-          children = [];
+          children = this.getOtherList(this.context);
           break;
         default:
           return Promise.resolve([]);
@@ -75,6 +75,17 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
     devList.forEach((item: any) => {
       devices.push(new EOSTreeItem(item.devName, vscode.TreeItemCollapsibleState.None, 'device'));
     });
+    return devices;
+  }
+
+  /**
+   * get other
+   * @returns 
+   */
+  getOtherList(context: vscode.ExtensionContext) {
+    let devices: EOSTreeItem[] = [];
+    devices.push(new EOSTreeItem('官网地址', vscode.TreeItemCollapsibleState.None, 'web'));
+    devices.push(new EOSTreeItem('API页面', vscode.TreeItemCollapsibleState.None, 'web'));
     return devices;
   }
 
@@ -118,6 +129,12 @@ class EOSTreeItem extends vscode.TreeItem {
       this.command = {
         command: "edgeros.showAddDevView",
         title: "Show Devices Info",
+        arguments: [this.label]
+      };
+    } else if (type === 'web') {
+      this.command = {
+        command: "edgeros.showWebView",
+        title: "Show Web View",
         arguments: [this.label]
       };
     }

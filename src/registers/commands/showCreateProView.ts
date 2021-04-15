@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-15 20:20:32
+ * @Last Modified time: 2021-04-15 20:36:39
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -17,7 +17,6 @@ export = function (context: vscode.ExtensionContext) {
   let currentPanel: vscode.WebviewPanel | undefined = undefined;
 
   let disposable = vscode.commands.registerCommand('edgeros.showCreateProView', async (...options: string[]) => {
-    console.log("触发指令后参数", options);
     // vscode.window.showInformationMessage('Hello World from edgeros!');
     const columnToShowIn = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
     if (currentPanel) {
