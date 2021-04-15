@@ -1,0 +1,33 @@
+.tpl {
+  color: #999;
+  background-color: rgb(238, 241, 246)
+}
+
+.tpl .tplTitle {
+  background: #fff;
+  padding: 20px;
+  font-weight: bolder;
+}
+
+.tpl .tplBackground {
+  background: #fff;
+  padding: 10px;
+  border-top: 1px solid #eee;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.tpl .tplBackground:hover {
+  background: #ecf5ff
+}
+
+.tpl .tplSelect {
+  background: #ecf5ff
+}
+
+.img {
+  width: 20px;
+  height: 20px;
+  margin-right: 20px;
+}

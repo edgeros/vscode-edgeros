@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-14 17:58:05
+ * @Last Modified time: 2021-04-15 20:20:52
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -44,6 +44,7 @@ export = function (context: vscode.ExtensionContext) {
         currentPanel.webview.html = await ejs.renderFile(path.join(context.extensionPath, 'view', webViewFileName, 'view.ejs'), {
           ...assetUris
         });
+        currentPanel.iconPath = vscode.Uri.parse(config.edgerosLogo);
         currentPanel.webview.onDidReceiveMessage(
           async message => {
             // add Device

@@ -5,12 +5,68 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cat Coding</title>
+  <link rel="shortcut icon"  href="https://csdnimg.cn/public/favicon.ico" >
   <link rel="stylesheet" href="<%=elementUiCssUri%>">
+  <link rel="stylesheet" href="<%=cssUri%>">
 </head>
 
 <body style="background:#eaeaea;">
-  <div id="app">
-    new project page
+  <div id="app" style="margin:10px;">
+    <el-container style="height: 750px; border: 1px solid #eee;background: #fff;">
+      <el-aside class="tpl" width="250px">
+        <div class="tplTitle">模板列表</div>
+        <!-- item.tplName==selectTmp?'tplSelect':''  -->
+        <div v-for="item in templateList">
+          <div :class="['tplBackground',selectTmp==item.tplName?'tplSelect':'']" @click="selectTpl(item)">
+            <el-image class="img" :src="item.imageSrc" fit="fit">
+            </el-image>
+            {{item.tplName}}
+          </div>
+        </div>
+      </el-aside>
+
+      <el-main style="border-left: 1px solid #eee;">
+        <el-form ref="form" :model="form" label-width="100px">
+          <el-form-item label="Name">
+            <el-input v-model="form.name"></el-input>
+          </el-form-item>
+          <el-form-item label="BuildID">
+            <el-input v-model="form.bundleid"></el-input>
+          </el-form-item>
+          <el-form-item label="Save Path">
+            <el-input disabled placeholder="请输入内容" v-model="form.savePath" class="input-with-select">
+              <el-button slot="append" @click="selectSavePath">选择路径</el-button>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="Version">
+            <el-input v-model="form.version"></el-input>
+          </el-form-item>
+          <el-form-item label="Vendor Id">
+            <el-input v-model="form.vendorId" placeholder="required when publish"></el-input>
+          </el-form-item>
+          <el-form-item label="Vendor Name">
+            <el-input v-model="form.vendorName" placeholder="required when publish"></el-input>
+          </el-form-item>
+          <el-form-item label="Vendor Email">
+            <el-input v-model="form.vendorEmail" placeholder="required when publish"></el-input>
+          </el-form-item>
+          <el-form-item label="Vendor Phone">
+            <el-input v-model="form.vendorPhone"></el-input>
+          </el-form-item>
+          <el-form-item label="Vendor Fax">
+            <el-input v-model="form.vendorFax"></el-input>
+          </el-form-item>
+          <el-form-item label="其他项">
+            <el-checkbox-group v-model="form.gitInit">
+              <el-checkbox label="git初始化" name="gitInit"></el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">立即创建</el-button>
+          </el-form-item>
+        </el-form>
+      </el-main>
+    </el-container>
   </div>
 </body>
 <script type="text/javascript" src="<%=vueJsUri%>"></script>
