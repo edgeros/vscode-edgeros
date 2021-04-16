@@ -43,6 +43,14 @@
 					"light": "resources/icon/light/command_openBrowser.svg",
 					"dark": "resources/icon/dark/command_openBrowser.svg"
 				}
+			},
+			{
+				"command": "edgeros.openConsole",
+				"title": "Open Console",
+				"icon": {
+					"light": "resources/icon/dark/command_openConsole.svg",
+					"dark": "resources/icon/dark/command_openConsole.svg"
+				}
 			}
 		],
 		"views": {
@@ -70,6 +78,11 @@
 				{
 					"command": "edgeros.openBrowser",
 					"when": "view == eosManageView && viewItem == web",
+					"group": "inline"
+				},
+				{
+					"command": "edgeros.openConsole",
+					"when": "view == eosManageView && viewItem == device",
 					"group": "inline"
 				}
 			]
