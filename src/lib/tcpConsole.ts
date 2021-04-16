@@ -14,9 +14,9 @@ export function openConsle(device: any) {
   if (!channel) {
     connectStatusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
     channel = vscode.window.createOutputChannel('Edger Console');
-  } else {
-    channel.show();
   }
+  channel.show();
+
   if (!tcpClient || tcpClient?.destroyed === true) {
     initiativeClose = false;
     lastDevice = device;

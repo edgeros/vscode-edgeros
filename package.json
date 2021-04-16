@@ -92,6 +92,21 @@
 				"view": "eosManageView",
 				"contents": "此项目并非Edgeros Project.\n[访问官网](http://www.egeros.com)\n[创建项目](command:edgeros.showCreateProject)"
 			}
+		],
+		"languages": [
+			{
+				"id": "Log",
+				"extensions": [
+					".log"
+				]
+			}
+		],
+		"grammars": [
+			{
+				"language": "Log",
+				"scopeName": "edgeros.log",
+				"path": "./syntaxes/log.tmLanguage"
+			}
 		]
 	},
 	"scripts": {
