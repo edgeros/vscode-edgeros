@@ -84,8 +84,10 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
    */
   getOtherList(context: vscode.ExtensionContext) {
     let devices: EOSTreeItem[] = [];
-    devices.push(new EOSTreeItem('官网地址', vscode.TreeItemCollapsibleState.None, 'web'));
-    devices.push(new EOSTreeItem('API页面', vscode.TreeItemCollapsibleState.None, 'web'));
+    // add web item
+    config.edgerOsWebData.forEach((webItem: any) => {
+      devices.push(new EOSTreeItem(webItem.url, vscode.TreeItemCollapsibleState.None, 'web', webItem));
+    });
     return devices;
   }
 
@@ -116,13 +118,15 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
  */
 class EOSTreeItem extends vscode.TreeItem {
   constructor(
-    public readonly label: string,
-    public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-    public type: string
+    public label: string,
+    public collapsibleState: vscode.TreeItemCollapsibleState,
+    public type: string,
+    public options?: any
   ) {
     super(label, collapsibleState);
     this.setIconPath(type);
     this.setCommand(type);
+    this.contextValue = type;
   }
   setCommand(type: string) {
     if (type === 'device') {
@@ -132,10 +136,13 @@ class EOSTreeItem extends vscode.TreeItem {
         arguments: [this.label]
       };
     } else if (type === 'web') {
+      // set title 根据语言环境修改(未实现)
+      this.label = this.options.title;
+      this.options.showTitle = this.label;
       this.command = {
         command: "edgeros.showWebView",
         title: "Show Web View",
-        arguments: [this.label]
+        arguments: [this.options]
       };
     }
   }
@@ -146,11 +153,11 @@ class EOSTreeItem extends vscode.TreeItem {
       case "deviceList":
         iconPath = { dark: path.join(iconBaseUrl, 'dark', 'threeView_deviceList.svg'), light: path.join(iconBaseUrl, 'light', 'threeView_deviceList.svg') };
         break;
-      case "other":
-        iconPath = { dark: path.join(iconBaseUrl, 'dark', 'threeView_other.svg'), light: path.join(iconBaseUrl, 'light', 'threeView_other.svg') };
-        break;
       case "device":
         iconPath = { dark: path.join(iconBaseUrl, 'dark', 'threeView_device.svg'), light: path.join(iconBaseUrl, 'light', 'threeView_device.svg') };
+        break;
+      case "other":
+        iconPath = { dark: path.join(iconBaseUrl, 'dark', 'threeView_other.svg'), light: path.join(iconBaseUrl, 'light', 'threeView_other.svg') };
         break;
       default:
         iconPath = { dark: path.join(iconBaseUrl, 'dark', 'threeView_other.svg'), light: path.join(iconBaseUrl, 'light', 'threeView_other.svg') };

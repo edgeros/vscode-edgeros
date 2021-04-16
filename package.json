@@ -35,6 +35,14 @@
 					"light": "resources/icon/light/command_createProject.svg",
 					"dark": "resources/icon/dark/command_createProject.svg"
 				}
+			},
+			{
+				"command": "edgeros.openBrowser",
+				"title": "Open Browser",
+				"icon": {
+					"light": "resources/icon/light/command_openBrowser.svg",
+					"dark": "resources/icon/dark/command_openBrowser.svg"
+				}
 			}
 		],
 		"views": {
@@ -56,6 +64,13 @@
 					"command": "edgeros.showCreateProView",
 					"when": "view == eosManageView",
 					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "edgeros.openBrowser",
+					"when": "view == eosManageView && viewItem == web",
+					"group": "inline"
 				}
 			]
 		},
