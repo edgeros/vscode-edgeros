@@ -28,15 +28,16 @@ export = function (context: vscode.ExtensionContext) {
 
       currentPanel.iconPath = vscode.Uri.parse(config.edgerosLogo);
 
-      //set html/js path
+      // set html/js path
       let webViewFileName = 'createProject';
       // get vue,element,css uri
       let assetUris = await common.getWebViewBaseUris(webViewFileName, currentPanel, context);
-      //  get css uri
+      // get css uri
       let cssUri = common.changeUri(currentPanel, path.join(context.extensionPath, 'view', webViewFileName, 'index.css'));
       // set html 
       currentPanel.webview.html = await ejs.renderFile(path.join(context.extensionPath, 'view', webViewFileName, 'view.ejs'), {
-        ...assetUris, cssUri
+        ...assetUris,
+        cssUri
       });
 
       //reception webview message

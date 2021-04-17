@@ -37,14 +37,14 @@ const app = new Vue({
       }
     };
 
-    return {
-      viewType: previousState ? previousState.data.viewType : 'add',//update
+    return previousState?.data || {
+      viewType: 'add',
       form: {
-        devIp: previousState ? previousState.data.form.devIp : '',
-        devName: previousState ? previousState.data.form.devName : '',
-        devPwd: previousState ? previousState.data.form.devPwd : ''
+        divIp: '',
+        devName: '',
+        devPwd: ''
       },
-      devices: previousState ? previousState.data.devices : [],
+      devices: [],
       rules: {
         devIp: [
           { required: true, validator: checkDevIp, trigger: 'blur' }
@@ -59,23 +59,11 @@ const app = new Vue({
   created() {
   },
   watch: {
-    "form.devIp": function () {
-      vscode.setState({ data: this.$data });
-    },
-    "form.devName": function () {
-      vscode.setState({ data: this.$data });
-    },
-    "form.devPwd": function () {
-      vscode.setState({ data: this.$data });
-    },
-    "devices": function () {
-      vscode.setState({ data: this.$data });
-    },
-    "viewType": function () {
-      vscode.setState({ data: this.$data });
-    }
   },
   methods: {
+    inputChange() {
+      vscode.setState({ data: this.$data });
+    },
     onAddDevice() {
       this.$refs['form'].validate((valid) => {
         if (valid) {

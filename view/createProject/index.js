@@ -1,10 +1,9 @@
 const vscode = acquireVsCodeApi();
 const previousState = vscode.getState();
-var devicesList = [];
 const app = new Vue({
   el: '#app',
   data: () => {
-    return {
+    return previousState?.data || {
       templateList: [
         {
           tplName: "simple1",
@@ -21,12 +20,7 @@ const app = new Vue({
         {
           tplName: "simple4",
           imageSrc: "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/edgeros_logo.png",
-        },
-        { tplName: "simple5" },
-        { tplName: "simple6" },
-        { tplName: "simple7" },
-        { tplName: "simple8" },
-        { tplName: "simple9" }
+        }
       ],
       selectTmp: '',
       form: {
@@ -39,15 +33,15 @@ const app = new Vue({
         vendorEmail: '',
         vendorPhone: '',
         vendorFax: '',
-        gitInit: ''
-      },
+        other: []
+      }
     };
   },
   filters: {},
   created() {
   },
   mounted() {
-    this.selectTmp = this.templateList[0].tplName;
+    this.selectTmp = this.selectTmp || this.templateList[0].tplName;
   },
   watch: {
     "form.name": function (value) {
@@ -55,9 +49,13 @@ const app = new Vue({
     }
   },
   methods: {
+    inputChange(value) {
+      vscode.setState({ data: this.$data });
+    },
     onMessageFn(msg) {
       if (msg.type === '_selectSavePath') {
         this.form.savePath = msg.data;
+        this.inputChange();
       } else if (msg.type === '_createProject') {
         if (msg.data === 'success') {
           console.log('>>>>>创建成功');
@@ -67,14 +65,13 @@ const app = new Vue({
       }
     },
     selectSavePath() {
-      console.log("选择路径");
       vscode.postMessage({
         type: 'selectSavePath'
       });
     },
     selectTpl(item) {
-      console.log("选择的模板", item);
       this.selectTmp = item.tplName;
+      this.inputChange();
     },
     onSubmit() {
       vscode.postMessage({

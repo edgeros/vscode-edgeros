@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cat Coding</title>
-  <link rel="shortcut icon"  href="https://csdnimg.cn/public/favicon.ico" >
+  <link rel="shortcut icon" href="https://csdnimg.cn/public/favicon.ico">
   <link rel="stylesheet" href="<%=elementUiCssUri%>">
   <link rel="stylesheet" href="<%=cssUri%>">
 </head>
@@ -28,37 +28,39 @@
       <el-main style="border-left: 1px solid #eee;">
         <el-form ref="form" :model="form" label-width="100px">
           <el-form-item label="Name">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.name" @input="inputChange"></el-input>
           </el-form-item>
           <el-form-item label="BuildID">
-            <el-input v-model="form.bundleid"></el-input>
+            <el-input v-model="form.bundleid" @input="inputChange"></el-input>
           </el-form-item>
           <el-form-item label="Save Path">
-            <el-input disabled placeholder="请输入内容" v-model="form.savePath" class="input-with-select">
+            <el-input disabled placeholder="请输入内容" v-model="form.savePath" class="input-with-select"
+              @input="inputChange">
               <el-button slot="append" @click="selectSavePath">选择路径</el-button>
             </el-input>
           </el-form-item>
           <el-form-item label="Version">
-            <el-input v-model="form.version"></el-input>
+            <el-input v-model="form.version" @input="inputChange"></el-input>
           </el-form-item>
           <el-form-item label="Vendor Id">
-            <el-input v-model="form.vendorId" placeholder="required when publish"></el-input>
+            <el-input v-model="form.vendorId" @input="inputChange" placeholder="required when publish"></el-input>
           </el-form-item>
           <el-form-item label="Vendor Name">
-            <el-input v-model="form.vendorName" placeholder="required when publish"></el-input>
+            <el-input v-model="form.vendorName" @input="inputChange" placeholder="required when publish"></el-input>
           </el-form-item>
           <el-form-item label="Vendor Email">
-            <el-input v-model="form.vendorEmail" placeholder="required when publish"></el-input>
+            <el-input v-model="form.vendorEmail" @input="inputChange" placeholder="required when publish"></el-input>
           </el-form-item>
           <el-form-item label="Vendor Phone">
-            <el-input v-model="form.vendorPhone"></el-input>
+            <el-input v-model="form.vendorPhone" @input="inputChange"></el-input>
           </el-form-item>
           <el-form-item label="Vendor Fax">
-            <el-input v-model="form.vendorFax"></el-input>
+            <el-input v-model="form.vendorFax" @input="inputChange"></el-input>
           </el-form-item>
           <el-form-item label="其他项">
-            <el-checkbox-group v-model="form.gitInit">
-              <el-checkbox label="git初始化" name="gitInit"></el-checkbox>
+            <el-checkbox-group v-model="form.other" @change="inputChange">
+              <el-checkbox label="gitInit" value="git初始化"></el-checkbox>
+              <el-checkbox label="openFile" name="打开文件"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
           <el-form-item>
