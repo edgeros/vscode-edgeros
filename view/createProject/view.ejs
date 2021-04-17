@@ -15,9 +15,8 @@
     <el-container style="height: 750px; border: 1px solid #eee;background: #fff;">
       <el-aside class="tpl" width="250px">
         <div class="tplTitle">模板列表</div>
-        <!-- item.tplName==selectTmp?'tplSelect':''  -->
         <div v-for="item in templateList">
-          <div :class="['tplBackground',selectTmp==item.tplName?'tplSelect':'']" @click="selectTpl(item)">
+          <div :class="['tplBackground',selectTplName==item.tplName?'tplSelect':'']" @click="selectTpl(item)">
             <el-image class="img" :src="item.imageSrc" fit="fit">
             </el-image>
             {{item.tplName}}
@@ -39,6 +38,9 @@
               <el-button slot="append" @click="selectSavePath">选择路径</el-button>
             </el-input>
           </el-form-item>
+          <el-form-item label="Description">
+            <el-input v-model="form.description" @input="inputChange"></el-input>
+          </el-form-item>
           <el-form-item label="Version">
             <el-input v-model="form.version" @input="inputChange"></el-input>
           </el-form-item>
@@ -59,8 +61,8 @@
           </el-form-item>
           <el-form-item label="其他项">
             <el-checkbox-group v-model="form.other" @change="inputChange">
-              <el-checkbox label="gitInit" value="git初始化"></el-checkbox>
-              <el-checkbox label="openFile" name="打开文件"></el-checkbox>
+              <el-checkbox label="gitInit">git 初始化</el-checkbox>
+              <el-checkbox label="openFile">打开项目</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
           <el-form-item>

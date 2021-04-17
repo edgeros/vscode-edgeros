@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-13 15:56:22 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-13 19:54:10
+ * @Last Modified time: 2021-04-17 15:50:09
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -51,3 +51,4 @@ export async function getWebViewBaseUris(viewFileName: string, currentPanel: vsc
     indexJsUri
   };
 }
+

@@ -42,7 +42,8 @@ const app = new Vue({
       form: {
         divIp: '',
         devName: '',
-        devPwd: ''
+        devPwd: '',
+        devLoginPwd: ''
       },
       devices: [],
       rules: {

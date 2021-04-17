@@ -17,3 +17,17 @@ export const edgerOsWebData: any = [
     titleEn: 'skypegmwcn'
   }
 ];
+
+// create project template list
+export const templateList = [
+  {
+    tplName: "simple (local)",
+    imageSrc: "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/edgeros_logo.png",
+    type: 'local'
+  },
+  {
+    tplName: "simple (cloud)",
+    imageSrc: "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/edgeros_logo.png",
+    type: 'cloud'
+  }
+]

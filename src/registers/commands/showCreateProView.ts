@@ -2,13 +2,16 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-15 20:36:39
+ * @Last Modified time: 2021-04-17 17:17:23
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
 import * as path from 'path';
+import * as os from 'os';
 import * as common from '../../lib/common';
 import * as config from '../../lib/config';
+import localMode from '../../generate/localMode';
+
 /**
  *command:  edgeros.showCreateProView
  */
@@ -42,27 +45,7 @@ export = function (context: vscode.ExtensionContext) {
 
       //reception webview message
       currentPanel.webview.onDidReceiveMessage(async message => {
-        if (message.type === 'selectSavePath') {
-          let selectSavePath = await vscode.window.showOpenDialog({
-            canSelectFiles: false,
-            canSelectFolders: true,
-            canSelectMany: false,
-            title: '请选择项目保存目录',
-            openLabel: '选择'
-          });
-          if (selectSavePath) {
-            currentPanel?.webview.postMessage({
-              type: '_selectSavePath',
-              data: selectSavePath[0].fsPath
-            });
-          }
-        } else if (message.type === 'createProject') {
-          console.log(message.data);
-          currentPanel?.webview.postMessage({
-            type: '_createProject',
-            data: 'success'
-          });
-        }
+        WebCmdHandle(currentPanel as vscode.WebviewPanel, message);
       });
       // webview close trigger
       currentPanel.onDidDispose(
@@ -78,3 +61,56 @@ export = function (context: vscode.ExtensionContext) {
   });
   context.subscriptions.push(disposable);
 };
+
+
+/**
+ * webview send command message  handle
+ */
+async function WebCmdHandle(currentPanel: vscode.WebviewPanel, message: any) {
+  // Send save path
+  if (message.type === 'selectSavePath') {
+    let selectSavePath = await vscode.window.showOpenDialog({
+      canSelectFiles: false,
+      canSelectFolders: true,
+      canSelectMany: false,
+      title: '请选择项目保存目录',
+      openLabel: '选择'
+    });
+    if (selectSavePath) {
+      currentPanel?.webview.postMessage({
+        type: '_selectSavePath',
+        data: selectSavePath[0].fsPath
+      });
+    }
+  }
+  // Send template list
+  else if (message.type === 'getInfoData') {
+    currentPanel?.webview.postMessage({
+      type: '_getInfoData',
+      data: {
+        templateList: config.templateList,
+        defaultSavePath: path.join(os.homedir(), 'EdgerOSApps')
+      }
+    })
+  }
+  // Create project
+  else if (message.type === 'createProject') {
+    let tplInfo = config.templateList.find(item => {
+      return item.tplName == message.data.tplName;
+    })
+
+    if (tplInfo?.type == 'local') {
+      await localMode(tplInfo, message.data);
+    } else if (tplInfo?.type == 'cloud') {
+    
+    }
+
+    //创建完成返回数据
+    currentPanel?.webview.postMessage({
+      type: '_createProject',
+      data: 'success'
+    });
+  }
+}
+
+

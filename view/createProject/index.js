@@ -4,28 +4,12 @@ const app = new Vue({
   el: '#app',
   data: () => {
     return previousState?.data || {
-      templateList: [
-        {
-          tplName: "simple1",
-          imageSrc: "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/edgeros_logo.png",
-        },
-        {
-          tplName: "simple2",
-          imageSrc: "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/edgeros_logo.png",
-        },
-        {
-          tplName: "simple3",
-          imageSrc: "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/edgeros_logo.png",
-        },
-        {
-          tplName: "simple4",
-          imageSrc: "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/edgeros_logo.png",
-        }
-      ],
-      selectTmp: '',
+      templateList: [],
+      selectTplName: '',
       form: {
         name: '',
         bundleid: 'com.edgeros.',
+        description: '',
         savePath: '',
         version: '0.0.1',
         vendorId: '',
@@ -41,7 +25,7 @@ const app = new Vue({
   created() {
   },
   mounted() {
-    this.selectTmp = this.selectTmp || this.templateList[0].tplName;
+    if (this.templateList.length === 0) { vscode.postMessage({ type: 'getInfoData' }) };
   },
   watch: {
     "form.name": function (value) {
@@ -50,11 +34,18 @@ const app = new Vue({
   },
   methods: {
     inputChange(value) {
-      vscode.setState({ data: this.$data });
+      vscode.setState({
+        data: this.$data,
+      });
     },
     onMessageFn(msg) {
       if (msg.type === '_selectSavePath') {
         this.form.savePath = msg.data;
+        this.inputChange();
+      } else if (msg.type === '_getInfoData') {
+        this.form.savePath = msg.data.defaultSavePath;
+        this.templateList = msg.data.templateList;
+        this.selectTplName = this.templateList[0].tplName;
         this.inputChange();
       } else if (msg.type === '_createProject') {
         if (msg.data === 'success') {
@@ -70,14 +61,15 @@ const app = new Vue({
       });
     },
     selectTpl(item) {
-      this.selectTmp = item.tplName;
+      this.selectTplName = item.tplName;
       this.inputChange();
     },
     onSubmit() {
       vscode.postMessage({
         type: 'createProject',
         data: {
-          ...this.form
+          ...this.form,
+          tplName: this.selectTplName
         }
       });
     }

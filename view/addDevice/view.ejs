@@ -19,8 +19,11 @@
         <el-form-item label="设备名称" prop="devName">
           <el-input placeholder="请输入设备名称" v-model="form.devName" @input="inputChange"></el-input>
         </el-form-item>
-        <el-form-item label="设备密码">
+        <el-form-item label="开发密码">
           <el-input placeholder="请输入密码" v-model="form.devPwd" show-password @input="inputChange"></el-input>
+        </el-form-item>
+        <el-form-item label="登录密码">
+          <el-input placeholder="设备登录密码" v-model="form.devLoginPwd" show-password @input="inputChange"></el-input>
         </el-form-item>
       </el-form>
       <div style="text-align: center;">

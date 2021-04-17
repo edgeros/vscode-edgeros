@@ -1,0 +1,12 @@
+[
+  {
+    "displayName": "Empty template",
+    "name": "simple",
+    "discription": "Simple EdgerOs App Template",
+    "icon": "http://localhost:5000/empty.zip",
+    "sites": {
+      "github": "http://127.0.0.1:82/download/file/simple_tpl.zip"
+    },
+    "gitStorehouse": "(本地测试地址 未提供git clone)"
+  }
+]
