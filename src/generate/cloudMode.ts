@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-19 10:20:53 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-19 15:19:43
+ * @Last Modified time: 2021-04-19 16:02:32
  */
 import * as vscode from 'vscode';
 import { copyProject, replaceInfo, deleteFile } from './util';
@@ -11,7 +11,7 @@ import * as path from "path";
 import * as fs from "fs-extra";
 import axios from "axios";
 import * as compressing from "compressing";
-import { threadId } from 'node:worker_threads';
+
 /**
  * cloud download template, new project
  * @param tplInfo 
@@ -19,7 +19,10 @@ import { threadId } from 'node:worker_threads';
  */
 export default async function cloudMode(tplInfo: any, options: any): Promise<string> {
   try {
+
     let newProPath = path.join(options.savePath, options.name);
+    if (fs.existsSync(newProPath)) { throw new Error('The project file already exists') };
+
     let fileInfo = await downZip(tplInfo);
     await copyProject(fileInfo.sourceDirPath, newProPath);
     await deleteFile([fileInfo.zipFile, fileInfo.fileTmpPath]);

@@ -64,11 +64,6 @@
 		"menus": {
 			"view/title": [
 				{
-					"command": "edgeros.showAddDevView",
-					"when": "view == eosManageView",
-					"group": "navigation"
-				},
-				{
 					"command": "edgeros.showCreateProView",
 					"when": "view == eosManageView",
 					"group": "navigation"
@@ -84,13 +79,18 @@
 					"command": "edgeros.openConsole",
 					"when": "view == eosManageView && viewItem == device",
 					"group": "inline"
+				},
+				{
+					"command": "edgeros.showAddDevView",
+					"when": "view == eosManageView && viewItem == deviceList",
+					"group": "inline"
 				}
 			]
 		},
 		"viewsWelcome": [
 			{
 				"view": "eosManageView",
-				"contents": "此项目并非Edgeros Project.\n[访问官网](http://www.egeros.com)\n[创建项目](command:edgeros.showCreateProject)"
+				"contents": "此项目并非Edgeros Project.\n[访问官网](http://www.egeros.com)\n[创建项目](command:edgeros.showCreateProView)"
 			}
 		],
 		"languages": [

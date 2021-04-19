@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-19 14:28:23
+ * @Last Modified time: 2021-04-19 16:04:50
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -21,7 +21,6 @@ export = function (context: vscode.ExtensionContext) {
   let currentPanel: vscode.WebviewPanel | undefined = undefined;
 
   let disposable = vscode.commands.registerCommand('edgeros.showCreateProView', async (...options: string[]) => {
-    // vscode.window.showInformationMessage('Hello World from edgeros!');
     const columnToShowIn = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
     if (currentPanel) {
       currentPanel.reveal(columnToShowIn);
@@ -57,8 +56,6 @@ export = function (context: vscode.ExtensionContext) {
         context.subscriptions
       );
     }
-
-
   });
   context.subscriptions.push(disposable);
 };
@@ -68,58 +65,63 @@ export = function (context: vscode.ExtensionContext) {
  * webview send command message  handle
  */
 async function WebCmdHandle(currentPanel: vscode.WebviewPanel, message: any) {
-  // Send save path
-  if (message.type === 'selectSavePath') {
-    let selectSavePath = await vscode.window.showOpenDialog({
-      canSelectFiles: false,
-      canSelectFolders: true,
-      canSelectMany: false,
-      title: '请选择项目保存目录',
-      openLabel: '选择'
-    });
-    if (selectSavePath) {
+  try {
+    // Send save path
+    if (message.type === 'selectSavePath') {
+      let selectSavePath = await vscode.window.showOpenDialog({
+        canSelectFiles: false,
+        canSelectFolders: true,
+        canSelectMany: false,
+        title: '请选择项目保存目录',
+        openLabel: '选择'
+      });
+      if (selectSavePath) {
+        currentPanel?.webview.postMessage({
+          type: '_selectSavePath',
+          data: selectSavePath[0].fsPath
+        });
+      }
+    }
+    // Send template list
+    else if (message.type === 'getInfoData') {
       currentPanel?.webview.postMessage({
-        type: '_selectSavePath',
-        data: selectSavePath[0].fsPath
+        type: '_getInfoData',
+        data: {
+          templateList: config.templateList,
+          defaultSavePath: path.join(os.homedir(), 'EdgerOSApps')
+        }
+      })
+    }
+    // Create project
+    else if (message.type === 'createProject') {
+      let tplInfo = config.templateList.find(item => {
+        return item.tplName == message.data.tplName;
+      })
+
+      let newProjectPath: string = '';
+      if (tplInfo?.type == 'local') {
+        newProjectPath = await localMode(tplInfo, message.data);
+      } else if (tplInfo?.type == 'cloud') {
+        newProjectPath = await cloudMode(tplInfo, message.data);
+      }
+
+      if (message.data.other.findIndex('openFile') != -1) {
+        let newProUri = vscode.Uri.file(newProjectPath);
+        await vscode.commands.executeCommand(
+          'vscode.openFolder',
+          newProUri
+        );
+      }
+
+      //创建完成返回数据
+      currentPanel?.webview.postMessage({
+        type: '_createProject',
+        data: 'success'
       });
     }
-  }
-  // Send template list
-  else if (message.type === 'getInfoData') {
-    currentPanel?.webview.postMessage({
-      type: '_getInfoData',
-      data: {
-        templateList: config.templateList,
-        defaultSavePath: path.join(os.homedir(), 'EdgerOSApps')
-      }
-    })
-  }
-  // Create project
-  else if (message.type === 'createProject') {
-    let tplInfo = config.templateList.find(item => {
-      return item.tplName == message.data.tplName;
-    })
-
-    let newProjectPath: string = '';
-    if (tplInfo?.type == 'local') {
-      newProjectPath = await localMode(tplInfo, message.data);
-    } else if (tplInfo?.type == 'cloud') {
-      newProjectPath = await cloudMode(tplInfo, message.data);
-    }
-
-    if (message.data.other.findIndex('openFile') != -1) {
-      let newProUri = vscode.Uri.file(newProjectPath);
-      await vscode.commands.executeCommand(
-        'vscode.openFolder',
-        newProUri
-      );
-    }
-
-    //创建完成返回数据
-    currentPanel?.webview.postMessage({
-      type: '_createProject',
-      data: 'success'
-    });
+  } catch (err) {
+    currentPanel.dispose();
+    vscode.window.showInformationMessage(err.message);
   }
 }
 
