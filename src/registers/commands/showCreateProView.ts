@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-17 17:17:23
+ * @Last Modified time: 2021-04-19 14:28:23
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -11,6 +11,7 @@ import * as os from 'os';
 import * as common from '../../lib/common';
 import * as config from '../../lib/config';
 import localMode from '../../generate/localMode';
+import cloudMode from '../../generate/cloudMode';
 
 /**
  *command:  edgeros.showCreateProView
@@ -99,10 +100,19 @@ async function WebCmdHandle(currentPanel: vscode.WebviewPanel, message: any) {
       return item.tplName == message.data.tplName;
     })
 
+    let newProjectPath: string = '';
     if (tplInfo?.type == 'local') {
-      await localMode(tplInfo, message.data);
+      newProjectPath = await localMode(tplInfo, message.data);
     } else if (tplInfo?.type == 'cloud') {
-    
+      newProjectPath = await cloudMode(tplInfo, message.data);
+    }
+
+    if (message.data.other.findIndex('openFile') != -1) {
+      let newProUri = vscode.Uri.file(newProjectPath);
+      await vscode.commands.executeCommand(
+        'vscode.openFolder',
+        newProUri
+      );
     }
 
     //创建完成返回数据

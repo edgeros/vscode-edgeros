@@ -28,6 +28,7 @@ export const templateList = [
   {
     tplName: "simple (cloud)",
     imageSrc: "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/edgeros_logo.png",
-    type: 'cloud'
+    type: 'cloud',
+    downloadUrl: 'http://127.0.0.1:82/download/file/simple_tpl.zip'
   }
 ]
