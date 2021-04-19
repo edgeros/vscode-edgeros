@@ -51,6 +51,14 @@
 					"light": "resources/icon/dark/command_openConsole.svg",
 					"dark": "resources/icon/dark/command_openConsole.svg"
 				}
+			},
+			{
+				"command": "edgeros.buildEap",
+				"title": "Open Console",
+				"icon": {
+					"light": "resources/icon/dark/command_buildEap.svg",
+					"dark": "resources/icon/dark/command_buildEap.svg"
+				}
 			}
 		],
 		"views": {
@@ -63,6 +71,11 @@
 		},
 		"menus": {
 			"view/title": [
+				{
+					"command": "edgeros.buildEap",
+					"when": "view == eosManageView",
+					"group": "navigation"
+				},
 				{
 					"command": "edgeros.showCreateProView",
 					"when": "view == eosManageView",
@@ -138,6 +151,7 @@
 		"compressing": "^1.5.1",
 		"ejs": "^3.1.6",
 		"fs-extra": "^9.1.0",
+		"globby": "^11.0.3",
 		"requireindex": "^1.2.0"
 	}
 }
