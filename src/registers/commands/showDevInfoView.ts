@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-20 14:48:35
+ * @Last Modified time: 2021-04-20 18:28:58
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -18,7 +18,7 @@ import { EOSTreeItem } from '../../lib/class/EOSTreeItem';
 export = function (context: vscode.ExtensionContext) {
   // addDevView example
   let currentPanel: vscode.WebviewPanel | undefined = undefined;
-  let deviceInfo: { devName: string, devIp: string, devPwd: string } | undefined = undefined;
+  let deviceInfo: { devName: string, devIp: string, devPwd: string, devLoginPwd: string } | undefined = undefined;
 
   let disposable = vscode.commands.registerCommand('edgeros.showDevInfoView', async (...options: EOSTreeItem[]) => {
     try {
@@ -26,8 +26,8 @@ export = function (context: vscode.ExtensionContext) {
       let tmpDevInfo = devsArray.find(item => {
         return item.devName === options[0].label;
       });
-      if (deviceInfo?.devIp !== tmpDevInfo.devIp) { currentPanel?.dispose(); deviceInfo = tmpDevInfo; }
-
+      if (deviceInfo?.devIp !== tmpDevInfo.devIp) { currentPanel?.dispose(); }
+      deviceInfo = tmpDevInfo;
       const columnToShowIn = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
       if (currentPanel) {
         currentPanel.reveal(columnToShowIn);

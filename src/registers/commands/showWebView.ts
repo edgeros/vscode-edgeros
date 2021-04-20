@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-15 20:30:11 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-16 10:26:01
+ * @Last Modified time: 2021-04-20 17:42:32
  */
 
 // edgeros.showWebView
@@ -40,7 +40,7 @@ let iframeTmp = `
   </head>
   <body>
     <div id="webIframe onload="this.width=window.innerWidth;this.height=window.innerHeight" >
-          <iframe src ="<%=openUrl%>" id="webIframe" frameborder="0" height="100%" width="100%"></iframe>
+      <iframe src ="<%=openUrl%>" id="webIframe" frameborder="0" height="100%" width="100%"></iframe>
     </div>
   </body>
   <script>

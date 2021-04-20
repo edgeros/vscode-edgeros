@@ -13,7 +13,7 @@
 
 @font-face {
   font-family: element-icons;
-  src: url(vscode-webview-resource://2f142a94-cf27-4930-abc1-4c31fad06406/file///d%3A/work/edgeros-vsc-extension/view/lib/fonts/element-icons.woff) format("woff"), url(vscode-webview-resource://2f142a94-cf27-4930-abc1-4c31fad06406/file///d%3A/work/edgeros-vsc-extension/view/lib/fonts/element-icons.ttf) format("truetype");
+  src: url(vscode-webview-resource://1fe092d6-7af8-488e-b0f9-4d5528ccf68d/file///d%3A/work/edgeros-vsc-extension/view/lib/fonts/element-icons.woff) format("woff"), url(vscode-webview-resource://1fe092d6-7af8-488e-b0f9-4d5528ccf68d/file///d%3A/work/edgeros-vsc-extension/view/lib/fonts/element-icons.ttf) format("truetype");
   font-weight: 400;
   font-display: "auto";
   font-style: normal

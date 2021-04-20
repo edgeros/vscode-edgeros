@@ -4,7 +4,6 @@ var devicesList = [];
 const app = new Vue({
   el: '#app',
   data: () => {
-
     var checkDevIp = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('ip不能为空'));
