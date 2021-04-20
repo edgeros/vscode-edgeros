@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 18:05:14 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-15 20:29:44
+ * @Last Modified time: 2021-04-20 13:56:18
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
@@ -89,6 +89,7 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
     config.edgerOsWebData.forEach((webItem: any) => {
       devices.push(new EOSTreeItem(webItem.url, vscode.TreeItemCollapsibleState.None, 'web', webItem));
     });
+    devices.push(new EOSTreeItem('Build Eap', vscode.TreeItemCollapsibleState.None, 'buildEap'));
     return devices;
   }
 

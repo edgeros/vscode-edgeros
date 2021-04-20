@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-16 14:29:46 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-20 11:31:30
+ * @Last Modified time: 2021-04-20 14:10:41
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
@@ -29,18 +29,25 @@ export class EOSTreeItem extends vscode.TreeItem {
   setCommand(type: string) {
     if (type === 'device') {
       this.command = {
-        command: "edgeros.showAddDevView",
+        command: "edgeros.showDevInfoView",
         title: "Show Devices Info",
         arguments: [this]
       };
-    } else if (type === 'web') {
-      // set title 根据语言环境修改(未实现)
+    }
+    // set title 根据语言环境修改(未实现)
+    else if (type === 'web') {
       this.label = this.options.title;
       this.options.showTitle = this.label;
       this.command = {
         command: "edgeros.showWebView",
         title: "Show Web View",
         arguments: [this.options]
+      };
+    }
+    else if (type === 'buildEap') {
+      this.command = {
+        command: "edgeros.buildEap",
+        title: "Build Eap"
       };
     }
   }
@@ -56,6 +63,9 @@ export class EOSTreeItem extends vscode.TreeItem {
         break;
       case "other":
         iconPath = { dark: path.join(iconBaseUrl, 'dark', 'threeView_other.svg'), light: path.join(iconBaseUrl, 'light', 'threeView_other.svg') };
+        break;
+      case "buildEap":
+        iconPath = { dark: path.join(iconBaseUrl, 'dark', 'command_buildEap.svg'), light: path.join(iconBaseUrl, 'light', 'command_buildEap.svg') };
         break;
       default:
         iconPath = { dark: path.join(iconBaseUrl, 'dark', 'threeView_other.svg'), light: path.join(iconBaseUrl, 'light', 'threeView_other.svg') };

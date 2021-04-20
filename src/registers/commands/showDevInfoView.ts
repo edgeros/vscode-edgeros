@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-20 14:29:50
+ * @Last Modified time: 2021-04-20 14:48:35
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -18,18 +18,24 @@ import { EOSTreeItem } from '../../lib/class/EOSTreeItem';
 export = function (context: vscode.ExtensionContext) {
   // addDevView example
   let currentPanel: vscode.WebviewPanel | undefined = undefined;
-  let disposable = vscode.commands.registerCommand('edgeros.showAddDevView', async (...options: EOSTreeItem[]) => {
+  let deviceInfo: { devName: string, devIp: string, devPwd: string } | undefined = undefined;
+
+  let disposable = vscode.commands.registerCommand('edgeros.showDevInfoView', async (...options: EOSTreeItem[]) => {
     try {
       let devsArray: any[] = context.globalState.get(config.devsStateKey) || [];
+      let tmpDevInfo = devsArray.find(item => {
+        return item.devName === options[0].label;
+      });
+      if (deviceInfo?.devIp !== tmpDevInfo.devIp) { currentPanel?.dispose(); deviceInfo = tmpDevInfo; }
+
       const columnToShowIn = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
-      // Do not open it repeatedly
       if (currentPanel) {
         currentPanel.reveal(columnToShowIn);
       } else {
-        currentPanel = vscode.window.createWebviewPanel('addDeviceView', 'Add Device', vscode.ViewColumn.One, {
+        currentPanel = vscode.window.createWebviewPanel('devInfoView', 'Device Info', vscode.ViewColumn.One, {
           enableScripts: true
         });
-        const webViewFileName = 'addDevice';
+        const webViewFileName = 'deviceInfo';
         let assetUris = await common.getWebViewBaseUris(webViewFileName, currentPanel, context);
         //set html str
         currentPanel.webview.html = await ejs.renderFile(path.join(context.extensionPath, 'view', webViewFileName, 'view.ejs'), {
@@ -38,9 +44,23 @@ export = function (context: vscode.ExtensionContext) {
         currentPanel.iconPath = vscode.Uri.parse(config.edgerosLogo);
         currentPanel.webview.onDidReceiveMessage(
           async message => {
-            // add Device
-            if (message.type === 'addDev') {
-              devsArray.push(message.data);
+            // update Device
+            if (message.type === 'update') {
+              devsArray = devsArray.map(item => {
+                if (item.devIp === message.data.devIp) {
+                  item = message.data;
+                }
+                return item;
+              });
+              await context.globalState.update(config.devsStateKey, devsArray);
+              await vscode.commands.executeCommand('edgeros.refreshThreeView');
+              currentPanel?.dispose();
+            }
+            // delete devoce
+            else if (message.type === 'delete') {
+              devsArray = devsArray.filter(item => {
+                return !(item.devIp === message.data.devIp && item.devName === message.data.devName);
+              });
               await context.globalState.update(config.devsStateKey, devsArray);
               await vscode.commands.executeCommand('edgeros.refreshThreeView');
               currentPanel?.dispose();
@@ -50,7 +70,8 @@ export = function (context: vscode.ExtensionContext) {
               currentPanel?.webview.postMessage({
                 type: '_getDeviceData',
                 data: {
-                  devices: devsArray
+                  devices: devsArray,
+                  deviceInfo: deviceInfo,
                 }
               });
             }
@@ -61,6 +82,7 @@ export = function (context: vscode.ExtensionContext) {
         currentPanel.onDidDispose(
           () => {
             currentPanel = undefined;
+            deviceInfo = undefined;
           },
           null,
           context.subscriptions

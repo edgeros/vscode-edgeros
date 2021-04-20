@@ -38,7 +38,6 @@ const app = new Vue({
     };
 
     return previousState?.data || {
-      viewType: 'add',
       form: {
         divIp: '',
         devName: '',
@@ -57,34 +56,43 @@ const app = new Vue({
     };
   },
   filters: {},
-  watch: {
-  },
   methods: {
     inputChange() {
       vscode.setState({ data: this.$data });
     },
-    onAddDevice() {
-      this.$refs['form'].validate((valid) => {
-        if (valid) {
-          let cmdData = {
-            type: 'addDev',
-            data: {
-              ...this.form
-            }
-          };
-          vscode.postMessage(cmdData);
+    onUpdate() {
+      vscode.postMessage({
+        type: 'update',
+        data: {
+          ...this.form,
         }
       });
     },
+    onDelete() {
+      this.$confirm('此操作将永久删除该设备, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        vscode.postMessage({
+          type: 'delete',
+          data: {
+            ...this.form,
+          }
+        });
+      });
+
+    },
     onMessageFn(msg) {
       if (!this.form.devIp && msg.type === '_getDeviceData') {
+        this.form = msg.data.deviceInfo;
         devicesList = msg.data.devices;
       }
     }
   },
   created() {
     vscode.postMessage({ type: 'getDeviceData' });
-  }
+  },
 });
 app.$on("onmessage", function (msg) {
   this.onMessageFn(msg);

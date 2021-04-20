@@ -53,14 +53,6 @@
 				}
 			},
 			{
-				"command": "edgeros.buildEap",
-				"title": "Open Console",
-				"icon": {
-					"light": "resources/icon/dark/command_buildEap.svg",
-					"dark": "resources/icon/dark/command_buildEap.svg"
-				}
-			},
-			{
 				"command": "edgeros.installEap",
 				"title": "install App",
 				"icon": {
@@ -79,11 +71,6 @@
 		},
 		"menus": {
 			"view/title": [
-				{
-					"command": "edgeros.buildEap",
-					"when": "view == eosManageView",
-					"group": "navigation"
-				},
 				{
 					"command": "edgeros.showCreateProView",
 					"when": "view == eosManageView",
