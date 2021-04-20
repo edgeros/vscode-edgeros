@@ -17,10 +17,10 @@ export = function (context: vscode.ExtensionContext) {
     // vscode.window.showInformationMessage('Hello World from edgeros!');
     if (vscode.workspace.workspaceFolders) {
       if (fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'edgeros.json'))) {
-        let eapPath = await buildEap(vscode.workspace.workspaceFolders[0].uri.fsPath, {
+        let eapPath: string = await buildEap(vscode.workspace.workspaceFolders[0].uri.fsPath, {
           nIncrease: false
         });
-        console.log('>>>>', eapPath, "<<<");
+        vscode.window.showInformationMessage('build eap:',eapPath);
       } else {
         vscode.window.showErrorMessage('No edgeros project');
       }

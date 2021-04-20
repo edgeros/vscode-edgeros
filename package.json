@@ -59,6 +59,14 @@
 					"light": "resources/icon/dark/command_buildEap.svg",
 					"dark": "resources/icon/dark/command_buildEap.svg"
 				}
+			},
+			{
+				"command": "edgeros.installEap",
+				"title": "install App",
+				"icon": {
+					"light": "resources/icon/dark/command_upload.svg",
+					"dark": "resources/icon/dark/command_upload.svg"
+				}
 			}
 		],
 		"views": {
@@ -89,13 +97,18 @@
 					"group": "inline"
 				},
 				{
+					"command": "edgeros.showAddDevView",
+					"when": "view == eosManageView && viewItem == deviceList",
+					"group": "inline"
+				},
+				{
 					"command": "edgeros.openConsole",
 					"when": "view == eosManageView && viewItem == device",
 					"group": "inline"
 				},
 				{
-					"command": "edgeros.showAddDevView",
-					"when": "view == eosManageView && viewItem == deviceList",
+					"command": "edgeros.installEap",
+					"when": "view == eosManageView && viewItem == device",
 					"group": "inline"
 				}
 			]
@@ -150,6 +163,7 @@
 		"axios": "^0.21.1",
 		"compressing": "^1.5.1",
 		"ejs": "^3.1.6",
+		"form-data": "^4.0.0",
 		"fs-extra": "^9.1.0",
 		"globby": "^11.0.3",
 		"requireindex": "^1.2.0"

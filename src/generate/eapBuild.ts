@@ -1,11 +1,12 @@
 import * as compressing from 'compressing';
 import * as stream from 'stream';
-import { promisify } from 'util';
-const pipeline = promisify(stream.pipeline);
+import * as  util from 'util';
+const pipeline = util.promisify(stream.pipeline);
 import * as path from "path";
 import * as fs from "fs-extra";
 import * as globby from "globby";
 import { copyProject, replaceInfo, deleteFile } from './util';
+import * as vscode from 'vscode';
 
 //hard code modules filter name list
 var blackModslist: string[] = [];
@@ -76,7 +77,7 @@ async function copy_module(sBasePath: string, mods: string[], jsreMpath: string)
 /**
  * 构建项目包
  */
-export default async function buildEap(workspacePath: string, options: any) {
+export default async function buildEap(workspacePath: string, options: any): Promise<string> {
   // info filter module
   blackModslist = [
     '@edgeros/vue'
@@ -94,55 +95,83 @@ export default async function buildEap(workspacePath: string, options: any) {
     "!*.zip"
   ];
 
-  try {
-    let projectPath = workspacePath;
-    let eosAndpkgJson = getEosAndPkgJson(projectPath);
-    userFilterMods = eosAndpkgJson.eos.ignore_modules || [];
-    if (eosAndpkgJson.eos.ignore_path && eosAndpkgJson.eos.ignore_path.length > 0) {
-      eosAndpkgJson.eos.ignore_path.forEach((path: string) => {
-        blacklistFile.push('!' + path);
+  return await vscode.window.withProgress({
+    location: vscode.ProgressLocation.Notification,
+    title: "Building EAP",
+    cancellable: false
+  }, async (progress, token) => {
+    try {
+
+      progress.report({ increment: 10, message: "build common file" });
+      let projectPath = workspacePath;
+      let eosAndpkgJson = getEosAndPkgJson(projectPath);
+      userFilterMods = eosAndpkgJson.eos.ignore_modules || [];
+      if (eosAndpkgJson.eos.ignore_path && eosAndpkgJson.eos.ignore_path.length > 0) {
+        eosAndpkgJson.eos.ignore_path.forEach((path: string) => {
+          blacklistFile.push('!' + path);
+        })
+      }
+      const projectFileList = await globby(blacklistFile, {
+        cwd: projectPath
+      });
+      let buildFileTmp = path.join(__dirname, "./build_tmp");
+      if (fs.existsSync(buildFileTmp)) await deleteFile([buildFileTmp]);
+      // 普通文件复制
+      for (let i = 0; i < projectFileList.length; i++) {
+        let copyFilePath = projectFileList[i];
+        let targetFilePath = path.join(buildFileTmp, 'program', copyFilePath);
+        await copyProject(path.join(projectPath, copyFilePath), targetFilePath);
+      }
+
+      // node_modules -> jsre_modules
+      progress.report({ increment: 10, message: "node_modules build jsre_modules" });
+      if (fs.existsSync(path.join(projectPath, 'node_modules'))) {
+        let jsreMpath = path.join(buildFileTmp, 'program', 'jsre_modules');
+        fs.mkdirSync(jsreMpath);
+        let sBasePath = path.join(projectPath, 'node_modules');
+        let mods = fs.readdirSync(sBasePath);
+        await copy_module(sBasePath, mods, jsreMpath)
+      }
+
+      // 将 ico 文件复制到根目录;
+      progress.report({ increment: 10, message: "Adjusting file structure" });
+      let icoBigName = eosAndpkgJson.eos.assets.ico_big.split('/').pop();
+      let icoSmallName = eosAndpkgJson.eos.assets.ico_small.split('/').pop();
+      fs.renameSync(path.join(buildFileTmp, 'program', eosAndpkgJson.eos.assets.ico_big), path.join(buildFileTmp, icoBigName));
+      fs.renameSync(path.join(buildFileTmp, 'program', eosAndpkgJson.eos.assets.ico_small), path.join(buildFileTmp, icoSmallName));
+      createDesc(buildFileTmp, eosAndpkgJson);
+
+      // 压缩
+      progress.report({ increment: 50, message: "compressing..." });
+      let eapName = path.join(projectPath, eosAndpkgJson.pkg.name + '_' + eosAndpkgJson.pkg.version + '.eap');//.zip
+      let tarStream = new compressing.zip.Stream();
+      fs.readdirSync(buildFileTmp).forEach(item => {
+        tarStream.addEntry(path.join(buildFileTmp, item))
       })
+      let destStream = fs.createWriteStream(eapName);
+      let ctime = new Date();
+      await pipeline(tarStream, destStream);
+      console.log("buildTime/ms:", (new Date()).getTime() - ctime.getTime());
+      // delete tmp file
+      progress.report({ increment: 10, message: "delete tmp file" });
+      await deleteFile([buildFileTmp]);
+      // upload config file
+      progress.report({ increment: 10, message: "upload config file" });
+      updataJsonFile(projectPath, eosAndpkgJson, options);
+      progress.report({ increment: 10, message: "build success" });
+
+      return new Promise<string>(resolve => {
+        setTimeout(() => {
+          resolve(eapName);
+        }, 500);
+      });
+    } catch (err) {
+      console.log("[EdgerOS Cli]:", 'info' + err);
+      return '';
     }
-    const projectFileList = await globby(blacklistFile, {
-      cwd: projectPath
-    });
-    let buildFileTmp = path.join(__dirname, "./build_tmp");
-    if (fs.existsSync(buildFileTmp)) await deleteFile([buildFileTmp]);
-    // 普通文件复制
-    for (let i = 0; i < projectFileList.length; i++) {
-      let copyFilePath = projectFileList[i];
-      let targetFilePath = path.join(buildFileTmp, 'program', copyFilePath);
-      await copyProject(path.join(projectPath, copyFilePath), targetFilePath);
-    }
-    // node_modules -> jsre_modules
-    if (fs.existsSync(path.join(projectPath, 'node_modules'))) {
-      let jsreMpath = path.join(buildFileTmp, 'program', 'jsre_modules');
-      fs.mkdirSync(jsreMpath);
-      let sBasePath = path.join(projectPath, 'node_modules');
-      let mods = fs.readdirSync(sBasePath);
-      await copy_module(sBasePath, mods, jsreMpath)
-    }
-    // 将 ico 文件复制到根目录;
-    let icoBigName = eosAndpkgJson.eos.assets.ico_big.split('/').pop();
-    let icoSmallName = eosAndpkgJson.eos.assets.ico_small.split('/').pop();
-    fs.renameSync(path.join(buildFileTmp, 'program', eosAndpkgJson.eos.assets.ico_big), path.join(buildFileTmp, icoBigName));
-    fs.renameSync(path.join(buildFileTmp, 'program', eosAndpkgJson.eos.assets.ico_small), path.join(buildFileTmp, icoSmallName));
-    createDesc(buildFileTmp, eosAndpkgJson);
-    // 压缩
-    let eapName = path.join(projectPath, eosAndpkgJson.pkg.name + '_' + eosAndpkgJson.pkg.version + '.eap');//.zip
-    let tarStream = new compressing.zip.Stream();
-    fs.readdirSync(buildFileTmp).forEach(item => {
-      tarStream.addEntry(path.join(buildFileTmp, item))
-    })
-    let destStream = fs.createWriteStream(eapName);
-    await pipeline(tarStream, destStream);
-    await deleteFile([buildFileTmp]);
-    updataJsonFile(projectPath, eosAndpkgJson, options);
-    return eapName
-  } catch (err) {
-    console.log(err);
-    console.log("[EdgerOS Cli]:", 'info' + err);
-  }
+  })
+
+
 }
 
 
@@ -204,7 +233,6 @@ function createDesc(buildFileTmp: string, eosAndpkgJson: any) {
   descData.program.mesv = eosAndpkgJson.eos.program.mesv.split('.').map((item: string) => Number(item));
   descData.program.release = (new Date()).getTime();
   descData.program.version = eosAndpkgJson.pkg.version.split('.').map((item: string) => Number(item));
-
   descData.vendor = {
     id: eosAndpkgJson.eos.vendor.id,
     name: eosAndpkgJson.eos.vendor.name,

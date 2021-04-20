@@ -1,8 +1,8 @@
 /*
  * @Author: FuWenHao  
  * @Date: 2021-04-16 14:29:46 
- * @Last Modified by:   FuWenHao  
- * @Last Modified time: 2021-04-16 14:29:46 
+ * @Last Modified by: FuWenHao 
+ * @Last Modified time: 2021-04-20 11:31:30
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
@@ -31,7 +31,7 @@ export class EOSTreeItem extends vscode.TreeItem {
       this.command = {
         command: "edgeros.showAddDevView",
         title: "Show Devices Info",
-        arguments: [this.label]
+        arguments: [this]
       };
     } else if (type === 'web') {
       // set title 根据语言环境修改(未实现)
