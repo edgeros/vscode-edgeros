@@ -59,6 +59,14 @@
 					"light": "resources/icon/dark/command_upload.svg",
 					"dark": "resources/icon/dark/command_upload.svg"
 				}
+			},
+			{
+				"command": "edgeros.setConfig",
+				"title": "Open Config"
+			},
+			{
+				"command": "edgeros.openLogFile",
+				"title": "Log File"
 			}
 		],
 		"views": {
@@ -75,6 +83,14 @@
 					"command": "edgeros.showCreateProView",
 					"when": "view == eosManageView",
 					"group": "navigation"
+				},
+				{
+					"command": "edgeros.setConfig",
+					"when": "view == eosManageView"
+				},
+				{
+					"command": "edgeros.openLogFile",
+					"when": "view == eosManageView"
 				}
 			],
 			"view/item/context": [

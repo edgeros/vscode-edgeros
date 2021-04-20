@@ -10,10 +10,10 @@
 
 <body style="background:#eaeaea;">
   <div id="app">
-    <div style="width: 50%;margin: auto;margin-top: 20%;">
+    <div style="width: 50%;margin: auto;margin-top: 10%;">
       <el-form ref="form" :rules="rules" :model="form" label-width="80px">
         <el-form-item label="设备IP" prop="devIp">
-          <el-input :disabled="viewType=='update'" placeholder="请输入设备IP" v-model="form.devIp" @input="inputChange">
+          <el-input placeholder="请输入设备IP" v-model="form.devIp" @input="inputChange">
           </el-input>
         </el-form-item>
         <el-form-item label="设备名称" prop="devName">

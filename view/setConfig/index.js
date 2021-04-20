@@ -38,21 +38,7 @@ const app = new Vue({
     };
 
     return previousState?.data || {
-      form: {
-        divIp: '',
-        devName: '',
-        devPwd: '',
-        devLoginPwd: ''
-      },
-      devices: [],
-      rules: {
-        devIp: [
-          { required: true, validator: checkDevIp, trigger: 'blur' }
-        ],
-        devName: [
-          { required: true, validator: checkDevName, trigger: 'blur' }
-        ],
-      }
+      viewType: 'add',
     };
   },
   filters: {},
