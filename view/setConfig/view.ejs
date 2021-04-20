@@ -10,7 +10,20 @@
 
 <body style="background:#eaeaea;">
   <div id="app">
-    这是配置页面
+    <div style="width: 50%;margin: auto;margin-top: 10%;padding:10px 20px">
+      <el-form ref=" form" :model="form" label-width="180px">
+
+        <el-form-item label="build 文件类型" style="border:1px solid #999;">
+          <el-radio v-model="type" label="1">*.zip</el-radio>
+          <el-radio v-model="type" label="2">*.eap</el-radio>
+        </el-form-item>
+
+        <el-form-item label="版本自增" style="border:1px solid #999;">
+          <el-radio v-model="version" label="1">自增</el-radio>
+          <el-radio v-model="version" label="2">不自增</el-radio>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </body>
 <script type="text/javascript" src="<%=vueJsUri%>"></script>
