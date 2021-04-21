@@ -2,14 +2,14 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-19 10:20:53 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-19 16:02:32
+ * @Last Modified time: 2021-04-21 10:13:02
  */
 import * as vscode from 'vscode';
 import { copyProject, replaceInfo, deleteFile } from './util';
 
 import * as path from "path";
 import * as fs from "fs-extra";
-import axios from "axios";
+import httpClient from '../lib/httpClient';
 import * as compressing from "compressing";
 
 /**
@@ -50,7 +50,7 @@ function downZip(tplInfo: any): Promise<any> {
     let downData = null;
 
     try {
-      downData = await axios.get(tplInfo.downloadUrl, {
+      downData = await httpClient.get(tplInfo.downloadUrl, {
         responseType: 'stream'
       })
     } catch (err) {

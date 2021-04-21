@@ -7,6 +7,8 @@
 
 import * as vscode from 'vscode';
 import registers from './registers';
+import * as fs from 'fs';
+import * as path from 'path';
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log("[EdgerOS Plugin] Start");
@@ -19,6 +21,9 @@ export function activate(context: vscode.ExtensionContext) {
 	for (let provider in registers.providers) {
 		registers.providers[provider](context);
 	}
+
+	// puglin init data
+	fs.writeFileSync(path.join(__dirname, '../log/error.txt'),'###This is the HTTP request error logging file###\r\n')
 }
 
 // this method is called when your extension is deactivated

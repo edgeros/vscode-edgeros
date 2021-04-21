@@ -2,10 +2,12 @@
  * @Author: FuWenHao  
  * @Date: 2021-01-25 10:08:45 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-20 13:47:26
+ * @Last Modified time: 2021-04-21 10:49:08
  */
 import axios from "axios";
-
+import * as fs from "fs-extra";
+import * as moment from "moment";
+import * as path from "path";
 var httpClient = axios.create({
   maxContentLength: 268435456,//256MB
   timeout: 300000,
@@ -28,8 +30,25 @@ httpClient.interceptors.response.use(function (response) {
 
 export default httpClient;
 
-
+/**
+ * httpError Handel
+ * @param error 
+ * @returns 
+ */
 function statusCodeHandle(error: any) {
+  // http request error record
+  fs.appendFileSync(
+    path.join(__dirname, '../../log/error.txt'),
+    `
+  ================= time:${moment().format()} =================
+  host: ${error.config.baseURL}
+  path:${error.config.url}
+  message:${error.message}
+  response:${error.response ? JSON.stringify({ status: error.response.status, data: error.response.data }) : error.response}
+  `,
+    'utf8');
+
+  // http resquest error handle
   if (error.response) {
     if (error.response.status === 401) {
       error = new Error('edger_connect_authenticationFailed.text');
@@ -45,5 +64,6 @@ function statusCodeHandle(error: any) {
       }
     }
   }
+
   return error;
 }
