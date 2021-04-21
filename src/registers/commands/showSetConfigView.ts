@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 15:11:00 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-20 20:29:00
+ * @Last Modified time: 2021-04-21 15:10:50
  */
 import * as vscode from 'vscode';
 import * as config from '../../lib/config';
@@ -39,7 +39,14 @@ export = function (context: vscode.ExtensionContext) {
 
       //reception webview message
       currentPanel.webview.onDidReceiveMessage(async message => {
-        console.log("message");
+        if (message.type == 'update') {
+          context.globalState.update(config.edgerosCfgKey, message.data);
+        } else if (message.type == 'getConfig') {
+          currentPanel?.webview.postMessage({
+            type: '_getConfig',
+            data: context.globalState.get(config.edgerosCfgKey)
+          })
+        }
       });
       // webview close trigger
       currentPanel.onDidDispose(

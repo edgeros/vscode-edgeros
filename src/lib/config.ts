@@ -1,5 +1,7 @@
 // device list storage key
 export const devsStateKey: string = "EgerOs_Devs";
+// edgeros config key
+export const edgerosCfgKey: string = "EgerOs_Config";
 // edgeros log png
 export const edgerosLogo: string = "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/edgeros_logo.png";
 export const edgerosIdePort: number = 82;

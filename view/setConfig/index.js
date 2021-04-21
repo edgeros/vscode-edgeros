@@ -5,8 +5,8 @@ const app = new Vue({
   el: '#app',
   data: () => {
     return previousState?.data || {
-      type: "1",
-      version: "1"
+      buildSuffix: "eap",
+      increment: "yes"
     };
   },
   filters: {},
@@ -14,11 +14,17 @@ const app = new Vue({
 
   },
   methods: {
-    inputChange() {
+    selectChange() {
       vscode.setState({ data: this.$data });
+      vscode.postMessage({
+        type: 'update',
+        data: this.$data
+      })
     },
     onMessageFn(msg) {
-      if (!this.form.devIp && msg.type === '_getConfig') {
+      if (msg.type == '_getConfig') {
+        this.buildSuffix = msg.data.buildSuffix
+        this.increment = msg.data.increment
       }
     }
   },

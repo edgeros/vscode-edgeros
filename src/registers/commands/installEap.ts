@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 15:11:00 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-20 11:41:05
+ * @Last Modified time: 2021-04-21 15:22:06
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
@@ -12,6 +12,7 @@ import { EOSTreeItem } from '../../lib/class/EOSTreeItem';
 import { devsStateKey, edgerosIdePort } from '../../lib/config';
 import httpClient from '../../lib/httpClient';
 import FormData = require('form-data');
+import * as config from '../../lib/config';
 /**
  *command:  edgeros.helloEdgerOS
  */
@@ -21,8 +22,10 @@ export = function (context: vscode.ExtensionContext) {
     if (vscode.workspace.workspaceFolders) {
       if (fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'edgeros.json'))) {
         try {
+          // get egeros config
+          let configInfo: any = context.globalState.get(config.edgerosCfgKey);
           let eapPath: string = await buildEap(vscode.workspace.workspaceFolders[0].uri.fsPath, {
-            nIncrease: false
+            configInfo: configInfo
           });
           let devList: any[] | undefined = context.globalState.get(devsStateKey);
           let devInfo = devList?.find(item => {
