@@ -18,11 +18,11 @@
 		"commands": [
 			{
 				"command": "edgeros.helloEdgerOS",
-				"title": "Hello EdgerOS"
+				"title": "hello.EdgerOS"
 			},
 			{
 				"command": "edgeros.showAddDevView",
-				"title": "Add Device View",
+				"title": "%addDeviceView%",
 				"icon": {
 					"light": "resources/icon/light/command_addDevice.svg",
 					"dark": "resources/icon/dark/command_addDevice.svg"
@@ -30,7 +30,7 @@
 			},
 			{
 				"command": "edgeros.showCreateProView",
-				"title": "Create EdgerOS Project",
+				"title": "%CreateEdgerOSProject%",
 				"icon": {
 					"light": "resources/icon/light/command_createProject.svg",
 					"dark": "resources/icon/dark/command_createProject.svg"
@@ -38,7 +38,7 @@
 			},
 			{
 				"command": "edgeros.openBrowser",
-				"title": "Open Browser",
+				"title": "%OpenBrowser%",
 				"icon": {
 					"light": "resources/icon/light/command_openBrowser.svg",
 					"dark": "resources/icon/dark/command_openBrowser.svg"
@@ -46,7 +46,7 @@
 			},
 			{
 				"command": "edgeros.openConsole",
-				"title": "Open Console",
+				"title": "%OpenConsole%",
 				"icon": {
 					"light": "resources/icon/dark/command_openConsole.svg",
 					"dark": "resources/icon/dark/command_openConsole.svg"
@@ -54,7 +54,7 @@
 			},
 			{
 				"command": "edgeros.installEap",
-				"title": "install App",
+				"title": "%InstallEAP%",
 				"icon": {
 					"light": "resources/icon/dark/command_upload.svg",
 					"dark": "resources/icon/dark/command_upload.svg"
@@ -62,11 +62,11 @@
 			},
 			{
 				"command": "edgeros.setConfig",
-				"title": "Open Config"
+				"title": "%OpenConfig%"
 			},
 			{
 				"command": "edgeros.openLogFile",
-				"title": "Log File"
+				"title": "%LogFile%"
 			}
 		],
 		"views": {
@@ -119,7 +119,7 @@
 		"viewsWelcome": [
 			{
 				"view": "eosManageView",
-				"contents": "此项目并非Edgeros Project.\n[访问官网](http://www.egeros.com)\n[创建项目](command:edgeros.showCreateProView)"
+				"contents": "%welcome%"
 			}
 		],
 		"languages": [

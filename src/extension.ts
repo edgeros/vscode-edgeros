@@ -2,13 +2,17 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 14:58:39 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-10 18:29:40
+ * @Last Modified time: 2021-04-21 20:17:02
  */
 
 import * as vscode from 'vscode';
 import registers from './registers';
 import * as fs from 'fs';
 import * as path from 'path';
+import nlsConfig from './lib/nls';
+
+// The example uses the file message format.
+let localize = nlsConfig(__filename);
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log("[EdgerOS Plugin] Start");
@@ -21,9 +25,9 @@ export function activate(context: vscode.ExtensionContext) {
 	for (let provider in registers.providers) {
 		registers.providers[provider](context);
 	}
-
-	// puglin init data
-	fs.writeFileSync(path.join(__dirname, '../log/error.txt'),'###This is the HTTP request error logging file###\r\n')
+	// plugin init data: clear error.txt
+	const txtHead = localize('errorLogFileHead', '###This is the HTTP request error logging file###\r\n');
+	fs.writeFileSync(path.join(__dirname, '../log/error.txt'), txtHead)
 }
 
 // this method is called when your extension is deactivated

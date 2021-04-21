@@ -1,0 +1,10 @@
+{
+	"welcome": "此项目并非Edgeros Project.\n[访问官网](http://www.egeros.com)\n[创建项目](command:edgeros.showCreateProView)",
+	"addDeviceView": "添加设备",
+	"CreateEdgerOSProject": "新建项目",
+	"OpenBrowser": "浏览器打开",
+	"OpenConsole": "打开控制台输出",
+	"InstallEAP": "安装EAP",
+	"OpenConfig": "打开配置项",
+	"LogFile": "打开日志文件"
+}
