@@ -4,3 +4,4 @@ node_modules
 .vscode-test/
 *.vsix
 **/z_element-ui.css
+log/error.txt
