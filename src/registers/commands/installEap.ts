@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 15:11:00 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-22 19:32:14
+ * @Last Modified time: 2021-04-22 19:34:39
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
@@ -44,7 +44,6 @@ export = function (context: vscode.ExtensionContext) {
             let installMsg = await installEap(eapPath.split(path.sep).pop() as string, devInfo.devIp, devInfo.devPwd);
             return installMsg
           })
-
           vscode.window.showInformationMessage('install app success');
         } catch (err) {
           vscode.window.showErrorMessage('Install Eap : ' + err);
@@ -80,12 +79,12 @@ async function uploadEap(eapPath: string, devIp: string, devPwd: string) {
     .then(function (response) {
       return `Upload completed. ${eapPath}`;
     })
-    // .catch(function (err) {
-    //   vscode.window.showErrorMessage(
-    //     `Upload failed. - Network connection timeout`
-    //   );
-    //   throw err;
-    // });
+  // .catch(function (err) {
+  //   vscode.window.showErrorMessage(
+  //     `Upload failed. - Network connection timeout`
+  //   );
+  //   throw err;
+  // });
 }
 
 async function installEap(eapName: string, devIp: string, devPwd: string) {
@@ -106,8 +105,8 @@ async function installEap(eapName: string, devIp: string, devPwd: string) {
     .then(function (response) {
       return `Installation completed.`;
     })
-    // .catch(function (err) {
-    //   vscode.window.showErrorMessage(`Installation failed. - Network connection timeout`);
-    //   throw err;
-    // });
+  // .catch(function (err) {
+  //   vscode.window.showErrorMessage(`Installation failed. - Network connection timeout`);
+  //   throw err;
+  // });
 }

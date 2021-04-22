@@ -2,9 +2,11 @@
 	"name": "edgeros",
 	"displayName": "edgeros",
 	"description": "EdgerOS development extension for VSC.",
-	"version": "0.0.1",
+	"version": "0.1.1",
+	"publisher": "EdgerOS",
+	"repository": "https://github.com/edgeros/vsce.git",
 	"engines": {
-		"vscode": "^1.46.0"
+		"vscode": "^1.55.0"
 	},
 	"categories": [
 		"Other"
@@ -139,6 +141,7 @@
 		]
 	},
 	"scripts": {
+		"pack": "vsce package",
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
@@ -152,7 +155,7 @@
 		"@types/glob": "^7.1.3",
 		"@types/mocha": "^8.0.4",
 		"@types/node": "^12.11.7",
-		"@types/vscode": "^1.46.0",
+		"@types/vscode": "^1.55.0",
 		"@typescript-eslint/eslint-plugin": "^4.9.0",
 		"@typescript-eslint/parser": "^4.9.0",
 		"eslint": "^7.15.0",
