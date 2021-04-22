@@ -13,11 +13,6 @@ export const edgerOsWebData: any = [
     title: 'Api',
     "title_zh-cn": '接口文档'
 
-  },
-  {
-    url: "https://www.edgeros.com/",
-    title: 'skypegmwcn',
-    "title_zh-cn": "官网"
   }
 ];
 

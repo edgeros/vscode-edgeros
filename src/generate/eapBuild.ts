@@ -88,7 +88,7 @@ export default async function buildEap(workspacePath: string, options: any): Pro
 
       // 压缩
       progress.report({ increment: 50, message: "compressing..." });
-      let eapName = path.join(projectPath, eosAndpkgJson.pkg.name + '_' + eosAndpkgJson.pkg.version + ('.' + options.configInfo?.buildSuffix || '.eap'));//.zip
+      let eapName = path.join(projectPath, eosAndpkgJson.pkg.name + '_' + eosAndpkgJson.pkg.version + ('.' + (options.configInfo?.buildSuffix ? options.configInfo?.buildSuffix : 'eap')));//.zip
       let tarStream = new compressing.zip.Stream();
       fs.readdirSync(buildFileTmp).forEach(item => {
         tarStream.addEntry(path.join(buildFileTmp, item))
