@@ -12,14 +12,14 @@
   <div id="app">
     <div style="margin: auto;margin-top: 10%;padding:10px 20px">
       <el-form label-width="180px">
-        <el-form-item label="build 文件类型" style="border:1px solid #999;text-align: center;">
+        <el-form-item label="<%=language.buildTypeTxt%>" style="border:1px solid #999;text-align: center;">
           <el-radio-group v-model="buildSuffix" @change="selectChange">
             <el-radio label="zip">*.zip</el-radio>
             <el-radio label="eap">*.eap</el-radio>
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="版本自增" style="border:1px solid #999;text-align: center;">
+        <el-form-item label="<%=language.incrementVersionTxt%>" style="border:1px solid #999;text-align: center;">
           <el-radio-group v-model="increment" @change="selectChange">
             <el-radio label="yes">Yes</el-radio>
             <el-radio label="no">No</el-radio>

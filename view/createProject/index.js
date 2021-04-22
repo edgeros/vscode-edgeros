@@ -13,6 +13,7 @@ const app = new Vue({
     return previousState?.data || {
       templateList: [],
       selectTplName: '',
+      loading: false,
       form: {
         name: '',
         bundleid: 'com.edgeros.',
@@ -58,11 +59,7 @@ const app = new Vue({
         this.selectTplName = this.templateList[0].tplName;
         this.inputChange();
       } else if (msg.type === '_createProject') {
-        if (msg.data === 'success') {
-          console.log('>>>>>创建成功');
-        } else {
-          console.log('>>>>创建失败');
-        }
+        this.loading = false;
       }
     },
     selectSavePath() {
@@ -75,7 +72,7 @@ const app = new Vue({
       this.inputChange();
     },
     onSubmit() {
-      console.log(">>>>", "<<<<")
+      this.loading = true;
       this.$refs['form'].validate((valid) => {
         console.log("form", valid)
         if (valid) {

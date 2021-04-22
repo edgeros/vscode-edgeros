@@ -2,13 +2,15 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 15:11:00 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-21 15:10:50
+ * @Last Modified time: 2021-04-22 19:04:13
  */
 import * as vscode from 'vscode';
 import * as config from '../../lib/config';
 import * as ejs from 'ejs';
 import * as common from '../../lib/common';
 import * as path from 'path';
+import urlConfig from '../../lib/nls';
+const localize = urlConfig(__filename);
 /**
  *command:  edgeros.helloEdgerOS
  */
@@ -34,6 +36,10 @@ export = function (context: vscode.ExtensionContext) {
       // set html 
       currentPanel.webview.html = await ejs.renderFile(path.join(context.extensionPath, 'view', webViewFileName, 'view.ejs'), {
         ...assetUris,
+        language: {
+          buildTypeTxt: localize("buildType.txt", "Build Type"),
+          incrementVersionTxt: localize("incrementVersion.txt", "Increment Version")
+        }
       });
 
 

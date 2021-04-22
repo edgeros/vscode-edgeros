@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-22 17:45:02
+ * @Last Modified time: 2021-04-22 18:54:04
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -59,7 +59,7 @@ export = function (context: vscode.ExtensionContext) {
           "otherText": localize('other.txt', "Other"),
           "openFileText": localize('openFile.txt', "Open Project"),
           "selectPathText": localize('selectPath.txt', "Select Path"),
-          "nameNotEmptyText": localize('nameNotEmpty.txt', 'Name Not Empty')
+          "nameNotEmptyText": localize('nameNotEmpty.txt', "Name Not Empty")
         }
       });
 
@@ -125,7 +125,7 @@ async function WebCmdHandle(currentPanel: vscode.WebviewPanel, message: any) {
         newProjectPath = await cloudMode(tplInfo, message.data);
       }
 
-      if (message.data.other.findIndex('openFile') != -1) {
+      if (message.data.other.indexOf('openFile') != -1) {
         let newProUri = vscode.Uri.file(newProjectPath);
         await vscode.commands.executeCommand(
           'vscode.openFolder',
@@ -138,6 +138,7 @@ async function WebCmdHandle(currentPanel: vscode.WebviewPanel, message: any) {
         type: '_createProject',
         data: 'success'
       });
+      currentPanel.dispose();
     }
   } catch (err) {
     currentPanel.dispose();
