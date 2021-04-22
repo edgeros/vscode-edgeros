@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 15:11:00 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-21 15:22:06
+ * @Last Modified time: 2021-04-22 19:29:28
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
@@ -32,12 +32,22 @@ export = function (context: vscode.ExtensionContext) {
             return item.devName === options[0].label
           })
 
-          await uploadEap(eapPath, devInfo.devIp, devInfo.devPwd);
-          await installEap(eapPath.split(path.sep).pop() as string, devInfo.devIp, devInfo.devPwd);
+          // Progress 动效
+          let installMsg = await vscode.window.withProgress({
+            location: vscode.ProgressLocation.Window,
+            title: "EdgerOS",
+            cancellable: false
+          }, async (progress, token) => {
+            progress.report({ message: "Upload EAP" });
+            let uploadMsg = await uploadEap(eapPath, devInfo.devIp, devInfo.devPwd);
+            progress.report({ message: "Install EAP" });
+            let installMsg = await installEap(eapPath.split(path.sep).pop() as string, devInfo.devIp, devInfo.devPwd);
+            return installMsg
+          })
 
           vscode.window.showInformationMessage('install app success');
         } catch (err) {
-          vscode.window.showErrorMessage('install Eap Error:' + err);
+          vscode.window.showErrorMessage('Install Eap Error:' + err);
         }
       } else {
         vscode.window.showErrorMessage('No edgeros project');
@@ -68,17 +78,14 @@ async function uploadEap(eapPath: string, devIp: string, devPwd: string) {
   return httpClient
     .post('/upload', form, uploadApiConfig)
     .then(function (response) {
-      console.log(`Upload completed. ${eapPath}`);
+      return `Upload completed. ${eapPath}`;
     })
-    .catch(function (err) {
-      console.log(
-        `Upload Failed. ${err}`
-      );
-      vscode.window.showErrorMessage(
-        `Upload failed. - Network connection timeout`
-      );
-      throw err;
-    });
+    // .catch(function (err) {
+    //   vscode.window.showErrorMessage(
+    //     `Upload failed. - Network connection timeout`
+    //   );
+    //   throw err;
+    // });
 }
 
 async function installEap(eapName: string, devIp: string, devPwd: string) {
@@ -97,12 +104,10 @@ async function installEap(eapName: string, devIp: string, devPwd: string) {
   return httpClient
     .post('/install', { eap: eapName }, installApiConfig)
     .then(function (response) {
-      console.log(`Installation completed.`);
+      return `Installation completed.`;
     })
-    .catch(function (err) {
-      console.log(err.response)
-      console.log(`Installation failed.${err}`);
-      vscode.window.showErrorMessage(`Installation failed. - Network connection timeout`);
-      throw err;
-    });
+    // .catch(function (err) {
+    //   vscode.window.showErrorMessage(`Installation failed. - Network connection timeout`);
+    //   throw err;
+    // });
 }
