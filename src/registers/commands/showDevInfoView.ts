@@ -2,15 +2,17 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-20 18:28:58
+ * @Last Modified time: 2021-04-22 16:31:58
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
-import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as common from '../../lib/common';
 import * as config from '../../lib/config';
 import { EOSTreeItem } from '../../lib/class/EOSTreeItem';
+import nlsConfig from '../../lib/nls';
+const localize = nlsConfig(__filename);
+
 /**
  *command:  edgeros.showAddDevView
  *show add device page
@@ -39,7 +41,24 @@ export = function (context: vscode.ExtensionContext) {
         let assetUris = await common.getWebViewBaseUris(webViewFileName, currentPanel, context);
         //set html str
         currentPanel.webview.html = await ejs.renderFile(path.join(context.extensionPath, 'view', webViewFileName, 'view.ejs'), {
-          ...assetUris
+          ...assetUris,
+          language: {
+            devIpTxt: localize('devIp.txt', 'Device IP'),
+            devNameTxt: localize('devName.txt', 'Device Name'),
+            devPwdTxt: localize('devPwd.txt', 'Device Password'),
+            devLoginPwdText: localize('devLoginPwd.txt', 'Device Login Password'),
+            devUpdate: localize("devUpdate.txt", 'Update'),
+            devDelete: localize("devDelete.txt", 'Delete'),
+            ipNotEmptyText: localize('ipNotEmpty.txt', "IP Not Empty"),
+            ipExistText: localize('ipNotEmpty.Text', "IP Not Empty"),
+            ipIncorrectFormatText: localize('ipIncorrectFormat.Text', "IP Incorrect Format"),
+            devNameNotEmptyText: localize('devNameNotEmpty.Text', "Device Name Not Empty"),
+            devNameExistText: localize('devNameExist.Text', "Device Name Exist"),
+            devDeleteHintTitleText: localize("devDeleteHintTitle.Text", "Hint"),
+            devDeleteHintContextText: localize("devDeleteHintContext.Text", "Are you sure to delete this device?"),
+            devDeleteHintYesButtonText: localize("devDeleteHintYesButton.Text", "Confirm"),
+            devDeleteHintNoButtonText: localize("devDeleteHintNoButton.Text", "Cancel")
+          }
         });
         currentPanel.iconPath = vscode.Uri.parse(config.edgerosLogo);
         currentPanel.webview.onDidReceiveMessage(

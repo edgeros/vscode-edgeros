@@ -12,13 +12,12 @@ export const languge = (JSON.parse(process.env.VSCODE_NLS_CONFIG ? process.env.V
  * nls翻译解析
  * @param filePath :文件路径
  */
-export default function nlsConfig(filePath: string) {
+export function nlsConfig(filePath: string) {
   let filePathArray = filePath.split(path.sep);
   let fileName = filePathArray.pop(); // fileName
   let dirPath = filePathArray.join(path.sep);//root path
   let i18nFilePath = [];
   while (true) {
-    console.log(dirPath);
     let dirs = fs.readdirSync(dirPath);
     if (dirs.indexOf('package.json') != -1) {
       break
@@ -37,3 +36,5 @@ export default function nlsConfig(filePath: string) {
     return jsonData[key] || value
   }
 }
+export default nlsConfig
+

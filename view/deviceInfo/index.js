@@ -6,31 +6,31 @@ const app = new Vue({
   data: () => {
     var checkDevIp = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('ip不能为空'));
+        return callback(new Error(ipNotEmptyText));
       }
       if (/^\d+\.\d+\.\d+\.\d+$/g.test(value)) {
         let devItem = devicesList.find(item => {
           return item.devIp === value;
         });
         if (devItem) {
-          callback(new Error('已存在相同IP设备'));
+          callback(new Error(ipExistText));
         } else {
           callback();
         }
       } else {
-        callback(new Error('请输入正确IP地址'));
+        callback(new Error(ipIncorrectFormatText));
       }
     };
 
     var checkDevName = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('设备名不能为空'));
+        return callback(new Error(devNameNotEmptyText));
       }
       let devItem = devicesList.find(item => {
         return item.devName === value;
       });
       if (devItem) {
-        callback(new Error('存在相同名称设备'));
+        callback(new Error(devNameExistText));
       } else {
         callback();
       }
@@ -68,9 +68,9 @@ const app = new Vue({
       });
     },
     onDelete() {
-      this.$confirm('此操作将永久删除该设备, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(devDeleteHintContextText, devDeleteHintTitleText, {
+        confirmButtonText: devDeleteHintYesButtonText,
+        cancelButtonText: devDeleteHintNoButtonText,
         type: 'warning'
       }).then(() => {
         vscode.postMessage({
@@ -80,7 +80,6 @@ const app = new Vue({
           }
         });
       });
-
     },
     onMessageFn(msg) {
       if (!this.form.devIp && msg.type === '_getDeviceData') {
