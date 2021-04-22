@@ -1,0 +1,18 @@
+{
+  "templateList.txt": "模板列表",
+  "name.txt": "项目名",
+  "buildid.txt": "包id",
+  "savePath.txt": "保存路径",
+  "Description.txt": "项目描述",
+  "version.txt": "版本号",
+  "vendorId.txt": "提供商id",
+  "vendorName.txt": "提供商名称",
+  "vendorEmail.txt": "提供商邮箱",
+  "vendorPhone.txt": "提供商手机",
+  "vendorFax.txt": "提供商传真",
+  "createButton.txt": "立即创建",
+  "other.txt": "其他项",
+  "openFile.txt": "打开项目",
+  "selectPath.txt": "选择路径",
+  "nameNotEmpty.txt": "项目名不能为空"
+}

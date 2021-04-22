@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-19 16:04:50
+ * @Last Modified time: 2021-04-22 17:45:02
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -12,6 +12,8 @@ import * as common from '../../lib/common';
 import * as config from '../../lib/config';
 import localMode from '../../generate/localMode';
 import cloudMode from '../../generate/cloudMode';
+import nlsConfig from '../../lib/nls';
+const localize = nlsConfig(__filename);
 
 /**
  *command:  edgeros.showCreateProView
@@ -40,7 +42,25 @@ export = function (context: vscode.ExtensionContext) {
       // set html 
       currentPanel.webview.html = await ejs.renderFile(path.join(context.extensionPath, 'view', webViewFileName, 'view.ejs'), {
         ...assetUris,
-        cssUri
+        cssUri,
+        language: {
+          "templateListTxt": localize('templateList.txt', "Template List"),
+          "nameTxt": localize('name.txt', "Name"),
+          "buildidTxt": localize('buildid.txt', "Buildid"),
+          "savePathTxt": localize('savePath.txt', "Save Path"),
+          "descriptionTxt": localize('Description.txt', "Description"),
+          "versionTxt": localize('version.txt', "Version"),
+          "vendorIdTxt": localize('vendorId.txt', "Vendor Id"),
+          "vendorNameTxt": localize('vendorName.txt', "Vendor Name"),
+          "vendorEmailTxt": localize('vendorEmail.txt', "Vendor Email"),
+          "vendorPhoneTxt": localize('vendorPhone.txt', "Vendor Phone"),
+          "vendorFaxTxt": localize('vendorFax.txt', "Vendor Fax"),
+          "createButtonTxt": localize('createButton.txt', "Create"),
+          "otherText": localize('other.txt', "Other"),
+          "openFileText": localize('openFile.txt', "Open Project"),
+          "selectPathText": localize('selectPath.txt', "Select Path"),
+          "nameNotEmptyText": localize('nameNotEmpty.txt', 'Name Not Empty')
+        }
       });
 
       //reception webview message

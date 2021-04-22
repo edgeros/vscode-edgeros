@@ -1,0 +1,17 @@
+{
+  "devIp.txt": "设备IP",
+  "devName.txt": "设备名称",
+  "devPwd.txt": "开发密码",
+  "devLoginPwd.txt": "登录密码",
+  "devUpdate.txt": "更新设备",
+  "devDelete.txt": "删除设备",
+  "ipNotEmpty.Text": "ip不能为空",
+  "ipExist.Text": "已存在相同IP设备",
+  "ipIncorrectFormat.text": "请输入正确IP地址",
+  "devNameNotEmpty.Text": "设备名不能为空",
+  "devNameExist.Text": "存在相同名称设备",
+  "devDeleteHintTitle.Text": "提示",
+  "devDeleteHintContext.Text": "此操作将永久删除该设备, 是否继续?",
+  "devDeleteHintYesButton.Text": "确定",
+  "devDeleteHintNoButton.Text": "取消"
+}

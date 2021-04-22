@@ -3,6 +3,13 @@ const previousState = vscode.getState();
 const app = new Vue({
   el: '#app',
   data: () => {
+    var checkName = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error(nameNotEmptyText));
+      } else {
+        callback();
+      }
+    };
     return previousState?.data || {
       templateList: [],
       selectTplName: '',
@@ -18,12 +25,15 @@ const app = new Vue({
         vendorPhone: '',
         vendorFax: '',
         other: []
+      },
+      rules: {
+        name: [
+          { required: true, validator: checkName, trigger: 'blur' }
+        ]
       }
     };
   },
   filters: {},
-  created() {
-  },
   mounted() {
     if (this.templateList.length === 0) { vscode.postMessage({ type: 'getInfoData' }) };
   },
@@ -65,11 +75,17 @@ const app = new Vue({
       this.inputChange();
     },
     onSubmit() {
-      vscode.postMessage({
-        type: 'createProject',
-        data: {
-          ...this.form,
-          tplName: this.selectTplName
+      console.log(">>>>", "<<<<")
+      this.$refs['form'].validate((valid) => {
+        console.log("form", valid)
+        if (valid) {
+          vscode.postMessage({
+            type: 'createProject',
+            data: {
+              ...this.form,
+              tplName: this.selectTplName
+            }
+          });
         }
       });
     }

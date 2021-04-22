@@ -8,13 +8,18 @@
   <link rel="shortcut icon" href="https://csdnimg.cn/public/favicon.ico">
   <link rel="stylesheet" href="<%=elementUiCssUri%>">
   <link rel="stylesheet" href="<%=cssUri%>">
+  <script>
+    let nameNotEmptyText = '<%=language.nameNotEmptyText%>';
+  </script>
 </head>
 
 <body style="background:#eaeaea;">
   <div id="app" style="margin:0px;">
     <el-container style="height: 850px; border: 1px solid #eee;background: #fff;">
       <el-aside class="tpl" width="250px">
-        <div class="tplTitle">模板列表</div>
+        <div class="tplTitle">
+          <%=language.templateListTxt%>
+        </div>
         <div v-for="item in templateList">
           <div :class="['tplBackground',selectTplName==item.tplName?'tplSelect':'']" @click="selectTpl(item)">
             <el-image class="img" :src="item.imageSrc" fit="fit">
@@ -25,48 +30,52 @@
       </el-aside>
 
       <el-main style="border-left: 1px solid #eee;">
-        <el-form ref="form" :model="form" label-width="100px">
-          <el-form-item label="Name">
+        <el-form ref="form" :rules="rules" :model="form" label-width="100px">
+          <el-form-item label="<%=language.nameTxt%>" prop="name">
             <el-input v-model="form.name" @input="inputChange"></el-input>
           </el-form-item>
-          <el-form-item label="BuildID">
+          <el-form-item label="<%=language.buildidTxt%>" prop="bundleid">
             <el-input v-model="form.bundleid" @input="inputChange"></el-input>
           </el-form-item>
-          <el-form-item label="Save Path">
-            <el-input disabled placeholder="请输入内容" v-model="form.savePath" class="input-with-select"
-              @input="inputChange">
-              <el-button slot="append" @click="selectSavePath">选择路径</el-button>
+          <el-form-item label="<%=language.savePathTxt%>" prop="savePath">
+            <el-input disabled placeholder="" v-model="form.savePath" class="input-with-select" @input="inputChange">
+              <el-button slot="append" @click="selectSavePath">
+                <%=language.selectPathText%>
+              </el-button>
             </el-input>
           </el-form-item>
-          <el-form-item label="Description">
+          <el-form-item label="<%=language.descriptionTxt%>" prop="description">
             <el-input v-model="form.description" @input="inputChange"></el-input>
           </el-form-item>
-          <el-form-item label="Version">
+          <el-form-item label="<%=language.versionTxt%>" prop="version">
             <el-input v-model="form.version" @input="inputChange"></el-input>
           </el-form-item>
-          <el-form-item label="Vendor Id">
+          <el-form-item label="<%=language.vendorIdTxt%>" prop="vendorId">
             <el-input v-model="form.vendorId" @input="inputChange" placeholder="required when publish"></el-input>
           </el-form-item>
-          <el-form-item label="Vendor Name">
+          <el-form-item label="<%=language.vendorNameTxt%>" prop="vendorName">
             <el-input v-model="form.vendorName" @input="inputChange" placeholder="required when publish"></el-input>
           </el-form-item>
-          <el-form-item label="Vendor Email">
+          <el-form-item label="<%=language.vendorEmailTxt%>" prop="vendorEmail">
             <el-input v-model="form.vendorEmail" @input="inputChange" placeholder="required when publish"></el-input>
           </el-form-item>
-          <el-form-item label="Vendor Phone">
+          <el-form-item label="<%=language.vendorPhoneTxt%>" prop="vendorPhone">
             <el-input v-model="form.vendorPhone" @input="inputChange"></el-input>
           </el-form-item>
-          <el-form-item label="Vendor Fax">
+          <el-form-item label="<%=language.vendorFaxTxt%>" prop="vendorFax">
             <el-input v-model="form.vendorFax" @input="inputChange"></el-input>
           </el-form-item>
-          <el-form-item label="其他项">
+          <el-form-item label="<%=language.otherText%>" prop="other">
             <el-checkbox-group v-model="form.other" @change="inputChange">
-              <el-checkbox label="gitInit">git 初始化</el-checkbox>
-              <el-checkbox label="openFile">打开项目</el-checkbox>
+              <el-checkbox label="openFile">
+                <%=language.openFileText%>
+              </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">立即创建</el-button>
+            <el-button type="primary" @click="onSubmit">
+              <%=language.createButtonTxt%>
+            </el-button>
           </el-form-item>
         </el-form>
       </el-main>
@@ -76,4 +85,5 @@
 <script type="text/javascript" src="<%=vueJsUri%>"></script>
 <script type="text/javascript" src="<%=elementUiJsUri%>"></script>
 <script type="text/javascript" src="<%=indexJsUri%>"></script>
+
 </html>
