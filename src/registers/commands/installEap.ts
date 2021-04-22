@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 15:11:00 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-22 19:29:28
+ * @Last Modified time: 2021-04-22 19:32:14
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
@@ -47,7 +47,7 @@ export = function (context: vscode.ExtensionContext) {
 
           vscode.window.showInformationMessage('install app success');
         } catch (err) {
-          vscode.window.showErrorMessage('Install Eap Error:' + err);
+          vscode.window.showErrorMessage('Install Eap : ' + err);
         }
       } else {
         vscode.window.showErrorMessage('No edgeros project');
