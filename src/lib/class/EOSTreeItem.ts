@@ -2,10 +2,11 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-16 14:29:46 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-20 14:10:41
+ * @Last Modified time: 2021-04-22 11:04:27
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as nls from '../nls';
 
 /**
  * 
@@ -34,9 +35,8 @@ export class EOSTreeItem extends vscode.TreeItem {
         arguments: [this]
       };
     }
-    // set title 根据语言环境修改(未实现)
     else if (type === 'web') {
-      this.label = this.options.title;
+      this.label = this.options['title_' + nls.languge] || this.options.title;
       this.options.showTitle = this.label;
       this.command = {
         command: "edgeros.showWebView",

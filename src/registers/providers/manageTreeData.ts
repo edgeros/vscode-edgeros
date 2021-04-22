@@ -9,6 +9,9 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as config from '../../lib/config';
 import { EOSTreeItem } from '../../lib/class/EOSTreeItem';
+import nlsConfig from '../../lib/nls';
+const localize = nlsConfig(__filename);
+
 /**
  *Edgeros device  view Tree
  */
@@ -89,7 +92,8 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
     config.edgerOsWebData.forEach((webItem: any) => {
       devices.push(new EOSTreeItem(webItem.url, vscode.TreeItemCollapsibleState.None, 'web', webItem));
     });
-    devices.push(new EOSTreeItem('Build Eap', vscode.TreeItemCollapsibleState.None, 'buildEap'));
+
+    devices.push(new EOSTreeItem(localize('buildEAP.txt', 'Build Eap'), vscode.TreeItemCollapsibleState.None, 'buildEap'));
     return devices;
   }
 
@@ -98,8 +102,8 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
    * @returns 
    */
   private showTreeRootItem(): EOSTreeItem[] {
-    let newProject = new EOSTreeItem('设备管理', vscode.TreeItemCollapsibleState.Expanded, 'deviceList');
-    let devicesDir = new EOSTreeItem('其他功能', vscode.TreeItemCollapsibleState.Collapsed, 'other');
+    let newProject = new EOSTreeItem(localize('deviceList.txt', 'Devices'), vscode.TreeItemCollapsibleState.Expanded, 'deviceList');
+    let devicesDir = new EOSTreeItem(localize('other.txt', 'other'), vscode.TreeItemCollapsibleState.Collapsed, 'other');
     return [newProject, devicesDir];
   }
 

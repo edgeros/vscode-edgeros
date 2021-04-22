@@ -10,13 +10,14 @@ export const edgerConsolePort: number = 81;
 export const edgerOsWebData: any = [
   {
     url: "https://docs.t.e0a.cc/edgeros/api/overview.html",
-    title: 'Api文档',
-    titleEn: 'api'
+    title: 'Api',
+    "title_zh-cn": '接口文档'
+
   },
   {
     url: "https://www.edgeros.com/",
-    title: "官网",
-    titleEn: 'skypegmwcn'
+    title: 'skypegmwcn',
+    "title_zh-cn": "官网"
   }
 ];
 
