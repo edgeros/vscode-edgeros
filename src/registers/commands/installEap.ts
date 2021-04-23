@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 15:11:00 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-22 19:34:39
+ * @Last Modified time: 2021-04-23 17:53:33
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
@@ -18,39 +18,42 @@ import * as config from '../../lib/config';
  */
 export = function (context: vscode.ExtensionContext) {
   let disposable = vscode.commands.registerCommand('edgeros.installEap', async (...options: EOSTreeItem[]) => {
-    // console.log("触发指令后参数", options);
-    if (vscode.workspace.workspaceFolders) {
-      if (fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'edgeros.json'))) {
-        try {
-          // get egeros config
-          let configInfo: any = context.globalState.get(config.edgerosCfgKey);
-          let eapPath: string = await buildEap(vscode.workspace.workspaceFolders[0].uri.fsPath, {
-            configInfo: configInfo
-          });
-          let devList: any[] | undefined = context.globalState.get(devsStateKey);
-          let devInfo = devList?.find(item => {
-            return item.devName === options[0].label
-          })
+    try {
+      if (vscode.workspace.workspaceFolders) {
+        if (fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'edgeros.json'))) {
+          try {
+            // get egeros config
+            let configInfo: any = context.globalState.get(config.edgerosCfgKey);
+            let eapPath: string = await buildEap(vscode.workspace.workspaceFolders[0].uri.fsPath, {
+              configInfo: configInfo
+            });
+            let devList: any[] | undefined = context.globalState.get(devsStateKey);
+            let devInfo = devList?.find(item => {
+              return item.devName === options[0].label
+            })
 
-          // Progress 动效
-          let installMsg = await vscode.window.withProgress({
-            location: vscode.ProgressLocation.Window,
-            title: "EdgerOS",
-            cancellable: false
-          }, async (progress, token) => {
-            progress.report({ message: "Upload EAP" });
-            let uploadMsg = await uploadEap(eapPath, devInfo.devIp, devInfo.devPwd);
-            progress.report({ message: "Install EAP" });
-            let installMsg = await installEap(eapPath.split(path.sep).pop() as string, devInfo.devIp, devInfo.devPwd);
-            return installMsg
-          })
-          vscode.window.showInformationMessage('install app success');
-        } catch (err) {
-          vscode.window.showErrorMessage('Install Eap : ' + err);
+            // Progress 动效
+            let installMsg = await vscode.window.withProgress({
+              location: vscode.ProgressLocation.Window,
+              title: "EdgerOS",
+              cancellable: false
+            }, async (progress, token) => {
+              progress.report({ message: "Upload EAP" });
+              let uploadMsg = await uploadEap(eapPath, devInfo.devIp, devInfo.devPwd);
+              progress.report({ message: "Install EAP" });
+              let installMsg = await installEap(eapPath.split(path.sep).pop() as string, devInfo.devIp, devInfo.devPwd);
+              return installMsg
+            })
+            vscode.window.showInformationMessage('install app success');
+          } catch (err) {
+            vscode.window.showErrorMessage('Install Eap : ' + err);
+          }
+        } else {
+          vscode.window.showErrorMessage('No edgeros project');
         }
-      } else {
-        vscode.window.showErrorMessage('No edgeros project');
       }
+    } catch (err) {
+      vscode.window.showErrorMessage(err.message);
     }
   });
   context.subscriptions.push(disposable);
@@ -79,12 +82,6 @@ async function uploadEap(eapPath: string, devIp: string, devPwd: string) {
     .then(function (response) {
       return `Upload completed. ${eapPath}`;
     })
-  // .catch(function (err) {
-  //   vscode.window.showErrorMessage(
-  //     `Upload failed. - Network connection timeout`
-  //   );
-  //   throw err;
-  // });
 }
 
 async function installEap(eapName: string, devIp: string, devPwd: string) {
@@ -105,8 +102,4 @@ async function installEap(eapName: string, devIp: string, devPwd: string) {
     .then(function (response) {
       return `Installation completed.`;
     })
-  // .catch(function (err) {
-  //   vscode.window.showErrorMessage(`Installation failed. - Network connection timeout`);
-  //   throw err;
-  // });
 }

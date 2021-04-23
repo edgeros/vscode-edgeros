@@ -3,10 +3,14 @@ import * as stream from 'stream';
 import * as  util from 'util';
 const pipeline = util.promisify(stream.pipeline);
 import * as path from "path";
-import * as fs from "fs-extra";
+import * as fs from "fs";
 import * as globby from "globby";
 import { copyProject, replaceInfo, deleteFile } from './util';
 import * as vscode from 'vscode';
+import * as jschardet from "jschardet";
+const readdir = util.promisify(fs.readdir);
+
+
 //hard code modules filter name list
 var blackModslist: string[] = [];
 
@@ -40,79 +44,89 @@ export default async function buildEap(workspacePath: string, options: any): Pro
     "!*.zip"
   ];
 
-  return await vscode.window.withProgress({
+  let eapPathUrl: string = await vscode.window.withProgress({
     location: vscode.ProgressLocation.Notification,
     title: "Building EAP",
     cancellable: false
   }, async (progress, token) => {
-    try {
-
-      progress.report({ increment: 10, message: "build common file" });
-      let projectPath = workspacePath;
-      let eosAndpkgJson = getEosAndPkgJson(projectPath);
-      userFilterMods = eosAndpkgJson.eos.ignore_modules || [];
-      if (eosAndpkgJson.eos.ignore_path && eosAndpkgJson.eos.ignore_path.length > 0) {
-        eosAndpkgJson.eos.ignore_path.forEach((path: string) => {
-          blacklistFile.push('!' + path);
-        })
-      }
-      const projectFileList = await globby(blacklistFile, {
-        cwd: projectPath
-      });
-      let buildFileTmp = path.join(__dirname, "./build_tmp");
-      if (fs.existsSync(buildFileTmp)) await deleteFile([buildFileTmp]);
-      // 普通文件复制
-      for (let i = 0; i < projectFileList.length; i++) {
-        let copyFilePath = projectFileList[i];
-        let targetFilePath = path.join(buildFileTmp, 'program', copyFilePath);
-        await copyProject(path.join(projectPath, copyFilePath), targetFilePath);
-      }
-
-      // node_modules -> jsre_modules
-      progress.report({ increment: 10, message: "node_modules build jsre_modules" });
-      if (fs.existsSync(path.join(projectPath, 'node_modules'))) {
-        let jsreMpath = path.join(buildFileTmp, 'program', 'jsre_modules');
-        fs.mkdirSync(jsreMpath);
-        let sBasePath = path.join(projectPath, 'node_modules');
-        let mods = fs.readdirSync(sBasePath);
-        await copy_module(sBasePath, mods, jsreMpath)
-      }
-
-      // 将 ico 文件复制到根目录;
-      progress.report({ increment: 10, message: "Adjusting file structure" });
-      let icoBigName = eosAndpkgJson.eos.assets.ico_big.split('/').pop();
-      let icoSmallName = eosAndpkgJson.eos.assets.ico_small.split('/').pop();
-      fs.renameSync(path.join(buildFileTmp, 'program', eosAndpkgJson.eos.assets.ico_big), path.join(buildFileTmp, icoBigName));
-      fs.renameSync(path.join(buildFileTmp, 'program', eosAndpkgJson.eos.assets.ico_small), path.join(buildFileTmp, icoSmallName));
-      createDesc(buildFileTmp, eosAndpkgJson);
-
-      // 压缩
-      progress.report({ increment: 50, message: "compressing..." });
-      let eapName = path.join(projectPath, eosAndpkgJson.pkg.name + '_' + eosAndpkgJson.pkg.version + ('.' + (options.configInfo?.buildSuffix ? options.configInfo?.buildSuffix : 'eap')));//.zip
-      let tarStream = new compressing.zip.Stream();
-      fs.readdirSync(buildFileTmp).forEach(item => {
-        tarStream.addEntry(path.join(buildFileTmp, item))
+    progress.report({ message: "build common file" });
+    let projectPath = workspacePath;
+    let eosAndpkgJson = getEosAndPkgJson(projectPath);
+    userFilterMods = eosAndpkgJson.eos.ignore_modules || [];
+ 
+    // 文件名UTF-8检查
+    await dirNameU8(projectPath);
+  
+    // 过滤文件
+    if (eosAndpkgJson.eos.ignore_path && eosAndpkgJson.eos.ignore_path.length > 0) {
+      eosAndpkgJson.eos.ignore_path.forEach((path: string) => {
+        blacklistFile.push('!' + path);
       })
-      let destStream = fs.createWriteStream(eapName);
-      await pipeline(tarStream, destStream);
-      // delete tmp file
-      progress.report({ increment: 10, message: "delete tmp file" });
-      await deleteFile([buildFileTmp]);
-      // upload config file
-      progress.report({ increment: 10, message: "upload config file" });
-      updataJsonFile(projectPath, eosAndpkgJson, options);
-      progress.report({ increment: 10, message: "build success" });
-
-      return new Promise<string>(resolve => {
-        setTimeout(() => {
-          resolve(eapName);
-        }, 500);
-      });
-    } catch (err) {
-      console.log("[EdgerOS Cli]:", 'info' + err);
-      return '';
     }
+    const projectFileList = await globby(blacklistFile, {
+      cwd: projectPath,
+    });
+    let buildFileTmp = path.join(__dirname, "./build_tmp");
+    if (fs.existsSync(buildFileTmp)) await deleteFile([buildFileTmp]);
+    // 普通文件复制
+    for (let i = 0; i < projectFileList.length; i++) {
+      let copyFilePath = projectFileList[i];
+      let targetFilePath = path.join(buildFileTmp, 'program', copyFilePath);
+      let sourceFilePath = path.join(projectPath, copyFilePath);
+      // 校验文件内容编码utf-8
+      if (/(\.html|\.css|\.js|\.json)$/i.test(sourceFilePath)) {
+        let detectData = jschardet.detect(fs.readFileSync(sourceFilePath));
+        if (detectData.encoding !== 'ascii' && detectData.encoding !== 'UTF-8') {
+          throw new Error('The encoding format is UTF-8:\n' + sourceFilePath);
+        }
+      }
+      await copyProject(sourceFilePath, targetFilePath);
+    }
+    // node_modules -> jsre_modules
+    progress.report({ message: "node_modules build jsre_modules" });
+    if (fs.existsSync(path.join(projectPath, 'node_modules'))) {
+      let jsreMpath = path.join(buildFileTmp, 'program', 'jsre_modules');
+      fs.mkdirSync(jsreMpath);
+      let sBasePath = path.join(projectPath, 'node_modules');
+      let mods = fs.readdirSync(sBasePath);
+      await copy_module(sBasePath, mods, jsreMpath)
+    }
+
+    // 将 ico 文件复制到根目录;
+    progress.report({ message: "Adjusting file structure" });
+    let icoBigName = eosAndpkgJson.eos.assets.ico_big.split('/').pop();
+    let icoSmallName = eosAndpkgJson.eos.assets.ico_small.split('/').pop();
+    fs.renameSync(path.join(buildFileTmp, 'program', eosAndpkgJson.eos.assets.ico_big), path.join(buildFileTmp, icoBigName));
+    fs.renameSync(path.join(buildFileTmp, 'program', eosAndpkgJson.eos.assets.ico_small), path.join(buildFileTmp, icoSmallName));
+    //  生成desc.json
+    createDesc(buildFileTmp, eosAndpkgJson);
+
+    // 压缩
+    progress.report({ message: "compressing..." });
+    let eapName = path.join(projectPath, eosAndpkgJson.pkg.name + '_' + eosAndpkgJson.pkg.version + ('.' + (options.configInfo?.buildSuffix ? options.configInfo?.buildSuffix : 'eap')));//.zip
+    let tarStream = new compressing.zip.Stream();
+    fs.readdirSync(buildFileTmp).forEach(item => {
+      tarStream.addEntry(path.join(buildFileTmp, item))
+    })
+    let destStream = fs.createWriteStream(eapName);
+    await pipeline(tarStream, destStream);
+    // delete tmp file
+    progress.report({ message: "delete tmp file" });
+    await deleteFile([buildFileTmp]);
+    // upload config file
+    progress.report({ message: "upload config file" });
+    updataJsonFile(projectPath, eosAndpkgJson, options);
+    progress.report({ message: "build success" });
+
+    return new Promise<string>(resolve => {
+      setTimeout(() => {
+        resolve(eapName);
+      }, 500);
+    });
   })
+
+
+  return eapPathUrl
 }
 
 /** 
@@ -149,10 +163,10 @@ async function copy_module(sBasePath: string, mods: string[], jsreMpath: string)
         if (filterStatus) {
           await copyProject(modulesPath, path.join(jsreMpath, mods[i]));
         } else {
-          console.log("[EdgerOS Cli]:", 'filter', "user filter package ->", pkgData.name)
+          // console.log("[EdgerOS Cli]:", 'filter', "user filter package ->", pkgData.name)
         }
       } else {
-        console.log("[EdgerOS Cli]:", 'info', "auto filter package ->", pkgData.name)
+        // console.log("[EdgerOS Cli]:", 'info', "auto filter package ->", pkgData.name)
       }
     } else {
       /**
@@ -240,4 +254,29 @@ function createDesc(buildFileTmp: string, eosAndpkgJson: any) {
   }
 
   fs.writeFileSync(descpath, JSON.stringify(descData, null, 4));
+}
+
+
+/**
+ * 文件名UTF-8检查
+ * @param dirPath 
+ */
+async function dirNameU8(dirPath: string) {
+  let fileArray: any[] | undefined = await readdir(dirPath, {
+    encoding: 'buffer',
+    withFileTypes: true
+  })
+
+  for (let i = 0; i < fileArray.length; i++) {
+    if (fileArray[i].name.toString() === 'node_modules') {
+      continue;
+    }
+    let detectData = jschardet.detect(fileArray[i].name);
+    if (detectData.encoding !== 'ascii' && detectData.encoding !== 'UTF-8') {
+      throw new Error('The file name encoding format is UTF-8:\n' + path.join(dirPath, fileArray[i].name.toString()));
+    }
+    if (fileArray[i].isDirectory()) {
+      await dirNameU8(path.join(dirPath, fileArray[i].name.toString()))
+    }
+  }
 }
