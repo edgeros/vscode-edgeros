@@ -53,10 +53,10 @@ export default async function buildEap(workspacePath: string, options: any): Pro
     let projectPath = workspacePath;
     let eosAndpkgJson = getEosAndPkgJson(projectPath);
     userFilterMods = eosAndpkgJson.eos.ignore_modules || [];
- 
+
     // 文件名UTF-8检查
     await dirNameU8(projectPath);
-  
+
     // 过滤文件
     if (eosAndpkgJson.eos.ignore_path && eosAndpkgJson.eos.ignore_path.length > 0) {
       eosAndpkgJson.eos.ignore_path.forEach((path: string) => {
@@ -151,17 +151,12 @@ async function copy_module(sBasePath: string, mods: string[], jsreMpath: string)
        * 过滤包
        */
       if (pkgData.name.search(/@edgeros\/.*/g) != -1 && blackModslist.indexOf(pkgData.name) == -1) {
-        let filterStatus = true;
         let filterPackage = userFilterMods.find((item) => {
           return item == pkgData.name
         })
-        if (filterPackage) {
-          filterStatus = false;
-        } else {
-          filterStatus = true;
-        }
-        if (filterStatus) {
+        if (!filterPackage) {
           await copyProject(modulesPath, path.join(jsreMpath, mods[i]));
+          chickIndex(jsreMpath, mods[i]);
         } else {
           // console.log("[EdgerOS Cli]:", 'filter', "user filter package ->", pkgData.name)
         }
@@ -278,5 +273,31 @@ async function dirNameU8(dirPath: string) {
     if (fileArray[i].isDirectory()) {
       await dirNameU8(path.join(dirPath, fileArray[i].name.toString()))
     }
+  }
+}
+
+/**
+ * 检查模块 index文件是否存在。
+ * 不存在index文件自动生成
+ * @param jsreMpath 
+ * @param modeName 
+ */
+function chickIndex(jsreMpath: any, modeName: string) {
+  let tmpPath = path.join(jsreMpath, modeName, 'index.js');
+  if (!fs.existsSync(tmpPath)) {
+    let pkgJson: any = JSON.parse(fs.readFileSync(path.join(jsreMpath, modeName, 'package.json'), { encoding: 'utf-8' }));
+    if (pkgJson.main) {
+      let mainPath: string = path.join(jsreMpath, modeName, pkgJson.main);
+      let indexPath: string = path.join(jsreMpath, modeName, 'index.js');
+      let reqStr = `
+let main = require("${path.join('./', pkgJson)}");
+module.exports=main;
+`
+      fs.writeFileSync(indexPath, reqStr);
+    } else {
+      throw new Error('package.json not main')
+    }
+  } else {
+    console.log("存在", tmpPath)
   }
 }

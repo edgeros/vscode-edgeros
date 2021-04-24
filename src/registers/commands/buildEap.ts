@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 15:11:00 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-23 17:53:50
+ * @Last Modified time: 2021-04-23 20:51:40
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
@@ -27,6 +27,7 @@ export = function (context: vscode.ExtensionContext) {
         }
       }
     } catch (err) {
+      console.log(err);
       vscode.window.showErrorMessage(err.message);
     }
   });
