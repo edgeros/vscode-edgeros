@@ -290,7 +290,7 @@ function chickIndex(jsreMpath: any, modeName: string) {
       let mainPath: string = path.join(jsreMpath, modeName, pkgJson.main);
       let indexPath: string = path.join(jsreMpath, modeName, 'index.js');
       let reqStr = `
-let main = require("${path.join('./', pkgJson)}");
+let main = require("${path.join('./', pkgJson.main)}");
 module.exports=main;
 `
       fs.writeFileSync(indexPath, reqStr);
