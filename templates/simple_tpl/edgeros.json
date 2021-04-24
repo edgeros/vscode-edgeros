@@ -9,7 +9,8 @@
     "assets": {
         "ico_big": "assets/big.png",
         "ico_small": "assets/small.png",
-        "splash": "assets/start.jpg"
+        "splash": "assets/start.jpg",
+        "widget_icon_1": "assets/widget_1.png"
     },
     "program": {
         "gss": false,
@@ -24,5 +25,20 @@
         "email": "default@company.com",
         "phone": "",
         "fax": ""
-    }
+    },
+    "update": {
+        "remove": [
+            "static"
+        ]
+    },
+    "widget": [
+        {
+            "ico": "widget_icon_1",
+            "name": "Test",
+            "path": "widget",
+            "rows": 2,
+            "columns": 2,
+            "category": "Demo"
+        }
+    ]
 }

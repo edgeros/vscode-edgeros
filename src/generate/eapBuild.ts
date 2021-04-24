@@ -98,6 +98,12 @@ export default async function buildEap(workspacePath: string, options: any): Pro
     let icoSmallName = eosAndpkgJson.eos.assets.ico_small.split('/').pop();
     fs.renameSync(path.join(buildFileTmp, 'program', eosAndpkgJson.eos.assets.ico_big), path.join(buildFileTmp, icoBigName));
     fs.renameSync(path.join(buildFileTmp, 'program', eosAndpkgJson.eos.assets.ico_small), path.join(buildFileTmp, icoSmallName));
+    if (eosAndpkgJson.eos.widget) {
+      eosAndpkgJson.eos.widget.forEach((item: any) => {
+        let icoWidgetName = eosAndpkgJson.eos.assets[item.ico].split('/').pop()
+        fs.renameSync(path.join(buildFileTmp, 'program', eosAndpkgJson.eos.assets[item.ico]), path.join(buildFileTmp, icoWidgetName));
+      })
+    }
     //  生成desc.json
     createDesc(buildFileTmp, eosAndpkgJson);
 
@@ -247,7 +253,14 @@ function createDesc(buildFileTmp: string, eosAndpkgJson: any) {
     phone: eosAndpkgJson.eos.vendor.phone,
     fax: eosAndpkgJson.eos.vendor.fax,
   }
-
+  descData.update = eosAndpkgJson.eos.update
+  descData.widget = eosAndpkgJson.eos.widget
+  if (descData.widget) {
+    descData.widget.map((item: any) => {
+      item.ico = eosAndpkgJson.eos.assets[item.ico].split('/').pop()
+      return item
+    })
+  }
   fs.writeFileSync(descpath, JSON.stringify(descData, null, 4));
 }
 
