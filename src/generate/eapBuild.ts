@@ -289,8 +289,8 @@ function chickIndex(jsreMpath: any, modeName: string) {
     if (pkgJson.main) {
       let mainPath: string = path.join(jsreMpath, modeName, pkgJson.main);
       let indexPath: string = path.join(jsreMpath, modeName, 'index.js');
-      let reqStr = `
-let main = require("${path.join('./', pkgJson.main)}");
+      let reqStr = `//build automatic generation index.js
+let main = require("./${pkgJson.main}");
 module.exports=main;
 `
       fs.writeFileSync(indexPath, reqStr);
