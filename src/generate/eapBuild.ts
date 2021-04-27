@@ -254,11 +254,12 @@ function createDesc(buildFileTmp: string, eosAndpkgJson: any) {
     fax: eosAndpkgJson.eos.vendor.fax,
   }
   descData.update = eosAndpkgJson.eos.update
-  descData.widget = eosAndpkgJson.eos.widget
-  if (descData.widget) {
-    descData.widget.map((item: any) => {
-      item.ico = eosAndpkgJson.eos.assets[item.ico].split('/').pop()
-      return item
+  if (eosAndpkgJson.eos.widget) {
+    descData.widget = []
+    eosAndpkgJson.eos.widget.forEach((item: any) => {
+      let tmpWidget = { ...item }
+      tmpWidget.ico = eosAndpkgJson.eos.assets[tmpWidget.ico].split('/').pop()
+      descData.widget.push(tmpWidget)
     })
   }
   fs.writeFileSync(descpath, JSON.stringify(descData, null, 4));
@@ -311,6 +312,6 @@ module.exports=main;
       throw new Error('package.json not main')
     }
   } else {
-    console.log("存在", tmpPath)
+    // console.log("存在", tmpPath)
   }
 }
