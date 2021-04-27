@@ -46,7 +46,7 @@ export default async function buildEap(workspacePath: string, options: any): Pro
 
   let eapPathUrl: string = await vscode.window.withProgress({
     location: vscode.ProgressLocation.Notification,
-    title: "Building EAP",
+    title: "Building EdgerOS App",
     cancellable: false
   }, async (progress, token) => {
     progress.report({ message: "build common file" });

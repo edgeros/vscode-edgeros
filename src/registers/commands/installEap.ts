@@ -38,15 +38,15 @@ export = function (context: vscode.ExtensionContext) {
               title: "EdgerOS",
               cancellable: false
             }, async (progress, token) => {
-              progress.report({ message: "Upload EAP" });
+              progress.report({ message: "Upload EdgerOS App" });
               let uploadMsg = await uploadEap(eapPath, devInfo.devIp, devInfo.devPwd);
-              progress.report({ message: "Install EAP" });
+              progress.report({ message: "Install EdgerOS App" });
               let installMsg = await installEap(eapPath.split(path.sep).pop() as string, devInfo.devIp, devInfo.devPwd);
               return installMsg
             })
             vscode.window.showInformationMessage('install app success');
           } catch (err) {
-            vscode.window.showErrorMessage('Install Eap : ' + err);
+            vscode.window.showErrorMessage('Install EdgerOS App : ' + err);
           }
         } else {
           vscode.window.showErrorMessage('No edgeros project');

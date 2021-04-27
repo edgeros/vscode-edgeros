@@ -1,10 +1,10 @@
 {
-	"welcome": "Not Edgeros Project.\n[Website](http://www.egeros.com)\n[Create](command:edgeros.showCreateProView)",
+	"welcome": "Not Edgeros Project.\n[Website](http://www.egeros.com)\n[Create Project](command:edgeros.showCreateProView)",
 	"addDeviceView": "Add Device",
 	"CreateEdgerOSProject": "Create EdgerOS Project",
 	"OpenBrowser": "Open Browser",
 	"OpenConsole": "Open Console",
-	"InstallEAP": "Install EAP",
+	"InstallEAP": "Install EdgerOS App",
 	"OpenConfig": "Open Config",
 	"LogFile":"Open Log File"
 }

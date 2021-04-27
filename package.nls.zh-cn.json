@@ -1,5 +1,5 @@
 {
-	"welcome": "此项目并非Edgeros Project.\n[访问官网](http://www.egeros.com)\n[创建项目](command:edgeros.showCreateProView)",
+	"welcome": "此项目并非Edgeros Project.\n[官网网站](http://www.edgeros.com)\n[创建项目](command:edgeros.showCreateProView)",
 	"addDeviceView": "添加设备",
 	"CreateEdgerOSProject": "新建项目",
 	"OpenBrowser": "浏览器打开",

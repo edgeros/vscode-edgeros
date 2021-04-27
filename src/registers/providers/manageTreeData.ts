@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 18:05:14 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-20 13:56:18
+ * @Last Modified time: 2021-04-27 20:31:14
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
@@ -19,7 +19,6 @@ export = function (context: vscode.ExtensionContext) {
   if (vscode.workspace.workspaceFolders) {
     if (fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'edgeros.json'))) {
       let threeViewProvider = new EOSManageViewProvider(vscode.workspace.workspaceFolders[0].uri.fsPath, context);
-
       vscode.window.registerTreeDataProvider(
         'eosManageView',
         threeViewProvider
@@ -93,7 +92,7 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
       devices.push(new EOSTreeItem(webItem.url, vscode.TreeItemCollapsibleState.None, 'web', webItem));
     });
 
-    devices.push(new EOSTreeItem(localize('buildEAP.txt', 'Build Eap'), vscode.TreeItemCollapsibleState.None, 'buildEap'));
+    devices.push(new EOSTreeItem(localize('buildEAP.txt', 'Build EdgerOS App'), vscode.TreeItemCollapsibleState.None, 'buildEap'));
     return devices;
   }
 
@@ -103,7 +102,7 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
    */
   private showTreeRootItem(): EOSTreeItem[] {
     let newProject = new EOSTreeItem(localize('deviceList.txt', 'Devices'), vscode.TreeItemCollapsibleState.Expanded, 'deviceList');
-    let devicesDir = new EOSTreeItem(localize('other.txt', 'other'), vscode.TreeItemCollapsibleState.Collapsed, 'other');
+    let devicesDir = new EOSTreeItem(localize('other.txt', 'Other'), vscode.TreeItemCollapsibleState.Collapsed, 'other');
     return [newProject, devicesDir];
   }
 

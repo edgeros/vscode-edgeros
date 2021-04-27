@@ -47,7 +47,7 @@ export class EOSTreeItem extends vscode.TreeItem {
     else if (type === 'buildEap') {
       this.command = {
         command: "edgeros.buildEap",
-        title: "Build Eap"
+        title: "Build EdgerOS App"
       };
     }
   }

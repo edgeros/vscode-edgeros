@@ -21,7 +21,7 @@ export = function (context: vscode.ExtensionContext) {
           let eapPath: string = await buildEap(vscode.workspace.workspaceFolders[0].uri.fsPath, {
             configInfo: configInfo
           });
-          vscode.window.showInformationMessage('build eap:' + eapPath);
+          vscode.window.showInformationMessage('Build EdgerOS App:' + eapPath);
         } else {
           vscode.window.showErrorMessage('No edgeros project');
         }

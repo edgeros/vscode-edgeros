@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-22 18:54:04
+ * @Last Modified time: 2021-04-27 20:07:53
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -57,7 +57,7 @@ export = function (context: vscode.ExtensionContext) {
           "vendorFaxTxt": localize('vendorFax.txt', "Vendor Fax"),
           "createButtonTxt": localize('createButton.txt', "Create"),
           "otherText": localize('other.txt', "Other"),
-          "openFileText": localize('openFile.txt', "Open Project"),
+          "openFileText": localize('openFile.txt', "Open the project in a new window"),
           "selectPathText": localize('selectPath.txt', "Select Path"),
           "nameNotEmptyText": localize('nameNotEmpty.txt', "Name Not Empty")
         }

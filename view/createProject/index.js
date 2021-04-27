@@ -16,7 +16,7 @@ const app = new Vue({
       loading: false,
       form: {
         name: '',
-        bundleid: 'com.edgeros.',
+        bundleid: 'com.example.',
         description: '',
         savePath: '',
         version: '0.0.1',
@@ -40,7 +40,7 @@ const app = new Vue({
   },
   watch: {
     "form.name": function (value) {
-      this.form.bundleid = 'com.edgeros.' + value;
+      this.form.bundleid = 'com.example.' + value;
     }
   },
   methods: {

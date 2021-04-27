@@ -10,7 +10,7 @@ export const edgerConsolePort: number = 81;
 export const edgerOsWebData: any = [
   {
     url: "https://docs.t.e0a.cc/edgeros/api/overview.html",
-    title: 'Api',
+    title: 'API Documentation',
     "title_zh-cn": '接口文档'
 
   }
