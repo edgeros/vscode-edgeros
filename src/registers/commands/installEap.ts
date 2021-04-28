@@ -35,6 +35,27 @@ export = function (context: vscode.ExtensionContext) {
               return item.devName === options[0].label
             })
 
+            let installType = vscode.workspace.getConfiguration('edgeros').get('installEdgerOSAPP')
+            // 弹出选择框
+            if (installType == 'History') {
+              let fileNames = fs.readdirSync(vscode.workspace.workspaceFolders[0].uri.fsPath)
+              let eapFile: string[] = [];
+              fileNames.forEach(item => {
+                if (item.lastIndexOf('.eap') != -1) {
+                  eapFile.push(item);
+                }
+              })
+
+              let eapName: string | undefined = await vscode.window.showQuickPick(eapFile)
+              if (eapName) {
+                eapPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, eapName);
+              } else {
+                throw new Error('No Choice EdgerOS APP Install Package!')
+              }
+            } else if (installType == 'New') {
+              // 不做处理 
+            }
+
             // Progress 动效
             let installMsg = await vscode.window.withProgress({
               location: vscode.ProgressLocation.Window,
