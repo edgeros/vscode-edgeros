@@ -2,7 +2,6 @@
   "devIp.txt": "设备IP",
   "devName.txt": "设备名称",
   "devPwd.txt": "开发密码",
-  "devLoginPwd.txt": "登录密码",
   "devUpdate.txt": "更新设备",
   "devDelete.txt": "删除设备",
   "ipNotEmpty.Text": "ip不能为空",

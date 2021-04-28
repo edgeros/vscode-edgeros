@@ -2,7 +2,6 @@
   "devIp.txt": "设备IP",
   "devName.txt": "设备名称",
   "devPwd.txt": "开发密码",
-  "devLoginPwd.txt": "登录密码",
   "addDevice.txt": "添加设备",
   "ipNotEmpty.Text": "ip不能为空",
   "ipExist.Text": "已存在相同IP设备",

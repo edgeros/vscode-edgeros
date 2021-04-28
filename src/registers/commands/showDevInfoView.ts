@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-22 16:31:58
+ * @Last Modified time: 2021-04-28 16:03:34
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -20,7 +20,7 @@ const localize = nlsConfig(__filename);
 export = function (context: vscode.ExtensionContext) {
   // addDevView example
   let currentPanel: vscode.WebviewPanel | undefined = undefined;
-  let deviceInfo: { devName: string, devIp: string, devPwd: string, devLoginPwd: string } | undefined = undefined;
+  let deviceInfo: { devName: string, devIp: string, devPwd: string } | undefined = undefined;
 
   let disposable = vscode.commands.registerCommand('edgeros.showDevInfoView', async (...options: EOSTreeItem[]) => {
     try {
@@ -46,12 +46,11 @@ export = function (context: vscode.ExtensionContext) {
             devIpTxt: localize('devIp.txt', 'Device IP'),
             devNameTxt: localize('devName.txt', 'Device Name'),
             devPwdTxt: localize('devPwd.txt', 'Device Password'),
-            devLoginPwdText: localize('devLoginPwd.txt', 'Device Login Password'),
             devUpdate: localize("devUpdate.txt", 'Update'),
             devDelete: localize("devDelete.txt", 'Delete'),
-            ipNotEmptyText: localize('ipNotEmpty.txt', "IP Not Empty"),
-            ipExistText: localize('ipNotEmpty.Text', "IP Not Empty"),
-            ipIncorrectFormatText: localize('ipIncorrectFormat.Text', "IP Incorrect Format"),
+            ipNotEmptyText: localize('ipNotEmpty.Text', "IP Not Empty"),
+            ipExistText: localize('ipExist.Text', "IP Exist"),
+            ipIncorrectFormatText: localize('ipIncorrectFormat.text', "IP Incorrect Format"),
             devNameNotEmptyText: localize('devNameNotEmpty.Text', "Device Name Not Empty"),
             devNameExistText: localize('devNameExist.Text', "Device Name Exist"),
             devDeleteHintTitleText: localize("devDeleteHintTitle.Text", "Hint"),
