@@ -51,16 +51,16 @@ function statusCodeHandle(error: any) {
   // http resquest error handle
   if (error.response) {
     if (error.response.status === 401) {
-      error = new Error('edger_connect_authenticationFailed.text');
+      error = new Error('edger connect authenticationFailed');
     } else if (error.response.status === 403) {
       if (error.response.data.indexOf('Please try again in') !== -1) {
         let execArray = /\d+/g.exec(error.response.data);
         let timeStr = execArray ? String(execArray[0]) : 'null';
-        error = new Error('edger_connect_tryAgentConnect.text');
+        error = new Error('edger connect tryAgentConnect');
       } else if (error.response.data === 'Password incorrect!') {
-        error = new Error('edger_connect_wrongPassword.text');
+        error = new Error('edger connect wrongPassword');
       } else {
-        error = new Error('edger_connect_illegalConnect.text');
+        error = new Error('edger connect illegalConnect');
       }
     }
   }
