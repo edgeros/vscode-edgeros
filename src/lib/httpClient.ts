@@ -8,6 +8,9 @@ import axios from "axios";
 import * as fs from "fs-extra";
 import * as moment from "moment";
 import * as path from "path";
+import * as vscode from 'vscode';
+const httpErrorChannel = vscode.window.createOutputChannel('EdgerOS HTTP Error');
+
 var httpClient = axios.create({
   maxContentLength: 268435456,//256MB
   timeout: 300000,
@@ -37,16 +40,17 @@ export default httpClient;
  */
 function statusCodeHandle(error: any) {
   // http request error record
-  fs.appendFileSync(
-    path.join(__dirname, '../../log/error.txt'),
-    `
+
+  httpErrorChannel.appendLine(`
   ================= time:${moment().format()} =================
   host: ${error.config.baseURL}
   path:${error.config.url}
   message:${error.message}
   response:${error.response ? JSON.stringify({ status: error.response.status, data: error.response.data }) : error.response}
-  `,
-    'utf8');
+  `);
+  httpErrorChannel.show();
+
+
 
   // http resquest error handle
   if (error.response) {

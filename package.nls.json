@@ -5,6 +5,5 @@
 	"OpenBrowser": "Open Browser",
 	"OpenConsole": "Open Console",
 	"InstallEAP": "Install EdgerOS App",
-	"OpenConfig": "Open Config",
-	"LogFile":"Open Log File"
+	"OpenConfig": "Open Config"
 }

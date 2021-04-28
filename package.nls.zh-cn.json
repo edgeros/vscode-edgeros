@@ -5,6 +5,5 @@
 	"OpenBrowser": "浏览器打开",
 	"OpenConsole": "打开控制台输出",
 	"InstallEAP": "安装EAP",
-	"OpenConfig": "打开配置项",
-	"LogFile": "打开日志文件"
+	"OpenConfig": "打开配置项"
 }

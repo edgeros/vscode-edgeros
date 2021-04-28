@@ -65,10 +65,6 @@
 			{
 				"command": "edgeros.setConfig",
 				"title": "%OpenConfig%"
-			},
-			{
-				"command": "edgeros.openLogFile",
-				"title": "%LogFile%"
 			}
 		],
 		"views": {
@@ -88,10 +84,6 @@
 				},
 				{
 					"command": "edgeros.setConfig",
-					"when": "view == eosManageView"
-				},
-				{
-					"command": "edgeros.openLogFile",
 					"when": "view == eosManageView"
 				}
 			],

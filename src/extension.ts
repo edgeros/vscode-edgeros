@@ -25,9 +25,6 @@ export function activate(context: vscode.ExtensionContext) {
 	for (let provider in registers.providers) {
 		registers.providers[provider](context);
 	}
-	// plugin init data: clear error.txt
-	const txtHead = localize('errorLogFileHead', '###This is the HTTP request error logging file###\r\n');
-	fs.writeFileSync(path.join(__dirname, '../log/error.txt'), txtHead)
 }
 
 // this method is called when your extension is deactivated
