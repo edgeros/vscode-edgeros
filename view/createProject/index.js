@@ -25,7 +25,7 @@ const app = new Vue({
         vendorEmail: '',
         vendorPhone: '',
         vendorFax: '',
-        other: []
+        other: ['openFile']
       },
       rules: {
         name: [

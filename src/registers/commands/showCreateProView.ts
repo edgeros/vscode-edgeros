@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-27 20:07:53
+ * @Last Modified time: 2021-04-28 16:14:38
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -129,7 +129,9 @@ async function WebCmdHandle(currentPanel: vscode.WebviewPanel, message: any) {
         let newProUri = vscode.Uri.file(newProjectPath);
         await vscode.commands.executeCommand(
           'vscode.openFolder',
-          newProUri
+          newProUri, {
+          forceNewWindow: true
+        }
         );
       }
 
