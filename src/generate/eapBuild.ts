@@ -194,7 +194,7 @@ async function copy_module(sBasePath: string, mods: string[], jsreMpath: string)
  */
 function updataJsonFile(projectPath: string, eosAndpkgJson: any, options: any) {
   // version add 1 nIncrease : no increase version
-  if (options.configInfo?.increment == 'yes') {
+  if (options.configInfo?.increment) {
     let arryVer = eosAndpkgJson.pkg.version.split('.');
     arryVer[2] = Number(arryVer[2]) + 1;
     eosAndpkgJson.pkg.version = arryVer.join('.');

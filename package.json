@@ -61,10 +61,6 @@
 					"light": "resources/icon/dark/command_upload.svg",
 					"dark": "resources/icon/dark/command_upload.svg"
 				}
-			},
-			{
-				"command": "edgeros.setConfig",
-				"title": "%OpenConfig%"
 			}
 		],
 		"views": {
@@ -81,10 +77,6 @@
 					"command": "edgeros.showCreateProView",
 					"when": "view == eosManageView",
 					"group": "navigation"
-				},
-				{
-					"command": "edgeros.setConfig",
-					"when": "view == eosManageView"
 				}
 			],
 			"view/item/context": [
@@ -130,7 +122,43 @@
 				"scopeName": "edgeros.log",
 				"path": "./syntaxes/log.tmLanguage"
 			}
-		]
+		],
+		"configuration": {
+			"title": "EdgerOS",
+			"properties": {
+				"edgeros.buildType": {
+					"type": "string",
+					"default": "eap",
+					"enum": [
+						"eap",
+						"zip"
+					],
+					"enumDescriptions": [
+						"打包后生成.eap文件",
+						"打包后生成.zip文件"
+					],
+					"description": "选择项目打包后生成EdgerOS APP文件后缀"
+				},
+				"edgeros.versionIncrement": {
+					"type": "boolean",
+					"default": "true",
+					"description": "项目打包后package.json版本自增"
+				},
+				"edgeros.installEdgerOSAPP": {
+					"type": "string",
+					"default": "New",
+					"enum": [
+						"New",
+						"History"
+					],
+					"enumDescriptions": [
+						"install EAP时,先执行build构建出最新EAP,再安装此EAP",
+						"弹出列出当前目录下的所有EAP文件,用户进行选择安装"
+					],
+					"description": "选择安装EdgerOS APP方式"
+				}
+			}
+		}
 	},
 	"scripts": {
 		"pack": "vsce package",

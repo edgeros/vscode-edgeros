@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 15:11:00 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-23 20:51:40
+ * @Last Modified time: 2021-04-28 17:52:45
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
@@ -17,7 +17,13 @@ export = function (context: vscode.ExtensionContext) {
     try {
       if (vscode.workspace.workspaceFolders) {
         if (fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'edgeros.json'))) {
-          let configInfo: any = context.globalState.get(config.edgerosCfgKey);
+
+          let configInfo: any = {
+            buildSuffix: vscode.workspace.getConfiguration('edgeros').get('buildType'),
+            increment: vscode.workspace.getConfiguration('edgeros').get('versionIncrement'),
+          }
+
+
           let eapPath: string = await buildEap(vscode.workspace.workspaceFolders[0].uri.fsPath, {
             configInfo: configInfo
           });
