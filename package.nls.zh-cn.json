@@ -4,6 +4,12 @@
 	"CreateEdgerOSProject": "新建项目",
 	"OpenBrowser": "浏览器打开",
 	"OpenConsole": "打开控制台输出",
-	"InstallEAP": "安装EAP",
-	"OpenConfig": "打开配置项"
+	"InstallEAP": "安装EdgerOS APP",
+	"ConfigBuildEapTypeEap": "打包后生成.eap文件",
+	"ConfigBuildEapTypeZip": "打包后生成.zip文件",
+	"ConfigBuildEapDescription": "选择项目打包后生成EdgerOS APP文件后缀",
+	"ConfigBuileVersionIncrement": "项目打包后package.json版本自增",
+	"ConfigInstallEapModelNew": "安装最新版本EdgerOS APP",
+	"ConfigInstallEapModelHistory": "列出所有.eap 安装包开发者手动选择安装",
+	"ConfigInstallEapModeDescription": "选择安装EdgerOS APP方式"
 }

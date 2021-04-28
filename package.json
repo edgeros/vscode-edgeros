@@ -134,15 +134,15 @@
 						"zip"
 					],
 					"enumDescriptions": [
-						"打包后生成.eap文件",
-						"打包后生成.zip文件"
+						"%ConfigBuildEapTypeEap%",
+						"%ConfigBuildEapTypeZip%"
 					],
-					"description": "选择项目打包后生成EdgerOS APP文件后缀"
+					"description": "%ConfigBuildEapDescription%"
 				},
 				"edgeros.versionIncrement": {
 					"type": "boolean",
 					"default": "true",
-					"description": "项目打包后package.json版本自增"
+					"description": "%ConfigBuileVersionIncrement%"
 				},
 				"edgeros.installEdgerOSAPP": {
 					"type": "string",
@@ -152,10 +152,10 @@
 						"History"
 					],
 					"enumDescriptions": [
-						"install EAP时,先执行build构建出最新EAP,再安装此EAP",
-						"弹出列出当前目录下的所有EAP文件,用户进行选择安装"
+						"%ConfigInstallEapModelNew%",
+						"%ConfigInstallEapModelHistory%"
 					],
-					"description": "选择安装EdgerOS APP方式"
+					"description": "%ConfigInstallEapModeDescription%"
 				}
 			}
 		}

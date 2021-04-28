@@ -5,5 +5,11 @@
 	"OpenBrowser": "Open Browser",
 	"OpenConsole": "Open Console",
 	"InstallEAP": "Install EdgerOS App",
-	"OpenConfig": "Open Config"
+	"ConfigBuildEapTypeEap": "Build file type .eap",
+	"ConfigBuildEapTypeZip": "Build file type .zip",
+	"ConfigBuildEapDescription": "Build file type selection",
+	"ConfigBuileVersionIncrement": "package.json version increment",
+	"ConfigInstallEapModelNew": "Install last version EdgerOS APP",
+	"ConfigInstallEapModelHistory": "Show EdgerOS APP List",
+	"ConfigInstallEapModeDescription": "Select installation mode"
 }
