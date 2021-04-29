@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cat Coding</title>
   <link rel="stylesheet" href="<%=elementUiCssUri%>">
+  <link rel="stylesheet" href="<%=indexCssUri%>">
   <script type="text/javascript">
     let ipNotEmptyText = "<%=language.ipNotEmptyText%>";
     let ipExistText = "<%=language.ipExistText%>";
@@ -19,7 +20,7 @@
   </script>
 </head>
 
-<body style="background:#eaeaea;">
+<body>
   <div id="app">
     <div style="width: 50%;margin: auto;margin-top: 10%;">
       <el-form ref="form" :rules="rules" :model="form" label-width="180px">
@@ -35,7 +36,7 @@
         </el-form-item>
       </el-form>
       <div style="text-align: center;">
-        <el-button type="primary" style="margin: auto;" @click="onUpdate">
+        <el-button type="info" style="margin: auto;" @click="onUpdate">
           <%=language.devUpdate%>
         </el-button>
         <el-button type="danger" style="margin: auto;" @click="onDelete">

@@ -32,9 +32,11 @@ export = function (context: vscode.ExtensionContext) {
         });
         const webViewFileName = 'addDevice';
         let assetUris = await common.getWebViewBaseUris(webViewFileName, currentPanel, context);
+        let indexCssUri = common.changeUri(currentPanel, path.join(context.extensionPath, 'view', webViewFileName, 'index.css'));
         //set html str
         currentPanel.webview.html = await ejs.renderFile(path.join(context.extensionPath, 'view', webViewFileName, 'view.ejs'), {
           ...assetUris,
+          indexCssUri: indexCssUri,
           language: {
             devIpTxt: localize('devIp.txt', 'Device IP'),
             devNameTxt: localize('devName.txt', 'Device Name'),
