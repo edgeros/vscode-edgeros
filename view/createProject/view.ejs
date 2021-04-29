@@ -13,9 +13,9 @@
   </script>
 </head>
 
-<body style="background:#eaeaea;">
+<bod>
   <div id="app" style="margin:0px;">
-    <el-container style="height: 850px; border: 1px solid #eee;background: #fff;">
+    <el-container>
       <el-aside class="tpl" width="250px">
         <div class="tplTitle">
           <%=language.templateListTxt%>
@@ -29,7 +29,7 @@
         </div>
       </el-aside>
 
-      <el-main style="border-left: 1px solid #eee;">
+      <el-main>
         <el-form ref="form" :rules="rules" :model="form" label-width="100px">
           <el-form-item label="<%=language.nameTxt%>" prop="name">
             <el-input v-model="form.name" @input="inputChange"></el-input>
@@ -39,7 +39,7 @@
           </el-form-item>
           <el-form-item label="<%=language.savePathTxt%>" prop="savePath">
             <el-input disabled placeholder="" v-model="form.savePath" class="input-with-select" @input="inputChange">
-              <el-button slot="append" @click="selectSavePath">
+              <el-button slot="append" type="info" @click="selectSavePath">
                 <%=language.selectPathText%>
               </el-button>
             </el-input>
@@ -73,7 +73,7 @@
             </el-checkbox-group>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit" :loading="loading">
+            <el-button type="info" @click="onSubmit" type="info" :loading="loading">
               <%=language.createButtonTxt%>
             </el-button>
           </el-form-item>
@@ -81,9 +81,9 @@
       </el-main>
     </el-container>
   </div>
-</body>
-<script type="text/javascript" src="<%=vueJsUri%>"></script>
-<script type="text/javascript" src="<%=elementUiJsUri%>"></script>
-<script type="text/javascript" src="<%=indexJsUri%>"></script>
+  </body>
+  <script type="text/javascript" src="<%=vueJsUri%>"></script>
+  <script type="text/javascript" src="<%=elementUiJsUri%>"></script>
+  <script type="text/javascript" src="<%=indexJsUri%>"></script>
 
 </html>

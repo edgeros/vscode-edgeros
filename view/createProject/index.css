@@ -1,16 +1,39 @@
+body.vscode-light {
+  color: black;
+}
+
+body.vscode-dark {
+  color: white;
+}
+
+body.vscode-high-contrast {
+  color: red;
+}
+
+.el-form-item__label {
+  color: var(--vscode-input-foreground);
+}
+
+.el-input__inner {
+  background-color: var(--vscode-input-background);
+  color: var(--vscode-input-foreground)
+}
+
+.el-input.is-disabled .el-input__inner {
+  background-color: var(--vscode-input-placeholderForeground);
+}
+
 .tpl {
   color: #999;
   background-color: rgb(238, 241, 246)
 }
 
 .tpl .tplTitle {
-  background: #fff;
   padding: 20px;
   font-weight: bolder;
 }
 
 .tpl .tplBackground {
-  background: #fff;
   padding: 10px;
   border-top: 1px solid #eee;
   font-weight: bold;
