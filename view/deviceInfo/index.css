@@ -18,3 +18,7 @@ body.vscode-high-contrast {
   background-color: var(--vscode-input-background);
   color: var(--vscode-input-foreground)
 }
+
+.el-input.is-disabled .el-input__inner {
+  background-color: var(--vscode-input-placeholderForeground);
+}
