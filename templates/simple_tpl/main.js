@@ -24,7 +24,7 @@ if (ARGUMENT != undefined) {
 const app = Web.createApp();
 
 app.use(bodyParser.json());
-app.use(Web.static('./static', { index: ['index.html', 'index.htm'] }));
+app.use(Web.static('./public', { index: ['index.html', 'index.htm'] }));
 
 app.use('/', require('./routers'));
 
