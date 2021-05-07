@@ -1,1 +1,63 @@
-<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1617279054590" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5651" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M853.333333 810.666667 853.333333 298.666667 170.666667 298.666667 170.666667 810.666667 853.333333 810.666667M853.333333 128C900.266667 128 938.666667 166.4 938.666667 213.333333L938.666667 810.666667C938.666667 857.6 900.266667 896 853.333333 896L170.666667 896C123.733333 896 85.333333 857.6 85.333333 810.666667L85.333333 213.333333C85.333333 165.973333 123.733333 128 170.666667 128L853.333333 128M554.666667 725.333333 554.666667 640 768 640 768 725.333333 554.666667 725.333333M408.746667 554.666667 237.653333 384 358.4 384 499.2 524.8C515.84 541.44 515.84 568.746667 499.2 585.386667L359.253333 725.333333 238.506667 725.333333 408.746667 554.666667Z" p-id="5652"></path></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   t="1617279054590"
+   class="icon"
+   viewBox="0 0 81.92 81.92"
+   version="1.1"
+   p-id="5651"
+   width="16"
+   height="16"
+   id="svg8"
+   sodipodi:docname="command_openConsole.svg"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
+  <metadata
+     id="metadata12">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1313"
+     inkscape:window-height="932"
+     id="namedview10"
+     showgrid="false"
+     inkscape:zoom="10.39447"
+     inkscape:cx="33.019508"
+     inkscape:cy="26.510746"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg8" />
+  <defs
+     id="defs4">
+    <style
+       type="text/css"
+       id="style2" />
+  </defs>
+  <path
+     d="M 73.765823,69.447084 V 20.810747 H 8.9173727 V 69.447084 H 73.765823 m 0,-64.8484495 c 4.458337,0 8.106058,3.6477248 8.106058,8.1060555 v 56.742394 c 0,4.458333 -3.647721,8.106055 -8.106058,8.106055 H 8.9173727 c -4.458331,0 -8.10605562,-3.647722 -8.10605562,-8.106055 V 12.70469 c 0,-4.4988582 3.64772462,-8.1060555 8.10605562,-8.1060555 H 73.765823 M 45.394627,61.341028 v -8.106056 h 20.265141 v 8.106056 H 45.394627 M 31.533272,45.128915 15.280625,28.916802 H 26.750696 L 40.125686,42.2918 c 1.580684,1.580676 1.580684,4.174617 0,5.755292 L 26.831757,61.341028 H 15.361686 Z"
+     p-id="5652"
+     id="path6"
+     style="stroke-width:0.0949927" />
+</svg>
