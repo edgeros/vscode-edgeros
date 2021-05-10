@@ -5,6 +5,7 @@
 	"version": "0.1.2",
 	"publisher": "EdgerOS",
 	"repository": "https://github.com/edgeros/vsce.git",
+	"icon": "resources/media/icon.png",
 	"engines": {
 		"vscode": "^1.55.0"
 	},
