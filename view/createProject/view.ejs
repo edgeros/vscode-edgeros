@@ -29,7 +29,7 @@
         <!-- 主体 -->
         <el-container style="height: 80%">
           <!-- 侧边栏 -->
-          <el-aside width="150px" height="100%" class="typeList">
+          <el-aside width="200px" height="100%" class="typeList">
             <div class="templateTypes">
               <div v-for="item in tplTypes" @click="selectTplType(item)" v-bind:key="item.type"
                 :class="[selectType.type == item.type?'selectItem':'']">{{
@@ -80,8 +80,8 @@
 
         <el-container style="height: 75%">
           <!-- 侧边栏 -->
-          <el-aside width="300px" class="showTemplate">
-            <el-image style="background: #828282; width: 80%" :src="selectTemp.icon" fit="fill"></el-image>
+          <el-aside width="200px" class="showTemplate">
+            <el-image style="background: #828282; width: 100%" :src="selectTemp.icon" fit="fill"></el-image>
             <div class="tempName">{{ selectTemp.tempName }}</div>
             <div class="desc">{{ selectTemp.description }}</div>
             <div class="gitUrl">{{ selectTemp.gitUrl }}</div>
