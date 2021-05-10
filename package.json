@@ -2,7 +2,7 @@
 	"name": "edgeros",
 	"displayName": "edgeros",
 	"description": "EdgerOS development extension for VSC.",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"publisher": "EdgerOS",
 	"repository": "https://github.com/edgeros/vsce.git",
 	"engines": {

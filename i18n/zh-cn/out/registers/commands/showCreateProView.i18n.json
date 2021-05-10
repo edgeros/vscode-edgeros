@@ -1,5 +1,4 @@
 {
-  "templateList.txt": "模板列表",
   "name.txt": "项目名称",
   "buildid.txt": "包名",
   "savePath.txt": "保存路径",
@@ -14,5 +13,9 @@
   "other.txt": "其他项",
   "openFile.txt": "在新窗口打开项目",
   "selectPath.txt": "选择路径",
-  "nameNotEmpty.txt": "项目名不能为空"
+  "nameNotEmpty.txt": "项目名不能为空",
+  "projectTemplateWarehouse.txt": "项目模板库",
+  "projectTemplateHint.txt": "可根据开发类型，选择对应模板进行快速构建项目",
+  "apply.txt": "应用",
+  "applyNow.txt": "立即应用"
 }

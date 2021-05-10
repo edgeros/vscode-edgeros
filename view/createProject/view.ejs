@@ -21,8 +21,8 @@
         <!-- 标题 -->
         <el-header style="height: 20%;padding:20px 0px;">
           <div class="headStyle">
-            <div class="title">项目模板库</div>
-            <div>可根据开发类型，选择对应模板进行快速构建项目</div>
+            <div class="title"><%=language.projectTemplateWarehouseTxt%></div>
+            <div><%=language.projectTemplateHintTxt%></div>
           </div>
         </el-header>
 
@@ -32,7 +32,7 @@
           <el-aside width="150px" height="100%" class="typeList">
             <div class="templateTypes">
               <div v-for="item in tplTypes" @click="selectTplType(item)" v-bind:key="item.type"
-                :class="[selectTypes.type == item.type?'selectItem':'']">{{
+                :class="[selectType.type == item.type?'selectItem':'']">{{
                 item.type }}</div>
             </div>
           </el-aside>
@@ -48,12 +48,12 @@
                     <div class="tempName"> {{ item.tempName }}</div>
                     <div class="desc">{{ item.description }}</div>
                     <div class="applyBtn">
-                      <div>应用</div>
+                      <div><%=language.applyTxt%></div>
                     </div>
                     <div class="btnShow">
                       <div style="flex: 1"></div>
                       <div class="clickBtn" @click="selectTpl(item)">
-                        <div>立即应用</div>
+                        <div><%=language.ApplyNowTxt%></div>
                       </div>
                     </div>
                   </div>
@@ -71,9 +71,9 @@
         <!-- 标题 -->
         <el-header style="height: 20%;padding:20px 0px;">
           <div class="headStyle">
-            <div class="title"><span @click="backTpl">项目模板库</span> > {{selectTypes.type}}</div>
+            <div class="title"><span @click="backTpl"><%=language.projectTemplateWarehouseTxt%></span> > {{selectType.type}}</div>
             <div>
-              {{selectTypes.desc}}
+              {{selectType.desc}}
             </div>
           </div>
         </el-header>

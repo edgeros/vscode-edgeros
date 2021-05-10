@@ -108,8 +108,13 @@ body.vscode-high-contrast {
 
 .grid-content .tempName {
   font-size: x-large;
-  padding: 10px;
+  margin: 10px;
   text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .grid-content .desc {

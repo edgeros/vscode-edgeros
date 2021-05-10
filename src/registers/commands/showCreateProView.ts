@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-28 16:14:38
+ * @Last Modified time: 2021-05-10 14:06:48
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -44,7 +44,6 @@ export = function (context: vscode.ExtensionContext) {
         ...assetUris,
         cssUri,
         language: {
-          "templateListTxt": localize('templateList.txt', "Template List"),
           "nameTxt": localize('name.txt', "Name"),
           "buildidTxt": localize('buildid.txt', "Buildid"),
           "savePathTxt": localize('savePath.txt', "Save Path"),
@@ -59,7 +58,11 @@ export = function (context: vscode.ExtensionContext) {
           "otherText": localize('other.txt', "Other"),
           "openFileText": localize('openFile.txt', "Open the project in a new window"),
           "selectPathText": localize('selectPath.txt', "Select Path"),
-          "nameNotEmptyText": localize('nameNotEmpty.txt', "Name Not Empty")
+          "nameNotEmptyText": localize('nameNotEmpty.txt', "Name Not Empty"),
+          "projectTemplateWarehouseTxt": localize('projectTemplateWarehouse.txt', "Template Warehouse"),
+          "projectTemplateHintTxt": localize('projectTemplateHint.txt', "Select the template and build it now"),
+          "applyTxt": localize('apply.txt', "Apply"),
+          "ApplyNowTxt": localize('applyNow.txt', "Apply Now")
         }
       });
 
@@ -102,26 +105,24 @@ async function WebCmdHandle(currentPanel: vscode.WebviewPanel, message: any) {
         });
       }
     }
-    // Send template list
+    // Send template list and template Types
     else if (message.type === 'getInfoData') {
       currentPanel?.webview.postMessage({
         type: '_getInfoData',
         data: {
-          templateList: config.templateList,
+          templates: config.templates,
+          templateTypes: config.templateTypes,
           defaultSavePath: path.join(os.homedir(), 'EdgerOSApps')
         }
       })
     }
     // Create project
     else if (message.type === 'createProject') {
-      let tplInfo = config.templateList.find(item => {
-        return item.tplName == message.data.tplName;
-      })
-
+      let tplInfo = message.data.tplData;
       let newProjectPath: string = '';
-      if (tplInfo?.type == 'local') {
+      if (tplInfo?.location == 'local') {
         newProjectPath = await localMode(tplInfo, message.data);
-      } else if (tplInfo?.type == 'cloud') {
+      } else if (tplInfo?.location == 'cloud') {
         newProjectPath = await cloudMode(tplInfo, message.data);
       }
 

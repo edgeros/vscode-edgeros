@@ -1,106 +1,6 @@
 const vscode = acquireVsCodeApi();
 const previousState = vscode.getState();
 
-var tplAll = [
-  {
-    tempName: "simple",
-    description: "You gotta be calm, confident, and you never hesitate.You gotta be calm, confident, and you never hesitate.",
-    icon:
-      "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/edgeros_logo.png",
-    gitUrl: "https://gitee.com/fu-wenhao/mrc-asset1.git",
-    type: 'Base'
-  },
-  {
-    tempName: "simple1",
-    description:
-      "模板描述描述描述模板描述描述描述模板描述描述描述模板描述描述描述模板描述描述描述",
-    icon:
-      "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/%E6%B5%B7%E8%B4%BC%E7%8E%8B.jpeg",
-    gitUrl: "https://gitee.com/fu-wenhao/mrc-asset2.git",
-    type: 'Ai'
-  },
-  {
-    tempName: "simple2",
-    description:
-      "模板描述描述描述模板描述描述描述模板描述描述描述模板描述描述描述模板描述描述描述",
-    icon:
-      "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/%E6%B5%B7%E8%B4%BC%E7%8E%8B.jpeg",
-    gitUrl: "https://gitee.com/fu-wenhao/mrc-asset3.git",
-    type: 'Ai'
-  },
-  {
-    tempName: "simple3",
-    description: "模板描述描述描述模板描述描述描述模板描述描述描述",
-    icon:
-      "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/%E5%8A%A8%E6%BC%AB.jpeg",
-    gitUrl: "https://gitee.com/fu-wenhao/mrc-asset4.git",
-    type: 'Device'
-  },
-  {
-    tempName: "simple",
-    description: "模板描述描述描述模板描述描述描述模板描述描述",
-    icon:
-      "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/edgeros_logo.png",
-    gitUrl: "https://gitee.com/fu-wenhao/mrc-asset5.git",
-    type: 'Media'
-  },
-  {
-    tempName: "simple1",
-    description:
-      "模板描述描述描述模板描述描述描述模板描述描述描述模板描述描述描述模板描述描述描述",
-    icon:
-      "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/%E6%B5%B7%E8%B4%BC%E7%8E%8B.jpeg",
-    gitUrl: "https://gitee.com/fu-wenhao/mrc-asset6.git",
-    type: 'Ai'
-  },
-  {
-    tempName: "simple2",
-    description:
-      "模板描述描述描述模板描述描述描述模板描述描述描述模板描述描述描述模板描述描述描述",
-    icon:
-      "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/%E6%B5%B7%E8%B4%BC%E7%8E%8B.jpeg",
-    gitUrl: "https://gitee.com/fu-wenhao/mrc-asset7.git",
-    type: 'Ai'
-  },
-  {
-    tempName: "simple3",
-    description: "模板描述描述描述模板描述描述描述模板描述描述描述",
-    icon:
-      "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/%E5%8A%A8%E6%BC%AB.jpeg",
-    gitUrl: "https://gitee.com/fu-wenhao/mrc-asset8.git",
-    type: 'Base'
-  },
-  {
-    tempName: "simple3",
-    description: "模板描述描述描述模板描述描述描述模板描述描述描述",
-    icon:
-      "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/%E5%8A%A8%E6%BC%AB.jpeg",
-    gitUrl: "https://gitee.com/fu-wenhao/mrc-asset8.git",
-    type: 'Base'
-  }
-]
-
-var tplTypes = [{
-  type: 'All',
-  desc: '模板类型模板类型模板类型模板类型模板类型60个字60个字60个字60个字'
-},
-{
-  type: 'Base',
-  desc: '模板类型模板类型模板类型模板类型模板类型60个字60个字60个字60个字'
-}, {
-  type: 'Ai',
-  desc: '模板类型模板类型模板类型模板类型模板类型60个字60个字60个字60个字'
-}, {
-  type: 'Device',
-  desc: '模板类型模板类型模板类型模板类型模板类型60个字60个字60个字60个字'
-}, {
-  type: 'Media',
-  desc: '模板类型模板类型模板类型模板类型模板类型60个字60个字60个字60个字'
-}, {
-  type: 'other',
-  desc: '模板类型模板类型模板类型模板类型模板类型60个字60个字60个字60个字'
-}]
-
 
 const app = new Vue({
   el: '#app',
@@ -113,12 +13,12 @@ const app = new Vue({
       }
     };
     return previousState?.data || {
-      templates: [],
-      tplTypes: tplTypes,
-      selectTypes: tplTypes[0],
-      selectTplName: '',
+      templateAll: [],//所有模板信息
+      templates: [], //根据类型筛选模板列表
+      selectTemp: {}, // 选择模板
+      tplTypes: [],//模板类型
+      selectType: {},//根据模板类型选择的模板
       plan: "selectTemplate",
-      selectTemp: {},
       loading: false,
       form: {
         name: '',
@@ -142,8 +42,7 @@ const app = new Vue({
   },
   filters: {},
   mounted() {
-    vscode.postMessage({ type: 'getInfoData' });
-    this.selectTplType(tplTypes[0]);
+    if (this.templateAll.length == 0) vscode.postMessage({ type: 'getInfoData' });
   },
   watch: {
     "form.name": function (value) {
@@ -162,6 +61,9 @@ const app = new Vue({
         this.inputChange();
       } else if (msg.type === '_getInfoData') {
         this.form.savePath = msg.data.defaultSavePath;
+        this.templateAll = msg.data.templates;
+        this.tplTypes = msg.data.templateTypes;
+        this.selectTplType(this.tplTypes[0]);
         this.inputChange();
       } else if (msg.type === '_createProject') {
         this.loading = false;
@@ -174,9 +76,9 @@ const app = new Vue({
     },
     // 选择模板类型
     selectTplType(type) {
-      this.selectTypes = type;
+      this.selectType = type;
       this.templates = [];
-      let tpls = tplAll.filter((item) => {
+      let tpls = this.templateAll.filter((item) => {
         return item.type === type.type || type.type == 'All'
       })
       let items = [];
@@ -196,6 +98,9 @@ const app = new Vue({
     selectTpl(item) {
       this.selectTemp = item;
       this.plan = "enterDetails";
+      this.selectType = this.tplTypes.find(typeItem => {
+        return typeItem.type == item.type
+      })
       this.inputChange();
     },
     // 返回模板选择
@@ -213,7 +118,7 @@ const app = new Vue({
             type: 'createProject',
             data: {
               ...this.form,
-              tplName: this.selectTplName
+              tplData: this.selectTemp
             }
           });
         }
