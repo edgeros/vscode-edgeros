@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-15 20:30:11 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-20 17:42:32
+ * @Last Modified time: 2021-05-14 17:53:56
  */
 
 // edgeros.showWebView
@@ -45,6 +45,9 @@ let iframeTmp = `
   </body>
   <script>
    var wifm= document.getElementById("webIframe");
+   wifm.height = window.innerHeight-15;
+   wifm.width = window.innerWidth-20;
+   
    window.onresize = function(){
     wifm.height = window.innerHeight-15;
     wifm.width = window.innerWidth-20;
