@@ -19,6 +19,10 @@ body.vscode-high-contrast {
   color: var(--vscode-input-foreground)
 }
 
+.el-input__inner::-webkit-input-placeholder {
+  color: #777;
+}
+
 .el-input.is-disabled .el-input__inner {
   background-color: var(--vscode-input-placeholderForeground);
 }
