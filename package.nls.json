@@ -1,5 +1,5 @@
 {
-	"welcome": "Not Edgeros Project.\n[Website](http://www.egeros.com)\n[Create Project](command:edgeros.showCreateProView)",
+	"welcome": "Not Edgeros Project.\n[Website](http://www.edgeros.com)\n[Create Project](command:edgeros.showCreateProView)",
 	"addDeviceView": "Add Device",
 	"CreateEdgerOSProject": "Create EdgerOS Project",
 	"OpenBrowser": "Open Browser",

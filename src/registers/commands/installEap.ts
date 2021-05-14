@@ -35,9 +35,9 @@ export = function (context: vscode.ExtensionContext) {
               return item.devName === options[0].label
             })
 
-            let installType = vscode.workspace.getConfiguration('edgeros').get('installEdgerOSAPP')
+            let installType = vscode.workspace.getConfiguration('edgeros').get('installEAP')
             // 弹出选择框
-            if (installType == 'History') {
+            if (installType == 'Manual') {
               let fileNames = fs.readdirSync(vscode.workspace.workspaceFolders[0].uri.fsPath)
               let eapFile: string[] = [];
               fileNames.forEach(item => {
@@ -52,7 +52,7 @@ export = function (context: vscode.ExtensionContext) {
               } else {
                 throw new Error('No Choice EdgerOS APP Install Package!')
               }
-            } else if (installType == 'New') {
+            } else if (installType == 'Auto') {
               // 不做处理 
             }
 

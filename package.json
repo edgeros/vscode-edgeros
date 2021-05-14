@@ -145,12 +145,12 @@
 					"default": "true",
 					"description": "%ConfigBuileVersionIncrement%"
 				},
-				"edgeros.installEdgerOSAPP": {
+				"edgeros.installEAP": {
 					"type": "string",
-					"default": "New",
+					"default": "Auto",
 					"enum": [
-						"New",
-						"History"
+						"Auto",
+						"Manual"
 					],
 					"enumDescriptions": [
 						"%ConfigInstallEapModelNew%",
