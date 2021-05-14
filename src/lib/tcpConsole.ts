@@ -13,7 +13,7 @@ var lastDevice: any = undefined;
 export function openConsle(device: any) {
   if (!channel) {
     connectStatusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
-    channel = vscode.window.createOutputChannel('Edger Console');
+    channel = vscode.window.createOutputChannel('EdgerOS Console');
   }
   channel.show();
 

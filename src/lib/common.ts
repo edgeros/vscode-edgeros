@@ -8,6 +8,7 @@ import * as vscode from 'vscode';
 import * as ejs from 'ejs';
 import * as path from 'path';
 import * as fs from 'fs-extra';
+const EdgerOutPut = vscode.window.createOutputChannel('EdgerOS');
 /**
  * 将本地文件资源转换为webview需要的uri
  * @param panel 
@@ -52,3 +53,11 @@ export async function getWebViewBaseUris(viewFileName: string, currentPanel: vsc
   };
 }
 
+/**
+ * 打印输出
+ * @param msg 
+ */
+export async function sendEdgerOSOutPut(msg: string) {
+  EdgerOutPut.appendLine(msg);
+  EdgerOutPut.show();
+}
