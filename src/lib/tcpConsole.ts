@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as net from 'net';
 import * as config from './config';
+import { sendEdgerOSOutPut } from './common';
 var channel: vscode.OutputChannel;
 var connectStatusBar: vscode.StatusBarItem;
 var tcpClient: net.Socket | undefined = undefined;
@@ -22,8 +23,11 @@ export function openConsle(device: any) {
     lastDevice = device;
     getTcpClientInstance(device, 1, channel, connectStatusBar);
   } else {
-    console.log(`TCP the connection already exists deviceName[${lastDevice.devName}]`);
-    vscode.window.showErrorMessage('TCP Channal Occupy ' + lastDevice.devName);
+    sendEdgerOSOutPut(`
+    ================= TCP Channal Occupy ${lastDevice.devName} =================
+    EdgerOS LOG Error: TCP the connection already exists deviceName [${lastDevice.devName}]
+    `);
+    // vscode.window.showErrorMessage('TCP Channal Occupy ' + lastDevice.devName);
   }
 }
 /**
@@ -39,6 +43,13 @@ function getTcpClientInstance(
   channel: vscode.OutputChannel,
   connectStatusBar: vscode.StatusBarItem
 ) {
+  console.log(`TCP Connect Relinking  2s[TimeOut] count:>${reconnection}`);
+  connectStatusBar.text = `$(sync~spin) try connect ( ${reconnection} ) [ ${device.devName} ]`;
+  connectStatusBar.backgroundColor = new vscode.ThemeColor('statusBarItem.errorBackground');
+  connectStatusBar.tooltip = 'click connecting';
+  connectStatusBar.command = undefined;
+  connectStatusBar.show();
+
   tcpClient = net.createConnection({
     port: config.edgerConsolePort,
     host: device.devIp,

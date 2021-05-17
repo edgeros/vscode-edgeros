@@ -29,7 +29,7 @@ export = function (context: vscode.ExtensionContext) {
           });
           vscode.window.showInformationMessage('Build EdgerOS App:' + eapPath);
         } else {
-          vscode.window.showErrorMessage('No edgeros project');
+          vscode.window.showErrorMessage('No Edgeros Project');
         }
       }
     } catch (err) {
