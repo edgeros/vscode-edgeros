@@ -10,25 +10,17 @@ It also can manage your Edger devices, including device password. Make sure your
 
 Before deploying your app to Edger device, you should add it to your workspace first.
 
-By clicking the "Add Edger Device" button or "Add" menu item, enter the ip address of your Edger device, give it a nick name and you are good to go.
+By clicking the "Add  Device" button , enter the ip address of your Edger device, give it a nick name and you are good to go.
 
-![add device](media/add-device.gif)
+![add device](media/add_device.gif)
 
 > Tip: Make sure your computer and Edger devices are in the same network.
 
 ### Edit Device
 
-Device information can be edited via context menu on device item in the tree view.
-
-![context menu](media/menu-items.png)
-
-Right click on your device item, then click on the "Edit" menu item. Update the ip address or device nickname as you need.
+ click on your device item. Update the ip address or device nickname as you need.
 
 ![edit device](media/edit-device.gif)
-
-### Delete Device
-
-The "Delete" context menu can be used to delete device from your device list.
 
 ### Deploy App
 
@@ -51,10 +43,7 @@ You can quickly create an Edger OS development Project by clicking "New Project"
 
 ![deploy app](media/create_project.gif)
 
-### Device Setting
-If the template is too slow to load, you can use "Edgeros Settings" to switch between the template download sites. The current sites are "GitHub" and "Zoho".
 
-![deploy app](media/setting.gif)
 
 ## Known Issues
 
@@ -74,4 +63,4 @@ First release.
 
 **Enjoy!**
 
-EdgerOS Team, 2021.3
+EdgerOS Team, 2021.5
