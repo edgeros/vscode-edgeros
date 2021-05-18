@@ -1,66 +1,51 @@
-# EdgerOS VSC Extension README
+# EdgerOS VSCode Extension
 
-EdgerOS VSC Extension includes a set of tools for EdgerOS developers to **pack**,**create**, **upload**, **install** and **update** EdgerOS applications on your Edger devices. The extension can also validate your desc.json before deployment and monitor app execution status on your device.
+This Extension includes tools for EdgerOS developers to **build**, **install** and **update** EdgerOS applications on your EdgerOS devices. The extension can also validate your edgeros.json before deployment and monitor app execution status on your device.
 
-It also can manage your Edger devices, including device password. Make sure your Edger device **developer** mode is set on.
 
 ## Features
 
+### Create a project
+
+You can create an EdgerOS sample project from our built-in templates
+
+![create project](resources/media/create-project.gif)
+
 ### Add Device
 
-Before deploying your app to Edger device, you should add it to your workspace first.
+Before deploying your app to EdgerOS device, you should add it to your workspace first.
+Click "Add  Device" icon, enter the ip address of your device, give it a nick name and you are good to go.
 
-By clicking the "Add  Device" button , enter the ip address of your Edger device, give it a nick name and you are good to go.
+![add device](resources/media/add-device.gif)
 
-![add device](media/add_device.gif)
-
-> Tip: Make sure your computer and Edger devices are in the same network.
+> Tip: Make sure your computer and EdgerOS devices are in the same network. And turn on **developer** mode inside your devices settings before connecting*.
 
 ### Edit Device
 
- click on your device item. Update the ip address or device nickname as you need.
+Click on the device item then you can update the ip address or nickname as you need.
 
-![edit device](media/edit-device.gif)
+![edit device](resources/media/edit-device.gif)
 
 ### Deploy App
 
-Once your app is ready to be deployed on your Edger device. You can select the target device and click on the "Deploy" button to deploy your app and test.
+Once your app is ready to be deployed. Select the target device and click on the "Deploy" icon to deploy your app.
+Before deployment, device password will be asked and verified. The content of your app's edgeros.json will be validated as well.
 
-Before deployment, device password will be asked and verified during deployment. The content of your app's desc.json will be validated as well.
-
-![deploy app](media/deploy.gif)
+![deploy app](resources/media/deploy.gif)
 
 ### Device Console
 
-Device Console can be used to show the execution status of your app on target Edger device.
+Device Console can be used to print the application log from your app.
 
-Device Console can be open via Edger device context menu item "Console". Console message can be found in the **OUTPUT** window.
+Click the Console icon on the device name then your will find the `EdgerOS` panel inside **OUTPUT** window.
 
-![deploy app](media/output.gif)
-
-### Create a project
-You can quickly create an Edger OS development Project by clicking "New Project"
-
-![deploy app](media/create_project.gif)
-
-
-
-## Known Issues
-
-N/A
+![console output](resources/media/output.gif)
 
 ## Release Notes
 
-### 0.0.9
+- version 0.2.0 uses new project structure, [check here](CHANGELOG.md#v0.2.0) for more infomation.
 
-First release.
-
------------------------------------------------------------------------------------------------------------
 
 ### For more information
 
 * [EdgerOS Official Site](https://www.edgeros.com)
-
-**Enjoy!**
-
-EdgerOS Team, 2021.5
