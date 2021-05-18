@@ -6,7 +6,7 @@
           "node_modules/@edgeros"
       ],
       "types": [
-          "jsre-lib"
+          "jsre-types"
       ]
   }
 }

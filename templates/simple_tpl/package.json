@@ -6,12 +6,12 @@
   "scripts": {
     "build": "eos build"
   },
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
   },
   "devDependencies": {
     "eslint": "^7.23.0",
-    "@edgeros/jsre-types": "^0.0.1",
+    "@edgeros/jsre-types": "^0.1.1",
     "@edgeros/eslint-plugin-jsre": "^0.0.1"
   }
 }

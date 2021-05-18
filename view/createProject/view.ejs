@@ -21,8 +21,12 @@
         <!-- 标题 -->
         <el-header style="height: 20%;padding:20px 0px;">
           <div class="headStyle">
-            <div class="title"><%=language.projectTemplateWarehouseTxt%></div>
-            <div><%=language.projectTemplateHintTxt%></div>
+            <div class="title">
+              <%=language.projectTemplateWarehouseTxt%>
+            </div>
+            <div>
+              <%=language.projectTemplateHintTxt%>
+            </div>
           </div>
         </el-header>
 
@@ -48,12 +52,18 @@
                     <div class="tempName"> {{ item.tempName }}</div>
                     <div class="desc">{{ item.description }}</div>
                     <div class="applyBtn">
-                      <div><%=language.applyTxt%></div>
+                      <div>
+                        <%=language.applyTxt%>
+                      </div>
                     </div>
                     <div class="btnShow">
-                      <div style="flex: 1"></div>
+                      <el-tooltip class="item" effect="dark" :content="item.tempName" placement="left">
+                        <div style="flex: 1;"></div>
+                      </el-tooltip>
                       <div class="clickBtn" @click="selectTpl(item)">
-                        <div><%=language.ApplyNowTxt%></div>
+                        <div>
+                          <%=language.ApplyNowTxt%>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -71,7 +81,9 @@
         <!-- 标题 -->
         <el-header style="height: 20%;padding:20px 0px;">
           <div class="headStyle">
-            <div class="title"><span @click="backTpl"><%=language.projectTemplateWarehouseTxt%></span> > {{selectType.type}}</div>
+            <div class="title"><span @click="backTpl">
+                <%=language.projectTemplateWarehouseTxt%>
+              </span> > {{selectType.type}}</div>
             <div>
               {{selectType.desc}}
             </div>
@@ -169,13 +181,13 @@
                 </el-col>
               </el-row>
             </el-form>
+            <el-footer style="text-align: right;padding:20px 0px;">
+              <el-button type="info" @click="onSubmit" type="info" :loading="loading" style="background: #0e639c;">
+                <%=language.createButtonTxt%>
+              </el-button>
+            </el-footer>
           </el-main>
         </el-container>
-        <el-footer style="text-align: right;padding:20px 0px;">
-          <el-button type="info" @click="onSubmit" type="info" :loading="loading" style="background: #0e639c;">
-            <%=language.createButtonTxt%>
-          </el-button>
-        </el-footer>
       </el-container>
     </div>
   </div>

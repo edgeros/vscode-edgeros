@@ -35,20 +35,14 @@ export async function replaceInfo(savePath: string, options: any) {
 
   // package.json author is vendor
   if (true) {
-    let authtmp: any = {
-      id: edgerosStr.vendor.id || undefined,
-      name: edgerosStr.vendor.name || undefined,
-      email: edgerosStr.vendor.email || undefined,
-      phone: edgerosStr.vendor.phone || undefined,
-      fax: edgerosStr.vendor.fax || undefined,
-    };
-
-    for (let key in authtmp) {
-      if (authtmp[key] !== undefined) {
-        pkgJStr.author = authtmp
-        break;
-      }
-    }
+    // pkgJStr.author = {
+    //   id: edgerosStr.vendor.id || undefined,
+    //   name: edgerosStr.vendor.name || undefined,
+    //   email: edgerosStr.vendor.email || undefined,
+    //   phone: edgerosStr.vendor.phone || undefined,
+    //   fax: edgerosStr.vendor.fax || undefined,
+    // };
+    pkgJStr.author = edgerosStr.vendor.email;
     fs.writeFileSync(pkgpath, JSON.stringify(pkgJStr, null, 4), { encoding: 'utf-8' });
   }
 }

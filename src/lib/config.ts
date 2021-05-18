@@ -27,25 +27,25 @@ export const edgerOsWebData: any = [
  */
 export const templates = [
   {
-    tempName: "simple (local)",
+    tempName: "simple-local",
     description: "Very basic and simple project template",
     icon:
       "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/edgeros_logo.png",
-    gitUrl: "https://gitee.com/fu-wenhao/mrc-asset1.git",
+    gitUrl: "",
     downloadUrl: "",
     location: "local",
     type: 'Base'
   },
-  {
-    tempName: "simple (cloud)",
-    description: "Very basic and simple project template",
-    icon:
-      "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/edgeros_logo.png",
-    gitUrl: "https://gitee.com/fu-wenhao/mrc-asset2.git",
-    downloadUrl: "http://127.0.0.1:82/download/file/simple_tpl.zip",
-    location: "cloud",
-    type: 'Base'
-  },
+  // {
+  //   tempName: "simple-cloud",
+  //   description: "Very basic and simple project template",
+  //   icon:
+  //     "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/edgeros_logo.png",
+  //   gitUrl: "https://gitee.com/fu-wenhao/mrc-asset2.git",
+  //   downloadUrl: "http://127.0.0.1:82/download/file/simple_tpl.zip",
+  //   location: "cloud",
+  //   type: 'Base'
+  // },
 ]
 
 /**
