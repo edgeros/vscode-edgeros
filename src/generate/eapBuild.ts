@@ -109,7 +109,10 @@ export default async function buildEap(workspacePath: string, options: any): Pro
 
     // 压缩
     progress.report({ message: "compressing..." });
-    let eapName = path.join(projectPath, eosAndpkgJson.pkg.name + '_' + eosAndpkgJson.pkg.version + ('.' + (options.configInfo?.buildSuffix ? options.configInfo?.buildSuffix : 'eap')));//.zip
+    if (!fs.existsSync(path.join(projectPath, 'temp'))) {
+      fs.mkdirSync(path.join(projectPath, 'temp'));
+    }
+    let eapName = path.join(projectPath, 'temp', eosAndpkgJson.pkg.name + '_' + eosAndpkgJson.pkg.version + ('.' + (options.configInfo?.buildSuffix ? options.configInfo?.buildSuffix : 'eap')));//.zip
     let tarStream = new compressing.zip.Stream();
     fs.readdirSync(buildFileTmp).forEach(item => {
       tarStream.addEntry(path.join(buildFileTmp, item))
@@ -309,7 +312,7 @@ module.exports=main;
 `
       fs.writeFileSync(indexPath, reqStr);
     } else {
-      throw new Error('package.json not main')
+      throw new Error(`Module [ ${modeName} ] package.json not main`)
     }
   } else {
     // console.log("存在", tmpPath)

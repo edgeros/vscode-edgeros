@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-05-10 14:06:48
+ * @Last Modified time: 2021-05-18 16:07:27
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -27,7 +27,7 @@ export = function (context: vscode.ExtensionContext) {
     if (currentPanel) {
       currentPanel.reveal(columnToShowIn);
     } else {
-      currentPanel = vscode.window.createWebviewPanel('createProject', 'create Project', vscode.ViewColumn.One, {
+      currentPanel = vscode.window.createWebviewPanel('createProject', 'Create Project', vscode.ViewColumn.One, {
         enableScripts: true
       });
 
@@ -45,7 +45,7 @@ export = function (context: vscode.ExtensionContext) {
         cssUri,
         language: {
           "nameTxt": localize('name.txt', "Name"),
-          "buildidTxt": localize('buildid.txt', "Buildid"),
+          "buildidTxt": localize('buildid.txt', "Bundleid"),
           "savePathTxt": localize('savePath.txt', "Save Path"),
           "descriptionTxt": localize('Description.txt', "Description"),
           "versionTxt": localize('version.txt', "Version"),

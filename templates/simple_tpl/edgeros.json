@@ -1,10 +1,12 @@
 {
     "bundleid": "com.edgeros.default",
     "ignore_modules": [
-        "@edgeros/edgeros_test"
+        "@edgeros/eslint-plugin-jsre",
+        "@edgeros/jsre-types"
     ],
     "ignore_path": [
-        "./test/*"
+        "./test/*",
+        "./temp/*"
     ],
     "assets": {
         "ico_big": "assets/big.png",

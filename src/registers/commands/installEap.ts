@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 15:11:00 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-28 17:53:24
+ * @Last Modified time: 2021-05-18 16:32:09
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
@@ -38,7 +38,7 @@ export = function (context: vscode.ExtensionContext) {
             let installType = vscode.workspace.getConfiguration('edgeros').get('installEAP')
             // 弹出选择框
             if (installType == 'Manual') {
-              let fileNames = fs.readdirSync(vscode.workspace.workspaceFolders[0].uri.fsPath)
+              let fileNames = fs.readdirSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'temp'))
               let eapFile: string[] = [];
               fileNames.forEach(item => {
                 if (item.lastIndexOf('.eap') != -1) {
@@ -48,7 +48,7 @@ export = function (context: vscode.ExtensionContext) {
 
               let eapName: string | undefined = await vscode.window.showQuickPick(eapFile)
               if (eapName) {
-                eapPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, eapName);
+                eapPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'temp', eapName);
               } else {
                 throw new Error('No Choice EdgerOS APP Install Package!')
               }

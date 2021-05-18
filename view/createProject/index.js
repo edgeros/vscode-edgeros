@@ -12,6 +12,8 @@ const app = new Vue({
         callback();
       }
     };
+
+
     return previousState?.data || {
       templateAll: [],//所有模板信息
       templates: [], //根据类型筛选模板列表
@@ -35,6 +37,9 @@ const app = new Vue({
       },
       rules: {
         name: [
+          { required: true, validator: checkName, trigger: 'blur' }
+        ],
+        vendorName: [
           { required: true, validator: checkName, trigger: 'blur' }
         ]
       }
