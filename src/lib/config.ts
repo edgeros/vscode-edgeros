@@ -7,10 +7,9 @@ export const edgerConsolePort: number = 81;
 // show WebView
 export const edgerOsWebData: any = [
   {
-    url: "https://docs.t.e0a.cc/edgeros/api/overview.html",
+    url: "https://docs.edgeros.com/edgeros/api/overview.html",
     title: 'API Documentation',
     "title_zh-cn": '接口文档'
-
   }
 ];
 
