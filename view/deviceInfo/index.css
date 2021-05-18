@@ -20,5 +20,5 @@ body.vscode-high-contrast {
 }
 
 .el-input.is-disabled .el-input__inner {
-  background-color: var(--vscode-input-placeholderForeground);
+  background-color: var(--debugIcon-breakpointDisabledForeground);
 }
