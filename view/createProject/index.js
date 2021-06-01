@@ -35,6 +35,14 @@ const app = new Vue({
       }
     }
 
+    var checkVersionName = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error(versionNameNotEmptyText));
+      } else {
+        callback();
+      }
+    };
+
     return previousState?.data || {
       templateAll: [],//所有模板信息
       templates: [], //根据类型筛选模板列表
@@ -61,7 +69,7 @@ const app = new Vue({
           { required: true, validator: checkName, trigger: 'blur' }
         ],
         vendorName: [
-          { required: true, validator: checkName, trigger: 'blur' }
+          { required: true, validator: checkVersionName, trigger: 'blur' }
         ],
         bundleid: [
           { required: true, validator: checkBundleId, trigger: 'blur' }
