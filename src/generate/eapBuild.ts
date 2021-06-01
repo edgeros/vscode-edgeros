@@ -73,13 +73,13 @@ export default async function buildEap(workspacePath: string, options: any): Pro
       let copyFilePath = projectFileList[i];
       let targetFilePath = path.join(buildFileTmp, 'program', copyFilePath);
       let sourceFilePath = path.join(projectPath, copyFilePath);
-      // 校验文件内容编码utf-8
-      if (/(\.html|\.css|\.js|\.json)$/i.test(sourceFilePath)) {
-        let detectData = jschardet.detect(fs.readFileSync(sourceFilePath));
-        if (detectData.encoding !== 'ascii' && detectData.encoding !== 'UTF-8') {
-          throw new Error('The encoding format is UTF-8:\n' + sourceFilePath);
-        }
-      }
+      // // 校验文件内容编码utf-8
+      // if (/(\.html|\.css|\.js|\.json)$/i.test(sourceFilePath)) {
+      //   let detectData = jschardet.detect(fs.readFileSync(sourceFilePath));
+      //   if (detectData.encoding !== 'ascii' && detectData.encoding !== 'UTF-8') {
+      //     throw new Error('The encoding format is UTF-8:\n' + sourceFilePath);
+      //   }
+      // }
       await copyProject(sourceFilePath, targetFilePath);
     }
     // node_modules -> jsre_modules
