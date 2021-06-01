@@ -16,7 +16,7 @@ export async function replaceInfo(savePath: string, options: any) {
   let edgerospath = path.join(savePath, 'edgeros.json');
   if (!fs.existsSync(edgerospath)) throw new Error("edgeros.json not found:" + edgerospath);
   let edgerosStr = require(edgerospath);
-  edgerosStr.bundleid = options.bundleid;
+  edgerosStr.name = options.name;
   edgerosStr.vendor.id = options.vendorId;
   edgerosStr.vendor.name = options.vendorName;
   edgerosStr.vendor.email = options.vendorEmail;
@@ -29,7 +29,7 @@ export async function replaceInfo(savePath: string, options: any) {
   let pkgpath = path.join(savePath, 'package.json');
   if (!fs.existsSync(pkgpath)) throw new Error("package.json not found");
   let pkgJStr = require(pkgpath);
-  pkgJStr.name = options.name;
+  pkgJStr.name = options.bundleid;
   pkgJStr.version = options.version;
   pkgJStr.description = options.description;
 

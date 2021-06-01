@@ -237,8 +237,8 @@ function getEosAndPkgJson(projectPath: string) {
 function createDesc(buildFileTmp: string, eosAndpkgJson: any) {
   let descpath = path.join(buildFileTmp, 'desc.json');
   let descData: any = {};
-  descData.id = eosAndpkgJson.eos.bundleid;
-  descData.name = eosAndpkgJson.pkg.name;
+  descData.id = eosAndpkgJson.pkg.name;
+  descData.name = eosAndpkgJson.eos.name;
   descData.ico = {
     big: eosAndpkgJson.eos.assets.ico_big.split('/').pop(),
     small: eosAndpkgJson.eos.assets.ico_small.split('/').pop(),

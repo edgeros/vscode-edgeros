@@ -17,5 +17,8 @@
   "projectTemplateWarehouse.txt": "项目模板库",
   "projectTemplateHint.txt": "可根据开发类型，选择对应模板进行快速构建项目",
   "apply.txt": "应用",
-  "applyNow.txt": "立即应用"
+  "applyNow.txt": "立即应用",
+  "contentNotEmpty.txt": "内容不能为空",
+  "bundleIdIncorrectFormatText.txt": "格式为:[a-z]([a-z0-9-]*)(\\.([a-z0-9-]+)){2,}",
+  "versionIdIncorrectFormatText.txt": "必须为纯数字"
 }

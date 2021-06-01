@@ -1,5 +1,5 @@
 {
-    "bundleid": "com.edgeros.default",
+    "name":"EdgerosAppDemo",
     "ignore_modules": [
         "@edgeros/eslint-plugin-jsre",
         "@edgeros/jsre-types"
