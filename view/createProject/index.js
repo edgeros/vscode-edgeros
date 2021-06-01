@@ -13,6 +13,35 @@ const app = new Vue({
       }
     };
 
+    var checkBundleId = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error(bundleIdNotEmptyText));
+      }
+      if (/^[a-z]([a-z0-9-]*)(\.([a-z0-9-]+)){2,}$/g.test(value)) {
+        callback();
+      } else {
+        callback(new Error(bundleIdIncorrectFormatText));
+      }
+    }
+
+    var checkVersionId = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error(versionIdNotEmptyText));
+      }
+      if (/^\d+$/g.test(value)) {
+        callback();
+      } else {
+        callback(new Error(versionIdIncorrectFormatText));
+      }
+    }
+
+    var checkVersionName = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error(versionNameNotEmptyText));
+      } else {
+        callback();
+      }
+    };
 
     return previousState?.data || {
       templateAll: [],//所有模板信息
@@ -40,7 +69,13 @@ const app = new Vue({
           { required: true, validator: checkName, trigger: 'blur' }
         ],
         vendorName: [
-          { required: true, validator: checkName, trigger: 'blur' }
+          { required: true, validator: checkVersionName, trigger: 'blur' }
+        ],
+        bundleid: [
+          { required: true, validator: checkBundleId, trigger: 'blur' }
+        ],
+        vendorId: [
+          { required: true, validator: checkVersionId, trigger: 'blur' }
         ]
       }
     };
@@ -48,11 +83,6 @@ const app = new Vue({
   filters: {},
   mounted() {
     if (this.templateAll.length == 0) vscode.postMessage({ type: 'getInfoData' });
-  },
-  watch: {
-    "form.name": function (value) {
-      this.form.bundleid = 'com.example.' + value;
-    }
   },
   methods: {
     inputChange(value) {

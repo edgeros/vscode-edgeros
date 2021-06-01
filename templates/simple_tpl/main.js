@@ -1,37 +1,37 @@
-#! /bin/javascript
-
 /*
- * Copyright (c) 2020 EdgerOS Team.
+ * Copyright (c) 2021 EdgerOS Team.
  * All rights reserved.
  *
  * Detailed license information can be found in the LICENSE file.
  *
  * File: main.js.
  *
- * Author: liping@acoinfo.com
+ * Author: hanhui@acoinfo.com
  *
  */
-const Web = require('webapp');
-const bodyParser = require('middleware').bodyParser;
-const iosched = require('iosched');
 
-/* Whether the app was awakened by a shared message */
-if (ARGUMENT != undefined) {
-	console.log('Awakened by share message:', ARGUMENT);
-}
+/* Import system modules */
+const WebApp = require('webapp');
 
-// Create app.
-const app = Web.createApp();
+/* Import routers */
+const myrouter = require('./routers/rest');
 
-app.use(bodyParser.json());
-app.use(Web.static('./public', { index: ['index.html', 'index.htm'] }));
+/* Create App */
+const app = WebApp.createApp();
 
-app.use('/', require('./routers'));
+/* Set static path */
+app.use(WebApp.static('./public'));
 
-// Start app.
+/* Set test rest */
+app.use('/api', myrouter);
+
+/* Rend test */
+app.get('/temp.html', function(req, res) {
+	res.render('temp', { time: Date.now() });
+});
+
+/* Start App */
 app.start();
 
-/*
- * Event loop
- */
-iosched.forever();
+/* Event loop */
+require('iosched').forever();

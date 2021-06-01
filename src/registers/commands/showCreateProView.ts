@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-05-18 16:07:27
+ * @Last Modified time: 2021-06-01 23:22:11
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -62,7 +62,12 @@ export = function (context: vscode.ExtensionContext) {
           "projectTemplateWarehouseTxt": localize('projectTemplateWarehouse.txt', "Template Warehouse"),
           "projectTemplateHintTxt": localize('projectTemplateHint.txt', "Select the template and build it now"),
           "applyTxt": localize('apply.txt', "Apply"),
-          "ApplyNowTxt": localize('applyNow.txt', "Apply Now")
+          "ApplyNowTxt": localize('applyNow.txt', "Apply Now"),
+          "bundleIdNotEmptyText": localize('contentNotEmpty.txt', "content cannot be empty"),
+          "bundleIdIncorrectFormatText": localize('bundleIdIncorrectFormatText.txt', "It needs to be formatted: [a-z]([a-z0-9-]*)(\\.([a-z0-9-]+)){2,}"),
+          "versionIdNotEmptyText": localize('versionIdNotEmptyText.txt', "Vendor ID is required"),
+          "versionIdIncorrectFormatText": localize('versionIdIncorrectFormatText.txt', "Should be a number"),
+          "versionNameNotEmptyText": localize('versionNameNotEmptyText.txt', 'Vendor name is required')
         }
       });
 

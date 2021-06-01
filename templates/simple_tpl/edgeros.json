@@ -1,5 +1,6 @@
 {
-    "bundleid": "com.edgeros.default",
+    "name":"default",
+    "bundleid": "com.example.myapp",
     "ignore_modules": [
         "@edgeros/eslint-plugin-jsre",
         "@edgeros/jsre-types"
@@ -11,32 +12,32 @@
     "assets": {
         "ico_big": "assets/big.png",
         "ico_small": "assets/small.png",
-        "splash": "assets/start.jpg",
-        "widget_icon_1": "assets/widget_1.png"
+        "ico_widget": "assets/widget.png",
+        "splash": "assets/splash.png"
     },
     "program": {
         "gss": false,
         "log": "console",
         "will": false,
         "reside": false,
-        "mesv": "0.9.0"
+        "mesv": "1.0.0"
     },
     "vendor": {
-        "id": "default@company.com",
-        "name": "default",
-        "email": "default@company.com",
-        "phone": "",
+        "id": "000000",
+        "name": "mycompany",
+        "email": "example@example.com",
+        "phone": "123456789",
         "fax": ""
     },
     "update": {
         "remove": [
-            "static"
+            "public"
         ]
     },
     "widget": [
         {
-            "ico": "widget_icon_1",
-            "name": "Test",
+            "ico": "ico_widget",
+            "name": "My Widget",
             "path": "widget",
             "rows": 2,
             "columns": 2,

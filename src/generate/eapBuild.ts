@@ -73,13 +73,13 @@ export default async function buildEap(workspacePath: string, options: any): Pro
       let copyFilePath = projectFileList[i];
       let targetFilePath = path.join(buildFileTmp, 'program', copyFilePath);
       let sourceFilePath = path.join(projectPath, copyFilePath);
-      // 校验文件内容编码utf-8
-      if (/(\.html|\.css|\.js|\.json)$/i.test(sourceFilePath)) {
-        let detectData = jschardet.detect(fs.readFileSync(sourceFilePath));
-        if (detectData.encoding !== 'ascii' && detectData.encoding !== 'UTF-8') {
-          throw new Error('The encoding format is UTF-8:\n' + sourceFilePath);
-        }
-      }
+      // // 校验文件内容编码utf-8
+      // if (/(\.html|\.css|\.js|\.json)$/i.test(sourceFilePath)) {
+      //   let detectData = jschardet.detect(fs.readFileSync(sourceFilePath));
+      //   if (detectData.encoding !== 'ascii' && detectData.encoding !== 'UTF-8') {
+      //     throw new Error('The encoding format is UTF-8:\n' + sourceFilePath);
+      //   }
+      // }
       await copyProject(sourceFilePath, targetFilePath);
     }
     // node_modules -> jsre_modules
@@ -237,8 +237,8 @@ function getEosAndPkgJson(projectPath: string) {
 function createDesc(buildFileTmp: string, eosAndpkgJson: any) {
   let descpath = path.join(buildFileTmp, 'desc.json');
   let descData: any = {};
-  descData.id = eosAndpkgJson.eos.bundleid;
-  descData.name = eosAndpkgJson.pkg.name;
+  descData.id = eosAndpkgJson.eos.bundleid || eosAndpkgJson.pkg.name;
+  descData.name = eosAndpkgJson.eos.name || eosAndpkgJson.pkg.name;
   descData.ico = {
     big: eosAndpkgJson.eos.assets.ico_big.split('/').pop(),
     small: eosAndpkgJson.eos.assets.ico_small.split('/').pop(),
