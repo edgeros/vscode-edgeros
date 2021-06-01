@@ -17,6 +17,7 @@ export async function replaceInfo(savePath: string, options: any) {
   if (!fs.existsSync(edgerospath)) throw new Error("edgeros.json not found:" + edgerospath);
   let edgerosStr = require(edgerospath);
   edgerosStr.name = options.name;
+  edgerosStr.bundleid = options.bundleid;
   edgerosStr.vendor.id = options.vendorId;
   edgerosStr.vendor.name = options.vendorName;
   edgerosStr.vendor.email = options.vendorEmail;
