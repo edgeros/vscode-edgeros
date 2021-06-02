@@ -6,8 +6,8 @@
         "@edgeros/jsre-types"
     ],
     "ignore_path": [
-        "./test/*",
-        "./temp/*"
+        "./test/**",
+        "./temp/**"
     ],
     "assets": {
         "ico_big": "assets/big.png",
