@@ -43,6 +43,7 @@ function getTcpClientInstance(
   channel: vscode.OutputChannel,
   connectStatusBar: vscode.StatusBarItem
 ) {
+
   console.log(`TCP Connect Relinking  2s[TimeOut] count:>${reconnection}`);
   connectStatusBar.text = `$(sync~spin) try connect ( ${reconnection} ) [ ${device.devName} ]`;
   connectStatusBar.backgroundColor = new vscode.ThemeColor('statusBarItem.errorBackground');
@@ -50,11 +51,17 @@ function getTcpClientInstance(
   connectStatusBar.command = undefined;
   connectStatusBar.show();
 
+  // intevalTime KeepAlive
+  let keepAliveTime: NodeJS.Timeout;
   tcpClient = net.createConnection({
     port: config.edgerConsolePort,
     host: device.devIp,
     timeout: 3000
   }, () => {
+    keepAliveTime = setInterval(() => {
+      // console.log('send keepAlive')
+      tcpClient?.write('hello edgeros')
+    }, 5000)
     channel.show();
     reconnection = 1;
     console.log('connected to server' + `:${device.devIp} [TCP]`);
@@ -64,6 +71,7 @@ function getTcpClientInstance(
     connectStatusBar.backgroundColor = new vscode.ThemeColor('statusBarItem.debuggingBackground');
     connectStatusBar.show();
   });
+  tcpClient.setKeepAlive(true, 1000);
 
   // 接收数据
   tcpClient.on('data', function (data) {
@@ -73,6 +81,7 @@ function getTcpClientInstance(
   });
 
   tcpClient.on('close', function () {
+    clearInterval(keepAliveTime);
     console.log(`TCP ${device.devName}:${device.devIp} end disconnect [Close]`);
     if (reconnection > 3 || initiativeClose) {
       console.log(`TCP the maximum number of connections is exceeded or initiative close`);
