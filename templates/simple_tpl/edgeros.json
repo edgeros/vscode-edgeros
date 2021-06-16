@@ -12,8 +12,7 @@
     "assets": {
         "ico_big": "assets/big.png",
         "ico_small": "assets/small.png",
-        "ico_widget": "assets/widget.png",
-        "splash": "assets/splash.png"
+        "ico_widget": "assets/widget.png"
     },
     "program": {
         "gss": false,
