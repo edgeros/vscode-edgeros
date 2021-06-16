@@ -164,6 +164,7 @@
 	},
 	"scripts": {
 		"pack": "vsce package",
+		"publish": "vsce publish",
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
