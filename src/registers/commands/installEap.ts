@@ -26,33 +26,30 @@ export = function (context: vscode.ExtensionContext) {
             let configInfo: any = {
               buildSuffix: vscode.workspace.getConfiguration('edgeros').get('buildType'),
               increment: vscode.workspace.getConfiguration('edgeros').get('versionIncrement'),
-            }
+            };
             let eapPath: string = await buildEap(vscode.workspace.workspaceFolders[0].uri.fsPath, {
               configInfo: configInfo
             });
             let devList: any[] | undefined = context.globalState.get(devsStateKey);
             let devInfo = devList?.find(item => {
-              return item.devName === options[0].label
-            })
+              return item.devName === options[0].label;
+            });
 
-            let installType = vscode.workspace.getConfiguration('edgeros').get('installEAP')
+            let installType = vscode.workspace.getConfiguration('edgeros').get('installEAP');
             // 弹出选择框
-            if (installType == 'Manual') {
-              let fileNames = fs.readdirSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'temp'))
-              let eapFile: string[] = [];
-              fileNames.forEach(item => {
-                if (item.lastIndexOf('.eap') != -1) {
-                  eapFile.push(item);
+            if (installType === 'Manual') {
+              const eapNames: vscode.Uri[] | undefined = await vscode.window.showOpenDialog({
+                canSelectMany: false, filters: {
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    'EdgerOS App': ['zip', 'eap']
                 }
-              })
-
-              let eapName: string | undefined = await vscode.window.showQuickPick(eapFile)
-              if (eapName) {
-                eapPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'temp', eapName);
+               });
+              if (eapNames) {
+                eapPath = eapNames[0].fsPath;
               } else {
-                throw new Error('No Choice EdgerOS APP Install Package!')
+                throw new Error('File selection cancelled');
               }
-            } else if (installType == 'Auto') {
+            } else if (installType === 'Auto') {
               // 不做处理 
             }
 
@@ -66,8 +63,8 @@ export = function (context: vscode.ExtensionContext) {
               let uploadMsg = await uploadEap(eapPath, devInfo.devIp, devInfo.devPwd);
               progress.report({ message: "Install EdgerOS App" });
               let installMsg = await installEap(eapPath.split(path.sep).pop() as string, devInfo.devIp, devInfo.devPwd);
-              return installMsg
-            })
+              return installMsg;
+            });
             vscode.window.showInformationMessage('install app success');
           } catch (err) {
             vscode.window.showErrorMessage('Install EdgerOS App : ' + err);
@@ -105,7 +102,7 @@ async function uploadEap(eapPath: string, devIp: string, devPwd: string) {
     .post('/upload', form, uploadApiConfig)
     .then(function (response) {
       return `Upload completed. ${eapPath}`;
-    })
+    });
 }
 
 async function installEap(eapName: string, devIp: string, devPwd: string) {
@@ -117,7 +114,7 @@ async function installEap(eapName: string, devIp: string, devPwd: string) {
     },
     headers: {
       common: {
-        'Content-Type': 'application/json',
+        'content-type': 'application/json',
       },
     },
   };
@@ -125,5 +122,5 @@ async function installEap(eapName: string, devIp: string, devPwd: string) {
     .post('/install', { eap: eapName }, installApiConfig)
     .then(function (response) {
       return `Installation completed.`;
-    })
+    });
 }
