@@ -67,6 +67,11 @@ body.vscode-high-contrast {
   height: 100%;
 }
 
+.templateTypes {
+  height: 90%;
+  overflow: auto;
+}
+
 .templateTypes div {
   padding: 5px 0px;
   color: var(--vscode-input-foreground);

@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-06-01 23:22:11
+ * @Last Modified time: 2021-06-10 14:24:22
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -62,18 +62,21 @@ export = function (context: vscode.ExtensionContext) {
           "projectTemplateWarehouseTxt": localize('projectTemplateWarehouse.txt', "Template Warehouse"),
           "projectTemplateHintTxt": localize('projectTemplateHint.txt', "Select the template and build it now"),
           "applyTxt": localize('apply.txt', "Apply"),
-          "ApplyNowTxt": localize('applyNow.txt', "Apply Now"),
-          "bundleIdNotEmptyText": localize('contentNotEmpty.txt', "content cannot be empty"),
+          "applyNowTxt": localize('applyNow.txt', "Apply Now"),
+          "bundleIdNotEmptyText": localize('bundleIdNotEmptyText.txt', "bundleid is required"),
           "bundleIdIncorrectFormatText": localize('bundleIdIncorrectFormatText.txt', "It needs to be formatted: [a-z]([a-z0-9-]*)(\\.([a-z0-9-]+)){2,}"),
-          "versionIdNotEmptyText": localize('versionIdNotEmptyText.txt', "Vendor ID is required"),
+          "versionIdNotEmptyText": localize('versionIdNotEmptyText.txt', "Vendor id is required"),
           "versionIdIncorrectFormatText": localize('versionIdIncorrectFormatText.txt', "Should be a number"),
-          "versionNameNotEmptyText": localize('versionNameNotEmptyText.txt', 'Vendor name is required')
+          "vendorNameNotEmptyText": localize('vendorNameNotEmptyText.txt', 'Vendor name is required'),
+          "refreshTemplateingText": localize('refreshTemplateingText.txt', 'Getting a template'),
+          "refreshTemplateText": localize('refreshTemplateText.txt', 'Refresh the templates'),
+          "cloudText": localize('cloudText.txt', 'cloud')
         }
       });
 
       //reception webview message
       currentPanel.webview.onDidReceiveMessage(async message => {
-        WebCmdHandle(currentPanel as vscode.WebviewPanel, message);
+        webCmdHandle(currentPanel as vscode.WebviewPanel, message);
       });
       // webview close trigger
       currentPanel.onDidDispose(
@@ -92,7 +95,7 @@ export = function (context: vscode.ExtensionContext) {
 /**
  * webview send command message  handle
  */
-async function WebCmdHandle(currentPanel: vscode.WebviewPanel, message: any) {
+async function webCmdHandle(currentPanel: vscode.WebviewPanel, message: any) {
   try {
     // Send save path
     if (message.type === 'selectSavePath') {
@@ -115,23 +118,34 @@ async function WebCmdHandle(currentPanel: vscode.WebviewPanel, message: any) {
       currentPanel?.webview.postMessage({
         type: '_getInfoData',
         data: {
-          templates: config.templates,
+          templates: await config.getTemplatesList('local'),
           templateTypes: config.templateTypes,
-          defaultSavePath: path.join(os.homedir(), 'EdgerOSApps')
+          defaultSavePath: path.join(os.homedir(), 'EdgerOSApps'),
+          incloud: false,
         }
-      })
+      });
+
+      currentPanel?.webview.postMessage({
+        type: '_getInfoData',
+        data: {
+          templates: await config.getTemplatesList('all'),
+          templateTypes: config.templateTypes,
+          defaultSavePath: path.join(os.homedir(), 'EdgerOSApps'),
+          incloud: true,
+        },
+      });
     }
     // Create project
     else if (message.type === 'createProject') {
       let tplInfo = message.data.tplData;
       let newProjectPath: string = '';
-      if (tplInfo?.location == 'local') {
+      if (tplInfo?.location === 'local') {
         newProjectPath = await localMode(tplInfo, message.data);
-      } else if (tplInfo?.location == 'cloud') {
+      } else if (tplInfo?.location === 'cloud') {
         newProjectPath = await cloudMode(tplInfo, message.data);
       }
 
-      if (message.data.other.indexOf('openFile') != -1) {
+      if (message.data.other.indexOf('openFile') !== -1) {
         let newProUri = vscode.Uri.file(newProjectPath);
         await vscode.commands.executeCommand(
           'vscode.openFolder',

@@ -1,6 +1,7 @@
 const vscode = acquireVsCodeApi();
 const previousState = vscode.getState();
 var devicesList = [];
+var devForm = {};
 const app = new Vue({
   el: '#app',
   data: () => {
@@ -9,14 +10,7 @@ const app = new Vue({
         return callback(new Error(ipNotEmptyText));
       }
       if (/^\d+\.\d+\.\d+\.\d+$/g.test(value)) {
-        let devItem = devicesList.find(item => {
-          return item.devIp === value;
-        });
-        if (devItem) {
-          callback(new Error(ipExistText));
-        } else {
-          callback();
-        }
+        callback();
       } else {
         callback(new Error(ipIncorrectFormatText));
       }
@@ -27,7 +21,7 @@ const app = new Vue({
         return callback(new Error(devNameNotEmptyText));
       }
       let devItem = devicesList.find(item => {
-        return item.devName === value;
+        return (item.devName === value && item.devId != devForm.devId);
       });
       if (devItem) {
         callback(new Error(devNameExistText));
@@ -38,7 +32,8 @@ const app = new Vue({
 
     return previousState?.data || {
       form: {
-        divIp: '',
+        devId: '',
+        devIp: '',
         devName: '',
         devPwd: ''
       },
@@ -59,10 +54,14 @@ const app = new Vue({
       vscode.setState({ data: this.$data });
     },
     onUpdate() {
-      vscode.postMessage({
-        type: 'update',
-        data: {
-          ...this.form,
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          vscode.postMessage({
+            type: 'update',
+            data: {
+              ...this.form,
+            }
+          });
         }
       });
     },
@@ -83,6 +82,7 @@ const app = new Vue({
     onMessageFn(msg) {
       if (!this.form.devIp && msg.type === '_getDeviceData') {
         this.form = msg.data.deviceInfo;
+        devForm = msg.data.deviceInfo;
         devicesList = msg.data.devices;
       }
     }

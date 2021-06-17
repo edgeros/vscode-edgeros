@@ -1,3 +1,9 @@
+
+let templatesList = require('../../templates/templates_config.json');
+import * as vscode from 'vscode';
+import { getGiteeTpls } from './gitlib/gitee_api';
+import { getGithubTpls } from './gitlib/github_api';
+
 // device list storage key
 export const devsStateKey: string = "EgerOs_Devs";
 // edgeros log png ,webview use
@@ -23,29 +29,33 @@ export const edgerOsWebData: any = [
  * type:"模板类型",//enum[templateTypes]
  * location:"local",// local or cloud
  * }]
+ * 
+ * type:local / all
+ *
  */
-export const templates = [
-  {
-    tempName: "simple-local",
-    description: "Very basic and simple project template",
-    icon:
-      "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/edgeros_logo.png",
-    gitUrl: "",
-    downloadUrl: "",
-    location: "local",
-    type: 'Base'
-  },
-  // {
-  //   tempName: "simple-cloud",
-  //   description: "Very basic and simple project template",
-  //   icon:
-  //     "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/edgeros_logo.png",
-  //   gitUrl: "https://gitee.com/fu-wenhao/mrc-asset2.git",
-  //   downloadUrl: "http://127.0.0.1:82/download/file/simple_tpl.zip",
-  //   location: "cloud",
-  //   type: 'Base'
-  // },
-]
+export async function getTemplatesList(type: string) {
+  let sourceType = vscode.workspace.getConfiguration('edgeros').get('templateSource');
+  let cloudTpl = []
+  if (type == 'all') {
+    if (sourceType == 'github') {
+      cloudTpl = await getGithubTpls();
+    } else if (sourceType == 'gitee') {
+      cloudTpl = await getGiteeTpls();
+    }
+
+    // 过滤本地已存在的相同模板
+    cloudTpl = cloudTpl.filter((cloudItem: any) => {
+      let item = templatesList.find((localItem: any) => {
+        return cloudItem.tempName == localItem.tempName
+      })
+      return !item
+    })
+  }
+  return templatesList.concat(cloudTpl)
+}
+
+
+
 
 /**
  * 模板类型及模板介绍
@@ -57,4 +67,4 @@ export const templateTypes = [{
 {
   type: 'Base',
   desc: 'Converges basic template types'
-}]
+}];

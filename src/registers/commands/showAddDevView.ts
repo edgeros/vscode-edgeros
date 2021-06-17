@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-28 16:01:58
+ * @Last Modified time: 2021-06-07 14:06:39
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -44,7 +44,6 @@ export = function (context: vscode.ExtensionContext) {
             devLoginPwdText: localize('devLoginPwd.txt', 'Device Login Password'),
             addDeviceText: localize('addDevice.txt', "Add Device"),
             ipNotEmptyText: localize('ipNotEmpty.Text', "IP Not Empty"),
-            ipExistText: localize('ipExist.Text', "IP Exist"),
             ipIncorrectFormatText: localize('ipIncorrectFormat.text', "IP Incorrect Format"),
             devNameNotEmptyText: localize('devNameNotEmpty.Text', "Device Name Not Empty"),
             devNameExistText: localize('devNameExist.Text', "Device Name Exist")

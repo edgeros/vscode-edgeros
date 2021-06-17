@@ -11,7 +11,7 @@ var lastDevice: any = undefined;
  * 打开open console
  * @param device 
  */
-export function openConsle(device: any) {
+export function openConsle(device: any): boolean {
   if (!channel) {
     connectStatusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
     channel = vscode.window.createOutputChannel('EdgerOS Console');
@@ -21,13 +21,23 @@ export function openConsle(device: any) {
   if (!tcpClient || tcpClient?.destroyed === true) {
     initiativeClose = false;
     lastDevice = device;
+
+    console.log(`TCP Connect Relinking  2s[TimeOut] count:>${1}`);
+    connectStatusBar.text = `$(sync~spin) try connect ( ${1} ) [ ${device.devName} ]`;
+    connectStatusBar.backgroundColor = new vscode.ThemeColor('statusBarItem.errorBackground');
+    connectStatusBar.tooltip = 'click connecting';
+    connectStatusBar.command = undefined;
+    connectStatusBar.show();
+
     getTcpClientInstance(device, 1, channel, connectStatusBar);
+    return true;
   } else {
     sendEdgerOSOutPut(`
     ================= TCP Channal Occupy ${lastDevice.devName} =================
     EdgerOS LOG Error: TCP the connection already exists deviceName [${lastDevice.devName}]
     `);
-    // vscode.window.showErrorMessage('TCP Channal Occupy ' + lastDevice.devName);
+    vscode.window.showErrorMessage(`TCP Channal Occupy [${lastDevice.devName}]`);
+    return false;
   }
 }
 /**
@@ -43,14 +53,6 @@ function getTcpClientInstance(
   channel: vscode.OutputChannel,
   connectStatusBar: vscode.StatusBarItem
 ) {
-
-  console.log(`TCP Connect Relinking  2s[TimeOut] count:>${reconnection}`);
-  connectStatusBar.text = `$(sync~spin) try connect ( ${reconnection} ) [ ${device.devName} ]`;
-  connectStatusBar.backgroundColor = new vscode.ThemeColor('statusBarItem.errorBackground');
-  connectStatusBar.tooltip = 'click connecting';
-  connectStatusBar.command = undefined;
-  connectStatusBar.show();
-
   // intevalTime KeepAlive
   let keepAliveTime: NodeJS.Timeout;
   tcpClient = net.createConnection({
@@ -60,8 +62,8 @@ function getTcpClientInstance(
   }, () => {
     keepAliveTime = setInterval(() => {
       // console.log('send keepAlive')
-      tcpClient?.write('hello edgeros')
-    }, 5000)
+      tcpClient?.write('hello edgeros');
+    }, 5000);
     channel.show();
     reconnection = 1;
     console.log('connected to server' + `:${device.devIp} [TCP]`);
@@ -72,14 +74,15 @@ function getTcpClientInstance(
     connectStatusBar.show();
   });
   tcpClient.setKeepAlive(true, 1000);
-
   // 接收数据
   tcpClient.on('data', function (data) {
     let str: string = data.toString('UTF-8', 0, data.length - 1);
     str = replaceSpacielChar(str);
     channel.append(str);
   });
-
+  tcpClient.on("error", function (err: any) {
+    console.log('Error事件触发！', err);
+  });
   tcpClient.on('close', function () {
     clearInterval(keepAliveTime);
     console.log(`TCP ${device.devName}:${device.devIp} end disconnect [Close]`);

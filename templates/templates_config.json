@@ -1,0 +1,11 @@
+[
+    {
+        "tempName": "tpl-simple",
+        "description": "Very basic and simple project template",
+        "icon": "https://gitee.com/fu-wenhao/mrc-asset/raw/master/media/edgeros_logo.png",
+        "gitUrl": "https://github.com/edgeros/tpl-simple.git",
+        "downloadUrl": "tpl-simple",
+        "location": "local",
+        "type": "Base"
+    }
+]

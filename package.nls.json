@@ -11,5 +11,10 @@
 	"ConfigBuileVersionIncrement": "package.json version increment",
 	"ConfigInstallEapModelNew": "Install last version EdgerOS APP",
 	"ConfigInstallEapModelHistory": "Show EdgerOS APP List",
-	"ConfigInstallEapModeDescription": "Select installation mode"
+	"ConfigInstallEapModeDescription": "Select installation mode",
+	"ConfigTemplateSoucreGithub": "Source from Github",
+	"ConfigTemplateSoucreGitee": "Source from Gitee",
+	"ConfigTemplateSoucreDescription": "Select the project template source",
+	"edgerosJsonSchemaPath": "./resources/edgeros.en.schema.json",
+	"testEap": "Test Project"
 }

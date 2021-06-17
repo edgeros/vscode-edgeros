@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-10 18:05:14 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-27 20:31:14
+ * @Last Modified time: 2021-06-07 14:37:28
  */
 import * as vscode from 'vscode';
 import * as path from 'path';
@@ -75,6 +75,9 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
   getDeviceList(context: vscode.ExtensionContext) {
     let devices: EOSTreeItem[] = [];
     let devList: any[] = context.globalState.get(config.devsStateKey) || [];
+    devList = devList.filter((item) => {
+      return !!item.devId
+    });
     devList.forEach((item: any) => {
       devices.push(new EOSTreeItem(item.devName, vscode.TreeItemCollapsibleState.None, 'device'));
     });

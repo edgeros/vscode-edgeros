@@ -24,6 +24,13 @@ var blacklistFile: string[] = [];
 
 /**
  * 构建项目包
+ * option:{
+ *  configInfo:{
+ *        buildSuffix:    // 生成文件后缀  eap/zip
+ *        increment:      // 版本是否自增
+ *  }
+ * buildType:   //构建类型  test:从ergeros.json中的test入口启动程序, production:从 package.json中main入口启动程序
+ * }
  */
 export default async function buildEap(workspacePath: string, options: any): Promise<string> {
 
@@ -63,10 +70,15 @@ export default async function buildEap(workspacePath: string, options: any): Pro
         blacklistFile.push('!' + path);
       })
     }
+    // 正式环境打包主动忽略test文件夹
+    if (options.buildType !== 'test') {
+      blacklistFile.push('!test');
+    }
     const projectFileList = await globby(blacklistFile, {
       cwd: projectPath,
     });
     let buildFileTmp = path.join(__dirname, "./build_tmp");
+
     if (fs.existsSync(buildFileTmp)) await deleteFile([buildFileTmp]);
     // 普通文件复制
     for (let i = 0; i < projectFileList.length; i++) {
@@ -82,6 +94,8 @@ export default async function buildEap(workspacePath: string, options: any): Pro
       // }
       await copyProject(sourceFilePath, targetFilePath);
     }
+
+
     // node_modules -> jsre_modules
     progress.report({ message: "node_modules build jsre_modules" });
     if (fs.existsSync(path.join(projectPath, 'node_modules'))) {
@@ -108,14 +122,14 @@ export default async function buildEap(workspacePath: string, options: any): Pro
       });
     }
     //  生成desc.json
-    createDesc(buildFileTmp, eosAndpkgJson);
+    createDesc(buildFileTmp, eosAndpkgJson, options);
 
     // 压缩
     progress.report({ message: "compressing..." });
     if (!fs.existsSync(path.join(projectPath, 'temp'))) {
       fs.mkdirSync(path.join(projectPath, 'temp'));
     }
-    let eapName = path.join(projectPath, 'temp', eosAndpkgJson.pkg.name + '_' + eosAndpkgJson.pkg.version + ('.' + (options.configInfo?.buildSuffix ? options.configInfo?.buildSuffix : 'eap')));//.zip
+    let eapName = path.join(projectPath, 'temp', eosAndpkgJson.pkg.name + '_' + eosAndpkgJson.pkg.version + (options.buildType !== 'test' ? '' : '_test') + ('.' + (options.configInfo?.buildSuffix ? options.configInfo?.buildSuffix : 'eap')));//.zip
     let tarStream = new compressing.zip.Stream();
     fs.readdirSync(buildFileTmp).forEach(item => {
       tarStream.addEntry(path.join(buildFileTmp, item))
@@ -200,7 +214,7 @@ async function copy_module(sBasePath: string, mods: string[], jsreMpath: string)
  */
 function updataJsonFile(projectPath: string, eosAndpkgJson: any, options: any) {
   // version add 1 nIncrease : no increase version
-  if (options.configInfo?.increment) {
+  if (options.buildType !== 'test' && options.configInfo?.increment) {
     let arryVer = eosAndpkgJson.pkg.version.split('.');
     arryVer[2] = Number(arryVer[2]) + 1;
     eosAndpkgJson.pkg.version = arryVer.join('.');
@@ -237,17 +251,26 @@ function getEosAndPkgJson(projectPath: string) {
  * 生成desc.json 文件
  */
 
-function createDesc(buildFileTmp: string, eosAndpkgJson: any) {
+function createDesc(buildFileTmp: string, eosAndpkgJson: any, options: any) {
   let descpath = path.join(buildFileTmp, 'desc.json');
   let descData: any = {};
   descData.id = eosAndpkgJson.eos.bundleid || eosAndpkgJson.pkg.name;
   descData.name = eosAndpkgJson.eos.name || eosAndpkgJson.pkg.name;
+  if (options.buildType == 'test') {
+    descData.name = "_test_" + descData.name
+  }
   descData.ico = {
     big: eosAndpkgJson.eos.assets.ico_big.split('/').pop(),
     small: eosAndpkgJson.eos.assets.ico_small.split('/').pop(),
   };
   descData.program = { ...eosAndpkgJson.eos.program };
+  // 构建正式与测试类型  测试启动路径为 egeros.json test入口，正式启动路径为 package.json main入口
   descData.program.main = eosAndpkgJson.pkg.main;
+  if (options.buildType == 'test') {
+    descData.program.main = createRunTestFile(eosAndpkgJson.eos.test, path.join(buildFileTmp, 'program'));
+  }
+
+  descData.program.splash = eosAndpkgJson.eos.assets.splash;
   descData.program.mesv = eosAndpkgJson.eos.program.mesv.split('.').map((item: string) => Number(item));
   descData.program.release = (new Date()).getTime();
   descData.program.version = eosAndpkgJson.pkg.version.split('.').map((item: string) => Number(item));
@@ -337,4 +360,13 @@ function expandAssets (assetsRef: string, assets: any): string | undefined {
   } else if (Object.prototype.hasOwnProperty.call(assets, assetsRef)) {
     return assets[assetsRef];
   }
+}
+/**
+ * 生成 test入口文件
+ */
+function createRunTestFile(testPath: string, savePath: string) {
+  let fileName = 'testApp' + (new Date()).getTime() + '.js';
+  let templeStr = `require('${testPath.replace('.js', '')}');`
+  fs.writeFileSync(path.join(savePath, fileName), templeStr);
+  return fileName;
 }

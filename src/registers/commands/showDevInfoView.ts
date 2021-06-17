@@ -2,7 +2,7 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-12 20:00:47 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-04-28 16:03:34
+ * @Last Modified time: 2021-06-07 14:34:36
  */
 import * as vscode from 'vscode';
 import * as ejs from 'ejs';
@@ -20,7 +20,7 @@ const localize = nlsConfig(__filename);
 export = function (context: vscode.ExtensionContext) {
   // addDevView example
   let currentPanel: vscode.WebviewPanel | undefined = undefined;
-  let deviceInfo: { devName: string, devIp: string, devPwd: string } | undefined = undefined;
+  let deviceInfo: { devId: string, devName: string, devIp: string, devPwd: string } | undefined = undefined;
 
   let disposable = vscode.commands.registerCommand('edgeros.showDevInfoView', async (...options: EOSTreeItem[]) => {
     try {
@@ -28,7 +28,7 @@ export = function (context: vscode.ExtensionContext) {
       let tmpDevInfo = devsArray.find(item => {
         return item.devName === options[0].label;
       });
-      if (deviceInfo?.devIp !== tmpDevInfo.devIp) { currentPanel?.dispose(); }
+      if (deviceInfo?.devId !== tmpDevInfo.devId) { currentPanel?.dispose(); }
       deviceInfo = tmpDevInfo;
       const columnToShowIn = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
       if (currentPanel) {
@@ -51,7 +51,6 @@ export = function (context: vscode.ExtensionContext) {
             devUpdate: localize("devUpdate.txt", 'Update'),
             devDelete: localize("devDelete.txt", 'Delete'),
             ipNotEmptyText: localize('ipNotEmpty.Text', "IP Not Empty"),
-            ipExistText: localize('ipExist.Text', "IP Exist"),
             ipIncorrectFormatText: localize('ipIncorrectFormat.text', "IP Incorrect Format"),
             devNameNotEmptyText: localize('devNameNotEmpty.Text', "Device Name Not Empty"),
             devNameExistText: localize('devNameExist.Text', "Device Name Exist"),
@@ -67,7 +66,7 @@ export = function (context: vscode.ExtensionContext) {
             // update Device
             if (message.type === 'update') {
               devsArray = devsArray.map(item => {
-                if (item.devIp === message.data.devIp) {
+                if (item.devId === message.data.devId) {
                   item = message.data;
                 }
                 return item;
@@ -79,7 +78,7 @@ export = function (context: vscode.ExtensionContext) {
             // delete devoce
             else if (message.type === 'delete') {
               devsArray = devsArray.filter(item => {
-                return !(item.devIp === message.data.devIp && item.devName === message.data.devName);
+                return !(item.devId === message.data.devId);
               });
               await context.globalState.update(config.devsStateKey, devsArray);
               await vscode.commands.executeCommand('edgeros.refreshThreeView');

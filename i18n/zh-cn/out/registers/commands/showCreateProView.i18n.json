@@ -20,7 +20,11 @@
   "applyNow.txt": "立即应用",
   "contentNotEmpty.txt": "内容不能为空",
   "bundleIdIncorrectFormatText.txt": "格式为:[a-z]([a-z0-9-]*)(\\.([a-z0-9-]+)){2,}",
-  "versionIdIncorrectFormatText.txt": "应该为纯数字",
-  "versionNameNotEmptyText.txt": "供应商名称不能为空",
-  "versionIdNotEmptyText.txt": "供应商ID不能为空"
+  "versionIdIncorrectFormatText.txt": "必须为纯数字",
+  "vendorNameNotEmptyText.txt": "供应商名称不能为空",
+  "bundleIdNotEmptyText.txt": "包名不能为空",
+  "versionIdNotEmptyText.txt": "供应商ID不能为空",
+  "refreshTemplateingText.txt": "正在获取模板信息",
+  "refreshTemplateText.txt": "刷新模板信息",
+  "cloudText.txt": "cloud"
 }

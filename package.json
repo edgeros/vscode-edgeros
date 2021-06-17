@@ -63,6 +63,10 @@
 					"light": "resources/icon/dark/command_upload.svg",
 					"dark": "resources/icon/dark/command_upload.svg"
 				}
+			},
+			{
+				"command": "edgeros.installTestEap",
+				"title": "%testEap%"
 			}
 		],
 		"views": {
@@ -101,6 +105,10 @@
 					"command": "edgeros.installEap",
 					"when": "view == eosManageView && viewItem == device",
 					"group": "inline"
+				},
+				{
+					"command": "edgeros.installTestEap",
+					"when": "view == eosManageView && viewItem == device"
 				}
 			]
 		},
@@ -123,6 +131,12 @@
 				"language": "Log",
 				"scopeName": "edgeros.log",
 				"path": "./syntaxes/log.tmLanguage"
+			}
+		],
+		"jsonValidation": [
+			{
+				"fileMatch": "edgeros.json",
+				"url": "%edgerosJsonSchemaPath%"
 			}
 		],
 		"configuration": {
@@ -158,6 +172,19 @@
 						"%ConfigInstallEapModelHistory%"
 					],
 					"description": "%ConfigInstallEapModeDescription%"
+				},
+				"edgeros.templateSource": {
+					"type": "string",
+					"default": "github",
+					"enum": [
+						"github",
+						"gitee"
+					],
+					"enumDescriptions": [
+						"%ConfigTemplateSoucreGithub%",
+						"%ConfigTemplateSoucreGitee%"
+					],
+					"description": "%ConfigTemplateSoucreDescription%"
 				}
 			}
 		}
@@ -170,7 +197,8 @@
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile && npm run lint",
 		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
+		"test": "node ./out/test/runTest.js",
+		"sync:tpl": "node ./templates/sync.js"
 	},
 	"devDependencies": {
 		"@types/ejs": "^3.0.6",
@@ -196,6 +224,7 @@
 		"form-data": "^4.0.0",
 		"fs-extra": "^9.1.0",
 		"globby": "^11.0.3",
+		"isomorphic-git": "^1.8.2",
 		"jschardet": "^3.0.0",
 		"moment": "^2.29.1",
 		"requireindex": "^1.2.0"

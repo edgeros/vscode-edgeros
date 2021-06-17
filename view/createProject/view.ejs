@@ -14,7 +14,7 @@
     let bundleIdIncorrectFormatText = '<%=language.bundleIdIncorrectFormatText%>';
     let versionIdNotEmptyText = '<%=language.versionIdNotEmptyText%>';
     let versionIdIncorrectFormatText = '<%=language.versionIdIncorrectFormatText%>';
-    let versionNameNotEmptyText = '<%=language.versionNameNotEmptyText%>';
+    let vendorNameNotEmptyText = '<%=language.vendorNameNotEmptyText%>'
   </script>
 </head>
 
@@ -42,18 +42,29 @@
             <div class="templateTypes">
               <div v-for="item in tplTypes" @click="selectTplType(item)" v-bind:key="item.type"
                 :class="[selectType.type == item.type?'selectItem':'']">{{
-                item.type }}</div>
+                item.type }}
+              </div>
+            </div>
+            <div style="text-align: center;">
+              <el-button type="primary" :loading="refreshTplStatus" @click="refreshTpl()">
+                {{refreshTplStatus?"<%=language.refreshTemplateingText%>":"<%=language.refreshTemplateText%>"}}
+              </el-button>
             </div>
           </el-aside>
 
           <!-- 主要区域容器 -->
           <el-main>
-            <el-row :gutter="20" v-for="(items, indexRow) in templates" v-bind:key="indexRow">
+            <el-row :gutter=" 20" v-for="(items, indexRow) in templates" v-bind:key="indexRow">
               <el-col :span="6" v-for="item in items" v-bind:key="item.gitUrl">
                 <div class="carStyle">
                   <div class="grid-content">
-                    <el-image style="background: #828282; width: 160px; height: 96px" :src="item.icon" fit="fill">
-                    </el-image>
+                    <div style="position:relative;width: 160px; height: 96px;">
+                      <div v-if="item.location=='cloud'" style="position:absolute;background: #828282;z-index: 999;top:3px;right:3px;padding:2px">
+                        <%=language.cloudText%>
+                      </div>
+                      <el-image style="color: #828282; width: 160px; height: 96px" :src="item.icon" fit="fill">
+                      </el-image>
+                    </div>
                     <div class="tempName"> {{ item.tempName }}</div>
                     <div class="desc">{{ item.description }}</div>
                     <div class="applyBtn">
@@ -67,7 +78,7 @@
                       </el-tooltip>
                       <div class="clickBtn" @click="selectTpl(item)">
                         <div>
-                          <%=language.ApplyNowTxt%>
+                          <%=language.applyNowTxt%>
                         </div>
                       </div>
                     </div>

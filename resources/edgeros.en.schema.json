@@ -1,0 +1,86 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "EdgerOS APP Name"
+    },
+    "bundleid": {
+      "type": "string",
+      "title": "EdgerOS APP ID"
+    },
+    "test": {
+      "type": "string",
+      "title": "Test script entry"
+    },
+    "ignore_modules": {
+      "type": "array",
+      "title": "Filter packet array",
+      "description": "An array of package names that do not participate in packaging the EAP",
+      "items": {
+        "type": "string"
+      },
+      "additionalItems": false,
+      "uniqueItems": true
+    },
+    "ignore_path": {
+      "type": "array",
+      "title": "Filtering array of files",
+      "description": "An array of files that does not participate in packaging the EAP",
+      "items": {
+        "type": "string"
+      },
+      "additionalItems": false,
+      "uniqueItems": true
+    },
+    "assets": {
+      "type": "object",
+      "title": "assets",
+      "description": "Image and other resource file path",
+      "properties": {
+        "ico_big": {
+          "type": "string",
+          "title": "EdgerOS APP large icon"
+        },
+        "ico_small": {
+          "type": "string",
+          "title": "EdgerOS APP smail icon"
+        },
+        "splash": {
+          "type": "string",
+          "title": "Edgeros APP welcome page image"
+        }
+      }
+    },
+    "program": {
+      "type": "object"
+    },
+    "vendor": {
+      "type": "object",
+      "title": "EdgerOS APP vendor details"
+    },
+    "update": {
+      "type": "object"
+    },
+    "widget": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ico": {
+            "type": "string",
+            "title": "The value is the Key of assets"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "ignore_modules",
+    "ignore_path",
+    "assets",
+    "program",
+    "vendor"
+  ],
+  "additionalProperties": false
+}

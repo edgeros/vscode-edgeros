@@ -35,13 +35,15 @@ const app = new Vue({
       }
     }
 
-    var checkVersionName = (rule, value, callback) => {
+    var checkVendorName = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error(versionNameNotEmptyText));
+        return callback(new Error(vendorNameNotEmptyText));
       } else {
         callback();
       }
     };
+
+
 
     return previousState?.data || {
       templateAll: [],//所有模板信息
@@ -51,6 +53,7 @@ const app = new Vue({
       selectType: {},//根据模板类型选择的模板
       plan: "selectTemplate",
       loading: false,
+      refreshTplStatus: true,
       form: {
         name: '',
         bundleid: 'com.example.',
@@ -69,7 +72,7 @@ const app = new Vue({
           { required: true, validator: checkName, trigger: 'blur' }
         ],
         vendorName: [
-          { required: true, validator: checkVersionName, trigger: 'blur' }
+          { required: true, validator: checkVendorName, trigger: 'blur' }
         ],
         bundleid: [
           { required: true, validator: checkBundleId, trigger: 'blur' }
@@ -90,6 +93,10 @@ const app = new Vue({
         data: this.$data,
       });
     },
+    refreshTpl() {
+      vscode.postMessage({ type: 'getInfoData' })
+      this.refreshTplStatus = true;
+    },
     onMessageFn(msg) {
       if (msg.type === '_selectSavePath') {
         this.form.savePath = msg.data;
@@ -98,6 +105,9 @@ const app = new Vue({
         this.form.savePath = msg.data.defaultSavePath;
         this.templateAll = msg.data.templates;
         this.tplTypes = msg.data.templateTypes;
+        if (msg.data.incloud) {
+          this.refreshTplStatus = false;
+        }
         this.selectTplType(this.tplTypes[0]);
         this.inputChange();
       } else if (msg.type === '_createProject') {

@@ -11,5 +11,10 @@
 	"ConfigBuileVersionIncrement": "项目打包后package.json版本自增",
 	"ConfigInstallEapModelNew": "安装最新版本EdgerOS APP",
 	"ConfigInstallEapModelHistory": "列出所有.eap 安装包开发者手动选择安装",
-	"ConfigInstallEapModeDescription": "选择安装EdgerOS APP方式"
+	"ConfigInstallEapModeDescription": "选择安装EdgerOS APP方式",
+	"ConfigTemplateSoucreGithub": "下载源 Github",
+	"ConfigTemplateSoucreGitee": "下载源 Gitee",
+	"ConfigTemplateSoucreDescription": "选择创建项目时使用模板来源",
+	"edgerosJsonSchemaPath": "./resources/edgeros.zh-cn.schema.json",
+	"testEap": "项目测试"
 }

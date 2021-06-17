@@ -15,14 +15,17 @@ import * as tcpConsole from '../../lib/tcpConsole';
 var lastDevice: EOSTreeItem;
 export = function (context: vscode.ExtensionContext) {
   let disposable = vscode.commands.registerCommand('edgeros.openConsole', (...options: EOSTreeItem[]) => {
-    lastDevice = options[0] || lastDevice;
+    let templastDevice = options[0] || lastDevice;
 
     let devList: Array<any> = context.globalState.get(config.devsStateKey) || [];
     let devData = devList.find(item => {
-      return item.devName === lastDevice.label;
+      return item.devName === templastDevice.label;
     });
+    
     // open console
-    tcpConsole.openConsle(devData);
+    if (tcpConsole.openConsle(devData)) {
+      lastDevice = templastDevice;
+    }
   });
   context.subscriptions.push(disposable);
 };

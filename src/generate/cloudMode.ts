@@ -2,13 +2,17 @@
  * @Author: FuWenHao  
  * @Date: 2021-04-19 10:20:53 
  * @Last Modified by: FuWenHao 
- * @Last Modified time: 2021-05-10 14:08:07
+ * @Last Modified time: 2021-06-08 19:38:59
  */
 import * as vscode from 'vscode';
+import { spawn } from 'child_process';
+import { sendEdgerOSOutPut } from '../lib/common';
 import { copyProject, replaceInfo, deleteFile } from './util';
 
 import * as path from "path";
 import * as fs from "fs-extra";
+import * as http from "isomorphic-git/http/node";
+import * as git from 'isomorphic-git';
 import httpClient from '../lib/httpClient';
 import * as compressing from "compressing";
 
@@ -19,71 +23,44 @@ import * as compressing from "compressing";
  */
 export default async function cloudMode(tplInfo: any, options: any): Promise<string> {
   try {
-
     let newProPath = path.join(options.savePath, options.name);
     if (fs.existsSync(newProPath)) { throw new Error('The project file already exists') };
+    let fileInfo: any;
+    // 模板信息
+    fileInfo = await gitClone(tplInfo);
 
-    let fileInfo = await downZip(tplInfo);
     await copyProject(fileInfo.sourceDirPath, newProPath);
     await deleteFile([fileInfo.zipFile, fileInfo.fileTmpPath]);
     await replaceInfo(newProPath, options);
     return newProPath;
   } catch (err) {
-    console.log("cloud template new project error:", err);
+    sendEdgerOSOutPut("EdgerOS Plugin:" + err.message);
+    console.log("cloud template new project error:", err.message);
     throw err;
   }
 }
 
-
-
 /**
- * 下载文档并解压
- * @param {} sateInfo 
- * @returns 
+ * 调用GIT 获取模板信息
  */
-function downZip(tplInfo: any): Promise<any> {
+function gitClone(tplInfo: any): Promise<any> {
   return new Promise(async (resolve, reject) => {
-    // 下载数据包
-    let zipPath = path.join(__dirname, './tmp.zip');
     let fileTmpPath = path.join(__dirname, './tmp');
-    let zipStream = fs.createWriteStream(zipPath);
-    let downData = null;
+    let cloneFileName = 'gitClone';
 
-    try {
-      downData = await httpClient.get(tplInfo.downloadUrl, {
-        responseType: 'stream'
-      })
-    } catch (err) {
-      reject(err);
-      return
+    if (fs.existsSync(fileTmpPath)) {
+      fs.removeSync(fileTmpPath)
     }
-
-    let downFileName = "";
-    let contentDisposition = downData.headers['content-disposition'] || '';
-    if (contentDisposition) {
-      let fileName = contentDisposition.split('filename=');
-      //  fileName = contentDisposition.split("filename*=UTF-8''");
-      if (fileName && fileName.length) {
-        let refFn = fileName[1].split('.');
-        downFileName = refFn[0].replace("\"", "");
-      } else {
-        throw new Error('无法解析文件名称:filename')
-      }
-    }
-
-    zipStream.on('finish', async () => {
-      // 解压
-      await compressing.zip.uncompress(zipPath, fileTmpPath);
+    const dir = path.join(fileTmpPath, cloneFileName)
+    await git.clone({ fs, http, dir, url: tplInfo.downloadUrl })
+    if (fs.existsSync(path.join(fileTmpPath, cloneFileName))) {
       resolve({
-        zipFile: zipPath,
         fileTmpPath: fileTmpPath,
-        sourceDirPath: path.join(fileTmpPath, downFileName)
+        sourceDirPath: path.join(fileTmpPath, cloneFileName)
       });
-    })
-    zipStream.on('error', async (err) => {
-      console.log("文件下载报错")
-      reject(err);
-    })
-    await downData.data.pipe(zipStream);
+    } else {
+      reject(new Error('git clone: Unknown error occurred'));
+    }
   })
 }
+

@@ -5,7 +5,6 @@
   "devUpdate.txt": "更新设备",
   "devDelete.txt": "删除设备",
   "ipNotEmpty.Text": "ip不能为空",
-  "ipExist.Text": "已存在相同IP设备",
   "ipIncorrectFormat.text": "请输入正确IP地址",
   "devNameNotEmpty.Text": "设备名不能为空",
   "devNameExist.Text": "存在相同名称设备",

@@ -1,0 +1,86 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "EdgerOS APP Name"
+    },
+    "bundleid": {
+      "type": "string",
+      "title": "EdgerOS APP ID"
+    },
+    "test": {
+      "type": "string",
+      "title": "测试脚本入口"
+    },
+    "ignore_modules": {
+      "type": "array",
+      "title": "过滤包数组",
+      "description": "不参与打包EAP的包名数组",
+      "items": {
+        "type": "string"
+      },
+      "additionalItems": false,
+      "uniqueItems": true
+    },
+    "ignore_path": {
+      "type": "array",
+      "title": "过滤文件数组",
+      "description": "不参与打包EAP的文件数组",
+      "items": {
+        "type": "string"
+      },
+      "additionalItems": false,
+      "uniqueItems": true
+    },
+    "assets": {
+      "type": "object",
+      "title": "资源",
+      "description": "图片等资源文件路径",
+      "properties": {
+        "ico_big": {
+          "type": "string",
+          "title": "EdgerOS APP 桌面大图标"
+        },
+        "ico_small": {
+          "type": "string",
+          "title": "EdgerOS APP 桌面小图标"
+        },
+        "splash": {
+          "type": "string",
+          "title": "EdgerOS APP 欢迎页图片"
+        }
+      }
+    },
+    "program": {
+      "type": "object"
+    },
+    "vendor": {
+      "type": "object",
+      "title": "EdgerOS APP 供应商详细信息"
+    },
+    "update": {
+      "type": "object"
+    },
+    "widget": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ico": {
+            "type": "string",
+            "title": "值是assets的Key"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "ignore_modules",
+    "ignore_path",
+    "assets",
+    "program",
+    "vendor"
+  ],
+  "additionalProperties": false
+}
