@@ -11,23 +11,21 @@
     ],
     "assets": {
         "ico_big": "assets/big.png",
-        "ico_small": "assets/small.png",
-        "ico_widget": "assets/widget.png"
+        "ico_small": "assets/small.png"
     },
     "program": {
         "gss": false,
         "log": "console",
         "will": false,
         "reside": false,
-        "mesv": "1.0.0"
+        "mesv": "1.0.0",
+        "experimental": false
     },
-    "vendor": {
-        "id": "000000",
-        "name": "mycompany",
-        "email": "example@example.com",
-        "phone": "123456789",
-        "fax": ""
-    },
+    "loading":{
+		"splash":"$assets.splash",
+		"background":"#000000",
+		"animation":"enlarge"
+	},
     "update": {
         "remove": [
             "public"
@@ -35,12 +33,19 @@
     },
     "widget": [
         {
-            "ico": "ico_widget",
+            "ico": "$assets.widget_icon",
             "name": "My Widget",
             "path": "widget",
             "rows": 2,
             "columns": 2,
             "category": "Demo"
         }
-    ]
+    ],
+    "vendor": {
+        "id": "000000",
+        "name": "mycompany",
+        "email": "example@example.com",
+        "phone": "123456789",
+        "fax": ""
+    }
 }
