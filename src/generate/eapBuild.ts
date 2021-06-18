@@ -100,14 +100,10 @@ export default async function buildEap(workspacePath: string, options: any): Pro
     fs.renameSync(path.join(buildFileTmp, 'program', eosAndpkgJson.eos.assets.ico_small), path.join(buildFileTmp, icoSmallName));
     if (eosAndpkgJson.eos.widget) {
       eosAndpkgJson.eos.widget.forEach((item: any) => {
-        const assetWidgetIcon = expandAssetsMacro(item.ico, eosAndpkgJson.eos.assets);
-        if (assetWidgetIcon) {
-          const assetPath = path.join(buildFileTmp, 'program', assetWidgetIcon);
-          if (fs.existsSync(assetPath)) {
-            const widgetIcon = path.basename(assetWidgetIcon);
-            fs.renameSync(assetPath, path.join(buildFileTmp, widgetIcon));
-            item.ico = widgetIcon;
-          }
+        const icoPath = eosAndpkgJson.eos.assets[item.ico];
+        if (icoPath) {
+          let icoWidgetName = path.basename(icoPath);
+          fs.renameSync(path.join(buildFileTmp, 'program', eosAndpkgJson.eos.assets[item.ico]), path.join(buildFileTmp, icoWidgetName));
         }
       });
     }
@@ -258,11 +254,7 @@ function createDesc(buildFileTmp: string, eosAndpkgJson: any) {
 
   if (eosAndpkgJson.eos.loading) {
     descData.loading = Object.assign({}, eosAndpkgJson.eos.loading);
-    const assetSplash = expandAssetsMacro(descData.loading.splash, eosAndpkgJson.eos.assets);
-    if (assetSplash) {
-      descData.program.splash = assetSplash; // deprecated splash setting
-      descData.loading.splash = assetSplash; // up coming, but not ready yet
-    }
+    descData.loading.splash = eosAndpkgJson.eos.assets.splash;
   }
 
   descData.vendor = {
@@ -277,8 +269,11 @@ function createDesc(buildFileTmp: string, eosAndpkgJson: any) {
     descData.widget = []
     eosAndpkgJson.eos.widget.forEach((item: any) => {
       let tmpWidget = { ...item }
-      // tmpWidget.ico = eosAndpkgJson.eos.assets[tmpWidget.ico].split('/').pop()
-      descData.widget.push(tmpWidget)
+      const icoPath = eosAndpkgJson.eos.assets[tmpWidget.ico]
+      if (icoPath) {
+        tmpWidget.ico = path.basename(icoPath)
+        descData.widget.push(tmpWidget)
+      }
     })
   }
   fs.writeFileSync(descpath, JSON.stringify(descData, null, 4));
@@ -335,7 +330,7 @@ module.exports=main;
   }
 }
 
-function expandAssetsMacro (assetsRef: string, assets: any): string | undefined {
+function expandAssets (assetsRef: string, assets: any): string | undefined {
   const macroPrefix = '$assets.';
   if (assetsRef.startsWith(macroPrefix)) {
     return assets[assetsRef.substring(macroPrefix.length)];

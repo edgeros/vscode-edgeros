@@ -1,10 +1,8 @@
 # Change Log
 
-## v0.2.7
+## v0.2.8
 
 1. Support the "loading" field in edgeros.json
-2. Splash, widget icon and widget splash now use macro like syntax "$assets.assetId" to ref the
-   asset file defined in "assets" field. Original implict asset reference is **deprecated**.
 
 ## v0.2.0
 
