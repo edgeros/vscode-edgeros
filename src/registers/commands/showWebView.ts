@@ -1,36 +1,35 @@
 /*
- * @Author: FuWenHao  
- * @Date: 2021-04-15 20:30:11 
- * @Last Modified by: FuWenHao 
+ * @Author: FuWenHao
+ * @Date: 2021-04-15 20:30:11
+ * @Last Modified by: FuWenHao
  * @Last Modified time: 2021-05-14 17:53:56
  */
 
 // edgeros.showWebView
-import * as vscode from 'vscode';
-import * as config from '../../lib/config';
-import * as ejs from 'ejs';
+import * as vscode from 'vscode'
+import * as config from '../../lib/config'
+import * as ejs from 'ejs'
 
 export = function (context: vscode.ExtensionContext) {
   // addDevView example
-  let currentPanel: vscode.WebviewPanel | undefined = undefined;
+  let currentPanel: vscode.WebviewPanel | undefined
 
-  let disposable = vscode.commands.registerCommand('edgeros.showWebView', async (...options: any[]) => {
+  const disposable = vscode.commands.registerCommand('edgeros.showWebView', async (...options: any[]) => {
     currentPanel = vscode.window.createWebviewPanel('showWebView', options[0], vscode.ViewColumn.One, {
       enableScripts: true
-    });
+    })
 
     // set title icon
-    currentPanel.iconPath = vscode.Uri.parse(config.edgerosLogo);
-    currentPanel.title = options[0].showTitle;
+    currentPanel.iconPath = vscode.Uri.parse(config.edgerosLogo)
+    currentPanel.title = options[0].showTitle
     currentPanel.webview.html = ejs.render(iframeTmp, {
       openUrl: options[0].url
-    });
-  });
-  context.subscriptions.push(disposable);
+    })
+  })
+  context.subscriptions.push(disposable)
 };
 
-
-let iframeTmp = `
+const iframeTmp = `
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -54,4 +53,4 @@ let iframeTmp = `
    }
   </script>
 </html>
-`;
+`

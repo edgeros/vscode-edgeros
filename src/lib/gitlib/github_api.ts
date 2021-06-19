@@ -1,42 +1,42 @@
-import axios from 'axios';
-import * as moment from 'moment';
-import { sendEdgerOSOutPut } from "../common";
+import axios from 'axios'
+import * as moment from 'moment'
+import { sendEdgerOSOutPut } from '../common'
 
-const tplsUrl = 'https://api.github.com/repos/edgeros/templates/contents/';
+const tplsUrl = 'https://api.github.com/repos/edgeros/templates/contents/'
 /**
 *获取模板详细信息
 */
-async function getTplsInfo(item: any) {
+async function getTplsInfo (item: any) {
   try {
-    let dirFile = await axios({
+    const dirFile = await axios({
       url: item.url,
       method: 'get'
     })
-    let bannerImg = dirFile.data.find((item: any) => {
-      return item.name == 'banner.png'
+    const bannerImg = dirFile.data.find((item: any) => {
+      return item.name === 'banner.png'
     })
     // 检查 banner.png
     if (!bannerImg) {
       throw new Error('not found banner.png')
     }
-    let descJson = dirFile.data.find((item: any) => {
-      return item.name == 'desc.json'
+    const descJson = dirFile.data.find((item: any) => {
+      return item.name === 'desc.json'
     })
     // 检查 desc.json
     if (!descJson) {
       throw new Error('not found desc.json')
     }
-    let descJsonRes = await axios({
+    const descJsonRes = await axios({
       url: descJson.download_url,
       method: 'get'
     })
 
-    let gitUrl = null;
-    if (typeof descJsonRes.data.repository == 'string') {
+    let gitUrl = null
+    if (typeof descJsonRes.data.repository === 'string') {
       gitUrl = descJsonRes.data.repository
-    } else if (typeof descJsonRes.data.repository == 'object') {
-      let gitrepos = descJsonRes.data.repository;
-      gitUrl = gitrepos['github'];
+    } else if (typeof descJsonRes.data.repository === 'object') {
+      const gitrepos = descJsonRes.data.repository
+      gitUrl = gitrepos.github
       if (!gitUrl) {
         gitUrl = gitrepos[Object.keys(gitrepos)[0]]
       }
@@ -51,7 +51,7 @@ async function getTplsInfo(item: any) {
       gitUrl: gitUrl,
       downloadUrl: gitUrl,
       type: descJsonRes.data.type,
-      location: 'cloud',
+      location: 'cloud'
     }
   } catch (error) {
     sendEdgerOSOutPut(`
@@ -60,41 +60,39 @@ async function getTplsInfo(item: any) {
     path:${error.config.url}
     message:${error.message}
     response:${error.response ? JSON.stringify({ status: error.response.status, data: error.response.data }) : error.response}
-    `);
-    return null;
+    `)
+    return null
   }
-
 }
 /**
 *获取模板列表
 */
-async function getTpls() {
+async function getTpls () {
   try {
-    let reposList = await axios({
+    const reposList = await axios({
       url: tplsUrl,
-      method: 'get',
+      method: 'get'
     })
     // 获取模板列表
-    let tplsDir: any[] = []
+    const tplsDir: any[] = []
     reposList.data.forEach((item: any) => {
-      if (item.type == 'dir') {
+      if (item.type === 'dir') {
         tplsDir.push({
           name: item.name,
           url: item.url
         })
       }
-    });
+    })
     // 获取模板信息
-    let tplInfoFun: any[] = [];
+    const tplInfoFun: any[] = []
     tplsDir.forEach(item => {
       tplInfoFun.push(getTplsInfo(item))
     })
 
-    let tplInfos = await Promise.all(tplInfoFun);
+    const tplInfos = await Promise.all(tplInfoFun)
     return tplInfos.filter(item => {
       return !!item
     })
-
   } catch (error) {
     sendEdgerOSOutPut(`
     =================create project time:${moment().format()} =================
@@ -102,12 +100,12 @@ async function getTpls() {
     path:${error.config.url}
     message:${error.message}
     response:${error.response ? JSON.stringify({ status: error.response.status, data: error.response.data }) : error.response}
-    `);
-    return [];
+    `)
+    return []
   }
 }
 
-export async function getGithubTpls(): Promise<any[] | []> {
-  let tpls = await getTpls();
+export async function getGithubTpls (): Promise<any[] | []> {
+  const tpls = await getTpls()
   return tpls
 }
