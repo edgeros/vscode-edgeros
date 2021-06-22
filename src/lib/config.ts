@@ -14,9 +14,9 @@ export const edgerConsolePort: number = 81
 // show WebView
 export const edgerOsWebData: any = [
   {
-    url: 'https://docs.edgeros.com/edgeros/api/overview.html',
+    url: 'https://www.edgeros.com/edgeros/api/overview.html',
     title: 'API Documentation',
-    'title_zh-cn': '接口文档'
+    'title_zh-cn': '参考手册'
   }
 ]
 
