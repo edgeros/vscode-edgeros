@@ -233,7 +233,6 @@
 		"fs-extra": "^9.1.0",
 		"globby": "^11.0.3",
 		"isomorphic-git": "^1.8.2",
-		"jschardet": "^3.0.0",
 		"moment": "^2.29.1",
 		"requireindex": "^1.2.0"
 	}

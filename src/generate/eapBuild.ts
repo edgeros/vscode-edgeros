@@ -6,7 +6,7 @@ import * as fs from 'fs'
 import * as globby from 'globby'
 import { copyProject, deleteFile } from './util'
 import * as vscode from 'vscode'
-import * as jschardet from 'jschardet'
+
 const pipeline = util.promisify(stream.pipeline)
 const readdir = util.promisify(fs.readdir)
 
@@ -313,10 +313,7 @@ async function dirNameU8 (dirPath: string) {
     if (fileArray[i].name.toString() === 'node_modules') {
       continue
     }
-    const detectData = jschardet.detect(fileArray[i].name)
-    if (detectData.encoding !== 'ascii' && detectData.encoding !== 'UTF-8') {
-      throw new Error('The file name encoding format is UTF-8:\n' + path.join(dirPath, fileArray[i].name.toString()))
-    }
+
     if (fileArray[i].isDirectory()) {
       await dirNameU8(path.join(dirPath, fileArray[i].name.toString()))
     }
