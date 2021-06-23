@@ -3,11 +3,11 @@
   "properties": {
     "name": {
       "type": "string",
-      "title": "EdgerOS APP Name"
+      "title": "EdgerOS 应用名称"
     },
     "bundleid": {
       "type": "string",
-      "title": "EdgerOS APP ID"
+      "title": "EdgerOS 应用包名（Bundle ID）"
     },
     "test": {
       "type": "string",
@@ -15,8 +15,8 @@
     },
     "ignore_modules": {
       "type": "array",
-      "title": "过滤包数组",
-      "description": "不参与打包EAP的包名数组",
+      "title": "打包文件的@edgeros包过滤数组",
+      "description": "过滤不需要参与打包的@edgeros包名",
       "items": {
         "type": "string"
       },
@@ -25,8 +25,8 @@
     },
     "ignore_path": {
       "type": "array",
-      "title": "过滤文件数组",
-      "description": "不参与打包EAP的文件数组",
+      "title": "打包文件的过滤器数组",
+      "description": "过滤不需要参与打包的其它项目文件",
       "items": {
         "type": "string"
       },
@@ -35,29 +35,56 @@
     },
     "assets": {
       "type": "object",
-      "title": "资源",
-      "description": "图片等资源文件路径",
+      "title": "资源文件集",
+      "description": "定义图片等资源文件的路径，通过名称被其它部分引用",
       "properties": {
         "ico_big": {
           "type": "string",
-          "title": "EdgerOS APP 桌面大图标"
+          "title": "EdgerOS 应用的桌面大图标"
         },
         "ico_small": {
           "type": "string",
-          "title": "EdgerOS APP 桌面小图标"
+          "title": "EdgerOS 应用的桌面小图标"
         },
         "splash": {
           "type": "string",
-          "title": "EdgerOS APP 欢迎页图片"
+          "title": "EdgerOS 应用的欢迎页图片资源文件"
         }
       }
     },
     "program": {
       "type": "object"
     },
+    "loading": {
+      "type": "object",
+      "properties": {
+        "splash": {
+          "type": "string",
+          "title": "EdgerOS 应用的欢迎页图片",
+          "description": "通过 'assets' 部分定义资源名称引用对应的图片资源"
+        },
+        "background": {
+          "type": "string",
+          "title": "EdgerOS 应用的欢迎页图片背景色",
+          "description": "使用 Web 标准的色彩定义格式，如'#rrggbb'"
+        },
+        "animation": {
+          "type": "string",
+          "title": "EdgerOS 应用的欢迎页图片的动画效果",
+          "description": "目前仅支持 `enlarge` 或 `none`"
+        }
+      },
+      "defaultSnippets": [
+        {
+          "splash": "splash",
+          "description": "#000000",
+          "animation": "enlarge"
+        }
+      ]
+    },
     "vendor": {
       "type": "object",
-      "title": "EdgerOS APP 供应商详细信息"
+      "title": "EdgerOS 应用的供应商详细信息"
     },
     "update": {
       "type": "object"
@@ -69,7 +96,8 @@
         "properties": {
           "ico": {
             "type": "string",
-            "title": "值是assets的Key"
+            "title": "小部件的预览图片",
+            "description": "通过 'assets' 部分定义资源名称引用对应的图片资源"
           }
         }
       }

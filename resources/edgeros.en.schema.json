@@ -3,11 +3,11 @@
   "properties": {
     "name": {
       "type": "string",
-      "title": "EdgerOS APP Name"
+      "title": "EdgerOS application name"
     },
     "bundleid": {
       "type": "string",
-      "title": "EdgerOS APP ID"
+      "title": "EdgerOS application bundle id"
     },
     "test": {
       "type": "string",
@@ -15,8 +15,8 @@
     },
     "ignore_modules": {
       "type": "array",
-      "title": "Filter packet array",
-      "description": "An array of package names that do not participate in packaging the EAP",
+      "title": "The @edgeros package name filter array",
+      "description": "Package names that will ignored during app packaging",
       "items": {
         "type": "string"
       },
@@ -25,8 +25,8 @@
     },
     "ignore_path": {
       "type": "array",
-      "title": "Filtering array of files",
-      "description": "An array of files that does not participate in packaging the EAP",
+      "title": "Extra packaging files filter array",
+      "description": "Define project files to be ignored during app pacaking, like .npmignore",
       "items": {
         "type": "string"
       },
@@ -36,28 +36,55 @@
     "assets": {
       "type": "object",
       "title": "assets",
-      "description": "Image and other resource file path",
+      "description": "Collection of image and other resource files being referenced",
       "properties": {
         "ico_big": {
           "type": "string",
-          "title": "EdgerOS APP large icon"
+          "title": "EdgerOS applicaiton big icon"
         },
         "ico_small": {
           "type": "string",
-          "title": "EdgerOS APP smail icon"
+          "title": "EdgerOS application smail icon"
         },
         "splash": {
           "type": "string",
-          "title": "Edgeros APP welcome page image"
+          "title": "Customizable application startup image"
         }
       }
     },
     "program": {
       "type": "object"
     },
+    "loading": {
+      "type": "object",
+      "properties": {
+        "splash": {
+          "type": "string",
+          "title": "EdgerOS application startup image",
+          "description": "Reference image defined in 'assets' section via asset name"
+        },
+        "background": {
+          "type": "string",
+          "title": "EdgerOS application startup image background color",
+          "description": "In the web color syntax '#rrggbb'"
+        },
+        "animation": {
+          "type": "string",
+          "title": "EdgerOS application startup image animation effect",
+          "description": "Either `enlarge` or `none`"
+        }
+      },
+      "defaultSnippets": [
+        {
+          "splash": "splash",
+          "description": "#000000",
+          "animation": "enlarge"
+        }
+      ]
+    },
     "vendor": {
       "type": "object",
-      "title": "EdgerOS APP vendor details"
+      "title": "EdgerOS application vendor details"
     },
     "update": {
       "type": "object"
@@ -69,7 +96,8 @@
         "properties": {
           "ico": {
             "type": "string",
-            "title": "The value is the Key of assets"
+            "title": "Widget preview image name defined in 'assets'",
+            "description": "Reference image defined in 'assets' section via asset name"
           }
         }
       }
