@@ -1,12 +1,17 @@
-/*
- * @Author: FuWenHao
- * @Date: 2021-04-10 15:11:00
- * @Last Modified by: FuWenHao
- * @Last Modified time: 2021-05-31 17:46:30
+/**
+ * Copyright (c) 2021 EdgerOS Team.
+ * All rights reserved.
+ *
+ * Detailed license information can be found in the LICENSE file.
+ *
+ * Author : Fu Tongtang <futongtang@acoinfo.com>
+ * File   : installEap.ts
+ * Desc   : implement VSCode command to install EdgerOS app.
  */
 import * as vscode from 'vscode'
 import * as path from 'path'
 import * as fs from 'fs-extra'
+
 import buildEap from '../../generate/eapBuild'
 import { EOSTreeItem } from '../../lib/class/EOSTreeItem'
 import { devsStateKey } from '../../lib/config'

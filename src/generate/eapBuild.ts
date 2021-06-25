@@ -4,8 +4,9 @@ import * as util from 'util'
 import * as path from 'path'
 import * as fs from 'fs'
 import * as globby from 'globby'
-import { copyProject, deleteFile } from './util'
 import * as vscode from 'vscode'
+
+import { copyProject, deleteFile } from './util'
 
 const pipeline = util.promisify(stream.pipeline)
 const readdir = util.promisify(fs.readdir)

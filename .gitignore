@@ -1,7 +1,12 @@
-out/*
-dist
+out
 node_modules
+
 .vscode-test/
 .DS_Store
+
+*nls.*.json
 *.vsix
 **/z_element-ui.css
+
+/test/*.js
+/test/*.js.map
