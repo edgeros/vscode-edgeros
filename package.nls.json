@@ -2,9 +2,10 @@
 	"welcome": "Not Edgeros Project.\n[Website](http://www.edgeros.com)\n[Create Project](command:edgeros.showCreateProView)",
 	"addDeviceView": "Add Device",
 	"CreateEdgerOSProject": "Create EdgerOS Project",
-	"OpenBrowser": "Open Browser",
-	"OpenConsole": "Open Console",
+	"OpenBrowser": "Open EdgerOS destkop in browser",
+	"OpenConsole": "Open EdgerOS console",
 	"InstallEAP": "Install EdgerOS App",
+	"InstallTestEap": "Test Project",
 	"ConfigBuildEapTypeEap": "Build file type .eap",
 	"ConfigBuildEapTypeZip": "Build file type .zip",
 	"ConfigBuildEapDescription": "Build file type selection",
@@ -12,9 +13,8 @@
 	"ConfigInstallEapModelNew": "Install last version EdgerOS APP",
 	"ConfigInstallEapModelHistory": "Show EdgerOS APP List",
 	"ConfigInstallEapModeDescription": "Select installation mode",
-	"ConfigTemplateSoucreGithub": "Source from Github",
-	"ConfigTemplateSoucreGitee": "Source from Gitee",
-	"ConfigTemplateSoucreDescription": "Select the project template source",
-	"edgerosJsonSchemaPath": "./resources/edgeros.en.schema.json",
-	"testEap": "Test Project"
+	"ConfigTemplateSoucreGithub": "https://github.com/edgeros/templates",
+	"ConfigTemplateSoucreGitee": "https://gitee.com/edgeros/templates",
+	"ConfigTemplateSoucreDescription": "Project template management source repo",
+	"edgerosJsonSchemaPath": "./resources/edgeros.en.schema.json"
 }

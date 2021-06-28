@@ -5,6 +5,7 @@
 	"OpenBrowser": "浏览器打开",
 	"OpenConsole": "打开控制台输出",
 	"InstallEAP": "安装EdgerOS APP",
+	"InstallTestEap": "项目测试",
 	"ConfigBuildEapTypeEap": "打包后生成.eap文件",
 	"ConfigBuildEapTypeZip": "打包后生成.zip文件",
 	"ConfigBuildEapDescription": "选择项目打包后生成EdgerOS APP文件后缀",
@@ -15,6 +16,5 @@
 	"ConfigTemplateSoucreGithub": "下载源 Github",
 	"ConfigTemplateSoucreGitee": "下载源 Gitee",
 	"ConfigTemplateSoucreDescription": "选择创建项目时使用模板来源",
-	"edgerosJsonSchemaPath": "./resources/edgeros.zh-cn.schema.json",
-	"testEap": "项目测试"
+	"edgerosJsonSchemaPath": "./resources/edgeros.zh-cn.schema.json"
 }

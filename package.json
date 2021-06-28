@@ -116,7 +116,7 @@
 			},
 			{
 				"command": "edgeros.installTestEap",
-				"title": "%testEap%"
+				"title": "%InstallTestEap%"
 			}
 		],
 		"views": {
@@ -225,10 +225,10 @@
 				},
 				"edgeros.templateSource": {
 					"type": "string",
-					"default": "github",
+					"default": "Github",
 					"enum": [
-						"github",
-						"gitee"
+						"Github",
+						"Gitee"
 					],
 					"enumDescriptions": [
 						"%ConfigTemplateSoucreGithub%",

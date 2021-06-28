@@ -16,6 +16,7 @@
         "@typescript-eslint",
         "mocha"
     ],
+    "ignorePatterns": ["templates/**"],
     "rules": {
         // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-useless-constructor.md
         // note you must disable the base rule as it can report incorrect errors
