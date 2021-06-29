@@ -6,7 +6,6 @@ import * as vscode from 'vscode'
 // import * as myExtension from '../../extension';
 
 suite('Extension Test Suite', function () {
-  // eslint-disable-next-line mocha/no-setup-in-describe
   vscode.window.showInformationMessage('Start all tests.')
 
   test('Sample test', function () {

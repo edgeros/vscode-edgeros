@@ -1,11 +1,12 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "node": true,
+        "mocha": true,
+        "es2020": true
     },
     "extends": [
-        "standard",
-        "plugin:mocha/recommended"
+        "standard"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -13,8 +14,7 @@
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint",
-        "mocha"
+        "@typescript-eslint"
     ],
     "ignorePatterns": ["templates/**"],
     "rules": {
