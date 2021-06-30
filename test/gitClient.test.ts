@@ -8,9 +8,11 @@
  * File   : gitClient.test.ts
  */
 
-import * as rimraf from 'rimraf'
+import * as os from 'os'
 import * as path from 'path'
 import * as assert from 'assert'
+import * as rimraf from 'rimraf'
+import { promisify } from 'util'
 import { gitClone, randomFileName } from '../src/utility/gitClient'
 import { assertFile } from '../src/utility/simpleFs'
 
@@ -25,8 +27,18 @@ describe('Git client', function () {
     })
   })
 
-  it('gitClone https url', function (cb) {
-    this.timeout(5000) // this could be slow
+  it.skip('gitClone github https url', function (cb) {
+    this.timeout(10000) // this could be slow
+    gitClone('https://github.com/edgeros/templates.git')
+      .then(dir => {
+        const tmpdir = os.tmpdir()
+        assert(dir.startsWith(tmpdir), 'clone to system temp dir')
+        return assertFile(path.join(dir, 'README.md'))
+          .finally(() => promisify(rimraf)(dir))
+      })
+  })
+
+  it('gitClone gitee https url', function (cb) {
     const cloneDir = path.join(__dirname, 'testClone')
 
     gitClone('https://gitee.com/edgeros/templates.git', { dir: cloneDir })

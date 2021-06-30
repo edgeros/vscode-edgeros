@@ -20,7 +20,7 @@ import base64url from 'base64url'
 
 import { TemplateCloneOptions } from '../model'
 
-export function gitClone (url: string, opts?: TemplateCloneOptions) {
+export function gitClone (url: string, opts?: TemplateCloneOptions): Promise<string> {
   if (!url) {
     return Promise.reject(Error('URL should not be empty'))
   }
@@ -31,9 +31,9 @@ export function gitClone (url: string, opts?: TemplateCloneOptions) {
       dir: tmpdir = tmpdirName(),
       onProgress = (event: git.GitProgressEvent) => {
         if (event.total) {
-          console.log('git clone %s: %d/%d', event.phase, event.loaded, event.total)
+          console.log('gitClient clone %s: %d/%d', event.phase, event.loaded, event.total)
         } else {
-          console.log('git clone %s: %d', event.phase, event.loaded)
+          console.log('gitClient clone %s: %d', event.phase, event.loaded)
         }
       }
     } = opts || {}
@@ -47,7 +47,7 @@ export function gitClone (url: string, opts?: TemplateCloneOptions) {
   })
 
   function tmpdirName () {
-    return (path.join(os.tmpdir(), randomFileName()))
+    return path.join(os.tmpdir(), randomFileName())
   }
 }
 
