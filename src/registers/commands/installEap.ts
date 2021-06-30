@@ -27,7 +27,7 @@ export = function (context: vscode.ExtensionContext) {
           try {
             // get egeros config
             const configInfo: any = {
-              buildSuffix: vscode.workspace.getConfiguration('edgeros').get('buildType'),
+              buildSuffix: vscode.workspace.getConfiguration('edgeros').get('buildSuffix'),
               increment: vscode.workspace.getConfiguration('edgeros').get('versionIncrement')
             }
             let eapPath: string = await buildEap(vscode.workspace.workspaceFolders[0].uri.fsPath, {

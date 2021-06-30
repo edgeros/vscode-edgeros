@@ -4,6 +4,7 @@
 	"CreateEdgerOSProject": "Create EdgerOS Project",
 	"OpenBrowser": "Open EdgerOS destkop in browser",
 	"OpenConsole": "Open EdgerOS console",
+	"BuildEAP": "Build EdgerOS App",
 	"InstallEAP": "Install EdgerOS App",
 	"InstallTestEap": "Test Project",
 	"ConfigBuildEapTypeEap": "Build file type .eap",

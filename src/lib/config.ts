@@ -1,5 +1,5 @@
 
-import * as vscode from 'vscode'
+import { getWorkspaceSettings } from '../common'
 import { getGiteeTpls } from './gitlib/gitee_api'
 import { getGithubTpls } from './gitlib/github_api'
 
@@ -35,12 +35,12 @@ export const edgerOsWebData: any = [
  *
  */
 export async function getTemplatesList (type: string) {
-  const sourceType = vscode.workspace.getConfiguration('edgeros').get('templateSource')
+  const settings = getWorkspaceSettings()
   let cloudTpl = []
   if (type === 'all') {
-    if (sourceType === 'github') {
+    if (settings.templateSource === 'Github') {
       cloudTpl = await getGithubTpls()
-    } else if (sourceType === 'gitee') {
+    } else if (settings.templateSource === 'Gitee') {
       cloudTpl = await getGiteeTpls()
     }
 

@@ -35,7 +35,7 @@ export = function (context: vscode.ExtensionContext) {
         }
 
         const configInfo: any = {
-          buildSuffix: vscode.workspace.getConfiguration('edgeros').get('buildType'),
+          buildSuffix: vscode.workspace.getConfiguration('edgeros').get('buildSuffix'),
           increment: vscode.workspace.getConfiguration('edgeros').get('versionIncrement')
         }
         // 构建测试eap

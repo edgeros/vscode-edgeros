@@ -1,5 +1,11 @@
 # Change Log
 
+## v0.3.0
+
+1. rename extension setting `edgeros.buildType` to `edgeros.buildSuffix`
+2. add eslint
+3. add types.ts
+
 ## v0.2.8
 
 1. Support the "loading" field in edgeros.json

@@ -1,24 +1,27 @@
-import * as compressing from 'compressing'
-import * as stream from 'stream'
-import * as util from 'util'
-import * as path from 'path'
+/**
+ * Copyright (c) 2021 EdgerOS Team.
+ * All rights reserved.
+ *
+ * Detailed license information can be found in the LICENSE file.
+ *
+ * Author : Fu Tongtang <futongtang@acoinfo.com>
+ * File   : eapBuild.ts
+ * Desc   : Bundle current project into EdgerOS app package
+ */
+
 import * as fs from 'fs'
+import * as path from 'path'
+import * as stream from 'stream'
 import * as globby from 'globby'
 import * as vscode from 'vscode'
+import * as compressing from 'compressing'
+import { promises as fsPromise } from 'fs'
+import { promisify } from 'util'
 
 import { copyProject, deleteFile } from './util'
+import { loadEosJson, loadPkgJson } from './jsonHandler'
 
-const pipeline = util.promisify(stream.pipeline)
-const readdir = util.promisify(fs.readdir)
-
-// hard code modules filter name list
-let blackModslist: string[] = []
-
-// User Select modules filter
-let userFilterMods: any[] = []
-
-// file or folder filter name list
-let blacklistFile: string[] = []
+const pipeline = promisify(stream.pipeline)
 
 /**
  * 构建项目包
@@ -30,13 +33,16 @@ let blacklistFile: string[] = []
  * buildType:   //构建类型  test:从ergeros.json中的test入口启动程序, production:从 package.json中main入口启动程序
  * }
  */
-export default async function buildEap (workspacePath: string, options: any): Promise<string> {
-  // info filter module
-  blackModslist = [
+export default async function buildEap (projectPath: string, options: any): Promise<string> {
+  const eosAndpkgJson = await getEosAndPkgJson(projectPath)
+
+  // hard code modules filter name list
+  const blackModslist = [
     '@edgeros/vue'
   ]
-  userFilterMods = []
-  blacklistFile = [
+
+  // default file / folder list to be ignored
+  const blacklistFile = [
     '**',
     '!.git',
     '!jsconfig.json',
@@ -48,15 +54,15 @@ export default async function buildEap (workspacePath: string, options: any): Pr
     '!*.zip'
   ]
 
+  // User Select modules filter
+  const userFilterMods = eosAndpkgJson.eos.ignore_modules || []
+
   const eapPathUrl: string = await vscode.window.withProgress({
     location: vscode.ProgressLocation.Notification,
     title: 'Building EdgerOS App',
     cancellable: false
   }, async (progress, token) => {
     progress.report({ message: 'build common file' })
-    const projectPath = workspacePath
-    const eosAndpkgJson = getEosAndPkgJson(projectPath)
-    userFilterMods = eosAndpkgJson.eos.ignore_modules || []
 
     // 文件名UTF-8检查
     await dirNameU8(projectPath)
@@ -99,7 +105,7 @@ export default async function buildEap (workspacePath: string, options: any): Pr
       fs.mkdirSync(jsreMpath)
       const sBasePath = path.join(projectPath, 'node_modules')
       const mods = fs.readdirSync(sBasePath)
-      await copyModule(sBasePath, mods, jsreMpath)
+      await copyModule(sBasePath, mods, jsreMpath, blackModslist, userFilterMods)
     }
 
     // 将 ico 文件复制到根目录;
@@ -135,13 +141,14 @@ export default async function buildEap (workspacePath: string, options: any): Pr
       tarStream.addEntry(path.join(buildFileTmp, item))
     })
     const destStream = fs.createWriteStream(eapName)
+
     await pipeline(tarStream, destStream)
     // delete tmp file
     progress.report({ message: 'delete tmp file' })
     await deleteFile([buildFileTmp])
     // upload config file
     progress.report({ message: 'upload config file' })
-    updataJsonFile(projectPath, eosAndpkgJson, options)
+    updataJsonFile(projectPath, eosAndpkgJson, options, userFilterMods)
     progress.report({ message: 'build success' })
 
     return new Promise<string>(resolve => {
@@ -159,7 +166,7 @@ export default async function buildEap (workspacePath: string, options: any): Pr
 * @param {*} mods nodemodels 中含有的文件数组
 * @param {*} jsreMpath 要保存到的文件地址
 */
-async function copyModule (sBasePath: string, mods: string[], jsreMpath: string) {
+async function copyModule (sBasePath: string, mods: string[], jsreMpath: string, blackModslist: string[], userFilterMods: string[]) {
   for (let i = 0; i < mods.length; i++) {
     const modulesPath = path.join(sBasePath, mods[i])
     const fileStat = fs.statSync(modulesPath)
@@ -181,7 +188,7 @@ async function copyModule (sBasePath: string, mods: string[], jsreMpath: string)
         })
         if (!filterPackage) {
           await copyProject(modulesPath, path.join(jsreMpath, mods[i]))
-          chickIndex(jsreMpath, mods[i])
+          generateIndex(jsreMpath, mods[i])
         } else {
           // console.log("[EdgerOS Cli]:", 'filter', "user filter package ->", pkgData.name)
         }
@@ -195,7 +202,7 @@ async function copyModule (sBasePath: string, mods: string[], jsreMpath: string)
       const nextMods = fs.readdirSync(modulesPath)
       const nextJsreMpath = path.join(jsreMpath, mods[i])
       fs.mkdirSync(nextJsreMpath)
-      await copyModule(modulesPath, nextMods, nextJsreMpath)
+      await copyModule(modulesPath, nextMods, nextJsreMpath, blackModslist, userFilterMods)
     }
   }
 
@@ -210,7 +217,7 @@ async function copyModule (sBasePath: string, mods: string[], jsreMpath: string)
  * updata json file and version
  * @param {*} projectPath
  */
-function updataJsonFile (projectPath: string, eosAndpkgJson: any, options: any) {
+function updataJsonFile (projectPath: string, eosAndpkgJson: any, options: any, userFilterMods: string) {
   // version add 1 nIncrease : no increase version
   if (options.buildType !== 'test' && options.configInfo?.increment) {
     const arryVer = eosAndpkgJson.pkg.version.split('.')
@@ -224,24 +231,14 @@ function updataJsonFile (projectPath: string, eosAndpkgJson: any, options: any) 
 }
 
 /**
- * 获取edgeros 配置信息
+ * Load package.json and edgeros.json
  */
-function getEosAndPkgJson (projectPath: string) {
-  // version add 1
-  const pkgPath = path.join(projectPath, 'package.json')
-  if (!fs.existsSync(pkgPath)) throw new Error('package.json not found')
-  delete require.cache[require.resolve(pkgPath)]
-  const pkgJson = require(pkgPath)
-
-  const eosJsonPath = path.join(projectPath, 'edgeros.json')
-  if (!fs.existsSync(eosJsonPath)) throw new Error('edgeros.json not found')
-  delete require.cache[require.resolve(eosJsonPath)]
-  const eosJson = require(eosJsonPath)
-
-  return {
-    pkg: pkgJson,
-    eos: eosJson
-  }
+async function getEosAndPkgJson (projectPath: string) {
+  const [pkg, eos] = await Promise.all([
+    loadPkgJson(projectPath),
+    loadEosJson(projectPath)
+  ])
+  return { pkg, eos }
 }
 
 /**
@@ -305,7 +302,7 @@ function createDesc (buildFileTmp: string, eosAndpkgJson: any, options: any) {
  * @param dirPath
  */
 async function dirNameU8 (dirPath: string) {
-  const fileArray: any[] | undefined = await readdir(dirPath, {
+  const fileArray: any[] | undefined = await fsPromise.readdir(dirPath, {
     encoding: 'buffer',
     withFileTypes: true
   })
@@ -327,7 +324,7 @@ async function dirNameU8 (dirPath: string) {
  * @param jsreMpath
  * @param modeName
  */
-function chickIndex (jsreMpath: any, modeName: string) {
+function generateIndex (jsreMpath: any, modeName: string) {
   const tmpPath = path.join(jsreMpath, modeName, 'index.js')
   if (!fs.existsSync(tmpPath)) {
     const pkgJson: any = JSON.parse(fs.readFileSync(path.join(jsreMpath, modeName, 'package.json'), { encoding: 'utf-8' }))

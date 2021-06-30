@@ -18,7 +18,7 @@ import * as http from 'isomorphic-git/http/node'
 import * as git from 'isomorphic-git'
 import base64url from 'base64url'
 
-import { TemplateCloneOptions } from '../model'
+import { TemplateCloneOptions } from '../types'
 
 export function gitClone (url: string, opts?: TemplateCloneOptions): Promise<string> {
   if (!url) {
