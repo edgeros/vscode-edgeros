@@ -1,38 +1,40 @@
-const vscode = acquireVsCodeApi();
-const previousState = vscode.getState();
-var devicesList = [];
+const vscode = acquireVsCodeApi()
+const previousState = vscode.getState()
+
+let devicesList = []
+
 const app = new Vue({
   el: '#app',
+  filters: {},
   data: () => {
-
-    var checkDevIp = (rule, value, callback) => {
+    const checkDevIp = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error(ipNotEmptyText));
+        return callback(new Error(nlsMessages.ipNotEmptyText))
       }
       if (/^\d+\.\d+\.\d+\.\d+$/g.test(value)) {
-        callback();
+        callback()
       } else {
-        callback(new Error(ipIncorrectFormatText));
+        callback(new Error(nlsMessages.ipIncorrectFormatText))
       }
-    };
+    }
 
-    var checkDevName = (rule, value, callback) => {
+    const checkDevName = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error(devNameNotEmptyText));
+        return callback(new Error(nlsMessages.devNameNotEmptyText))
       }
-      let devItem = devicesList.find(item => {
-        return item.devName === value;
-      });
+      const devItem = devicesList.find(item => {
+        return item.devName === value
+      })
       if (devItem) {
-        callback(new Error(devNameExistText));
+        callback(new Error(nlsMessages.devNameExistText))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
 
     return previousState?.data || {
       form: {
-        devId: '',//auto generate
+        devId: '', // auto generate
         devIp: '',
         devName: '',
         devPwd: ''
@@ -44,45 +46,44 @@ const app = new Vue({
         ],
         devName: [
           { required: true, validator: checkDevName, trigger: 'blur' }
-        ],
+        ]
       }
-    };
+    }
   },
-  filters: {},
   watch: {
   },
+  created () {
+    vscode.postMessage({ type: 'getDeviceData' })
+  },
   methods: {
-    inputChange() {
-      vscode.setState({ data: this.$data });
+    inputChange () {
+      vscode.setState({ data: this.$data })
     },
-    onAddDevice() {
-      this.$refs['form'].validate((valid) => {
+    onAddDevice () {
+      this.$refs.form.validate((valid) => {
         if (valid) {
           this.form.devId = (new Date()).getTime()
-          let cmdData = {
+          const cmdData = {
             type: 'addDev',
             data: {
               ...this.form
             }
-          };
-          vscode.postMessage(cmdData);
+          }
+          vscode.postMessage(cmdData)
         }
-      });
+      })
     },
-    onMessageFn(msg) {
+    onMessageFn (msg) {
       if (!this.form.devIp && msg.type === '_getDeviceData') {
-        devicesList = msg.data.devices;
+        devicesList = msg.data.devices
       }
     }
-  },
-  created() {
-    vscode.postMessage({ type: 'getDeviceData' });
   }
-});
-app.$on("onmessage", function (msg) {
-  this.onMessageFn(msg);
-});
+})
+app.$on('onmessage', function (msg) {
+  this.onMessageFn(msg)
+})
 
 window.onmessage = function (msg) {
-  app.$emit('onmessage', msg.data);
-};
+  app.$emit('onmessage', msg.data)
+}

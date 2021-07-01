@@ -1,29 +1,39 @@
 {
-    "env": {
-        "browser": true,
-        "node": true,
-        "mocha": true,
-        "es2020": true
-    },
+  "env": {
+    "node": true,
+    "mocha": true
+  },
+  "extends": [
+    "standard"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "ignorePatterns": ["templates/**"],
+  "rules": {
+    // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-useless-constructor.md
+    // note you must disable the base rule as it can report incorrect errors
+    "no-useless-constructor": "off",
+    "@typescript-eslint/no-useless-constructor": ["error"]
+  },
+  "globals": {
+    "NodeJS": "readonly"
+  },
+  "overrides": [{
+    "files": ["view/**/index.js"],
     "extends": [
-        "standard"
+      "plugin:vue/vue3-recommended"
     ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": 12,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "@typescript-eslint"
-    ],
-    "ignorePatterns": ["templates/**"],
-    "rules": {
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-useless-constructor.md
-        // note you must disable the base rule as it can report incorrect errors
-        "no-useless-constructor": "off",
-        "@typescript-eslint/no-useless-constructor": ["error"]
-    },
     "globals": {
-        "NodeJS": "readonly"
+      "acquireVsCodeApi": "readonly",
+      "nlsMessages": "readonly",
+      "Vue": "readonly"
     }
+  }]
 }
+  

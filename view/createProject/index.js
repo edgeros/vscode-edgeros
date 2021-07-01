@@ -1,57 +1,55 @@
-const vscode = acquireVsCodeApi();
-const previousState = vscode.getState();
-
+const vscode = acquireVsCodeApi()
+const previousState = vscode.getState()
 
 const app = new Vue({
   el: '#app',
+  filters: {},
   data: () => {
-    var checkName = (rule, value, callback) => {
+    const checkName = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error(nameNotEmptyText));
+        return callback(new Error(nlsMessages.nameNotEmptyText))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
 
-    var checkBundleId = (rule, value, callback) => {
+    const checkBundleId = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error(bundleIdNotEmptyText));
+        return callback(new Error(nlsMessages.bundleIdNotEmptyText))
       }
       if (/^[a-z]([a-z0-9-]*)(\.([a-z0-9-]+)){2,}$/g.test(value)) {
-        callback();
+        callback()
       } else {
-        callback(new Error(bundleIdIncorrectFormatText));
+        callback(new Error(nlsMessages.bundleIdIncorrectFormatText))
       }
     }
 
-    var checkVersionId = (rule, value, callback) => {
+    const checkVersionId = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error(versionIdNotEmptyText));
+        return callback(new Error(nlsMessages.versionIdNotEmptyText))
       }
       if (/^\d+$/g.test(value)) {
-        callback();
+        callback()
       } else {
-        callback(new Error(versionIdIncorrectFormatText));
+        callback(new Error(nlsMessages.versionIdIncorrectFormatText))
       }
     }
 
-    var checkVendorName = (rule, value, callback) => {
+    const checkVendorName = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error(vendorNameNotEmptyText));
+        return callback(new Error(nlsMessages.vendorNameNotEmptyText))
       } else {
-        callback();
+        callback()
       }
-    };
-
-
+    }
 
     return previousState?.data || {
-      templateAll: [],//所有模板信息
-      templates: [], //根据类型筛选模板列表
+      templateAll: [], // 所有模板信息
+      templates: [], // 根据类型筛选模板列表
       selectTemp: {}, // 选择模板
-      tplTypes: [],//模板类型
-      selectType: {},//根据模板类型选择的模板
-      plan: "selectTemplate",
+      tplTypes: [], // 模板类型
+      selectType: {}, // 根据模板类型选择的模板
+      plan: 'selectTemplate',
       loading: false,
       refreshTplStatus: true,
       form: {
@@ -81,102 +79,101 @@ const app = new Vue({
           { required: true, validator: checkVersionId, trigger: 'blur' }
         ]
       }
-    };
+    }
   },
-  filters: {},
-  mounted() {
-    if (this.templateAll.length == 0) vscode.postMessage({ type: 'getInfoData' });
+  mounted () {
+    if (this.templateAll.length === 0) vscode.postMessage({ type: 'getInfoData' })
+  },
+  created () {
   },
   methods: {
-    inputChange(value) {
+    inputChange (value) {
       vscode.setState({
-        data: this.$data,
-      });
+        data: this.$data
+      })
     },
-    refreshTpl() {
+    refreshTpl () {
       vscode.postMessage({ type: 'getInfoData' })
-      this.refreshTplStatus = true;
+      this.refreshTplStatus = true
     },
-    onMessageFn(msg) {
+    onMessageFn (msg) {
       if (msg.type === '_selectSavePath') {
-        this.form.savePath = msg.data;
-        this.inputChange();
+        this.form.savePath = msg.data
+        this.inputChange()
       } else if (msg.type === '_getInfoData') {
-        this.form.savePath = msg.data.defaultSavePath;
-        this.templateAll = msg.data.templates;
-        this.tplTypes = msg.data.templateTypes;
+        this.form.savePath = msg.data.defaultSavePath
+        this.templateAll = msg.data.templates
+        this.tplTypes = msg.data.templateTypes
         if (msg.data.incloud) {
-          this.refreshTplStatus = false;
+          this.refreshTplStatus = false
         }
-        this.selectTplType(this.tplTypes[0]);
-        this.inputChange();
+        this.selectTplType(this.tplTypes[0])
+        this.inputChange()
       } else if (msg.type === '_createProject') {
-        this.loading = false;
+        this.loading = false
       }
     },
-    selectSavePath() {
+    selectSavePath () {
       vscode.postMessage({
         type: 'selectSavePath'
-      });
+      })
     },
     // 选择模板类型
-    selectTplType(type) {
-      this.selectType = type;
-      this.templates = [];
-      let tpls = this.templateAll.filter((item) => {
-        return item.type === type.type || type.type == 'All'
+    selectTplType (type) {
+      this.selectType = type
+      this.templates = []
+      const tpls = this.templateAll.filter((item) => {
+        return item.type === type.type || type.type === 'All'
       })
-      let items = [];
+      let items = []
       for (let i = 0; i < tpls.length; i++) {
-        items.push(tpls[i]);
-        if (items.length == 4) {
-          this.templates.push(items);
-          items = [];
+        items.push(tpls[i])
+        if (items.length === 4) {
+          this.templates.push(items)
+          items = []
         }
       }
       if (items.length > 0) {
-        this.templates.push(items);
+        this.templates.push(items)
       }
-      this.inputChange();
+      this.inputChange()
     },
     // 选择模板
-    selectTpl(item) {
-      this.selectTemp = item;
-      this.plan = "enterDetails";
+    selectTpl (item) {
+      this.selectTemp = item
+      this.plan = 'enterDetails'
       this.selectType = this.tplTypes.find(typeItem => {
-        return typeItem.type == item.type
+        return typeItem.type === item.type
       })
-      this.inputChange();
+      this.inputChange()
     },
     // 返回模板选择
-    backTpl() {
-      this.plan = "selectTemplate";
-      this.inputChange();
+    backTpl () {
+      this.plan = 'selectTemplate'
+      this.inputChange()
     },
     // 提交创建项目
-    onSubmit() {
-      this.$refs['form'].validate((valid) => {
-        console.log("form", valid)
+    onSubmit () {
+      this.$refs.form.validate((valid) => {
+        console.log('form', valid)
         if (valid) {
-          this.loading = true;
+          this.loading = true
           vscode.postMessage({
             type: 'createProject',
             data: {
               ...this.form,
               tplData: this.selectTemp
             }
-          });
+          })
         }
-      });
+      })
     }
-  },
-  created() {
-  },
-});
-app.$on("onmessage", function (msg) {
-  this.onMessageFn(msg);
-});
+  }
+})
+app.$on('onmessage', function (msg) {
+  this.onMessageFn(msg)
+})
 
 window.onmessage = function (msg) {
-  app.$emit('onmessage', msg.data);
-};
+  app.$emit('onmessage', msg.data)
+}
