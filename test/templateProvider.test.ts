@@ -1,0 +1,29 @@
+import * as assert from 'assert'
+import { Template } from '../src/types'
+import { getLocalTemplates, getRemoteTemplates } from '../src/generate/templateProvider'
+
+describe('templateProvider', function () {
+  it('getLocalTemplates', () => {
+    return getLocalTemplates()
+      .then(templates => {
+        assert(templates, 'successfully')
+        const simpleTemplate = templates[0] as Template
+        assert.strictEqual(simpleTemplate.name, 'Simple')
+      })
+  })
+
+  it('getRemoteTemplates from gitee', function () {
+    return getRemoteTemplates('Gitee')
+      .then(templates => {
+        assert(templates, 'successfully')
+      })
+  })
+
+  it('getRemoteTemplates from github', function () {
+    this.timeout(10000)
+    return getRemoteTemplates('Github')
+      .then(templates => {
+        assert(templates, 'successfully')
+      })
+  })
+})

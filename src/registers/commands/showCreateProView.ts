@@ -13,7 +13,22 @@ import * as config from '../../lib/config'
 import localMode from '../../generate/localMode'
 import cloudMode from '../../generate/cloudMode'
 import nlsConfig from '../../lib/nls'
+import { getLocalTemplates, getRemoteTemplates } from '../../generate/templateProvider'
+import { getWorkspaceSettings } from '../../common'
+import { Template } from '../../types'
 const localize = nlsConfig(__filename)
+
+/**
+ * 模板类型及模板介绍
+ */
+const templateTypes = [{
+  type: 'All',
+  desc: 'All available project templates'
+},
+{
+  type: 'Base',
+  desc: 'Basic project templates'
+}]
 
 /**
  *command:  edgeros.showCreateProView
@@ -95,6 +110,7 @@ export = function (context: vscode.ExtensionContext) {
  * webview send command message  handle
  */
 async function webCmdHandle (currentPanel: vscode.WebviewPanel, message: any) {
+  const settings = getWorkspaceSettings()
   try {
     // Send save path
     if (message.type === 'selectSavePath') {
@@ -112,21 +128,23 @@ async function webCmdHandle (currentPanel: vscode.WebviewPanel, message: any) {
         })
       }
     } else if (message.type === 'getInfoData') { // Send template list and template Types
+      const localTemplates = await getLocalTemplates()
       currentPanel?.webview.postMessage({
         type: '_getInfoData',
         data: {
-          templates: await config.getTemplatesList('local'),
-          templateTypes: config.templateTypes,
+          templates: localTemplates.map(buildTemplateViewItem),
+          templateTypes: templateTypes,
           defaultSavePath: path.join(os.homedir(), 'EdgerOSApps'),
           incloud: false
         }
       })
 
+      const remoteTemplates = await getRemoteTemplates(settings.templateSource)
       currentPanel?.webview.postMessage({
         type: '_getInfoData',
         data: {
-          templates: await config.getTemplatesList('all'),
-          templateTypes: config.templateTypes,
+          templates: remoteTemplates.map(buildTemplateViewItem),
+          templateTypes: templateTypes,
           defaultSavePath: path.join(os.homedir(), 'EdgerOSApps'),
           incloud: true
         }
@@ -160,5 +178,27 @@ async function webCmdHandle (currentPanel: vscode.WebviewPanel, message: any) {
   } catch (err) {
     currentPanel.dispose()
     vscode.window.showInformationMessage(err.message)
+  }
+}
+
+interface TemplateViewItem {
+  name: string; // descJsonRes.data.name,
+  description: string; // descJsonRes.data.description,
+  banner: string; // bannerImg.download_url,
+  gitUrl: string; // gitUrl,
+  downloadUrl: string; // gitUrl,
+  type: string; // descJsonRes.data.type,
+  location: string // 'cloud'
+}
+
+function buildTemplateViewItem (template: Template): TemplateViewItem {
+  return {
+    name: template.name,
+    description: template.description,
+    banner: template.banner,
+    type: template.type,
+    gitUrl: template.gitUrl,
+    downloadUrl: template.gitUrl,
+    location: template.source
   }
 }

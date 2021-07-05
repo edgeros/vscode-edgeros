@@ -25,7 +25,12 @@
 			  "-r",
 			  "ts-node/register",
 			  "${file}"
-			]
+			],
+			"options": {
+				"env": {
+					"https_proxy": "http://localhost:7890"
+				}
+			},
 		},
 	]
 }

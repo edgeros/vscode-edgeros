@@ -64,10 +64,10 @@
                       <div v-if="item.location=='cloud'" style="position:absolute;background: #828282;z-index: 999;top:3px;right:3px;padding:2px">
                         <%=language.cloudText%>
                       </div>
-                      <el-image style="color: #828282; width: 160px; height: 96px" :src="item.icon" fit="fill">
+                      <el-image style="color: #828282; width: 160px; height: 96px" :src="item.banner" fit="fill">
                       </el-image>
                     </div>
-                    <div class="tempName"> {{ item.tempName }}</div>
+                    <div class="tempName"> {{ item.name }}</div>
                     <div class="desc">{{ item.description }}</div>
                     <div class="applyBtn">
                       <div>
@@ -75,7 +75,7 @@
                       </div>
                     </div>
                     <div class="btnShow">
-                      <el-tooltip class="item" effect="dark" :content="item.tempName" placement="left">
+                      <el-tooltip class="item" effect="dark" :content="item.name" placement="left">
                         <div style="flex: 1;"></div>
                       </el-tooltip>
                       <div class="clickBtn" @click="selectTpl(item)">
