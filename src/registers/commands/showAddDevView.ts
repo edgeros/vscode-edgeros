@@ -11,6 +11,7 @@ import * as common from '../../lib/common'
 import * as config from '../../lib/config'
 import { EOSTreeItem } from '../../lib/class/EOSTreeItem'
 import nlsConfig from '../../lib/nls'
+import { getGlobalState, setGlobalState } from '../../common'
 const localize = nlsConfig(__filename)
 /**
  *command:  edgeros.showAddDevView
@@ -21,7 +22,7 @@ export = function (context: vscode.ExtensionContext) {
   let currentPanel: vscode.WebviewPanel | undefined
   const disposable = vscode.commands.registerCommand('edgeros.showAddDevView', async (...options: EOSTreeItem[]) => {
     try {
-      const devsArray: any[] = context.globalState.get(config.devsStateKey) || []
+      const devsArray = getGlobalState(context) || []
       const columnToShowIn = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined
       // Do not open it repeatedly
       if (currentPanel) {
@@ -55,7 +56,7 @@ export = function (context: vscode.ExtensionContext) {
             // add Device
             if (message.type === 'addDev') {
               devsArray.push(message.data)
-              await context.globalState.update(config.devsStateKey, devsArray)
+              await setGlobalState(context, devsArray)
               await vscode.commands.executeCommand('edgeros.refreshThreeView')
               currentPanel?.dispose()
             } else if (message.type === 'getDeviceData') { // return device List

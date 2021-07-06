@@ -11,7 +11,7 @@ import * as path from 'path'
 import buildEap from '../../generate/eapBuild'
 import { EOSTreeItem } from '../../lib/class/EOSTreeItem'
 import { uploadEap, installEap } from '../../lib/common'
-import { devsStateKey } from '../../lib/config'
+import { getGlobalState } from '../../common'
 
 /**
  *command:  edgeros.testEap
@@ -44,10 +44,11 @@ export = function (context: vscode.ExtensionContext) {
           buildType: 'test'
         })
 
-        const devList: any[] | undefined = context.globalState.get(devsStateKey)
+        const devList = getGlobalState(context)
         const devInfo = devList?.find(item => {
           return item.devName === options[0].label
         })
+        if (!devInfo) return
 
         // Progress 动效
         await vscode.window.withProgress({

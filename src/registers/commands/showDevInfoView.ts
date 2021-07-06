@@ -11,6 +11,7 @@ import * as common from '../../lib/common'
 import * as config from '../../lib/config'
 import { EOSTreeItem } from '../../lib/class/EOSTreeItem'
 import nlsConfig from '../../lib/nls'
+import { getGlobalState, setGlobalState } from '../../common'
 const localize = nlsConfig(__filename)
 
 /**
@@ -24,10 +25,13 @@ export = function (context: vscode.ExtensionContext) {
 
   const disposable = vscode.commands.registerCommand('edgeros.showDevInfoView', async (...options: EOSTreeItem[]) => {
     try {
-      let devsArray: any[] = context.globalState.get(config.devsStateKey) || []
+      let devsArray = getGlobalState(context)
+      if (!devsArray) return
+
       const tmpDevInfo = devsArray.find(item => {
         return item.devName === options[0].label
-      })
+      })!!
+
       if (deviceInfo?.devId !== tmpDevInfo.devId) { currentPanel?.dispose() }
       deviceInfo = tmpDevInfo
       const columnToShowIn = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined
@@ -65,20 +69,20 @@ export = function (context: vscode.ExtensionContext) {
           async message => {
             // update Device
             if (message.type === 'update') {
-              devsArray = devsArray.map(item => {
+              devsArray = devsArray!!.map(item => {
                 if (item.devId === message.data.devId) {
                   item = message.data
                 }
                 return item
               })
-              await context.globalState.update(config.devsStateKey, devsArray)
+              await setGlobalState(context, devsArray)
               await vscode.commands.executeCommand('edgeros.refreshThreeView')
               currentPanel?.dispose()
             } else if (message.type === 'delete') { // delete devoce
-              devsArray = devsArray.filter(item => {
+              devsArray = devsArray!!.filter(item => {
                 return !(item.devId === message.data.devId)
               })
-              await context.globalState.update(config.devsStateKey, devsArray)
+              await setGlobalState(context, devsArray)
               await vscode.commands.executeCommand('edgeros.refreshThreeView')
               currentPanel?.dispose()
             } else if (message.type === 'getDeviceData') { // return device List

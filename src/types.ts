@@ -51,6 +51,13 @@ export interface TemplateCloneOptions {
 
 export type TemplateSource = 'Local' | 'Github' | 'Gitee'
 
+export interface EdgerosDevice { // web form
+  readonly devId: string, // auto generate
+  devIp: string,
+  devName: string,
+  devPwd: string
+}
+
 export interface WorkspaceSettings {
   versionIncrement: boolean;
   buildSuffix: 'eap' | 'zip';

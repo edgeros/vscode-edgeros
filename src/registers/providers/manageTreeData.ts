@@ -10,6 +10,7 @@ import * as fs from 'fs'
 import * as config from '../../lib/config'
 import { EOSTreeItem } from '../../lib/class/EOSTreeItem'
 import nlsConfig from '../../lib/nls'
+import { getGlobalState } from '../../common'
 const localize = nlsConfig(__filename)
 
 /**
@@ -73,7 +74,7 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
    */
   getDeviceList (context: vscode.ExtensionContext) {
     const devices: EOSTreeItem[] = []
-    let devList: any[] = context.globalState.get(config.devsStateKey) || []
+    let devList = getGlobalState(context) || []
     devList = devList.filter((item) => {
       return !!item.devId
     })
@@ -90,7 +91,7 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
   getOtherList (context: vscode.ExtensionContext) {
     const devices: EOSTreeItem[] = []
     // add web item
-    config.edgerOsWebData.forEach((webItem: any) => {
+    config.edgerosWebResources.forEach((webItem: any) => {
       devices.push(new EOSTreeItem(webItem.url, vscode.TreeItemCollapsibleState.None, 'web', webItem))
     })
 

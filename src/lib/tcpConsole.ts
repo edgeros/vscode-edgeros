@@ -56,7 +56,7 @@ function getTcpClientInstance (
   // intevalTime KeepAlive
   let keepAliveTime: NodeJS.Timeout
   tcpClient = net.createConnection({
-    port: config.edgerConsolePort,
+    port: config.edgerosConsolePort,
     host: device.devIp,
     timeout: 3000
   }, () => {

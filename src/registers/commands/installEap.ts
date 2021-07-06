@@ -14,13 +14,12 @@ import * as fs from 'fs-extra'
 
 import buildEap from '../../generate/eapBuild'
 import { EOSTreeItem } from '../../lib/class/EOSTreeItem'
-import { devsStateKey } from '../../lib/config'
 import { uploadEap, installEap } from '../../lib/common'
-/**
- *command:  edgeros.helloEdgerOS
- */
+import { getGlobalState, getWorkspaceSettings } from '../../common'
+
 export = function (context: vscode.ExtensionContext) {
   const disposable = vscode.commands.registerCommand('edgeros.installEap', async (...options: EOSTreeItem[]) => {
+    const workspaceSettings = getWorkspaceSettings()
     try {
       if (vscode.workspace.workspaceFolders) {
         if (fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'edgeros.json'))) {
@@ -33,12 +32,16 @@ export = function (context: vscode.ExtensionContext) {
             let eapPath: string = await buildEap(vscode.workspace.workspaceFolders[0].uri.fsPath, {
               configInfo: configInfo
             })
-            const devList: any[] | undefined = context.globalState.get(devsStateKey)
+            const devList = getGlobalState(context)
             const devInfo = devList?.find(item => {
               return item.devName === options[0].label
             })
 
-            const installType = vscode.workspace.getConfiguration('edgeros').get('installEAP')
+            if (!devInfo) {
+              return
+            }
+
+            const installType = workspaceSettings.installEAP
             // 弹出选择框
             if (installType === 'Manual') {
               const eapNames: vscode.Uri[] | undefined = await vscode.window.showOpenDialog({
