@@ -24,17 +24,17 @@ export async function getLocalTemplates (localTemplateBase?: string) {
   const metaFile = path.join(localDir, 'metadata.json')
   const metaJson = await fs.readFile(metaFile, 'utf-8')
   const metadata = JSON.parse(metaJson)
-  const result: Array<Template> = []
 
+  const result: Array<Template> = []
   for (const dir of Object.keys(metadata)) {
-    const templateInfo = metadata[dir]
+    const templateConf = metadata[dir]
     const templateDir = path.join(localDir, dir)
     const template: Template = {
       id: dir,
-      name: templateInfo.name!,
-      banner: templateInfo.banner!,
-      description: templateInfo.description!,
-      type: templateInfo.type!,
+      name: templateConf.name!,
+      banner: templateConf.banner!,
+      description: templateConf.description!,
+      type: templateConf.type!,
       source: 'Local',
       gitUrl: pathToFileURL(templateDir).toString()
     }
@@ -47,10 +47,12 @@ export async function getLocalTemplates (localTemplateBase?: string) {
  * Load from remote `templates` metadata repo for all 3rd party tempaltes
  */
 export async function getRemoteTemplates (source: TemplateSource) {
-  if (source === 'Github') {
-    return await getGithubTpls()
-  } else if (source === 'Gitee') {
-    return await getGiteeTpls()
+  switch (source) {
+    case 'Github':
+      return await getGithubTpls()
+    case 'Gitee':
+      return await getGiteeTpls()
+    default:
+      throw Error(`unknown template source: ${source}`)
   }
-  throw Error(`unknown template source: ${source}`)
 }
