@@ -9,6 +9,7 @@
  * Desc   : types and models
  */
 
+import type * as vscode from 'vscode'
 import type { URL } from 'url'
 import type { ProgressCallback } from 'isomorphic-git'
 
@@ -58,6 +59,11 @@ export interface EdgerosDevice { // web form
   devPwd: string
 }
 
+export interface EdgerosConsoleOptions {
+  keepalive?: number, // timer interval
+  retries?: number // times to retry on connection error
+}
+
 export interface WorkspaceSettings {
   versionIncrement: boolean;
   buildSuffix: 'eap' | 'zip';
@@ -79,3 +85,9 @@ export interface GithubFileResponse {
   size: number; // 1064
   type: string; // 'file'
 }
+
+export interface Component {
+  dispose(): any
+}
+
+export type Disposable = vscode.Disposable | Component

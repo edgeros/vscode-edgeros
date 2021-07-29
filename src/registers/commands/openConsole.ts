@@ -6,26 +6,20 @@
  */
 import * as vscode from 'vscode'
 import { getGlobalState } from '../../common'
-import { EOSTreeItem } from '../../lib/class/EOSTreeItem'
-import * as tcpConsole from '../../lib/tcpConsole'
-/**
- *command:  edgeros.openConsole
- */
+import { EdgerosTreeItem } from '../../components/treeItem'
+import { connect } from '../../components/console'
 
-let lastDevice: EOSTreeItem
 export = function (context: vscode.ExtensionContext) {
-  const disposable = vscode.commands.registerCommand('edgeros.openConsole', (...options: EOSTreeItem[]) => {
-    const templastDevice = options[0] || lastDevice
-
-    const devList = getGlobalState(context)
-    const devData = devList?.find(item => {
-      return item.devName === templastDevice.label
-    })
-    if (!devData) return
-
-    // open console
-    if (tcpConsole.openConsle(devData)) {
-      lastDevice = templastDevice
+  const disposable = vscode.commands.registerCommand('edgeros.openConsole', (...options: EdgerosTreeItem[]) => {
+    if (options && options.length > 0) {
+      const templastDevice = options[0]
+      const deviceList = getGlobalState(context)
+      const devData = deviceList?.find(item => {
+        return item.devName === templastDevice.label
+      })
+      connect(devData)
+    } else {
+      connect()
     }
   })
   context.subscriptions.push(disposable)

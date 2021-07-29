@@ -9,15 +9,15 @@ import * as vscode from 'vscode'
 import * as fs from 'fs-extra'
 import * as path from 'path'
 import buildEap from '../../generate/eapBuild'
-import { EOSTreeItem } from '../../lib/class/EOSTreeItem'
-import { uploadEap, installEap } from '../../lib/common'
+import { EdgerosTreeItem } from '../../components/treeItem'
+import { uploadEap, installEap } from '../../utility/edgerosApi'
 import { getGlobalState } from '../../common'
 
 /**
  *command:  edgeros.testEap
  */
 export = function (context: vscode.ExtensionContext) {
-  const disposable = vscode.commands.registerCommand('edgeros.installTestEap', async (...options: EOSTreeItem[]) => {
+  const disposable = vscode.commands.registerCommand('edgeros.installTestEap', async (...options: EdgerosTreeItem[]) => {
     try {
       if (vscode.workspace.workspaceFolders) {
         const eosJsonPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'edgeros.json')

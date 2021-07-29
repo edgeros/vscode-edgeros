@@ -7,9 +7,9 @@
 import * as vscode from 'vscode'
 import * as path from 'path'
 import * as fs from 'fs'
-import * as config from '../../lib/config'
-import { EOSTreeItem } from '../../lib/class/EOSTreeItem'
-import nlsConfig from '../../lib/nls'
+import * as config from '../../config'
+import { EdgerosTreeItem } from '../../components/treeItem'
+import nlsConfig from '../../nls'
 import { getGlobalState } from '../../common'
 const localize = nlsConfig(__filename)
 
@@ -36,23 +36,23 @@ export = function (context: vscode.ExtensionContext) {
 /**
  * Eos Manage View Provider
  */
-class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
+class EOSManageViewProvider implements vscode.TreeDataProvider<EdgerosTreeItem> {
   constructor (private workspaceRoot: string, private context: vscode.ExtensionContext) {
 
   }
 
-  private _onDidChangeTreeData: vscode.EventEmitter<EOSTreeItem | undefined | null | void> = new vscode.EventEmitter<EOSTreeItem | undefined | null | void>();
-  readonly onDidChangeTreeData: vscode.Event<EOSTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
+  private _onDidChangeTreeData: vscode.EventEmitter<EdgerosTreeItem | undefined | null | void> = new vscode.EventEmitter<EdgerosTreeItem | undefined | null | void>();
+  readonly onDidChangeTreeData: vscode.Event<EdgerosTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
 
-  getTreeItem (element: EOSTreeItem): vscode.TreeItem {
+  getTreeItem (element: EdgerosTreeItem): vscode.TreeItem {
     return element
   }
 
-  getChildren (element?: EOSTreeItem): Promise<EOSTreeItem[]> {
+  getChildren (element?: EdgerosTreeItem): Promise<EdgerosTreeItem[]> {
     if (!element) {
       return Promise.resolve(this.showTreeRootItem())
     } else {
-      let children: EOSTreeItem[]
+      let children: EdgerosTreeItem[]
       switch (element.type) {
         case 'deviceList':
           children = this.getDeviceList(this.context)
@@ -73,13 +73,13 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
    * @returns
    */
   getDeviceList (context: vscode.ExtensionContext) {
-    const devices: EOSTreeItem[] = []
+    const devices: EdgerosTreeItem[] = []
     let devList = getGlobalState(context) || []
     devList = devList.filter((item) => {
       return !!item.devId
     })
     devList.forEach((item: any) => {
-      devices.push(new EOSTreeItem(item.devName, vscode.TreeItemCollapsibleState.None, 'device'))
+      devices.push(new EdgerosTreeItem(item.devName, vscode.TreeItemCollapsibleState.None, 'device'))
     })
     return devices
   }
@@ -89,13 +89,13 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
    * @returns
    */
   getOtherList (context: vscode.ExtensionContext) {
-    const devices: EOSTreeItem[] = []
+    const devices: EdgerosTreeItem[] = []
     // add web item
     config.edgerosWebResources.forEach((webItem: any) => {
-      devices.push(new EOSTreeItem(webItem.url, vscode.TreeItemCollapsibleState.None, 'web', webItem))
+      devices.push(new EdgerosTreeItem(webItem.url, vscode.TreeItemCollapsibleState.None, 'web', webItem))
     })
 
-    devices.push(new EOSTreeItem(localize('buildEAP.txt', 'Build EdgerOS App'), vscode.TreeItemCollapsibleState.None, 'buildEap'))
+    devices.push(new EdgerosTreeItem(localize('buildEAP.txt', 'Build EdgerOS App'), vscode.TreeItemCollapsibleState.None, 'buildEap'))
     return devices
   }
 
@@ -103,9 +103,9 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EOSTreeItem> {
    * EOS pulgin show view root dir
    * @returns
    */
-  private showTreeRootItem (): EOSTreeItem[] {
-    const newProject = new EOSTreeItem(localize('deviceList.txt', 'Devices'), vscode.TreeItemCollapsibleState.Expanded, 'deviceList')
-    const devicesDir = new EOSTreeItem(localize('other.txt', 'Other'), vscode.TreeItemCollapsibleState.Collapsed, 'other')
+  private showTreeRootItem (): EdgerosTreeItem[] {
+    const newProject = new EdgerosTreeItem(localize('deviceList.txt', 'Devices'), vscode.TreeItemCollapsibleState.Expanded, 'deviceList')
+    const devicesDir = new EdgerosTreeItem(localize('other.txt', 'Other'), vscode.TreeItemCollapsibleState.Collapsed, 'other')
     return [newProject, devicesDir]
   }
 

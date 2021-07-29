@@ -6,16 +6,20 @@
  *
  * Author : Fu Tongtang <futongtang@acoinfo.com>
  * File   : config.ts
- * Desc   : shared static configurations
+ * Desc   : configurations
  */
 
-// device list storage key
-export const edgerosGlobalStateKeyTypo = 'EgerOs_Devs'
-export const edgerosGlobalStateKey = 'edgeros.devices'
-// edgeros log png, webview use
-export const edgerosLogo: string = 'https://static.edgeros.com/logo.png'
+// EdgerOS default configurations
 export const edgerosIdePort: number = 82
 export const edgerosConsolePort: number = 81
+
+// Device list storage key
+export const edgerosGlobalStateKeyTypo = 'EgerOs_Devs'
+export const edgerosGlobalStateKey = 'edgeros.devices'
+
+// EdgerOS log png, webview use
+export const edgerosLogo: string = 'https://static.edgeros.com/logo.png'
+
 // show WebView
 export const edgerosWebResources: any = [
   {

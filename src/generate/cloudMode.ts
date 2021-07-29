@@ -4,13 +4,13 @@
  * @Last Modified by: FuWenHao
  * @Last Modified time: 2021-06-08 19:38:59
  */
-import { sendEdgerOSOutPut } from '../lib/common'
 import { copyProject, replaceInfo, deleteFile } from './util'
 
 import * as path from 'path'
 import * as fs from 'fs-extra'
 import * as http from 'isomorphic-git/http/node'
 import * as git from 'isomorphic-git'
+import { append as outputAppend } from '../components/output'
 
 /**
  * cloud download template, new project
@@ -28,7 +28,7 @@ export default async function cloudMode (tplInfo: any, options: any): Promise<st
     await replaceInfo(newProPath, options)
     return newProPath
   } catch (err) {
-    sendEdgerOSOutPut('EdgerOS Plugin:' + err.message)
+    outputAppend('EdgerOS Plugin:' + err.message)
     console.log('cloud template new project error:', err.message)
     throw err
   }

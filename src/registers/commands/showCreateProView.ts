@@ -8,13 +8,12 @@ import * as vscode from 'vscode'
 import * as ejs from 'ejs'
 import * as path from 'path'
 import * as os from 'os'
-import * as common from '../../lib/common'
-import * as config from '../../lib/config'
+import * as config from '../../config'
 import localMode from '../../generate/localMode'
 import cloudMode from '../../generate/cloudMode'
-import nlsConfig from '../../lib/nls'
+import nlsConfig from '../../nls'
 import { getLocalTemplates, getRemoteTemplates } from '../../generate/templateProvider'
-import { getWorkspaceSettings } from '../../common'
+import { getWorkspaceSettings, changeUri, getWebViewBaseUris } from '../../common'
 import { Template } from '../../types'
 const localize = nlsConfig(__filename)
 
@@ -51,9 +50,9 @@ export = function (context: vscode.ExtensionContext) {
       // set html/js path
       const webViewFileName = 'createProject'
       // get vue,element,css uri
-      const assetUris = await common.getWebViewBaseUris(webViewFileName, currentPanel, context)
+      const assetUris = await getWebViewBaseUris(webViewFileName, currentPanel, context)
       // get css uri
-      const cssUri = common.changeUri(currentPanel, path.join(context.extensionPath, 'view', webViewFileName, 'index.css'))
+      const cssUri = changeUri(currentPanel, path.join(context.extensionPath, 'view', webViewFileName, 'index.css'))
       // set html
       currentPanel.webview.html = await ejs.renderFile(path.join(context.extensionPath, 'view', webViewFileName, 'view.ejs'), {
         ...assetUris,

@@ -7,11 +7,10 @@
 import * as vscode from 'vscode'
 import * as ejs from 'ejs'
 import * as path from 'path'
-import * as common from '../../lib/common'
-import * as config from '../../lib/config'
-import { EOSTreeItem } from '../../lib/class/EOSTreeItem'
-import nlsConfig from '../../lib/nls'
-import { getGlobalState, setGlobalState } from '../../common'
+import * as config from '../../config'
+import { EdgerosTreeItem } from '../../components/treeItem'
+import nlsConfig from '../../nls'
+import { getGlobalState, setGlobalState, changeUri, getWebViewBaseUris } from '../../common'
 const localize = nlsConfig(__filename)
 
 /**
@@ -23,7 +22,7 @@ export = function (context: vscode.ExtensionContext) {
   let currentPanel: vscode.WebviewPanel | undefined
   let deviceInfo: { devId: string, devName: string, devIp: string, devPwd: string } | undefined
 
-  const disposable = vscode.commands.registerCommand('edgeros.showDevInfoView', async (...options: EOSTreeItem[]) => {
+  const disposable = vscode.commands.registerCommand('edgeros.showDevInfoView', async (...options: EdgerosTreeItem[]) => {
     try {
       let devsArray = getGlobalState(context)
       if (!devsArray) return
@@ -42,8 +41,8 @@ export = function (context: vscode.ExtensionContext) {
           enableScripts: true
         })
         const webViewFileName = 'deviceInfo'
-        const assetUris = await common.getWebViewBaseUris(webViewFileName, currentPanel, context)
-        const indexCssUri = common.changeUri(currentPanel, path.join(context.extensionPath, 'view', webViewFileName, 'index.css'))
+        const assetUris = await getWebViewBaseUris(webViewFileName, currentPanel, context)
+        const indexCssUri = changeUri(currentPanel, path.join(context.extensionPath, 'view', webViewFileName, 'index.css'))
         // set html str
         currentPanel.webview.html = await ejs.renderFile(path.join(context.extensionPath, 'view', webViewFileName, 'view.ejs'), {
           ...assetUris,

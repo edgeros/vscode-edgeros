@@ -54,7 +54,7 @@ async function getTpls (
       .map((item: any) => getTplsInfo(item.url, item.name, source, proxy))
     return Promise.all(repoFetches)
   } catch (err) {
-    errHandler!(err)
+    errHandler && errHandler(err)
     return []
   }
 }

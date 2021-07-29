@@ -1,21 +1,21 @@
-/*
- * @Author: FuWenHao
- * @Date: 2021-04-16 14:29:46
- * @Last Modified by: FuWenHao
- * @Last Modified time: 2021-04-22 11:04:27
+/**
+ * Copyright (c) 2021 EdgerOS Team.
+ * All rights reserved.
+ *
+ * Detailed license information can be found in the LICENSE file.
+ *
+ * Author : Fu Wenhao <fuwenhao@acoinfo.com>
+ * File   : treeItem.ts
+ * Desc   : description
  */
 import * as vscode from 'vscode'
 import * as path from 'path'
 import * as nls from '../nls'
 
 /**
- *
- *EOSTreeItem is View show item class
- *
- *type: deviceList / other / device
- *
+ * Device list tree view item
  */
-export class EOSTreeItem extends vscode.TreeItem {
+export class EdgerosTreeItem extends vscode.TreeItem {
   constructor (
     public label: string,
     public collapsibleState: vscode.TreeItemCollapsibleState,
@@ -53,7 +53,7 @@ export class EOSTreeItem extends vscode.TreeItem {
 
   setIconPath (type: string) {
     let iconPath: { dark: string, light: string }
-    const iconBaseUrl = path.join(__dirname, '..', '..', '..', 'resources', 'icon')
+    const iconBaseUrl = path.join(__dirname, '..', '..', 'resources', 'icon')
     switch (type) {
       case 'deviceList':
         iconPath = { dark: path.join(iconBaseUrl, 'dark', 'threeView_deviceList.svg'), light: path.join(iconBaseUrl, 'light', 'threeView_deviceList.svg') }

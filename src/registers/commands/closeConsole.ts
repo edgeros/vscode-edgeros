@@ -5,13 +5,13 @@
  * @Last Modified time: 2021-04-16 17:13:03
  */
 import * as vscode from 'vscode'
-import * as tcpConsole from '../../lib/tcpConsole'
+import { disconnect } from '../../components/console'
 /**
  *command:  edgeros.closeConsole
  */
 export = function (context: vscode.ExtensionContext) {
   const disposable = vscode.commands.registerCommand('edgeros.closeConsole', (...options: string[]) => {
-    tcpConsole.closeConsle()
+    disconnect()
   })
   context.subscriptions.push(disposable)
 };

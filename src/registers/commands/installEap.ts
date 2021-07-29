@@ -13,12 +13,12 @@ import * as path from 'path'
 import * as fs from 'fs-extra'
 
 import buildEap from '../../generate/eapBuild'
-import { EOSTreeItem } from '../../lib/class/EOSTreeItem'
-import { uploadEap, installEap } from '../../lib/common'
+import { EdgerosTreeItem } from '../../components/treeItem'
+import { uploadEap, installEap } from '../../utility/edgerosApi'
 import { getGlobalState, getWorkspaceSettings } from '../../common'
 
 export = function (context: vscode.ExtensionContext) {
-  const disposable = vscode.commands.registerCommand('edgeros.installEap', async (...options: EOSTreeItem[]) => {
+  const disposable = vscode.commands.registerCommand('edgeros.installEap', async (...options: EdgerosTreeItem[]) => {
     const workspaceSettings = getWorkspaceSettings()
     try {
       if (vscode.workspace.workspaceFolders) {

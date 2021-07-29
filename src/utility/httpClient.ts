@@ -6,7 +6,7 @@
  */
 import axios from 'axios'
 import * as moment from 'moment'
-import { sendEdgerOSOutPut } from './common'
+import { append as outputAppend } from '../components/output'
 
 const httpClient = axios.create({
   maxContentLength: 268435456, // 256MB
@@ -36,7 +36,7 @@ export default httpClient
  */
 function statusCodeHandle (error: any) {
   // http request error record
-  sendEdgerOSOutPut(`
+  outputAppend(`
   ================= time:${moment().format()} =================
   host: ${error.config.baseURL}
   path:${error.config.url}

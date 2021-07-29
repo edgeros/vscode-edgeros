@@ -7,7 +7,7 @@
 
 // edgeros.showWebView
 import * as vscode from 'vscode'
-import * as config from '../../lib/config'
+import * as config from '../../config'
 import * as ejs from 'ejs'
 
 export = function (context: vscode.ExtensionContext) {
