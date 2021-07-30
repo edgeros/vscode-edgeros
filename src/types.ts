@@ -32,13 +32,15 @@ export interface TemplateConf {
   readonly repository: TemplateRepoConf;
 }
 
+export type TemplateSource = 'Local' | 'Github' | 'Gitee'
+
 /**
  * TemplateConf instance, identified by template folder name and concrete the
  *   repository object to gitUrl field
  */
 export interface Template extends Omit<TemplateConf, 'repository'> {
   readonly id: string;
-  readonly source: string;
+  readonly source: TemplateSource;
   readonly gitUrl: string;
 }
 
@@ -49,8 +51,6 @@ export interface TemplateCloneOptions {
   dir?: string;
   onProgress?: TemplateCloneCallback;
 }
-
-export type TemplateSource = 'Local' | 'Github' | 'Gitee'
 
 export interface EdgerosDevice { // web form
   readonly devId: string, // auto generate

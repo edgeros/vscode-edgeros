@@ -14,7 +14,7 @@ import cloudMode from '../../generate/cloudMode'
 import nlsConfig from '../../nls'
 import { getLocalTemplates, getRemoteTemplates } from '../../generate/templateProvider'
 import { getWorkspaceSettings, changeUri, getWebViewBaseUris } from '../../common'
-import { Template } from '../../types'
+import { Template, TemplateSource } from '../../types'
 const localize = nlsConfig(__filename)
 
 /**
@@ -139,10 +139,12 @@ async function webCmdHandle (currentPanel: vscode.WebviewPanel, message: any) {
       })
 
       const remoteTemplates = await getRemoteTemplates(settings.templateSource)
+      const allTemplates = localTemplates.concat(remoteTemplates)
+
       currentPanel?.webview.postMessage({
         type: '_getInfoData',
         data: {
-          templates: remoteTemplates.map(buildTemplateViewItem),
+          templates: allTemplates.map(buildTemplateViewItem),
           templateTypes: templateTypes,
           defaultSavePath: path.join(os.homedir(), 'EdgerOSApps'),
           incloud: true
@@ -150,10 +152,12 @@ async function webCmdHandle (currentPanel: vscode.WebviewPanel, message: any) {
       })
     } else if (message.type === 'createProject') { // Create project
       const tplInfo = message.data.tplData
+      const tplLocaltion = tplInfo.location as TemplateSource
       let newProjectPath: string = ''
-      if (tplInfo?.location === 'local') {
+
+      if (tplLocaltion === 'Local') {
         newProjectPath = await localMode(tplInfo, message.data)
-      } else if (tplInfo?.location === 'cloud') {
+      } else {
         newProjectPath = await cloudMode(tplInfo, message.data)
       }
 
