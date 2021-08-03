@@ -9,16 +9,15 @@
  * Desc   : Bundle current project into EdgerOS app package
  */
 
-import * as fs from 'fs'
 import * as path from 'path'
 import * as stream from 'stream'
 import * as globby from 'globby'
 import * as vscode from 'vscode'
 import * as compressing from 'compressing'
-import { promises as fsPromise } from 'fs'
 import { promisify } from 'util'
 
-import { copyProject, deleteFile } from './util'
+import * as fs from '../utility/simpleFs'
+// import { copyProject, deleteFile } from './util'
 import { loadEosJson, loadPkgJson } from './jsonHandler'
 
 const pipeline = promisify(stream.pipeline)
@@ -81,8 +80,8 @@ export default async function buildEap (projectPath: string, options: any): Prom
       cwd: projectPath
     })
     const buildFileTmp = path.join(__dirname, './build_tmp')
+    await fs.remove(buildFileTmp)
 
-    if (fs.existsSync(buildFileTmp)) await deleteFile([buildFileTmp])
     // 普通文件复制
     for (let i = 0; i < projectFileList.length; i++) {
       const copyFilePath = projectFileList[i]
@@ -95,7 +94,7 @@ export default async function buildEap (projectPath: string, options: any): Prom
       //     throw new Error('The encoding format is UTF-8:\n' + sourceFilePath);
       //   }
       // }
-      await copyProject(sourceFilePath, targetFilePath)
+      await fs.copy(sourceFilePath, targetFilePath)
     }
 
     // node_modules -> jsre_modules
@@ -145,7 +144,9 @@ export default async function buildEap (projectPath: string, options: any): Prom
     await pipeline(tarStream, destStream)
     // delete tmp file
     progress.report({ message: 'delete tmp file' })
-    await deleteFile([buildFileTmp])
+
+    await fs.remove(buildFileTmp)
+
     // upload config file
     progress.report({ message: 'upload config file' })
     updataJsonFile(projectPath, eosAndpkgJson, options, userFilterMods)
@@ -187,7 +188,7 @@ async function copyModule (sBasePath: string, mods: string[], jsreMpath: string,
           return item === pkgData.name
         })
         if (!filterPackage) {
-          await copyProject(modulesPath, path.join(jsreMpath, mods[i]))
+          await fs.copy(modulesPath, path.join(jsreMpath, mods[i]))
           generateIndex(jsreMpath, mods[i])
         } else {
           // console.log("[EdgerOS Cli]:", 'filter', "user filter package ->", pkgData.name)
@@ -209,7 +210,7 @@ async function copyModule (sBasePath: string, mods: string[], jsreMpath: string,
   // 若文件夹为空则删除
   const dirArrylist = fs.readdirSync(jsreMpath)
   if (dirArrylist.length === 0) {
-    await deleteFile([jsreMpath])
+    await fs.remove(jsreMpath)
   }
 }
 
@@ -302,7 +303,7 @@ function createDesc (buildFileTmp: string, eosAndpkgJson: any, options: any) {
  * @param dirPath
  */
 async function dirNameU8 (dirPath: string) {
-  const fileArray: any[] | undefined = await fsPromise.readdir(dirPath, {
+  const fileArray: any[] | undefined = await fs.readdir(dirPath, {
     encoding: 'buffer',
     withFileTypes: true
   })

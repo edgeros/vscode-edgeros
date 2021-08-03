@@ -15,6 +15,7 @@ describe('Github Client tests', function () {
   this.timeout(10000) // this could be slow
 
   it('get github templates', function () {
+    if (!process.env.https_proxy) this.skip()
     return getGithubTpls()
   })
 

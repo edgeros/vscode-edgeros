@@ -20,6 +20,7 @@ describe('templateProvider', function () {
   })
 
   it('getRemoteTemplates from github', function () {
+    if (!process.env.https_proxy) this.skip()
     this.timeout(10000)
     return getRemoteTemplates('Github')
       .then(templates => {
