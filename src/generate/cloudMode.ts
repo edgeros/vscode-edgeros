@@ -1,58 +1,30 @@
-/*
- * @Author: FuWenHao
- * @Date: 2021-04-19 10:20:53
- * @Last Modified by: FuWenHao
- * @Last Modified time: 2021-06-08 19:38:59
- */
-import { copyProject, replaceInfo, deleteFile } from './util'
-
-import * as path from 'path'
-import * as fs from 'fs-extra'
-import * as http from 'isomorphic-git/http/node'
-import * as git from 'isomorphic-git'
-import { append as outputAppend } from '../components/output'
-
 /**
- * cloud download template, new project
- * @param tplInfo
- * @param options
+ * Copyright (c) 2021 EdgerOS Team.
+ * All rights reserved.
+ *
+ * Detailed license information can be found in the LICENSE file.
+ *
+ * Author : Fu Tongtang <futongtang@acoinfo.com>
+ * File   : cloudMode.ts
+ * Desc   : clone from remote template repository
  */
-export default async function cloudMode (tplInfo: any, options: any): Promise<string> {
-  try {
-    const newProPath = path.join(options.savePath, options.name)
-    if (fs.existsSync(newProPath)) { throw new Error('The project file already exists') };
-    const fileInfo = await gitClone(tplInfo) // 模板信息
 
-    await copyProject(fileInfo.sourceDirPath, newProPath)
-    await deleteFile([fileInfo.zipFile, fileInfo.fileTmpPath])
-    await replaceInfo(newProPath, options)
-    return newProPath
-  } catch (err) {
-    outputAppend('EdgerOS Plugin:' + err.message)
-    console.log('cloud template new project error:', err.message)
-    throw err
-  }
-}
+import { EdgerosProjectConfig, GitProgressCallback, Template } from '../types'
+import * as fs from '../utility/simpleFs'
+import { gitClone } from '../utility/gitClient'
+import { applyProjectConfig } from './jsonHandler'
 
-/**
- * 调用GIT 获取模板信息
- */
-async function gitClone (tplInfo: any): Promise<any> {
-  const fileTmpPath = path.join(__dirname, './tmp')
-  const cloneFileName = 'gitClone'
+export default async function cloudMode (
+  template: Template,
+  config: EdgerosProjectConfig,
+  onProgress?: GitProgressCallback)
+: Promise<string> {
+  const normalizedName = config.name.replace(' ', '-')
+  const newProjectPath = fs.join(config.savePath, normalizedName)
 
-  if (fs.existsSync(fileTmpPath)) {
-    fs.removeSync(fileTmpPath)
-  }
-  const dir = path.join(fileTmpPath, cloneFileName)
-  await git.clone({ fs, http, dir, url: tplInfo.downloadUrl })
+  await fs.assertNotExist(newProjectPath)
+  await gitClone(template.gitUrl, { directory: newProjectPath, onProgress })
+  await applyProjectConfig(newProjectPath, config)
 
-  if (fs.existsSync(path.join(fileTmpPath, cloneFileName))) {
-    return Promise.resolve({
-      fileTmpPath: fileTmpPath,
-      sourceDirPath: path.join(fileTmpPath, cloneFileName)
-    })
-  } else {
-    return Promise.reject(new Error('git clone: Unknown error occurred'))
-  }
+  return newProjectPath
 }

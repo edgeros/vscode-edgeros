@@ -12,12 +12,13 @@
 import * as os from 'os'
 import * as path from 'path'
 import * as crypto from 'crypto'
-import * as fs from 'fs'
 
+import * as fs from 'fs-extra'
 import * as http from 'isomorphic-git/http/node'
 import * as git from 'isomorphic-git'
 import base64url from 'base64url'
 
+import { assertExist } from './simpleFs'
 import { TemplateCloneOptions } from '../types'
 
 export function gitClone (url: string, opts?: TemplateCloneOptions): Promise<string> {
@@ -28,22 +29,28 @@ export function gitClone (url: string, opts?: TemplateCloneOptions): Promise<str
   return new Promise((resolve, reject) => {
     const {
       depth = 1,
-      dir: tmpdir = tmpdirName(),
-      onProgress = (event: git.GitProgressEvent) => {
+      reinit = true,
+      directory: tmpdir = tmpdirName()
+    } = opts || {}
+
+    const progressCb = opts?.onProgress || function noop () {}
+    const onProgress = (event: git.GitProgressEvent) => {
+      if (opts?.onProgress) {
         if (event.total) {
-          console.log('gitClient clone %s: %d/%d', event.phase, event.loaded, event.total)
+          progressCb(`gitClient clone ${event.phase}: ${event.loaded}/${event.total}`)
         } else {
-          console.log('gitClient clone %s: %d', event.phase, event.loaded)
+          progressCb(`gitClient clone ${event.phase}: ${event.loaded}`)
         }
       }
-    } = opts || {}
+    }
 
     const onAuthFailure: git.AuthFailureCallback = (url, auth) => {
       reject(Error(`auth failed with ${auth}: ${url}`))
     }
 
     git.clone({ fs, http, url, depth, dir: tmpdir, onProgress, onAuthFailure })
-      .then(() => resolve(tmpdir))
+      .then(() => gitInit(tmpdir, reinit))
+      .then(() => resolve(tmpdir), err => reject(err))
   })
 
   function tmpdirName () {
@@ -60,4 +67,20 @@ export function gitClone (url: string, opts?: TemplateCloneOptions): Promise<str
 export function randomFileName (prefix = 'vscode-edgeros.tpl.', randomBytes = 9) {
   const bytes = crypto.randomBytes(randomBytes)
   return prefix + base64url.encode(bytes) // 9 / 3 * 4 = 12 chars
+}
+
+function gitInit (dir: string, reinit = true, defaultBranch = 'master', gitdir = '.git'): Promise<string> {
+  const gitdirPath = path.join(dir, gitdir)
+  if (reinit) {
+    return new Promise((resolve, reject) => {
+      fs.remove(gitdirPath, err => {
+        if (err) return reject(err)
+        resolve(gitdirPath)
+      })
+    })
+      .then(() => git.init({ fs, dir, gitdir: gitdirPath, defaultBranch }))
+      .then(() => dir)
+  } else {
+    return assertExist(gitdirPath)
+  }
 }

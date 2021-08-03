@@ -1,13 +1,16 @@
-/*
- * @Author: FuWenHao
- * @Date: 2021-04-17 16:10:07
- * @Last Modified by: FuWenHao
- * @Last Modified time: 2021-06-01 15:32:11
+/**
+ * Copyright (c) 2021 EdgerOS Team.
+ * All rights reserved.
+ *
+ * Detailed license information can be found in the LICENSE file.
+ *
+ * Author : Fu Tongtang <futongtang@acoinfo.com>
+ * File   : localMode.ts
+ * Desc   : clone from local builtin template repository
  */
-import * as path from 'path'
 import { fileURLToPath } from 'url'
-import { copyProject, replaceInfo } from './util'
-import { assertNotFile } from '../utility/simpleFs'
+import { applyProjectConfig } from './jsonHandler'
+import * as fs from '../utility/simpleFs'
 
 /**
  * local temaple, new project
@@ -15,15 +18,10 @@ import { assertNotFile } from '../utility/simpleFs'
  * @param options
  */
 export default async function localMode (tplInfo: any, options: any): Promise<string> {
-  try {
-    const newProjectPath = path.join(options.savePath, options.name)
-    const tplPath = fileURLToPath(tplInfo.downloadUrl)
-    await assertNotFile(newProjectPath)
-    await copyProject(tplPath, newProjectPath)
-    await replaceInfo(newProjectPath, options)
-    return newProjectPath
-  } catch (err) {
-    console.log('local template new project error:', err)
-    throw err
-  }
+  const newProjectPath = fs.join(options.savePath, options.name)
+  const templatePath = fileURLToPath(tplInfo.downloadUrl)
+  await fs.assertNotExist(newProjectPath)
+  await fs.copy(templatePath, newProjectPath)
+  await applyProjectConfig(newProjectPath, options)
+  return newProjectPath
 }

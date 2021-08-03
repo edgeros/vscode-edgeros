@@ -11,10 +11,8 @@
 import * as os from 'os'
 import * as path from 'path'
 import * as assert from 'assert'
-import * as rimraf from 'rimraf'
-import { promisify } from 'util'
+import * as fs from 'fs-extra'
 import { gitClone, randomFileName } from '../src/utility/gitClient'
-import { assertFile } from '../src/utility/simpleFs'
 
 describe('Git client', function () {
   it('generate ramdom filename with default prefix', function () {
@@ -33,21 +31,25 @@ describe('Git client', function () {
       .then(dir => {
         const tmpdir = os.tmpdir()
         assert(dir.startsWith(tmpdir), 'clone to system temp dir')
-        return assertFile(path.join(dir, 'README.md'))
-          .finally(() => promisify(rimraf)(dir))
+        return fs.pathExists(path.join(dir, 'README.md'))
+          .then(exists => {
+            assert(exists, 'README should exist!')
+          })
+          .finally(() => fs.remove(dir))
       })
   })
 
   it('gitClone gitee https url', function (cb) {
     const cloneDir = path.join(__dirname, 'testClone')
 
-    gitClone('https://gitee.com/edgeros/templates.git', { dir: cloneDir })
+    gitClone('https://gitee.com/edgeros/templates.git', { directory: cloneDir })
       .then(dir => {
         assert.strictEqual(dir, cloneDir, 'clone success')
-        return assertFile(path.join(dir, 'README.md'))
+        return fs.pathExists(path.join(dir, 'README.md'))
       })
+      .then(exists => assert(exists, 'README should exist'))
       .finally(() => {
-        rimraf(cloneDir, cb)
+        fs.remove(cloneDir, cb)
       })
   })
 })

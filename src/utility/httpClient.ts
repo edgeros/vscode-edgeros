@@ -6,7 +6,7 @@
  */
 import axios from 'axios'
 import * as moment from 'moment'
-import { append as outputAppend } from '../components/output'
+import { appendLine as outputAppend } from '../components/output'
 
 const httpClient = axios.create({
   maxContentLength: 268435456, // 256MB

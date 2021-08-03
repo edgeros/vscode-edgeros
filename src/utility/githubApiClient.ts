@@ -13,7 +13,7 @@ import * as path from 'path'
 import { URL } from 'url'
 import axios, { AxiosRequestConfig } from 'axios'
 import type { AxiosProxyConfig } from 'axios'
-import { ErrorHandler, GithubFileResponse, Template, TemplateConf, TemplateSource } from '../types'
+import { ErrorHandler, GithubFileResponse, Template, TemplateConfig, TemplateSource } from '../types'
 
 const providers = {
   github: 'https://api.github.com/repos/edgeros/templates/contents/',
@@ -26,7 +26,7 @@ const providers = {
  */
 export async function getGithubTpls (errHandler?: ErrorHandler, proxyStr?: string): Promise<Template[]> {
   const proxy = parseHttpsProxy(proxyStr)
-  return await getTpls(providers.github, 'Github', errHandler, proxy)
+  return await loadTemplatesRepo(providers.github, 'Github', errHandler, proxy)
 }
 
 /**
@@ -34,14 +34,14 @@ export async function getGithubTpls (errHandler?: ErrorHandler, proxyStr?: strin
  * @param errHandler callback to be invoked when error is encountered
  */
 export async function getGiteeTpls (errHandler?: ErrorHandler): Promise<Template[]> {
-  return await getTpls(providers.gitee, 'Gitee', errHandler)
+  return await loadTemplatesRepo(providers.gitee, 'Gitee', errHandler)
 }
 
 /**
  * List repo directories inside the `templates` metadata repository
  * @param errHandler
  */
-async function getTpls (
+async function loadTemplatesRepo (
   apiUrl: string,
   source: TemplateSource,
   errHandler?: ErrorHandler,
@@ -51,7 +51,7 @@ async function getTpls (
     const response = await axios(apiUrl, { proxy })
     const repoFetches = response.data
       .filter((item: any) => item && item.type === 'dir')
-      .map((item: any) => getTplsInfo(item.url, item.name, source, proxy))
+      .map((item: any) => loadTemplate(item.url, item.name, source, proxy))
     return Promise.all(repoFetches)
   } catch (err) {
     errHandler && errHandler(err)
@@ -65,7 +65,7 @@ async function getTpls (
  * @param templateUrl template github repository, i.e.
  *  https://api.github.com/repos/edgeros/templates/contents/tpl-standard?ref=main
  */
-async function getTplsInfo (templateUrl: string, templateId: string, source: TemplateSource, proxy?: AxiosProxyConfig): Promise<Template> {
+async function loadTemplate (templateUrl: string, templateId: string, source: TemplateSource, proxy?: AxiosProxyConfig): Promise<Template> {
   const conventionalFiles: { [key: string]: any } = {
     'desc.json': undefined,
     'banner.png': undefined
@@ -94,7 +94,7 @@ async function getTplsInfo (templateUrl: string, templateId: string, source: Tem
 
   await Promise.all(httpGets)
 
-  const descJson = conventionalFiles['desc.json'] as TemplateConf
+  const descJson = conventionalFiles['desc.json'] as TemplateConfig
   const bannerPng = conventionalFiles['banner.png'] as ArrayBuffer
   const gitUrl = source === 'Github'
     ? descJson.repository.github!!.toString()
@@ -108,9 +108,9 @@ async function getTplsInfo (templateUrl: string, templateId: string, source: Tem
       source: source,
       gitUrl: gitUrl,
       banner: `data:image/png;base64,${Buffer.from(bannerPng).toString('base64')}`
-    }
+    } as Template
   }
-  return { ...descJson, id: templateId, source, gitUrl }
+  return { ...descJson, id: templateId, source, gitUrl } as Template
 }
 
 function parseHttpsProxy (envHttpsProxy?: string): AxiosProxyConfig | undefined {

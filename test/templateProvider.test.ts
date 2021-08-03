@@ -8,7 +8,7 @@ describe('templateProvider', function () {
       .then(templates => {
         assert(templates, 'successfully')
         const simpleTemplate = templates[0] as Template
-        assert.strictEqual(simpleTemplate.name, 'Simple')
+        assert.strictEqual(simpleTemplate.name, 'Local')
       })
   })
 

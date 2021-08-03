@@ -8,13 +8,17 @@ import * as vscode from 'vscode'
 import * as ejs from 'ejs'
 import * as path from 'path'
 import * as os from 'os'
+
 import * as config from '../../config'
+import nlsConfig from '../../nls'
 import localMode from '../../generate/localMode'
 import cloudMode from '../../generate/cloudMode'
-import nlsConfig from '../../nls'
+
 import { getLocalTemplates, getRemoteTemplates } from '../../generate/templateProvider'
 import { getWorkspaceSettings, changeUri, getWebViewBaseUris } from '../../common'
-import { Template, TemplateSource } from '../../types'
+import { EdgerosProjectConfig, Template, TemplateSource } from '../../types'
+import { appendLine } from '../../components/output'
+
 const localize = nlsConfig(__filename)
 
 /**
@@ -156,9 +160,9 @@ async function webCmdHandle (currentPanel: vscode.WebviewPanel, message: any) {
       let newProjectPath: string = ''
 
       if (tplLocaltion === 'Local') {
-        newProjectPath = await localMode(tplInfo, message.data)
+        newProjectPath = await localMode(tplInfo, message.data as EdgerosProjectConfig)
       } else {
-        newProjectPath = await cloudMode(tplInfo, message.data)
+        newProjectPath = await cloudMode(tplInfo, message.data as EdgerosProjectConfig, appendLine)
       }
 
       if (message.data.other.indexOf('openFile') !== -1) {

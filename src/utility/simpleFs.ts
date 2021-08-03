@@ -6,36 +6,43 @@
  *
  * Author : Fu Tongtang <futongtang@acoinfo.com>
  * File   : simpleFs.ts
- * Desc   : file system utilies
+ * Desc   : file system utility based on fs-extra
  */
 
-import { promises as fs } from 'fs'
-import { NodeSystemError } from '../types'
+import * as fs from 'fs-extra'
+
+// eslint-disable-next-line node/no-deprecated-api
+export * from 'path'
+export * from 'fs-extra'
 
 /**
- * Assert file existence and resolve with the given path
+ * Resolve if the filepath is accessible
  */
-export function assertFile (filePath: string): Promise<string> {
-  if (!filePath) {
-    return Promise.reject(Error('File path cannot be empty'))
-  }
-  return filePath
-    ? fs.access(filePath).then(() => filePath)
-    : Promise.reject(Error('Empty filePath'))
+export function assertExist (filepath: string): Promise<string> {
+  return filepath
+    ? fs.access(filepath).then(() => filepath)
+    : Promise.reject(ErrorEmptyFilepath())
 }
 
 /**
- * Assert file NOT exist and resolve with the given path
+ * Reject if the filepath is accessible
  */
-export function assertNotFile (filePath: string): Promise<string> {
-  return assertFile(filePath)
-    .then(
-      () => Promise.reject(Error(`File already exist: ${filePath}`)),
-      (err: NodeSystemError) => {
-        if (err.code === 'ENOENT') {
-          return Promise.resolve(filePath)
-        }
-        return Promise.reject(err)
+export function assertNotExist (filepath: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    if (!filepath) return reject(ErrorEmptyFilepath())
+    fs.access(filepath, err => {
+      if (err && err.code === 'ENOENT') {
+        return resolve(filepath)
       }
-    )
+      reject(ErrorAlreadyExist(filepath))
+    })
+  })
+}
+
+function ErrorEmptyFilepath () {
+  return Error('Empty filepath!')
+}
+
+function ErrorAlreadyExist (filepath: string) {
+  return Error(`Filepath should not exist: ${filepath}`)
 }

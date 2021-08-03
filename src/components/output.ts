@@ -34,8 +34,8 @@ class OutputComponent {
 
 const singleton = new OutputComponent()
 
-export function append (message: string) {
-  return singleton.append(message)
+export function appendLine (message: string) {
+  return singleton.appendLine(message)
 }
 
 export function dispose () {

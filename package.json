@@ -51,7 +51,6 @@
 		"isomorphic-git": "^1.8.2",
 		"moment": "^2.29.1",
 		"requireindex": "^1.2.0",
-		"rimraf": "^3.0.2",
 		"strip-ansi": "^7.0.0"
 	},
 	"repository": {
