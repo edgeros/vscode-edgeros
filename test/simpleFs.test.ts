@@ -9,24 +9,33 @@
  */
 
 import * as assert from 'assert'
-import { assertExist, assertNotExist } from '../src/utility/simpleFs'
+import { SimpleFsError, assertExist, assertNotExist } from '../src/utility/simpleFs'
+
+const fileNeverExist = 'this/file/never/exist'
 
 describe('Simple FS wrapper', function () {
-  it('assert file', function (cb) {
-    assertExist('this/file/never/exist')
-      .catch(() => assertExist(__filename))
+  it('assertExist existing file', function () {
+    return assertExist(__filename)
       .then(filename => {
         assert.strictEqual(__filename, filename)
-        cb()
       })
   })
 
-  it('assert not exist file', function (cb) {
-    assertNotExist(__filename)
-      .then(() => assertNotExist('this/file/never/exist'))
-      .then(
-        () => cb(Error('should not call')),
-        () => cb(null)
-      )
+  it('assertExist non existing file', function () {
+    return assertExist(fileNeverExist)
+      .catch(err => {
+        assert(err instanceof SimpleFsError)
+      })
+  })
+
+  it('assertNotExist existing file', function () {
+    return assertNotExist(__filename)
+      .catch(err => {
+        assert(err instanceof SimpleFsError)
+      })
+  })
+
+  it('assertNotExist non existing file', function () {
+    return assertNotExist(fileNeverExist)
   })
 })
