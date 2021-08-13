@@ -62,7 +62,7 @@
 	"publisher": "EdgerOS",
 	"icon": "resources/media/icon.png",
 	"engines": {
-		"vscode": "^1.55.0"
+		"vscode": "^1.57.1"
 	},
 	"categories": [
 		"Other"
