@@ -6,7 +6,7 @@ const app = new Vue({
   filters: {},
   data: () => {
     const checkName = (rule, value, callback) => {
-      if (!value) {
+      if (!value || !value.trim()) {
         return callback(new Error(nlsMessages.nameNotEmptyText))
       } else {
         callback()
