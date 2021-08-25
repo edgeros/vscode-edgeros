@@ -1,6 +1,6 @@
 {
   "name.txt": "项目名称",
-  "buildid.txt": "包名",
+  "bundleId.txt": "包名",
   "savePath.txt": "保存路径",
   "Description.txt": "项目描述",
   "version.txt": "版本号",

@@ -5,6 +5,8 @@ node_modules
 .DS_Store
 
 *nls.*.json
+!/i18n/**
+
 *.vsix
 **/z_element-ui.css
 

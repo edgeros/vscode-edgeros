@@ -126,8 +126,8 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="<%=language.buildidTxt%>" prop="bundleid">
-                    <el-input v-model="form.bundleid" @change="inputChange"></el-input>
+                  <el-form-item label="<%=language.bundleIdTxt%>" prop="bundleId">
+                    <el-input v-model="form.bundleId" @change="inputChange"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -153,7 +153,7 @@
               <el-row :gutter="20">
                 <el-col :span="24">
                   <el-form-item label="<%=language.versionTxt%>" prop="version">
-                    <el-input v-model="form.version" @change="inputChange"></el-input>
+                    <el-input v-model="form.version" placeholder="0.0.1" @change="inputChange"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>

@@ -54,7 +54,7 @@ const app = new Vue({
       refreshTplStatus: true,
       form: {
         name: '',
-        bundleid: 'com.example.',
+        bundleId: 'com.example.',
         description: '',
         savePath: '',
         version: '0.0.1',
@@ -72,7 +72,7 @@ const app = new Vue({
         vendorName: [
           { required: true, validator: checkVendorName, trigger: 'blur' }
         ],
-        bundleid: [
+        bundleId: [
           { required: true, validator: checkBundleId, trigger: 'blur' }
         ],
         vendorId: [

@@ -63,7 +63,7 @@ export = function (context: vscode.ExtensionContext) {
         cssUri,
         language: {
           nameTxt: localize('name.txt', 'Name'),
-          buildidTxt: localize('buildid.txt', 'Bundleid'),
+          bundleIdTxt: localize('bundleId.txt', 'Bundle ID'),
           savePathTxt: localize('savePath.txt', 'Save Path'),
           descriptionTxt: localize('Description.txt', 'Description'),
           versionTxt: localize('version.txt', 'Version'),
@@ -76,7 +76,7 @@ export = function (context: vscode.ExtensionContext) {
           otherText: localize('other.txt', 'Other'),
           openFileText: localize('openFile.txt', 'Open the project in a new window'),
           selectPathText: localize('selectPath.txt', 'Select Path'),
-          nameNotEmptyText: localize('nameNotEmpty.txt', 'Name Not Empty'),
+          nameNotEmptyText: localize('nameNotEmpty.txt', 'Name is required'),
           projectTemplateWarehouseTxt: localize('projectTemplateWarehouse.txt', 'Template Warehouse'),
           projectTemplateHintTxt: localize('projectTemplateHint.txt', 'Select the template and build it now'),
           applyTxt: localize('apply.txt', 'Apply'),
@@ -182,7 +182,7 @@ async function webCmdHandle (currentPanel: vscode.WebviewPanel, message: any) {
       })
       currentPanel.dispose()
     }
-  } catch (err) {
+  } catch (err: any) {
     currentPanel.dispose()
     vscode.window.showInformationMessage(err.message)
   }
