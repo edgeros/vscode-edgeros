@@ -24,14 +24,25 @@ const app = new Vue({
       }
     }
 
-    const checkVersionId = (rule, value, callback) => {
+    const checkVersion = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error(nlsMessages.versionIdNotEmptyText))
+        return callback(new Error(nlsMessages.versionNotEmptyText))
+      }
+      if (/^([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$/.test(value)) {
+        callback()
+      } else {
+        callback(new Error(nlsMessages.versionIncorrectFormatText))
+      }
+    }
+
+    const checkVendorId = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error(nlsMessages.vendorIdNotEmptyText))
       }
       if (/^\d+$/g.test(value)) {
         callback()
       } else {
-        callback(new Error(nlsMessages.versionIdIncorrectFormatText))
+        callback(new Error(nlsMessages.vendorIdIncorrectFormatText))
       }
     }
 
@@ -69,14 +80,17 @@ const app = new Vue({
         name: [
           { required: true, validator: checkName, trigger: 'blur' }
         ],
-        vendorName: [
-          { required: true, validator: checkVendorName, trigger: 'blur' }
-        ],
         bundleId: [
           { required: true, validator: checkBundleId, trigger: 'blur' }
         ],
+        version: [
+          { required: true, validator: checkVersion, trigger: 'blur' }
+        ],
         vendorId: [
-          { required: true, validator: checkVersionId, trigger: 'blur' }
+          { required: true, validator: checkVendorId, trigger: 'blur' }
+        ],
+        vendorName: [
+          { required: true, validator: checkVendorName, trigger: 'blur' }
         ]
       }
     }
