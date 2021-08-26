@@ -7,7 +7,8 @@ This Extension includes tools for EdgerOS developers to **build**, **install** a
 
 ### Create a project
 
-You can create an EdgerOS sample project from our built-in templates
+You can create an EdgerOS sample project from our built-in templates.  
+Note: due to [Github rate limit](https://docs.github.com/en/developers/apps/building-github-apps/rate-limits-for-github-apps), **it might fail when retrieve remote templates**.
 
 ![create project](resources/media/create-project.gif)
 
