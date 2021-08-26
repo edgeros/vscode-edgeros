@@ -265,7 +265,9 @@ function createDesc (buildFileTmp: string, eosAndpkgJson: any, options: any) {
     descData.program.main = createRunTestFile(eosAndpkgJson.eos.test, path.join(buildFileTmp, 'program'))
   }
 
+  // Backward compatiblity for EdgerOS <= 1.5.5, which requires the splash field
   descData.program.splash = eosAndpkgJson.eos.assets.splash
+
   descData.program.mesv = eosAndpkgJson.eos.program.mesv.split('.').map((item: string) => Number(item))
   descData.program.release = (new Date()).getTime()
   descData.program.version = eosAndpkgJson.pkg.version.split('.').map((item: string) => Number(item))

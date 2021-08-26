@@ -1,5 +1,14 @@
 # Change Log
 
+## v0.4.0
+
+1. support remote template repositories from Github (or Gitee)
+2. rework git providers
+3. normalize configuration storage keys
+4. introduce strong types
+5. update vscode.engine to 1.57.1
+6. validate version, mail phone and fax.
+
 ## v0.3.0
 
 1. rename extension setting `edgeros.buildType` to `edgeros.buildSuffix`
