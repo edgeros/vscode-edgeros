@@ -54,6 +54,26 @@ const app = new Vue({
       }
     }
 
+    const checkEmail = (rule, value, callback) => {
+      // https://regex101.com/r/mX1xW0/1
+      const regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
+      if (value && !regex.test(value)) {
+        return callback(new Error(nlsMessages.invalidEmailText))
+      } else {
+        callback()
+      }
+    }
+
+    const checkPhone = (rule, value, callback) => {
+      // https://regex101.com/r/wZ4uU6/1
+      const regex = /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/
+      if (value && !regex.test(value)) {
+        return callback(new Error(nlsMessages.invalidPhoneText))
+      } else {
+        callback()
+      }
+    }
+
     return previousState?.data || {
       templateAll: [], // 所有模板信息
       templates: [], // 根据类型筛选模板列表
@@ -91,6 +111,15 @@ const app = new Vue({
         ],
         vendorName: [
           { required: true, validator: checkVendorName, trigger: 'blur' }
+        ],
+        vendorEmail: [
+          { required: false, validator: checkEmail, trigger: 'blur' }
+        ],
+        vendorPhone: [
+          { required: false, validator: checkPhone, trigger: 'blur' }
+        ],
+        vendorFax: [
+          { required: false, validator: checkPhone, trigger: 'blur' }
         ]
       }
     }

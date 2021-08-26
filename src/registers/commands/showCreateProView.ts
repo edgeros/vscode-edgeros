@@ -88,6 +88,8 @@ export = function (context: vscode.ExtensionContext) {
           vendorIdNotEmptyText: localize('vendorIdNotEmptyText.txt', 'Vendor ID is required'),
           vendorIdIncorrectFormatText: localize('vendorIdIncorrectFormatText.txt', 'Vendor ID should be a number'),
           vendorNameNotEmptyText: localize('vendorNameNotEmptyText.txt', 'Vendor name is required'),
+          invalidEmailText: localize('invalidEmailText.txt', 'Invalid email address'),
+          invalidPhoneText: localize('invalidPhoneText.txt', 'Invalid phone number'),
           refreshTemplateingText: localize('refreshTemplateingText.txt', 'Getting a template'),
           refreshTemplateText: localize('refreshTemplateText.txt', 'Refresh the templates'),
           cloudText: localize('cloudText.txt', 'cloud')
