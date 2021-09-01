@@ -15,7 +15,7 @@ Note: due to [Github rate limit](https://docs.github.com/en/developers/apps/buil
 ### Add Device
 
 Before deploying your app to EdgerOS device, you should add it to your workspace first.
-Click "Add  Device" icon, enter the ip address of your device, give it a nick name and you are good to go.
+Click "Add  Device" icon, enter the IP address of your device, give it a nick name and you are good to go.
 
 ![add device](resources/media/add-device.gif)
 

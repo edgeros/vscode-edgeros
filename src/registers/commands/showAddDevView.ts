@@ -43,10 +43,10 @@ export = function (context: vscode.ExtensionContext) {
             devPwdTxt: localize('devPwd.txt', 'Device Password'),
             devLoginPwdText: localize('devLoginPwd.txt', 'Device Login Password'),
             addDeviceText: localize('addDevice.txt', 'Add Device'),
-            ipNotEmptyText: localize('ipNotEmpty.Text', 'IP Not Empty'),
-            ipIncorrectFormatText: localize('ipIncorrectFormat.text', 'IP Incorrect Format'),
-            devNameNotEmptyText: localize('devNameNotEmpty.Text', 'Device Name Not Empty'),
-            devNameExistText: localize('devNameExist.Text', 'Device Name Exist')
+            ipNotEmptyText: localize('ipNotEmpty.Text', 'IP is required'),
+            ipIncorrectFormatText: localize('ipIncorrectFormat.text', 'Incorrect IP Format'),
+            devNameNotEmptyText: localize('devNameNotEmpty.Text', 'Device name is required'),
+            devNameExistText: localize('devNameExist.Text', 'Device name already exist')
           }
         })
         currentPanel.iconPath = vscode.Uri.parse(config.edgerosLogo)

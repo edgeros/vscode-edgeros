@@ -4,7 +4,7 @@
   "savePath.txt": "保存路径",
   "Description.txt": "项目描述",
   "version.txt": "版本号",
-  "vendorId.txt": "提供商ID",
+  "vendorId.txt": "提供商 ID",
   "vendorName.txt": "提供商名称",
   "vendorEmail.txt": "提供商邮箱",
   "vendorPhone.txt": "提供商手机",
@@ -23,12 +23,12 @@
   "bundleIdNotEmptyText.txt": "包名不能为空",
   "versionNotEmptyText.txt": "版本号不能为空",
   "versionIncorrectFormatText.txt": "版本号格式错误，合法格式形如 0.1.2",
-  "vendorIdNotEmptyText.txt": "供应商ID不能为空",
-  "vendorIdIncorrectFormatText.txt": "供应商ID必须为纯数字",
+  "vendorIdNotEmptyText.txt": "供应商 ID 不能为空",
+  "vendorIdIncorrectFormatText.txt": "供应商 ID 必须为纯数字",
   "vendorNameNotEmptyText.txt": "供应商名称不能为空",
   "invalidEmailText.txt": "无效的电子邮件格式",
   "invalidPhoneText.txt": "无效电话号码格式",
   "refreshTemplateingText.txt": "正在获取模板信息",
   "refreshTemplateText.txt": "刷新模板信息",
-  "cloudText.txt": "cloud"
+  "cloudText.txt": "Cloud"
 }

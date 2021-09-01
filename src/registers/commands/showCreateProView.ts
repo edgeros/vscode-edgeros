@@ -92,7 +92,7 @@ export = function (context: vscode.ExtensionContext) {
           invalidPhoneText: localize('invalidPhoneText.txt', 'Invalid phone number'),
           refreshTemplateingText: localize('refreshTemplateingText.txt', 'Getting a template'),
           refreshTemplateText: localize('refreshTemplateText.txt', 'Refresh the templates'),
-          cloudText: localize('cloudText.txt', 'cloud')
+          cloudText: localize('cloudText.txt', 'Cloud')
         }
       })
 
