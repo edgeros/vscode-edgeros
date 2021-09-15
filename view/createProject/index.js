@@ -39,7 +39,7 @@ const app = new Vue({
       if (!value) {
         return callback(new Error(nlsMessages.vendorIdNotEmptyText))
       }
-      if (/^\d+$/g.test(value)) {
+      if (/^[0-9a-zA-Z_-]{1,40}$/g.test(value)) {
         callback()
       } else {
         callback(new Error(nlsMessages.vendorIdIncorrectFormatText))
