@@ -1,5 +1,11 @@
 # Change Log
 
+## v0.4.3
+
+1. add email validation
+2. fix version does not increase
+3. fix edgeros.json -> widget.ico change
+
 ## v0.4.2
 
 Relax vendor id validation to allow normal letters.

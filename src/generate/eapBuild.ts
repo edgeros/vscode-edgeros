@@ -366,7 +366,7 @@ function createDesc (buildFileTmp: string, eosAndpkgJson: any, options: any) {
     descData.widget = []
     eosAndpkgJson.eos.widget.forEach((item: any) => {
       const tmpWidget = { ...item }
-      // tmpWidget.ico = eosAndpkgJson.eos.assets[tmpWidget.ico].split('/').pop()
+      tmpWidget.ico = path.basename(eosAndpkgJson.eos.assets[tmpWidget.ico])
       descData.widget.push(tmpWidget)
     })
   }
