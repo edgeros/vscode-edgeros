@@ -55,80 +55,67 @@ const app = new Vue({
     }
 
     const checkEmail = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error(nlsMessages.emailNotEmptyText))
+      }
       // https://regex101.com/r/mX1xW0/1
       const regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
-      if (value && !regex.test(value)) {
+      if (!regex.test(value)) {
         return callback(new Error(nlsMessages.invalidEmailText))
       } else {
         callback()
       }
     }
 
-    const checkPhone = (rule, value, callback) => {
-      // https://regex101.com/r/wZ4uU6/1
-      const regex = /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/
-      if (value && !regex.test(value)) {
-        return callback(new Error(nlsMessages.invalidPhoneText))
-      } else {
-        callback()
+    return (
+      previousState?.data || {
+        templateAll: [], // 所有模板信息
+        templates: [], // 根据类型筛选模板列表
+        selectTemp: {}, // 选择模板
+        tplTypes: [], // 模板类型
+        selectType: {}, // 根据模板类型选择的模板
+        plan: 'selectTemplate',
+        loading: false,
+        refreshTplStatus: true,
+        form: {
+          name: '',
+          bundleId: 'com.example.',
+          description: '',
+          savePath: '',
+          version: '0.0.1',
+          vendorId: '',
+          vendorName: '',
+          vendorEmail: '',
+          vendorPhone: '',
+          vendorFax: '',
+          other: ['openFile']
+        },
+        rules: {
+          name: [{ required: true, validator: checkName, trigger: 'blur' }],
+          bundleId: [
+            { required: true, validator: checkBundleId, trigger: 'blur' }
+          ],
+          version: [
+            { required: true, validator: checkVersion, trigger: 'blur' }
+          ],
+          vendorId: [
+            { required: true, validator: checkVendorId, trigger: 'blur' }
+          ],
+          vendorName: [
+            { required: true, validator: checkVendorName, trigger: 'blur' }
+          ],
+          vendorEmail: [
+            { required: true, validator: checkEmail, trigger: 'blur' }
+          ]
+        }
       }
-    }
-
-    return previousState?.data || {
-      templateAll: [], // 所有模板信息
-      templates: [], // 根据类型筛选模板列表
-      selectTemp: {}, // 选择模板
-      tplTypes: [], // 模板类型
-      selectType: {}, // 根据模板类型选择的模板
-      plan: 'selectTemplate',
-      loading: false,
-      refreshTplStatus: true,
-      form: {
-        name: '',
-        bundleId: 'com.example.',
-        description: '',
-        savePath: '',
-        version: '0.0.1',
-        vendorId: '',
-        vendorName: '',
-        vendorEmail: '',
-        vendorPhone: '',
-        vendorFax: '',
-        other: ['openFile']
-      },
-      rules: {
-        name: [
-          { required: true, validator: checkName, trigger: 'blur' }
-        ],
-        bundleId: [
-          { required: true, validator: checkBundleId, trigger: 'blur' }
-        ],
-        version: [
-          { required: true, validator: checkVersion, trigger: 'blur' }
-        ],
-        vendorId: [
-          { required: true, validator: checkVendorId, trigger: 'blur' }
-        ],
-        vendorName: [
-          { required: true, validator: checkVendorName, trigger: 'blur' }
-        ],
-        vendorEmail: [
-          { required: false, validator: checkEmail, trigger: 'blur' }
-        ],
-        vendorPhone: [
-          { required: false, validator: checkPhone, trigger: 'blur' }
-        ],
-        vendorFax: [
-          { required: false, validator: checkPhone, trigger: 'blur' }
-        ]
-      }
-    }
+    )
   },
   mounted () {
-    if (this.templateAll.length === 0) vscode.postMessage({ type: 'getInfoData' })
+    if (this.templateAll.length === 0)
+      vscode.postMessage({ type: 'getInfoData' })
   },
-  created () {
-  },
+  created () {},
   methods: {
     inputChange (value) {
       vscode.setState({
@@ -165,7 +152,7 @@ const app = new Vue({
     selectTplType (type) {
       this.selectType = type
       this.templates = []
-      const tpls = this.templateAll.filter((item) => {
+      const tpls = this.templateAll.filter(item => {
         return item.type === type.type || type.type === 'All'
       })
       let items = []
@@ -197,7 +184,7 @@ const app = new Vue({
     },
     // 提交创建项目
     onSubmit () {
-      this.$refs.form.validate((valid) => {
+      this.$refs.form.validate(valid => {
         console.log('form', valid)
         if (valid) {
           this.loading = true
