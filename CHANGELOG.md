@@ -1,5 +1,13 @@
 # Change Log
 
+## v0.4.2
+
+Relax vendor id validation to allow normal letters.
+
+## v0.4.1
+
+Fix i18n messages.
+
 ## v0.4.0
 
 1. support remote template repositories from Github (or Gitee)
@@ -7,7 +15,7 @@
 3. normalize configuration storage keys
 4. introduce strong types
 5. update vscode.engine to 1.57.1
-6. validate version, mail phone and fax.
+6. validate version, mail phone and fax
 
 ## v0.3.0
 
