@@ -10,6 +10,7 @@ import { appendLine as outputAppend } from '../components/output'
 
 const httpClient = axios.create({
   maxContentLength: 268435456, // 256MB
+  maxBodyLength: 268435456,
   timeout: 300000,
   maxRedirects: 5
 })

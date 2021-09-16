@@ -1,5 +1,10 @@
 # Change Log
 
+## v0.4.4
+
+1. change maxBodyLength 256MB
+2. fix github template request error
+
 ## v0.4.3
 
 1. add email validation
