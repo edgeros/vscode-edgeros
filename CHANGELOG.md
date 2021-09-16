@@ -1,9 +1,13 @@
 # Change Log
 
+## v0.4.5
+
+1. fix an build error: report user friendly message of missed widget ico
+
 ## v0.4.4
 
 1. change maxBodyLength 256MB
-2. fix github template request error
+2. catch github template request error
 
 ## v0.4.3
 

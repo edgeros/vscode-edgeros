@@ -364,11 +364,16 @@ function createDesc (buildFileTmp: string, eosAndpkgJson: any, options: any) {
   descData.update = eosAndpkgJson.eos.update
   if (eosAndpkgJson.eos.widget) {
     descData.widget = []
-    eosAndpkgJson.eos.widget.forEach((item: any) => {
+    for (const item of eosAndpkgJson.eos.widget || []) {
       const tmpWidget = { ...item }
-      tmpWidget.ico = path.basename(eosAndpkgJson.eos.assets[tmpWidget.ico])
-      descData.widget.push(tmpWidget)
-    })
+      const widgetFile = eosAndpkgJson.eos.assets[tmpWidget.ico]
+      if (widgetFile) {
+        tmpWidget.ico = path.basename(eosAndpkgJson.eos.assets[tmpWidget.ico])
+        descData.widget.push(tmpWidget)
+      } else {
+        throw Error(`Cannot find ico in assets: ${tmpWidget.ico}`)
+      }
+    }
   }
   fs.writeFileSync(descpath, JSON.stringify(descData, null, 4))
 }
