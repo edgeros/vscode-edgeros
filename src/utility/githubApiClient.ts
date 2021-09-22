@@ -13,7 +13,7 @@ import * as path from 'path'
 import { URL } from 'url'
 import axios, { AxiosRequestConfig } from 'axios'
 import type { AxiosProxyConfig } from 'axios'
-import { ErrorHandler, GithubFileResponse, Template, TemplateConfig, TemplateSource } from '../types'
+import { ErrorHandler, GithubFileResponse, Template, TemplateConfig, TemplateSource, TemplateType, TemplateInfo } from '../types'
 
 const providers = {
   github: 'https://api.github.com/repos/edgeros/templates/contents/',
@@ -24,7 +24,7 @@ const providers = {
  * List repo directories inside the Github metadata repo
  * @param errHandler callback to be invoked when error is encountered
  */
-export async function getGithubTpls (errHandler?: ErrorHandler, proxyStr?: string): Promise<Template[]> {
+export async function getGithubTpls (errHandler?: ErrorHandler, proxyStr?: string): Promise<TemplateInfo> {
   const proxy = parseHttpsProxy(proxyStr)
   return await loadTemplatesRepo(providers.github, 'Github', errHandler, proxy)
 }
@@ -33,7 +33,7 @@ export async function getGithubTpls (errHandler?: ErrorHandler, proxyStr?: strin
  * List repo directories inside the Github metadata repo
  * @param errHandler callback to be invoked when error is encountered
  */
-export async function getGiteeTpls (errHandler?: ErrorHandler): Promise<Template[]> {
+export async function getGiteeTpls (errHandler?: ErrorHandler): Promise<TemplateInfo> {
   return await loadTemplatesRepo(providers.gitee, 'Gitee', errHandler)
 }
 
@@ -46,19 +46,31 @@ async function loadTemplatesRepo (
   source: TemplateSource,
   errHandler?: ErrorHandler,
   proxy?: AxiosProxyConfig
-): Promise<Template[]> {
+): Promise<TemplateInfo> {
   try {
     const response = await axios(apiUrl, { proxy })
+    // gets the types of all templates
+    const repoFetcheTypesUrl = response.data
+      .filter((item: any) => item.name === 'tpl-types.json' && item.type === 'file')[0]
+      .download_url
+    const repoFectheTypes = await loadTemplateType(repoFetcheTypesUrl, proxy)
+    // get details about the template
     const repoFetches = response.data
       .filter((item: any) => item && item.type === 'dir')
       .map((item: any) => loadTemplate(item.url, item.name, source, proxy))
-    // 过滤没有请求到详细信息的模块
+    // filtering failed to obtain templates
     let repoFetchesInfo: Template[] = await Promise.all(repoFetches)
     repoFetchesInfo = repoFetchesInfo.filter((item: Template) => !!item.id)
-    return repoFetchesInfo
+    return {
+      typeArray: repoFectheTypes,
+      tempArray: repoFetchesInfo
+    } as TemplateInfo
   } catch (err) {
     errHandler && errHandler(err)
-    return []
+    return {
+      typeArray: [],
+      tempArray: []
+    } as TemplateInfo
   }
 }
 
@@ -116,6 +128,22 @@ async function loadTemplate (templateUrl: string, templateId: string, source: Te
     return { ...descJson, id: templateId, source, gitUrl } as Template
   } catch (err) {
     return {} as Template
+  }
+}
+
+/**
+ * Request github repository API and retrieve detailed repo infomation
+ * @param typesFileUrl Template type file download address
+ * https://github.com/edgeros/templates/raw/main/tpl-types.json
+ */
+async function loadTemplateType (typesFileUrl: string, proxy?: AxiosProxyConfig): Promise<TemplateType[]> {
+  try {
+    const response = await axios(typesFileUrl, { proxy })
+    return response.data.map((item: any) => {
+      return item as TemplateType
+    })
+  } catch (err) {
+    return [] as TemplateType[]
   }
 }
 

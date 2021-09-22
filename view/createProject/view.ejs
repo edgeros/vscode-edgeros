@@ -49,7 +49,7 @@
             <div class="templateTypes">
               <div v-for="item in tplTypes" @click="selectTplType(item)" v-bind:key="item.type"
                 :class="[selectType.type == item.type?'selectItem':'']">{{
-                item.type }}
+                item.label }}
               </div>
             </div>
             <div style="text-align: center;">
@@ -106,7 +106,7 @@
           <div class="headStyle">
             <div class="title"><span @click="backTpl">
                 <%=language.projectTemplateWarehouseTxt%>
-              </span> > {{selectType.type}}</div>
+              </span> > {{selectType.label}}</div>
             <div>
               {{selectType.desc}}
             </div>

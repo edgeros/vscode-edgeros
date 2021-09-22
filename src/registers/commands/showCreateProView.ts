@@ -10,27 +10,45 @@ import * as path from 'path'
 import * as os from 'os'
 
 import * as config from '../../config'
-import nlsConfig from '../../nls'
+import { nlsConfig, languge } from '../../nls'
 import localMode from '../../generate/localMode'
 import cloudMode from '../../generate/cloudMode'
 
 import { getLocalTemplates, getRemoteTemplates } from '../../generate/templateProvider'
 import { getWorkspaceSettings, changeUri, getWebViewBaseUris } from '../../common'
-import { EdgerosProjectConfig, Template, TemplateSource } from '../../types'
+import { EdgerosProjectConfig, Template, TemplateSource, TemplateType } from '../../types'
 import { appendLine } from '../../components/output'
 
 const localize = nlsConfig(__filename)
 
+interface TemplateViewItem {
+  name: string; // descJsonRes.data.name,
+  description: string; // descJsonRes.data.description,
+  banner: string; // bannerImg.download_url,
+  gitUrl: string; // gitUrl,
+  downloadUrl: string; // gitUrl,
+  type: string; // descJsonRes.data.type,
+  location: string // 'cloud'
+}
+
+interface TemplateTypeViewItem {
+  type: string; // 模板类型
+  label: string; // 页面显示标题
+  desc: string; // 模板类型描述
+}
+
 /**
- * 模板类型及模板介绍
+ * 模板类型及模板介绍(单机情况下)
  */
-const templateTypes = [{
+const templateTypes: TemplateTypeViewItem[] = [{
   type: 'All',
-  desc: 'All available project templates'
+  label: languge === 'zh-cn' ? '全部' : 'All',
+  desc: languge === 'zh-cn' ? '所有的项目模板' : 'All available project templates'
 },
 {
   type: 'Base',
-  desc: 'Basic project templates'
+  label: languge === 'zh-cn' ? '基础' : 'Base',
+  desc: languge === 'zh-cn' ? '基本的项目模板' : 'Basic project templates'
 }]
 
 /**
@@ -146,15 +164,13 @@ async function webCmdHandle (currentPanel: vscode.WebviewPanel, message: any) {
           incloud: false
         }
       })
-
       const remoteTemplates = await getRemoteTemplates(settings.templateSource)
-      const allTemplates = localTemplates.concat(remoteTemplates)
-
+      const allTemplates = localTemplates.concat(remoteTemplates.tempArray)
       currentPanel?.webview.postMessage({
         type: '_getInfoData',
         data: {
           templates: allTemplates.map(buildTemplateViewItem),
-          templateTypes: templateTypes,
+          templateTypes: remoteTemplates.typeArray.map(buildTemplateTypeItem),
           defaultSavePath: path.join(os.homedir(), 'EdgerOSApps'),
           incloud: true
         }
@@ -193,24 +209,22 @@ async function webCmdHandle (currentPanel: vscode.WebviewPanel, message: any) {
   }
 }
 
-interface TemplateViewItem {
-  name: string; // descJsonRes.data.name,
-  description: string; // descJsonRes.data.description,
-  banner: string; // bannerImg.download_url,
-  gitUrl: string; // gitUrl,
-  downloadUrl: string; // gitUrl,
-  type: string; // descJsonRes.data.type,
-  location: string // 'cloud'
-}
-
 function buildTemplateViewItem (template: Template): TemplateViewItem {
   return {
     name: template.name,
-    description: template.description,
+    description: languge === 'zh-cn' ? template['description_zh-cn'] : template.description,
     banner: template.banner,
     type: template.type,
     gitUrl: template.gitUrl,
     downloadUrl: template.gitUrl,
     location: template.source
+  }
+}
+
+function buildTemplateTypeItem (templateType: TemplateType): TemplateTypeViewItem {
+  return {
+    type: templateType.type,
+    label: languge === 'zh-cn' ? templateType['label_zh-cn'] : templateType.type,
+    desc: languge === 'zh-cn' ? templateType['describe_zh-cn'] : templateType.describe_en
   }
 }

@@ -34,6 +34,7 @@ export async function getLocalTemplates (localTemplateBase?: string) {
       name: templateConf.name!,
       banner: templateConf.banner!,
       description: templateConf.description!,
+      'description_zh-cn': templateConf['description_zh-cn']!,
       type: templateConf.type!,
       source: 'Local',
       gitUrl: pathToFileURL(templateDir).toString()

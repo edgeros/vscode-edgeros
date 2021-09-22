@@ -112,8 +112,7 @@ const app = new Vue({
     )
   },
   mounted () {
-    if (this.templateAll.length === 0)
-      vscode.postMessage({ type: 'getInfoData' })
+    if (this.templateAll.length === 0) { vscode.postMessage({ type: 'getInfoData' }) }
   },
   created () {},
   methods: {

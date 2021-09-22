@@ -15,8 +15,6 @@ import type { URL } from 'url'
 export type NodeSystemError = NodeJS.ErrnoException
 export type ErrorHandler = (err: Error) => {}
 
-export type TemplateType = 'Base'
-
 export interface TemplateRepoConfig {
   readonly github?: URL; // github repo
   readonly gitee?: URL; // gitee repo
@@ -27,8 +25,16 @@ export interface TemplateConfig {
   readonly name: string; // display name
   readonly banner: string; // url or base64 png
   readonly description: string; // short brief
-  readonly type: TemplateType;
+  readonly 'description_zh-cn':string;
+  readonly type: string;
   readonly repository: TemplateRepoConfig;
+}
+
+export interface TemplateType {
+  readonly 'type': string; // template type
+  readonly 'label_zh-cn': string;
+  readonly 'describe_en': string;
+  readonly 'describe_zh-cn': string;
 }
 
 export type TemplateSource = 'Local' | 'Github' | 'Gitee'
@@ -42,6 +48,11 @@ export interface Template extends Omit<TemplateConfig, 'repository'> {
   readonly id: string;
   readonly source: TemplateSource;
   readonly gitUrl: string;
+}
+
+export interface TemplateInfo {
+  readonly typeArray: TemplateType[];
+  readonly tempArray: Template[];
 }
 
 export type GitProgressCallback = (msg: string) => void
