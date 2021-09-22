@@ -166,11 +166,20 @@ async function webCmdHandle (currentPanel: vscode.WebviewPanel, message: any) {
       })
       const remoteTemplates = await getRemoteTemplates(settings.templateSource)
       const allTemplates = localTemplates.concat(remoteTemplates.tempArray)
+      for (const item of remoteTemplates.typeArray.map(buildTemplateTypeItem)) {
+        const index = templateTypes.findIndex((localItem: TemplateTypeViewItem) => {
+          return item.type === localItem.type
+        })
+        if (index === -1) {
+          templateTypes.push(item)
+        }
+      }
+
       currentPanel?.webview.postMessage({
         type: '_getInfoData',
         data: {
           templates: allTemplates.map(buildTemplateViewItem),
-          templateTypes: remoteTemplates.typeArray.map(buildTemplateTypeItem),
+          templateTypes: templateTypes,
           defaultSavePath: path.join(os.homedir(), 'EdgerOSApps'),
           incloud: true
         }
