@@ -1,4 +1,9 @@
 # Change Log
+## v0.4.6
+1. fix the install eap version does not autoincrement
+2. the typescript project is compiled automatically when it is built
+3. create project pages support I18N
+4. update template banner and desc
 
 ## v0.4.5
 
