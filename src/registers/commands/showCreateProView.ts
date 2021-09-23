@@ -43,12 +43,12 @@ interface TemplateTypeViewItem {
 const templateTypes: TemplateTypeViewItem[] = [{
   type: 'All',
   label: languge === 'zh-cn' ? '全部' : 'All',
-  desc: languge === 'zh-cn' ? '所有的项目模板' : 'All available project templates'
+  desc: languge === 'zh-cn' ? '所有的应用模板' : 'All available project templates'
 },
 {
   type: 'Base',
   label: languge === 'zh-cn' ? '基础' : 'Base',
-  desc: languge === 'zh-cn' ? '基本的项目模板' : 'Basic project templates'
+  desc: languge === 'zh-cn' ? '比较基础应用模板' : 'Basic project templates'
 }]
 
 /**
