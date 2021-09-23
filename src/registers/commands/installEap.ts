@@ -25,12 +25,8 @@ export = function (context: vscode.ExtensionContext) {
         if (fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'edgeros.json'))) {
           try {
             // get egeros config
-            const configInfo: any = {
-              buildSuffix: vscode.workspace.getConfiguration('edgeros').get('buildSuffix'),
-              increment: vscode.workspace.getConfiguration('edgeros').get('versionIncrement')
-            }
             let eapPath: string = await buildEap(vscode.workspace.workspaceFolders[0].uri.fsPath, {
-              configInfo: configInfo
+              configInfo: workspaceSettings
             })
             const devList = getGlobalState(context)
             const devInfo = devList?.find(item => {

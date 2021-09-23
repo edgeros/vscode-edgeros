@@ -11,7 +11,7 @@ import * as path from 'path'
 import buildEap from '../../generate/eapBuild'
 import { EdgerosTreeItem } from '../../components/treeItem'
 import { uploadEap, installEap } from '../../utility/edgerosApi'
-import { getGlobalState } from '../../common'
+import { getGlobalState, getWorkspaceSettings } from '../../common'
 
 /**
  *command:  edgeros.testEap
@@ -34,13 +34,9 @@ export = function (context: vscode.ExtensionContext) {
           return
         }
 
-        const configInfo: any = {
-          buildSuffix: vscode.workspace.getConfiguration('edgeros').get('buildSuffix'),
-          increment: vscode.workspace.getConfiguration('edgeros').get('versionIncrement')
-        }
         // 构建测试eap
         const eapPath: string = await buildEap(vscode.workspace.workspaceFolders[0].uri.fsPath, {
-          configInfo: configInfo,
+          configInfo: getWorkspaceSettings(),
           buildType: 'test'
         })
 
