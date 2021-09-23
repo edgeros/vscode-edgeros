@@ -14,6 +14,7 @@ import * as stream from 'stream'
 import * as globby from 'globby'
 import * as vscode from 'vscode'
 import * as compressing from 'compressing'
+import tsCompile from './tsCompile'
 import { promisify } from 'util'
 
 import * as fs from '../utility/simpleFs'
@@ -56,7 +57,9 @@ export default async function buildEap (
 
   // User Select modules filter
   const userFilterMods = eosAndpkgJson.eos.ignore_modules || []
-
+  // typescript project judgment to compile
+  await tsCompile(projectPath)
+  // eap build
   const eapPathUrl: string = await vscode.window.withProgress(
     {
       location: vscode.ProgressLocation.Notification,
@@ -162,13 +165,13 @@ export default async function buildEap (
         projectPath,
         'temp',
         eosAndpkgJson.pkg.name +
-          '_' +
-          eosAndpkgJson.pkg.version +
-          (options.buildType !== 'test' ? '' : '_test') +
-          ('.' +
-            (options.configInfo?.buildSuffix
-              ? options.configInfo?.buildSuffix
-              : 'eap'))
+        '_' +
+        eosAndpkgJson.pkg.version +
+        (options.buildType !== 'test' ? '' : '_test') +
+        ('.' +
+          (options.configInfo?.buildSuffix
+            ? options.configInfo?.buildSuffix
+            : 'eap'))
       ) // .zip
       const tarStream = new compressing.zip.Stream()
       fs.readdirSync(buildFileTmp).forEach(item => {
