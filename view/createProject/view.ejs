@@ -31,7 +31,7 @@
     <div v-if="plan == 'selectTemplate'" class="selectTemplate">
       <el-container>
         <!-- 标题 -->
-        <el-header style="height: 20%;padding:20px 0px;">
+        <el-header style="position:relative;height: 20%;padding:20px 0px;">
           <div class="headStyle">
             <div class="title">
               <%=language.projectTemplateWarehouseTxt%>
@@ -39,6 +39,16 @@
             <div>
               <%=language.projectTemplateHintTxt%>
             </div>
+          </div>
+          <div style="position:absolute;top:20px;right: 20px;">
+            <el-popover
+              placement="top-start"
+              width="539px"
+              trigger="hover">
+              <p><%=language.switchTemplateSourceAlerText%></p>
+              <el-image style="color: #828282; width: 901px; height: 539px" :src="imageTemplateSource" fit="fill"></el-image>
+              <i class="el-icon-warning-outline" style="font-size:x-large;" slot="reference"></i>
+            </el-popover>              
           </div>
         </el-header>
 
@@ -66,8 +76,8 @@
                 <div class="carStyle">
                   <div class="grid-content">
                     <div style="position:relative;width: 160px; height: 96px;">
-                      <div v-if="item.location=='cloud'" style="position:absolute;background: #828282;z-index: 999;top:3px;right:3px;padding:2px">
-                        <%=language.cloudText%>
+                      <div style="position:absolute;background: #828282;z-index: 999;top:1px;right:3px;padding:0px 2px">
+                        {{item.location}}
                       </div>
                       <el-image style="color: #828282; width: 160px; height: 96px" :src="item.banner" fit="fill">
                       </el-image>
@@ -165,12 +175,20 @@
               <el-row :gutter="20">
                 <el-col :span="12">
                   <el-form-item label="<%=language.vendorIdTxt%>" prop="vendorId">
-                    <el-input v-model="form.vendorId" placeholder="10001" @change="inputChange"></el-input>
-                  </el-form-item>
+                      <el-input v-model="form.vendorId" placeholder="10001" @change="inputChange" style="display: inline-block;width: 80%;"></el-input>
+                    <el-popover
+                      placement="top-start"
+                      width="450px"
+                      trigger="hover">
+                      <p><%=language.vendorIdAlertText%></p>
+                      <el-image style="color: #828282; width:420px; height: 242px" :src="imageProviderIdSource" fit="fill"></el-image>
+                      <i class="el-icon-warning-outline" style="font-size: x-large;margin-left: 10px;" slot="reference"></i>
+                    </el-popover>
+                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="<%=language.vendorNameTxt%>" prop="vendorName">
-                    <el-input v-model="form.vendorName" placeholder="Username" @change="inputChange"></el-input>
+                    <el-input v-model="form.vendorName" placeholder="Username" @change="inputChange" style="display: block;"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -217,6 +235,6 @@
   </body>
   <script type="text/javascript" src="<%=vueJsUri%>"></script>
   <script type="text/javascript" src="<%=elementUiJsUri%>"></script>
+  <script type="text/javascript" src="<%=baseImagesUrl%>"></script>
   <script type="text/javascript" src="<%=indexJsUri%>"></script>
-
 </html>

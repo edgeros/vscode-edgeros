@@ -75,10 +75,13 @@ export = function (context: vscode.ExtensionContext) {
       const assetUris = await getWebViewBaseUris(webViewFileName, currentPanel, context)
       // get css uri
       const cssUri = changeUri(currentPanel, path.join(context.extensionPath, 'view', webViewFileName, 'index.css'))
+      // get base64 images
+      const baseImagesUrl = changeUri(currentPanel, path.join(context.extensionPath, 'view', webViewFileName, 'baseImages.js'))
       // set html
       currentPanel.webview.html = await ejs.renderFile(path.join(context.extensionPath, 'view', webViewFileName, 'view.ejs'), {
         ...assetUris,
         cssUri,
+        baseImagesUrl,
         language: {
           nameTxt: localize('name.txt', 'Name'),
           bundleIdTxt: localize('bundleId.txt', 'Bundle ID'),
@@ -111,7 +114,8 @@ export = function (context: vscode.ExtensionContext) {
           invalidPhoneText: localize('invalidPhoneText.txt', 'Invalid phone number'),
           refreshTemplateingText: localize('refreshTemplateingText.txt', 'Getting a template'),
           refreshTemplateText: localize('refreshTemplateText.txt', 'Refresh the templates'),
-          cloudText: localize('cloudText.txt', 'Cloud')
+          switchTemplateSourceAlerText: localize('switchTemplateSourceAlert.txt', 'The template source can be switched by clicking vscode "File - > Preferences - > Settings"'),
+          vendorIdAlertText: localize('vendorIdAlert.txt', 'The Provider ID (Developer ID) can be found on the personal information page of Edgeros official website ( https://www.edgeros.com )')
         }
       })
 

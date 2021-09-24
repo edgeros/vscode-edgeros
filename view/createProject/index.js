@@ -1,6 +1,5 @@
 const vscode = acquireVsCodeApi()
 const previousState = vscode.getState()
-
 const app = new Vue({
   el: '#app',
   filters: {},
@@ -107,12 +106,18 @@ const app = new Vue({
           vendorEmail: [
             { required: true, validator: checkEmail, trigger: 'blur' }
           ]
-        }
+        },
+        // eslint-disable-next-line no-undef
+        imageTemplateSource: imagesCreatePro.imageTemplateSource[0],
+        // eslint-disable-next-line no-undef
+        imageProviderIdSource: imagesCreatePro.imageProviderIdSource[0]
       }
     )
   },
   mounted () {
-    if (this.templateAll.length === 0) { vscode.postMessage({ type: 'getInfoData' }) }
+    if (this.templateAll.length === 0) {
+      vscode.postMessage({ type: 'getInfoData' })
+    }
   },
   created () {},
   methods: {
