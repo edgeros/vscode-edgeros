@@ -10,26 +10,25 @@
  */
 import * as vscode from 'vscode'
 import buildEap from '../../generate/eapBuild'
-import { getWorkspaceSettings } from '../../common'
+import { getWorkspaceSettings, selectBuildPath } from '../../common'
 
 export = function (context: vscode.ExtensionContext) {
-  const disposable = vscode.commands.registerCommand('edgeros.buildEap', startBuildEap)
+  const disposable = vscode.commands.registerCommand('edgeros.buildEap', startBuildEap.bind(undefined, context))
   context.subscriptions.push(disposable)
 };
 
-function startBuildEap (...options: string[]) {
-  const projectFolders = vscode.workspace.workspaceFolders
-  if (!projectFolders || projectFolders.length < 1) {
-    return vscode.window.showErrorMessage('Build EdgerOS App: no project in workspace')
+async function startBuildEap (context: vscode.ExtensionContext) {
+  try {
+    const projectFolders = vscode.workspace.workspaceFolders
+    if (!projectFolders || projectFolders.length < 1) {
+      return vscode.window.showErrorMessage('Build EdgerOS App: no project in workspace')
+    }
+
+    const projectDir = await selectBuildPath(context)
+    const settings = getWorkspaceSettings()
+    const bundleFile = await buildEap(projectDir, { configInfo: settings })
+    vscode.window.showInformationMessage('Build EdgerOS App success: ' + bundleFile)
+  } catch (err) {
+    vscode.window.showErrorMessage(`Build EdgerOS App failed: ${err.message}`)
   }
-
-  const projectDir = projectFolders[0].uri.fsPath
-  const settings = getWorkspaceSettings()
-
-  buildEap(projectDir, { configInfo: settings })
-    .then(bundleFile => {
-      vscode.window.showInformationMessage('Build EdgerOS App success: ' + bundleFile)
-    }, err => {
-      vscode.window.showErrorMessage(`Build EdgerOS App failed: ${err.message}`)
-    })
 }

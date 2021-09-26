@@ -7,6 +7,7 @@
 	"BuildEAP": "构建 EdgerOS APP",
 	"InstallEAP": "安装 EdgerOS APP",
 	"InstallTestEap": "项目测试",
+  "setBuildProject":  "EdgerOS: 设置构建项目",
 	"ConfigBuildEapTypeEap": "打包后生成 .eap 文件",
 	"ConfigBuildEapTypeZip": "打包后生成 .zip 文件",
 	"ConfigBuildEapDescription": "选择项目打包后生成 EdgerOS APP 文件后缀",

@@ -39,6 +39,10 @@ export interface TemplateType {
 
 export type TemplateSource = 'Local' | 'Github' | 'Gitee'
 
+export interface BuildInfo{
+  selectBuild:string|null,
+  projectPaths:string[]
+}
 /**
  * Concrete TemplateConf instance:
  *  - identified by template folder name

@@ -115,7 +115,7 @@ export = function (context: vscode.ExtensionContext) {
           refreshTemplateingText: localize('refreshTemplateingText.txt', 'Getting a template'),
           refreshTemplateText: localize('refreshTemplateText.txt', 'Refresh the templates'),
           switchTemplateSourceAlerText: localize('switchTemplateSourceAlert.txt', 'The template source can be switched by clicking vscode "File - > Preferences - > Settings"'),
-          vendorIdAlertText: localize('vendorIdAlert.txt', 'The Provider ID (Developer ID) can be found on the personal information page of Edgeros official website ( https://www.edgeros.com )')
+          vendorIdAlertText: localize('vendorIdAlert.txt', 'The Provider ID (Developer ID) can be found on the personal information page of EdgerOS official website ( https://www.edgeros.com )')
         }
       })
 

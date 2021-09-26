@@ -5,20 +5,20 @@
  * @Last Modified time: 2021-06-07 14:37:28
  */
 import * as vscode from 'vscode'
-import * as path from 'path'
-import * as fs from 'fs'
 import * as config from '../../config'
 import { EdgerosTreeItem } from '../../components/treeItem'
 import nlsConfig from '../../nls'
-import { getGlobalState } from '../../common'
+import { getGlobalState, getEdgerOSProjectInfo } from '../../common'
 const localize = nlsConfig(__filename)
 
 /**
  *Edgeros device  view Tree
  */
-export = function (context: vscode.ExtensionContext) {
+export = async function (context: vscode.ExtensionContext) {
   if (vscode.workspace.workspaceFolders) {
-    if (fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'edgeros.json'))) {
+    // check Edgeros Project
+    const projectPathArray = await getEdgerOSProjectInfo(context)
+    if (projectPathArray.projectPaths.length > 0) {
       const threeViewProvider = new EOSManageViewProvider(vscode.workspace.workspaceFolders[0].uri.fsPath, context)
       vscode.window.registerTreeDataProvider(
         'eosManageView',

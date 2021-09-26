@@ -11,7 +11,7 @@ import * as path from 'path'
 import buildEap from '../../generate/eapBuild'
 import { EdgerosTreeItem } from '../../components/treeItem'
 import { uploadEap, installEap } from '../../utility/edgerosApi'
-import { getGlobalState, getWorkspaceSettings } from '../../common'
+import { getGlobalState, getWorkspaceSettings, selectBuildPath } from '../../common'
 
 /**
  *command:  edgeros.testEap
@@ -20,7 +20,9 @@ export = function (context: vscode.ExtensionContext) {
   const disposable = vscode.commands.registerCommand('edgeros.installTestEap', async (...options: EdgerosTreeItem[]) => {
     try {
       if (vscode.workspace.workspaceFolders) {
-        const eosJsonPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'edgeros.json')
+        const projectDir = await selectBuildPath(context)
+
+        const eosJsonPath = path.join(projectDir, 'edgeros.json')
         delete require.cache[require.resolve(eosJsonPath)]
         const eosJson = require(eosJsonPath)
 
@@ -29,13 +31,13 @@ export = function (context: vscode.ExtensionContext) {
           return
         }
 
-        if (!fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, eosJson.test))) {
+        if (!fs.existsSync(path.join(projectDir, eosJson.test))) {
           vscode.window.showErrorMessage('没有找到test文件:' + eosJson.test)
           return
         }
 
         // 构建测试eap
-        const eapPath: string = await buildEap(vscode.workspace.workspaceFolders[0].uri.fsPath, {
+        const eapPath: string = await buildEap(projectDir, {
           configInfo: getWorkspaceSettings(),
           buildType: 'test'
         })

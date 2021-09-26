@@ -14,8 +14,11 @@ export const edgerosIdePort: number = 82
 export const edgerosConsolePort: number = 81
 
 // Device list storage key
-export const edgerosGlobalStateKeyTypo = 'EgerOs_Devs'
-export const edgerosGlobalStateKey = 'edgeros.devices'
+export const edgerosGlobalStateKeyTypo: string = 'EgerOs_Devs'
+export const edgerosGlobalStateKey: string = 'edgeros.devices'
+
+// Project build path key,workspaceState save
+export const edgerosBuildInfoKey: string = 'edgeros.buildInfo'
 
 // EdgerOS log png, webview use
 export const edgerosLogo: string = 'https://static.edgeros.com/logo.png'
