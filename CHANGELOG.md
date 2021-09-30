@@ -1,5 +1,12 @@
 # Change Log
 
+## v0.4.7
+
+1. optimize the create project page
+2. support for subdirectory discovery projects
+3. support for typescript project compilation
+4. fix some bugs
+
 ## v0.4.6
 
 1. fix the install eap version does not autoincrement

@@ -217,7 +217,7 @@
       "properties": {
         "edgeros.buildSuffix": {
           "type": "string",
-          "default": "zip",
+          "default": "eap",
           "enum": [
             "eap",
             "zip"
