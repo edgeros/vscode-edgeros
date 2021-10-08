@@ -7,12 +7,13 @@
  * Author       : Fu Wenhao <fuwenhao@acoinfo.com>
  * Date         : 2021-09-23 11:02:42
  * LastEditors  : Fu Wenhao <fuwenhao@acoinfo.com>
- * LastEditTime : 2021-09-23 14:06:58
+ * LastEditTime : 2021-10-08 17:02:53
  */
 import * as fs from 'fs'
-import { spawn } from 'child_process'
 import * as path from 'path'
 import * as vscode from 'vscode'
+import * as gulp from 'gulp'
+import * as ts from 'gulp-typescript'
 
 export async function tsCompile (projectPath: string): Promise<void> {
   const files: string[] = fs.readdirSync(projectPath)
@@ -29,22 +30,9 @@ export async function tsCompile (projectPath: string): Promise<void> {
       async (progress, token) => {
         return new Promise<void>((resolve, reject) => {
           progress.report({ message: 'runing...' })
-          const npx = spawn('npx ', ['tsc', '-p', projectPath], {
-            cwd: path.join(__dirname, '../../'),
-            shell: true
-          })
-          npx.stdout.on('data', (data) => {
-            console.log(`npx tsc stdout: ${data}`)
-          })
-
-          npx.stderr.on('data', (data) => {
-            console.error(`npx tsc stderr: ${data}`)
-          })
-
-          npx.on('close', (code) => {
-            console.log(`npx tsc close: ${code}`)
-            resolve()
-          })
+          const tsProject = ts.createProject(path.join(projectPath, 'tsconfig.json'))
+          tsProject.src().pipe(tsProject()).js.pipe(gulp.dest(path.join(projectPath, tsProject.rawConfig?.compilerOptions?.outDir || 'dist')))
+          resolve()
         })
       })
   }
