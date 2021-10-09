@@ -20,6 +20,9 @@ export const edgerosGlobalStateKey: string = 'edgeros.devices'
 // Project build path key,workspaceState save
 export const edgerosBuildInfoKey: string = 'edgeros.buildInfo'
 
+// Template cache information key
+export const edgerosGlobalStateKeyTemplates: string = 'edgeros.templatesInfo'
+
 // EdgerOS log png, webview use
 export const edgerosLogo: string = 'https://static.edgeros.com/logo.png'
 

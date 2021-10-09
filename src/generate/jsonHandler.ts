@@ -10,23 +10,23 @@
  */
 
 import * as fs from '../utility/simpleFs'
-import { EdgerosProjectConfig } from '../types'
+import { EdgerosProjectConfig, Template } from '../types'
 
-export async function loadPkgJson (projectPath: string) {
-  return loadJson(packagePath(projectPath))
+export async function loadPkgJson (projectPath: string, templateInfo?: Template) {
+  return loadJson(packagePath(projectPath, templateInfo))
 }
 
-export async function loadEosJson (projectPath: string) {
-  return loadJson(edgerosPath(projectPath))
+export async function loadEosJson (projectPath: string, templateInfo?: Template) {
+  return loadJson(edgerosPath(projectPath, templateInfo))
 }
 
-export async function applyProjectConfig (projectPath: string, config: EdgerosProjectConfig) {
-  const packageFile = packagePath(projectPath)
-  const edgerosFile = edgerosPath(projectPath)
+export async function applyProjectConfig (projectPath: string, config: EdgerosProjectConfig, templateInfo?: Template) {
+  const packageFile = packagePath(projectPath, templateInfo)
+  const edgerosFile = edgerosPath(projectPath, templateInfo)
 
   const [packageJson, edgerosJson] = await Promise.all([
-    loadPkgJson(projectPath),
-    loadEosJson(projectPath)
+    loadPkgJson(projectPath, templateInfo),
+    loadEosJson(projectPath, templateInfo)
   ])
 
   edgerosJson.name = config.name
@@ -54,10 +54,18 @@ async function loadJson (filepath: string) {
   return JSON.parse(buff.toString())
 }
 
-function packagePath (projectPath: string) {
-  return fs.join(projectPath, 'package.json')
+function packagePath (projectPath: string, templateInfo?: Template) {
+  if (templateInfo && templateInfo.root) {
+    return fs.join(projectPath, templateInfo.root, 'package.json')
+  } else {
+    return fs.join(projectPath, 'package.json')
+  }
 }
 
-function edgerosPath (projectPath: string) {
-  return fs.join(projectPath, 'edgeros.json')
+function edgerosPath (projectPath: string, templateInfo?: Template) {
+  if (templateInfo && templateInfo.root) {
+    return fs.join(projectPath, templateInfo.root, 'edgeros.json')
+  } else {
+    return fs.join(projectPath, 'edgeros.json')
+  }
 }

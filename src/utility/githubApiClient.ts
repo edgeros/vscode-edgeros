@@ -65,7 +65,7 @@ async function loadTemplatesRepo (
       typeArray: repoFectheTypes,
       tempArray: repoFetchesInfo
     } as TemplateInfo
-  } catch (err) {
+  } catch (err:any) {
     errHandler && errHandler(err)
     return {
       typeArray: [],

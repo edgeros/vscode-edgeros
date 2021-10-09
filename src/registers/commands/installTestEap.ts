@@ -62,7 +62,7 @@ export = function (context: vscode.ExtensionContext) {
         })
         vscode.window.showInformationMessage('Install test app success')
       }
-    } catch (err) {
+    } catch (err:any) {
       vscode.window.showErrorMessage(err.message)
     }
   })

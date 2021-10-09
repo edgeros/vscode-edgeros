@@ -114,6 +114,20 @@ const app = new Vue({
       }
     )
   },
+  watch: {
+    'form.vendorId': function (value) {
+      this.form.vendorId = value.trim()
+    },
+    'form.vendorEmail': function (value) {
+      this.form.vendorEmail = value.trim()
+    },
+    'form.bundleId': function (value) {
+      this.form.bundleId = value.trim()
+    },
+    'form.version': function (value) {
+      this.form.version = value.trim()
+    }
+  },
   mounted () {
     if (this.templateAll.length === 0) {
       vscode.postMessage({ type: 'getInfoData' })
@@ -127,7 +141,7 @@ const app = new Vue({
       })
     },
     refreshTpl () {
-      vscode.postMessage({ type: 'getInfoData' })
+      vscode.postMessage({ type: 'getInfoData', refresh: true })
       this.refreshTplStatus = true
     },
     onMessageFn (msg) {
@@ -189,7 +203,7 @@ const app = new Vue({
     // 提交创建项目
     onSubmit () {
       this.$refs.form.validate(valid => {
-        console.log('form', valid)
+        this.form.name = this.form.name.trim()
         if (valid) {
           this.loading = true
           vscode.postMessage({

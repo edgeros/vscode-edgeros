@@ -83,7 +83,7 @@
                       </el-image>
                     </div>
                     <div class="tempName"> {{ item.name }}</div>
-                    <div class="desc">{{ item.description }}</div>
+                    <div class="desc">{{ item.description.slice(0,35) + ' ... ' }}</div>
                     <div class="applyBtn">
                       <div>
                         <%=language.applyTxt%>

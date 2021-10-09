@@ -10,46 +10,16 @@ import * as path from 'path'
 import * as os from 'os'
 
 import * as config from '../../config'
-import { nlsConfig, languge } from '../../nls'
+import { nlsConfig } from '../../nls'
 import localMode from '../../generate/localMode'
 import cloudMode from '../../generate/cloudMode'
 
-import { getLocalTemplates, getRemoteTemplates } from '../../generate/templateProvider'
-import { getWorkspaceSettings, changeUri, getWebViewBaseUris } from '../../common'
-import { EdgerosProjectConfig, Template, TemplateSource, TemplateType } from '../../types'
+import { getTemplateInfo } from '../../generate/templateProvider'
+import { changeUri, getWebViewBaseUris } from '../../common'
+import { EdgerosProjectConfig, TemplateSource } from '../../types'
 import { appendLine } from '../../components/output'
 
 const localize = nlsConfig(__filename)
-
-interface TemplateViewItem {
-  name: string; // descJsonRes.data.name,
-  description: string; // descJsonRes.data.description,
-  banner: string; // bannerImg.download_url,
-  gitUrl: string; // gitUrl,
-  downloadUrl: string; // gitUrl,
-  type: string; // descJsonRes.data.type,
-  location: string // 'cloud'
-}
-
-interface TemplateTypeViewItem {
-  type: string; // 模板类型
-  label: string; // 页面显示标题
-  desc: string; // 模板类型描述
-}
-
-/**
- * 模板类型及模板介绍(单机情况下)
- */
-const templateTypes: TemplateTypeViewItem[] = [{
-  type: 'All',
-  label: languge === 'zh-cn' ? '全部' : 'All',
-  desc: languge === 'zh-cn' ? '所有的应用模板' : 'All available project templates'
-},
-{
-  type: 'Base',
-  label: languge === 'zh-cn' ? '基础' : 'Base',
-  desc: languge === 'zh-cn' ? '比较基础应用模板' : 'Basic project templates'
-}]
 
 /**
  *command:  edgeros.showCreateProView
@@ -121,7 +91,7 @@ export = function (context: vscode.ExtensionContext) {
 
       // reception webview message
       currentPanel.webview.onDidReceiveMessage(async message => {
-        webCmdHandle(currentPanel as vscode.WebviewPanel, message)
+        webCmdHandle(context, currentPanel as vscode.WebviewPanel, message)
       })
       // webview close trigger
       currentPanel.onDidDispose(
@@ -139,8 +109,7 @@ export = function (context: vscode.ExtensionContext) {
 /**
  * webview send command message  handle
  */
-async function webCmdHandle (currentPanel: vscode.WebviewPanel, message: any) {
-  const settings = getWorkspaceSettings()
+async function webCmdHandle (context: vscode.ExtensionContext, currentPanel: vscode.WebviewPanel, message: any) {
   try {
     // Send save path
     if (message.type === 'selectSavePath') {
@@ -158,32 +127,12 @@ async function webCmdHandle (currentPanel: vscode.WebviewPanel, message: any) {
         })
       }
     } else if (message.type === 'getInfoData') { // Send template list and template Types
-      const localTemplates = await getLocalTemplates()
+      const templateInfo = await getTemplateInfo(context, message.refresh)
       currentPanel?.webview.postMessage({
         type: '_getInfoData',
         data: {
-          templates: localTemplates.map(buildTemplateViewItem),
-          templateTypes: templateTypes,
-          defaultSavePath: path.join(os.homedir(), 'EdgerOSApps'),
-          incloud: false
-        }
-      })
-      const remoteTemplates = await getRemoteTemplates(settings.templateSource)
-      const allTemplates = localTemplates.concat(remoteTemplates.tempArray)
-      for (const item of remoteTemplates.typeArray.map(buildTemplateTypeItem)) {
-        const index = templateTypes.findIndex((localItem: TemplateTypeViewItem) => {
-          return item.type === localItem.type
-        })
-        if (index === -1) {
-          templateTypes.push(item)
-        }
-      }
-
-      currentPanel?.webview.postMessage({
-        type: '_getInfoData',
-        data: {
-          templates: allTemplates.map(buildTemplateViewItem),
-          templateTypes: templateTypes,
+          templates: templateInfo.templates,
+          templateTypes: templateInfo.templateTypes,
           defaultSavePath: path.join(os.homedir(), 'EdgerOSApps'),
           incloud: true
         }
@@ -219,25 +168,5 @@ async function webCmdHandle (currentPanel: vscode.WebviewPanel, message: any) {
   } catch (err: any) {
     currentPanel.dispose()
     vscode.window.showInformationMessage(err.message)
-  }
-}
-
-function buildTemplateViewItem (template: Template): TemplateViewItem {
-  return {
-    name: template.name,
-    description: languge === 'zh-cn' ? template['description_zh-cn'] : template.description,
-    banner: template.banner,
-    type: template.type,
-    gitUrl: template.gitUrl,
-    downloadUrl: template.gitUrl,
-    location: template.source
-  }
-}
-
-function buildTemplateTypeItem (templateType: TemplateType): TemplateTypeViewItem {
-  return {
-    type: templateType.type,
-    label: languge === 'zh-cn' ? templateType['label_zh-cn'] : templateType.type,
-    desc: languge === 'zh-cn' ? templateType['describe_zh-cn'] : templateType.describe_en
   }
 }

@@ -18,13 +18,13 @@ export default async function cloudMode (
   template: Template,
   config: EdgerosProjectConfig,
   onProgress?: GitProgressCallback)
-: Promise<string> {
+  : Promise<string> {
   const normalizedName = config.name.replace(' ', '-')
   const newProjectPath = fs.join(config.savePath, normalizedName)
 
   await fs.assertNotExist(newProjectPath)
   await gitClone(template.gitUrl, { directory: newProjectPath, onProgress })
-  await applyProjectConfig(newProjectPath, config)
+  await applyProjectConfig(newProjectPath, config, template)
 
   return newProjectPath
 }

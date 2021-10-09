@@ -28,7 +28,7 @@ async function startBuildEap (context: vscode.ExtensionContext) {
     const settings = getWorkspaceSettings()
     const bundleFile = await buildEap(projectDir, { configInfo: settings })
     vscode.window.showInformationMessage('Build EdgerOS App success: ' + bundleFile)
-  } catch (err) {
+  } catch (err:any) {
     vscode.window.showErrorMessage(`Build EdgerOS App failed: ${err.message}`)
   }
 }

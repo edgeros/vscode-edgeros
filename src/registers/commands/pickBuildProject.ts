@@ -7,7 +7,7 @@
  * Author       : Fu Wenhao <fuwenhao@acoinfo.com>
  * Date         : 2021-09-26 15:21:18
  * LastEditors  : Fu Wenhao <fuwenhao@acoinfo.com>
- * LastEditTime : 2021-09-26 15:28:24
+ * LastEditTime : 2021-10-09 15:50:58
  */
 import * as vscode from 'vscode'
 import { getEdgerOSProjectInfo, showSelectProjectList } from '../../common'
@@ -20,7 +20,7 @@ export = function (context: vscode.ExtensionContext) {
     try {
       const buildInfo: BuildInfo = await getEdgerOSProjectInfo(context)
       await showSelectProjectList(context, buildInfo)
-    } catch (err) {
+    } catch (err:any) {
       vscode.window.showErrorMessage(`Build EdgerOS App failed: ${err.message}`)
     }
   })

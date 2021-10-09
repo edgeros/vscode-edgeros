@@ -71,7 +71,7 @@ export = function (context: vscode.ExtensionContext) {
           vscode.window.showErrorMessage('Install EdgerOS App : ' + err)
         }
       }
-    } catch (err) {
+    } catch (err:any) {
       vscode.window.showErrorMessage(err.message)
     }
   })

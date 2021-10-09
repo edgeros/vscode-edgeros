@@ -25,9 +25,21 @@ export interface TemplateConfig {
   readonly name: string; // display name
   readonly banner: string; // url or base64 png
   readonly description: string; // short brief
-  readonly 'description_zh-cn':string;
+  readonly 'description_zh-cn': string;
   readonly type: string;
+  readonly root?: string;
   readonly repository: TemplateRepoConfig;
+}
+
+export interface TemplateViewItem {
+  name: string; // descJsonRes.data.name,
+  description: string; // descJsonRes.data.description,
+  banner: string; // bannerImg.download_url,
+  gitUrl: string; // gitUrl,
+  downloadUrl: string; // gitUrl,
+  type: string; // descJsonRes.data.type,
+  location: string // 'cloud'
+  root?: string
 }
 
 export interface TemplateType {
@@ -37,11 +49,17 @@ export interface TemplateType {
   readonly 'describe_zh-cn': string;
 }
 
+export interface TemplateTypeViewItem {
+  type: string; // 模板类型
+  label: string; // 页面显示标题
+  desc: string; // 模板类型描述
+}
+
 export type TemplateSource = 'Local' | 'Github' | 'Gitee'
 
-export interface BuildInfo{
-  selectBuild:string|null,
-  projectPaths:string[]
+export interface BuildInfo {
+  selectBuild: string | null,
+  projectPaths: string[]
 }
 /**
  * Concrete TemplateConf instance:
