@@ -1,11 +1,13 @@
 # Change Log
 
-## v0.4.7
+## v0.5.0
 
-1. optimize the create project page
-2. support for subdirectory discovery projects
-3. support for typescript project compilation
-4. fix some bugs
+1. support new online template schema, which is **NOT** compatible with old
+   version of this extension, please upgrade as soon as possible.
+2. support sub directory project discovery
+3. support TypeScript project auto compilation
+4. optimize the "create project" page
+5. use `.eap` build suffix by default
 
 ## v0.4.6
 
