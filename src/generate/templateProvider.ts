@@ -12,7 +12,7 @@ import * as vscode from 'vscode'
 import * as path from 'path'
 import { promises as fs } from 'fs'
 import { pathToFileURL } from 'url'
-import { Template, TemplateSource, TemplateType, TemplateViewItem, TemplateTypeViewItem } from '../types'
+import { Template, TemplateSource, TemplateType, TemplateViewItem, TemplateTypeViewItem, TemplateInfo } from '../types'
 import { getGithubTpls, getGiteeTpls } from '../utility/githubApiClient'
 import { getWorkspaceSettings } from '../common'
 import { languge } from '../nls'
@@ -65,14 +65,19 @@ export async function getRemoteTemplates (source: TemplateSource) {
  * @context vscode拓展上下文
  * @return {templates: TemplateViewItem[],templateTypes:TemplateTypeViewItem[]}
  */
-interface TemplateInfo {
+// 接口返回数据类型
+interface TemplateAndTypeData {
   templates: TemplateViewItem[];
   templateTypes: TemplateTypeViewItem[];
 }
-export async function getTemplateInfo (context: vscode.ExtensionContext, refresh?: boolean): Promise<TemplateInfo> {
-  let templateData: TemplateInfo | undefined
-  templateData = context.globalState.get(edgerosGlobalStateKeyTemplates)
-  if (refresh || !templateData) {
+
+// 存储模板原始数据数据类型
+interface TempTypeOriginal {
+  localTemplates: Template[];
+  remoteTemplates: TemplateInfo;
+}
+export async function getTemplateInfo (context: vscode.ExtensionContext, refresh?: boolean): Promise<TemplateAndTypeData> {
+  try {
     const templateTypes: TemplateTypeViewItem[] = [{
       type: 'All',
       label: languge === 'zh-cn' ? '全部' : 'All',
@@ -83,11 +88,26 @@ export async function getTemplateInfo (context: vscode.ExtensionContext, refresh
       label: languge === 'zh-cn' ? '基础' : 'Base',
       desc: languge === 'zh-cn' ? '比较基础应用模板' : 'Basic project templates'
     }]
-    const settings = getWorkspaceSettings()
-    const localTemplates = await getLocalTemplates()
-    const remoteTemplates = await getRemoteTemplates(settings.templateSource)
-    const allTemplates = localTemplates.concat(remoteTemplates.tempArray)
 
+    const templateDataCache: TempTypeOriginal | undefined = context.globalState.get(edgerosGlobalStateKeyTemplates)
+    let localTemplates: Template[]
+    let remoteTemplates: TemplateInfo
+
+    if (refresh || !templateDataCache) {
+      const settings = getWorkspaceSettings()
+      localTemplates = await getLocalTemplates()
+      remoteTemplates = await getRemoteTemplates(settings.templateSource)
+      const cacheData: TempTypeOriginal = {
+        localTemplates: localTemplates,
+        remoteTemplates: remoteTemplates
+      }
+      context.globalState.update(edgerosGlobalStateKeyTemplates, cacheData)
+    } else {
+      localTemplates = templateDataCache.localTemplates
+      remoteTemplates = templateDataCache.remoteTemplates
+    }
+
+    const allTemplates = localTemplates.concat(remoteTemplates.tempArray)
     for (const item of remoteTemplates.typeArray.map(buildTemplateTypeItem)) {
       const index = templateTypes.findIndex((localItem: TemplateTypeViewItem) => {
         return item.type === localItem.type
@@ -96,13 +116,18 @@ export async function getTemplateInfo (context: vscode.ExtensionContext, refresh
         templateTypes.push(item)
       }
     }
-    templateData = {
+
+    return {
       templates: allTemplates.map(buildTemplateViewItem),
       templateTypes: templateTypes
     }
-    context.globalState.update(edgerosGlobalStateKeyTemplates, templateData)
+  } catch (err) {
+    context.globalState.update(edgerosGlobalStateKeyTemplates, undefined)
+    return {
+      templates: [],
+      templateTypes: []
+    }
   }
-  return templateData
 }
 
 function buildTemplateViewItem (template: Template): TemplateViewItem {
