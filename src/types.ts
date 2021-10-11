@@ -25,7 +25,7 @@ export interface TemplateConfig {
   readonly name: string; // display name
   readonly banner: string; // url or base64 png
   readonly description: string; // short brief
-  readonly 'description_zh-cn': string;
+  readonly 'description_zh-cn'?: string;
   readonly type: string;
   readonly root?: string;
   readonly repository: TemplateRepoConfig;
@@ -44,9 +44,10 @@ export interface TemplateViewItem {
 
 export interface TemplateType {
   readonly 'type': string; // template type
-  readonly 'label_zh-cn': string;
-  readonly 'describe_en': string;
-  readonly 'describe_zh-cn': string;
+  readonly 'label': string;
+  readonly 'label_zh-cn'?: string;
+  readonly 'description': string;
+  readonly 'description_zh-cn'?: string;
 }
 
 export interface TemplateTypeViewItem {

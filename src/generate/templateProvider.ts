@@ -79,12 +79,12 @@ interface TempTypeOriginal {
 export async function getTemplateInfo (context: vscode.ExtensionContext, refresh?: boolean): Promise<TemplateAndTypeData> {
   try {
     const templateTypes: TemplateTypeViewItem[] = [{
-      type: 'All',
+      type: 'all',
       label: languge === 'zh-cn' ? '全部' : 'All',
       desc: languge === 'zh-cn' ? '所有的应用模板' : 'All available project templates'
     },
     {
-      type: 'Base',
+      type: 'base',
       label: languge === 'zh-cn' ? '基础' : 'Base',
       desc: languge === 'zh-cn' ? '比较基础应用模板' : 'Basic project templates'
     }]
@@ -131,9 +131,17 @@ export async function getTemplateInfo (context: vscode.ExtensionContext, refresh
 }
 
 function buildTemplateViewItem (template: Template): TemplateViewItem {
+  let description:string
+  const descLanguage = 'description_' + languge
+  if (descLanguage in template) {
+    description = (template as any)[descLanguage]
+  } else {
+    description = template.description
+  }
+
   return {
     name: template.name,
-    description: languge === 'zh-cn' ? template['description_zh-cn'] : template.description,
+    description: description,
     banner: template.banner,
     type: template.type,
     gitUrl: template.gitUrl,
@@ -144,9 +152,25 @@ function buildTemplateViewItem (template: Template): TemplateViewItem {
 }
 
 function buildTemplateTypeItem (templateType: TemplateType): TemplateTypeViewItem {
+  let label:string
+  const labelLanguage = 'label_' + languge
+  if (labelLanguage in templateType) {
+    label = (templateType as any)[labelLanguage]
+  } else {
+    label = templateType.label
+  }
+
+  let description:string
+  const descriptionLanguage:string = 'description_' + languge
+  if (descriptionLanguage in templateType) {
+    description = (templateType as any)[descriptionLanguage]
+  } else {
+    description = templateType.description
+  }
+
   return {
     type: templateType.type,
-    label: languge === 'zh-cn' ? templateType['label_zh-cn'] : templateType.type,
-    desc: languge === 'zh-cn' ? templateType['describe_zh-cn'] : templateType.describe_en
+    label: label,
+    desc: description
   }
 }

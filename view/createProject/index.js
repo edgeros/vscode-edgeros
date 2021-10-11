@@ -171,7 +171,7 @@ const app = new Vue({
       this.selectType = type
       this.templates = []
       const tpls = this.templateAll.filter(item => {
-        return item.type === type.type || type.type === 'All'
+        return item.type === type.type || type.type === 'all'
       })
       let items = []
       for (let i = 0; i < tpls.length; i++) {
