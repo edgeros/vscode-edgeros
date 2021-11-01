@@ -16,6 +16,7 @@ export = function (context: vscode.ExtensionContext) {
 
   const disposable = vscode.commands.registerCommand('edgeros.showWebView', async (...options: any[]) => {
     currentPanel = vscode.window.createWebviewPanel('showWebView', options[0], vscode.ViewColumn.One, {
+      retainContextWhenHidden: true,
       enableScripts: true
     })
 
