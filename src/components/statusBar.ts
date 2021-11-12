@@ -14,9 +14,11 @@ import { EdgerosDevice } from '../types'
 
 export class ConsoleStatusButton {
   private statusBarItem: vscode.StatusBarItem | undefined
+  private device: EdgerosDevice
 
-  constructor () {
+  constructor (device: EdgerosDevice) {
     this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left)
+    this.device = device
   }
 
   dispose () {
@@ -38,6 +40,7 @@ export class ConsoleStatusButton {
   }
 
   connected (device: EdgerosDevice) {
+    this.device = device
     const statusButton = this.statusBarItem!
     statusButton.command = 'edgeros.closeConsole'
     statusButton.text = `$(link)  [ ${device.devName} : ${device.devIp} ]`
@@ -46,7 +49,8 @@ export class ConsoleStatusButton {
     statusButton.show()
   }
 
-  disconnected (device: EdgerosDevice) {
+  disconnected () {
+    const device = this.device!
     const statusButton = this.statusBarItem!
     statusButton.command = 'edgeros.openConsole'
     statusButton.text = `$(debug-disconnect)  [ ${device.devName} : ${device.devIp} ] `

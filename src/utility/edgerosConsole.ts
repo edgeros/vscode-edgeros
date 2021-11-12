@@ -42,6 +42,10 @@ export class EdgerosConsole extends Readable {
   connect (host: string, port: number, opts?: net.TcpSocketConnectOpts) {
     const tcpOptions = Object.assign({}, opts, { host, port })
     const { keepalive, retries } = this.options
+
+    if (this.socket) {
+      this.socket.destroy()
+    }
     const socket = this.socket = net.createConnection(tcpOptions)
 
     const startKeepAlive = () => {
@@ -57,35 +61,33 @@ export class EdgerosConsole extends Readable {
     }
     const reconnect = () => {
       if (++this.socketRetries > retries!) {
-        this.emit('fail', this.socketRetries, retries!)
-      } else {
-        this.emit('reconnect', this.socketRetries, retries!)
-        this.connect(host, port, opts)
+        return this.emit('fail', this.socketRetries, retries!)
       }
+      this.emit('reconnect', this.socketRetries, retries!)
+      this.connect(host, port, opts)
     }
 
-    const timeout = setTimeout(reconnect, keepalive!)
-
     socket.on('connect', () => {
-      clearTimeout(timeout)
+      console.log('socket connect', new Date())
       startKeepAlive()
       this.socketRetries = 0
       this.emit('connect')
     })
     socket.on('close', hadError => {
-      clearTimeout(timeout)
+      console.log('socket close', new Date())
       stopKeepAlive()
       socket.destroy()
       this.emit('close')
 
       if (hadError) {
-        reconnect()
+        setTimeout(reconnect, keepalive!)
       }
     })
     socket.on('data', chunk => {
       this.emit('data', stripAnsi(chunk.toString()))
     })
     socket.on('error', err => {
+      console.log('socket error', new Date())
       this.emit('error', err) // just forward to client
     })
 

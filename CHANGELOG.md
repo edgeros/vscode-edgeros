@@ -1,5 +1,10 @@
 # Change Log
 
+## v0.5.1
+
+1. to remember the browsing posistion, the document editor will not refresh when losing focus.
+2. fixed the problem that console status button might hang on MacOS.
+
 ## v0.5.0
 
 1. support new online template schema, which is **NOT** compatible with old
