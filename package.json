@@ -11,6 +11,7 @@
     "vscode:pretest": "npm run compile && npm run lint",
     "vscode:test": "node ./out/test/runTest.js",
     "pack": "vsce package",
+    "build": "npm run pack",
     "publish": "vsce publish",
     "vscode:prepublish": "npm run compile"
   },
