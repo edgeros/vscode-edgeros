@@ -16,6 +16,7 @@ import * as vscode from 'vscode'
 import * as compressing from 'compressing'
 import tsCompile from './tsCompile'
 import { promisify } from 'util'
+import { eapBuildVerify } from './eapBuildPre'
 
 import * as fs from '../utility/simpleFs'
 // import { copyProject, deleteFile } from './util'
@@ -38,6 +39,9 @@ export default async function buildEap (
   options: any
 ): Promise<string> {
   const eosAndpkgJson = await getEosAndPkgJson(projectPath)
+
+  // eap build pre verify
+  eapBuildVerify(projectPath, eosAndpkgJson)
 
   // hard code modules filter name list
   const blackModslist = ['@edgeros/vue']
