@@ -7,7 +7,8 @@
     },
     "bundleid": {
       "type": "string",
-      "title": "EdgerOS application bundle id"
+      "title": "EdgerOS application bundle id",
+      "pattern": "^[a-z]([a-z0-9-]*)(\\.([a-z0-9-]+)){2,}$"
     },
     "test": {
       "type": "string",
