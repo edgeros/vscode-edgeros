@@ -108,8 +108,9 @@ export interface EdgerosDevice { // web form
 }
 
 export interface EdgerosConsoleOptions {
-  keepalive?: number, // timer interval
-  retries?: number // times to retry on connection error
+  timeout?: number, // connect timeout
+  retries?: number, // times to retry on connection error
+  retryInterval?: number // retry timer interval
 }
 
 export interface WorkspaceSettings {
