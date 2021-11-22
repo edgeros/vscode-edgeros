@@ -9,13 +9,15 @@
  * Author       : Fu Wenhao <fuwenhao@acoinfo.com>
  * Date         : 2021-11-17 15:04:01
  * LastEditors  : Fu Wenhao <fuwenhao@acoinfo.com>
- * LastEditTime : 2021-11-17 21:31:50
+ * LastEditTime : 2021-11-22 16:10:52
  */
 import { nlsConfig } from '../nls'
 import * as path from 'path'
 import * as fs from 'fs-extra'
 import imgSize from 'image-size'
+import { Validator } from 'jsonschema'
 
+const jsonSchema = require('../../resources/edgeros.en.schema.json')
 const localize = nlsConfig(__filename)
 
 interface EapAndPkgJson {
@@ -34,6 +36,18 @@ interface Assets {
  */
 export function eapBuildVerify (projectPath: string, eosAndpkgJson: EapAndPkgJson) {
   icoVerify(projectPath, eosAndpkgJson.eos.assets)
+  edgerosJsonVerify(eosAndpkgJson.eos)
+}
+
+/**
+ * edgeros.json 格式校验
+ * @param eos edgeros.json 对象
+ */
+function edgerosJsonVerify (eos: any) {
+  const v = new Validator()
+  if (!v.validate(eos, jsonSchema).valid) {
+    throw new Error('edgeros.json incorrect format')
+  }
 }
 
 /**

@@ -55,6 +55,7 @@
     "gulp-typescript": "^6.0.0-alpha.1",
     "image-size": "^1.0.0",
     "isomorphic-git": "^1.8.2",
+    "jsonschema": "^1.4.0",
     "moment": "^2.29.1",
     "requireindex": "^1.2.0",
     "strip-ansi": "^7.0.0",
