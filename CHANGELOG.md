@@ -1,5 +1,11 @@
 # Change Log
 
+## v0.5.2
+
+1. Add edgeros.json format check
+2. Add 'assets' attribute file verify
+3. Fixed some bugs
+
 ## v0.5.1
 
 1. to remember the browsing posistion, the document editor will not refresh when losing focus.

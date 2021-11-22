@@ -10,13 +10,13 @@ import * as path from 'path'
 import * as os from 'os'
 
 import * as config from '../../config'
-import { nlsConfig } from '../../nls'
+import { nlsConfig, languge } from '../../nls'
 import localMode from '../../generate/localMode'
 import cloudMode from '../../generate/cloudMode'
 
-import { getTemplateInfo } from '../../generate/templateProvider'
-import { changeUri, getWebViewBaseUris } from '../../common'
-import { EdgerosProjectConfig, TemplateSource } from '../../types'
+import { getLocalTemplates, getRemoteTemplates } from '../../generate/templateProvider'
+import { changeUri, getWebViewBaseUris, getWorkspaceSettings } from '../../common'
+import { EdgerosProjectConfig, TemplateSource, TemplateType, TemplateViewItem, TemplateTypeViewItem, Template, TemplateInfo } from '../../types'
 import { appendLine } from '../../components/output'
 
 const localize = nlsConfig(__filename)
@@ -168,5 +168,120 @@ async function webCmdHandle (context: vscode.ExtensionContext, currentPanel: vsc
   } catch (err: any) {
     currentPanel.dispose()
     vscode.window.showInformationMessage(err.message)
+  }
+}
+
+/**
+ * 获取模板数据所有模板数据 (本地+云端) 及版本信息
+ * @context vscode拓展上下文
+ * @return {templates: TemplateViewItem[],templateTypes:TemplateTypeViewItem[]}
+ */
+// 接口返回数据类型
+interface TemplateAndTypeData {
+  templates: TemplateViewItem[];
+  templateTypes: TemplateTypeViewItem[];
+}
+
+// 存储模板原始数据数据类型
+interface TempTypeOriginal {
+  localTemplates: Template[];
+  remoteTemplates: TemplateInfo;
+}
+async function getTemplateInfo (context: vscode.ExtensionContext, refresh?: boolean): Promise<TemplateAndTypeData> {
+  try {
+    const templateTypes: TemplateTypeViewItem[] = [{
+      type: 'all',
+      label: languge === 'zh-cn' ? '全部' : 'All',
+      desc: languge === 'zh-cn' ? '所有的应用模板' : 'All available project templates'
+    },
+    {
+      type: 'base',
+      label: languge === 'zh-cn' ? '基础' : 'Base',
+      desc: languge === 'zh-cn' ? '比较基础应用模板' : 'Basic project templates'
+    }]
+
+    const templateDataCache: TempTypeOriginal | undefined = context.globalState.get(config.edgerosGlobalStateKeyTemplates)
+    let localTemplates: Template[]
+    let remoteTemplates: TemplateInfo
+
+    if (refresh || !templateDataCache) {
+      const settings = getWorkspaceSettings()
+      localTemplates = await getLocalTemplates()
+      remoteTemplates = await getRemoteTemplates(settings.templateSource)
+      const cacheData: TempTypeOriginal = {
+        localTemplates: localTemplates,
+        remoteTemplates: remoteTemplates
+      }
+      context.globalState.update(config.edgerosGlobalStateKeyTemplates, cacheData)
+    } else {
+      localTemplates = templateDataCache.localTemplates
+      remoteTemplates = templateDataCache.remoteTemplates
+    }
+
+    const allTemplates = localTemplates.concat(remoteTemplates.tempArray)
+    for (const item of remoteTemplates.typeArray.map(buildTemplateTypeItem)) {
+      const index = templateTypes.findIndex((localItem: TemplateTypeViewItem) => {
+        return item.type === localItem.type
+      })
+      if (index === -1) {
+        templateTypes.push(item)
+      }
+    }
+
+    return {
+      templates: allTemplates.map(buildTemplateViewItem),
+      templateTypes: templateTypes
+    }
+  } catch (err) {
+    context.globalState.update(config.edgerosGlobalStateKeyTemplates, undefined)
+    return {
+      templates: [],
+      templateTypes: []
+    }
+  }
+}
+
+function buildTemplateViewItem (template: Template): TemplateViewItem {
+  let description: string
+  const descLanguage = 'description_' + languge
+  if (descLanguage in template) {
+    description = (template as any)[descLanguage]
+  } else {
+    description = template.description
+  }
+
+  return {
+    name: template.name,
+    description: description,
+    banner: template.banner,
+    type: template.type,
+    gitUrl: template.gitUrl,
+    downloadUrl: template.gitUrl,
+    location: template.source,
+    root: template.root
+  }
+}
+
+function buildTemplateTypeItem (templateType: TemplateType): TemplateTypeViewItem {
+  let label: string
+  const labelLanguage = 'label_' + languge
+  if (labelLanguage in templateType) {
+    label = (templateType as any)[labelLanguage]
+  } else {
+    label = templateType.label
+  }
+
+  let description: string
+  const descriptionLanguage: string = 'description_' + languge
+  if (descriptionLanguage in templateType) {
+    description = (templateType as any)[descriptionLanguage]
+  } else {
+    description = templateType.description
+  }
+
+  return {
+    type: templateType.type,
+    label: label,
+    desc: description
   }
 }

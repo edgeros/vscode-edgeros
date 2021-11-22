@@ -23,6 +23,9 @@ export const edgerosBuildInfoKey: string = 'edgeros.buildInfo'
 // Template cache information key
 export const edgerosGlobalStateKeyTemplates: string = 'edgeros.templatesInfo'
 
+// vscode version key
+export const edgerosVersionKey:string = 'edgeros.version'
+
 // EdgerOS log png, webview use
 export const edgerosLogo: string = 'https://static.edgeros.com/logo.png'
 

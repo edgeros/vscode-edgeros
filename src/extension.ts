@@ -7,6 +7,7 @@
 
 import * as vscode from 'vscode'
 import registers from './registers'
+import { upgradeReset } from './components/backstage'
 // import nlsConfig from './lib/nls'
 
 // The example uses the file message format.
@@ -14,6 +15,9 @@ import registers from './registers'
 
 export function activate (context: vscode.ExtensionContext) {
   console.log('[EdgerOS Plugin] Start')
+  // Handling after version upgrade
+  upgradeReset(context)
+
   // registers all command
   for (const command in registers.commands) {
     registers.commands[command](context)

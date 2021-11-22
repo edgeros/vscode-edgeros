@@ -9,7 +9,7 @@
  * Author       : Fu Wenhao <fuwenhao@acoinfo.com>
  * Date         : 2021-11-17 15:04:01
  * LastEditors  : Fu Wenhao <fuwenhao@acoinfo.com>
- * LastEditTime : 2021-11-22 16:10:52
+ * LastEditTime : 2021-11-25 13:55:37
  */
 import { nlsConfig } from '../nls'
 import * as path from 'path'
@@ -64,25 +64,36 @@ function icoVerify (projectPath: string, assets: Assets) {
     // ico_big ico_small
     if (icoKey === 'ico_big' || icoKey === 'ico_small') {
       const imgFormat = ['png', 'jpg', 'jpeg']
+      // 校验图片后缀
+      const extStr = path.extname(icoPath).replace('.', '')
+      if (imgFormat.indexOf(extStr) === -1) {
+        throw new Error(`${icoKey} ${localize('imageFormat.txt', ' image format is')}: ${imgFormat.join(',')}`)
+      }
       const fileStat = fs.statSync(icoPath)
-      // 1024*100 不能大于100kb
+      // 图片大小不能大于100KB
       if (fileStat.size > 102400) {
-        throw new Error(`${icoKey} ${localize('imageMaximum.txt', 'images cannot exceed')} 100kb : ${icoPath}`)
+        throw new Error(`${icoKey} ${localize('imageMaximum.txt', 'images cannot exceed')} 100KB : ${icoPath}`)
       }
       const icoDimensions = imgSize(icoPath)
       if (!icoDimensions.height || !icoDimensions.width || !icoDimensions.type) {
         throw new Error(`${localize('imageParsingFailure', 'Image parsing failure')}:${icoPath}`)
       }
-
+      // ico_small 图片不能大于180*180 不能小于 160*160
       if (icoKey === 'ico_small') {
         if (!((icoDimensions.height <= 180) && (icoDimensions.width <= 180))) {
           throw new Error(`${icoKey} ${localize('imageSizeLess.txt', 'image should be less than')} 180 * 180`)
         }
+        if (!((icoDimensions.height >= 160) && (icoDimensions.width >= 160))) {
+          throw new Error(`${icoKey} ${localize('imageSizeNotLess.txt', 'image should be not less than')} 160 * 160`)
+        }
       }
-
+      // ico_big 图片不能大于240*240 不能小于 160*160
       if (icoKey === 'ico_big') {
         if (!((icoDimensions.height <= 240) && (icoDimensions.width <= 240))) {
-          throw new Error(`${icoKey} ${localize('imageSizeLess.txt', 'image should be less than')} 240 * 240`)
+          throw new Error(`${icoKey} ${localize('imageSizeLess.txt', 'image should be  less than')} 240 * 240`)
+        }
+        if (!((icoDimensions.height >= 160) && (icoDimensions.width >= 160))) {
+          throw new Error(`${icoKey} ${localize('imageSizeNotLess.txt', 'image should be not less than')} 160 * 160`)
         }
       }
 
@@ -94,8 +105,13 @@ function icoVerify (projectPath: string, assets: Assets) {
     // splash
     if (icoKey === 'splash') {
       const imgFormat = ['png', 'jpg', 'jpeg', 'gif']
+      // 校验图片后缀
+      const extStr = path.extname(icoPath).replace('.', '')
+      if (imgFormat.indexOf(extStr) === -1) {
+        throw new Error(`${icoKey} ${localize('imageFormat.txt', ' image format is')}: ${imgFormat.join(',')}`)
+      }
       const fileStat = fs.statSync(icoPath)
-      // 1024*2048 不能大于2048kb
+      // 1024*2048 不能大于2048KB
       if (fileStat.size > 2097152) {
         throw new Error(`${icoKey} ${localize('imageMaximum.txt', 'images cannot exceed')} 2MB : ${icoPath}`)
       }
