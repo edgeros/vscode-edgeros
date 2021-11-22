@@ -10,7 +10,7 @@
 */
 
 import * as net from 'net'
-import { Readable } from 'stream'
+import { Readable, Writable } from 'stream'
 import { EdgerosConsoleOptions } from '../types'
 
 /**
@@ -24,41 +24,32 @@ export class EdgerosConsole extends Readable {
   private options: EdgerosConsoleOptions
   private socketRetries = 0
   private socket: net.Socket | undefined
-  private kplTimer: NodeJS.Timeout | undefined
+  private hbTimer: NodeJS.Timeout | undefined
+  private writable: Writable
 
-  constructor (options?: EdgerosConsoleOptions) {
+  constructor (writable: Writable, options?: EdgerosConsoleOptions) {
     super()
+    this.writable = writable
     this.options = {
-      keepalive: 5000,
-      retries: 3,
+      timeout: 5 * 1000,
+      retryInterval: 3 * 1000,
+      retries: 5,
       ...options
     }
   }
 
   get isClosed () {
-    return !!this.kplTimer
+    return !!this.hbTimer
   }
 
   connect (host: string, port: number, opts?: net.TcpSocketConnectOpts) {
+    this.close()
+
+    const { retries, retryInterval: keepalive, timeout } = this.options
     const tcpOptions = Object.assign({}, opts, { host, port })
-    const { keepalive, retries } = this.options
-
-    if (this.socket) {
-      this.socket.destroy()
-    }
     const socket = this.socket = net.createConnection(tcpOptions)
+    const writable = this.writable
 
-    const startKeepAlive = () => {
-      this.kplTimer = setInterval(function () {
-        socket.write('this will be ignored by EdgerOS')
-      }, keepalive!)
-    }
-    const stopKeepAlive = () => {
-      if (this.kplTimer) {
-        clearInterval(this.kplTimer!)
-        this.kplTimer = undefined
-      }
-    }
     const reconnect = () => {
       if (++this.socketRetries > retries!) {
         return this.emit('fail', this.socketRetries, retries!)
@@ -67,16 +58,20 @@ export class EdgerosConsole extends Readable {
       this.connect(host, port, opts)
     }
 
+    const connTimeout = setTimeout(() => {
+      socket.destroy(Error('socket connect timeout'))
+    }, timeout!)
+
     socket.on('connect', () => {
-      console.log('socket connect', new Date())
-      startKeepAlive()
+      clearTimeout(connTimeout)
+      console.log(`socket connect ${host}:${port}`, new Date())
+      this.startHeartbeat()
       this.socketRetries = 0
       this.emit('connect')
     })
     socket.on('close', hadError => {
-      console.log('socket close', new Date())
-      stopKeepAlive()
-      socket.destroy()
+      console.log(`socket close ${host}:${port}`, new Date())
+      this.stopHeartbeat()
       this.emit('close')
 
       if (hadError) {
@@ -84,11 +79,12 @@ export class EdgerosConsole extends Readable {
       }
     })
     socket.on('data', chunk => {
-      this.emit('data', stripAnsi(chunk.toString()))
+      writable.write(stripAnsi(chunk.toString()))
     })
     socket.on('error', err => {
-      console.log('socket error', new Date())
-      this.emit('error', err) // just forward to client
+      console.log(`socket error ${host}:${port}`, err.message)
+      socket.destroy(err)
+      this.emit('error', err)
     })
 
     socket.setKeepAlive(true)
@@ -98,13 +94,34 @@ export class EdgerosConsole extends Readable {
   }
 
   close () {
-    if (this.kplTimer) {
-      clearInterval(this.kplTimer!)
-      this.kplTimer = undefined
-    }
+    this.stopHeartbeat()
+
     if (this.socket) {
       this.socket.destroy()
+      this.socket.unref()
       this.socket = undefined
+    }
+  }
+
+  startHeartbeat () {
+    if (this.socket) {
+      const heartbeatInterval = 1000
+      const socket = this.socket
+      const hbTimer = this.hbTimer = setInterval(() => {
+        if (socket.destroyed) {
+          clearInterval(hbTimer)
+          this.hbTimer = undefined
+        } else {
+          socket.write('this will be ignored by EdgerOS')
+        }
+      }, heartbeatInterval)
+    }
+  }
+
+  stopHeartbeat () {
+    if (this.hbTimer) {
+      clearInterval(this.hbTimer)
+      this.hbTimer = undefined
     }
   }
 }

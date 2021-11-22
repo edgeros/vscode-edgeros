@@ -40,8 +40,6 @@ class ConsoleComponent implements Component {
       this.tcpConsole.unpipe()
       this.tcpConsole.close()
       this.tcpConsole = undefined
-      this.channelStream?.destroy()
-      this.channelStream = undefined
     }
     if (this.statusButton) {
       this.statusButton.disconnected()
@@ -49,29 +47,21 @@ class ConsoleComponent implements Component {
   }
 
   connect (device: EdgerosDevice) {
-    const statusButton = this.statusButton || new ConsoleStatusButton(device)
-    const channel = this.channel || vscode.window.createOutputChannel('EdgerOS Console')
-
-    if (!this.statusButton) {
-      this.statusButton = statusButton
-    }
-    if (!this.channel) {
-      this.channel = channel
-    }
-    this.disconnect()
-
-    const tcpConsole = this.tcpConsole = new EdgerosConsole()
-    const writable = new Writable({
-      write (chunk, encoding, callback) {
-        channel?.append(chunk.toString())
-        callback()
-      }
-    })
+    const statusButton = this.statusButton ||
+      (this.statusButton = new ConsoleStatusButton(device))
+    const channel = this.channel ||
+      (this.channel = vscode.window.createOutputChannel('EdgerOS Console'))
+    const tcpConsole = this.tcpConsole ||
+      (this.tcpConsole = new EdgerosConsole(new Writable({
+        write (chunk, encoding, callback) {
+          channel?.append(chunk.toString())
+          callback()
+        }
+      })))
 
     tcpConsole.connect(device.devIp, edgerosConsolePort)
       .on('connect', () => {
         statusButton.connected(device!)
-        tcpConsole.pipe(writable)
       })
       .on('reconnect', (alreadyTried, maxRetries) => {
         statusButton.connecting(device!, `${alreadyTried}/${maxRetries}`)
