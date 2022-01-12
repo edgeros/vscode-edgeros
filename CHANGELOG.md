@@ -1,5 +1,9 @@
 # Change Log
 
+## v0.5.3
+
+1. update tpl-simple
+
 ## v0.5.2
 
 1. Add edgeros.json format check
