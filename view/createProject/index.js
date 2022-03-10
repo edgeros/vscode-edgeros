@@ -7,8 +7,11 @@ const app = new Vue({
     const checkName = (rule, value, callback) => {
       if (!value || !value.trim()) {
         return callback(new Error(nlsMessages.nameNotEmptyText))
-      } else {
+      }
+      if (/^[\u4e00-\u9fa5a-zA-Z0-9][\u4e00-\u9fa5a-zA-Z0-9\s_\-~/#@?:]+$/g.test(value)) {
         callback()
+      } else {
+        callback(new Error(nlsMessages.nameIncorrectFormatText))
       }
     }
 
@@ -133,7 +136,7 @@ const app = new Vue({
       vscode.postMessage({ type: 'getInfoData' })
     }
   },
-  created () {},
+  created () { },
   methods: {
     inputChange (value) {
       vscode.setState({

@@ -1,5 +1,9 @@
 # Change Log
 
+## v0.5.4
+
+1. Add name checks when creating applications
+
 ## v0.5.3
 
 1. update tpl-simple

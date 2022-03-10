@@ -14,6 +14,7 @@
   "openFile.txt": "在新窗口打开项目",
   "selectPath.txt": "选择路径",
   "nameNotEmpty.txt": "项目名不能为空",
+  "nameIncorrectFormatText.txt":"格式为:^[u4e00-u9fa5a-zA-Z0-9][u4e00-u9fa5a-zA-Z0-9\\s_\\-~/#@?:]+$",
   "projectTemplateWarehouse.txt": "项目模板库",
   "projectTemplateHint.txt": "可根据开发类型，选择对应模板进行快速构建项目",
   "apply.txt": "应用",

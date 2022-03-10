@@ -68,6 +68,7 @@ export = function (context: vscode.ExtensionContext) {
           openFileText: localize('openFile.txt', 'Open the project in a new window'),
           selectPathText: localize('selectPath.txt', 'Select Path'),
           nameNotEmptyText: localize('nameNotEmpty.txt', 'Name is required'),
+          nameIncorrectFormatText: localize('nameIncorrectFormatText.txt', 'It needs to be formatted: ^[u4e00-u9fa5a-zA-Z0-9][u4e00-u9fa5a-zA-Z0-9\\s_\\-~/#@?:]+$'),
           projectTemplateWarehouseTxt: localize('projectTemplateWarehouse.txt', 'Template Warehouse'),
           projectTemplateHintTxt: localize('projectTemplateHint.txt', 'Select the template and build it now'),
           applyTxt: localize('apply.txt', 'Apply'),
