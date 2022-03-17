@@ -1,4 +1,11 @@
 # Change Log
+## v.0.5.5
+
+1. Upgrade dependency module
+2. Modified some message alerts
+3. added format checks for cell phones and faxes when creating documents
+4. added a button to refresh the console
+5. fixed some bugs
 
 ## v0.5.4
 

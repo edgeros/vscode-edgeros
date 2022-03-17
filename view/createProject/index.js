@@ -8,7 +8,7 @@ const app = new Vue({
       if (!value || !value.trim()) {
         return callback(new Error(nlsMessages.nameNotEmptyText))
       }
-      if (/^[\u4e00-\u9fa5a-zA-Z0-9][\u4e00-\u9fa5a-zA-Z0-9\s_\-~/#@?:]+$/g.test(value)) {
+      if (/^[\u4e00-\u9fa5a-zA-Z0-9][\u4e00-\u9fa5a-zA-Z0-9\s_\-~#@]+$/g.test(value)) {
         callback()
       } else {
         callback(new Error(nlsMessages.nameIncorrectFormatText))
@@ -69,6 +69,32 @@ const app = new Vue({
       }
     }
 
+    const checkPhone = (rule, value, callback) => {
+      if (value) {
+        const regex = /^1[3456789]\d{9}$/i
+        if (!regex.test(value)) {
+          return callback(new Error(nlsMessages.invalidPhoneText))
+        } else {
+          callback()
+        }
+      } else {
+        callback()
+      }
+    }
+
+    const checkFax = (rule, value, callback) => {
+      if (value) {
+        const regex = /^(?:\d{3,4}-)?\d{7,8}(?:-\d{1,6})?$/i
+        if (!regex.test(value)) {
+          return callback(new Error(nlsMessages.invalidFaxText))
+        } else {
+          callback()
+        }
+      } else {
+        callback()
+      }
+    }
+
     return (
       previousState?.data || {
         templateAll: [], // 所有模板信息
@@ -108,6 +134,12 @@ const app = new Vue({
           ],
           vendorEmail: [
             { required: true, validator: checkEmail, trigger: 'blur' }
+          ],
+          vendorPhone: [
+            { required: false, validator: checkPhone, trigger: 'blur' }
+          ],
+          vendorFax: [
+            { required: false, validator: checkFax, trigger: 'blur' }
           ]
         },
         // eslint-disable-next-line no-undef
@@ -129,6 +161,9 @@ const app = new Vue({
     },
     'form.version': function (value) {
       this.form.version = value.trim()
+    },
+    'form.vendorName': function (value) {
+      this.form.vendorName = value.trim()
     }
   },
   mounted () {

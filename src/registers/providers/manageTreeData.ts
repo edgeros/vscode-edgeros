@@ -41,8 +41,8 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EdgerosTreeItem> 
 
   }
 
-  private _onDidChangeTreeData: vscode.EventEmitter<EdgerosTreeItem | undefined | null | void> = new vscode.EventEmitter<EdgerosTreeItem | undefined | null | void>();
-  readonly onDidChangeTreeData: vscode.Event<EdgerosTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
+  private _onDidChangeTreeData: vscode.EventEmitter<EdgerosTreeItem | undefined | null | void> = new vscode.EventEmitter<EdgerosTreeItem | undefined | null | void>()
+  readonly onDidChangeTreeData: vscode.Event<EdgerosTreeItem | undefined | null | void> = this._onDidChangeTreeData.event
 
   getTreeItem (element: EdgerosTreeItem): vscode.TreeItem {
     return element

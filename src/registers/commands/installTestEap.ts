@@ -27,7 +27,7 @@ export = function (context: vscode.ExtensionContext) {
         const eosJson = require(eosJsonPath)
 
         if (!eosJson.test) {
-          vscode.window.showErrorMessage('未发现测试脚本入口,edgeros.json中 test属性')
+          vscode.window.showErrorMessage('未发现测试脚本入口,请配置 edgeros.json 中 test 属性')
           return
         }
 

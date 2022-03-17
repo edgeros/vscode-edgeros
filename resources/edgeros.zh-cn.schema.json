@@ -4,7 +4,7 @@
     "name": {
       "type": "string",
       "title": "EdgerOS 应用名称",
-      "pattern": "^[\\u4e00-\\u9fa5a-zA-Z0-9][\\u4e00-\\u9fa5a-zA-Z0-9\\s_\\-~/#@?:]+$"
+      "pattern": "^[\\u4e00-\\u9fa5a-zA-Z0-9][\\u4e00-\\u9fa5a-zA-Z0-9\\s_\\-~#@]+$"
     },
     "bundleid": {
       "type": "string",

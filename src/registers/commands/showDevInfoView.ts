@@ -24,12 +24,14 @@ export = function (context: vscode.ExtensionContext) {
 
   const disposable = vscode.commands.registerCommand('edgeros.showDevInfoView', async (...options: EdgerosTreeItem[]) => {
     try {
+      await vscode.commands.executeCommand('edgeros.refreshThreeView')
       let devsArray = getGlobalState(context)
       if (!devsArray) return
 
       const tmpDevInfo = devsArray.find(item => {
         return item.devName === options[0].label
-      })!!
+      })
+      if (!tmpDevInfo) return
 
       if (deviceInfo?.devId !== tmpDevInfo.devId) { currentPanel?.dispose() }
       deviceInfo = tmpDevInfo

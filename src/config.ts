@@ -32,7 +32,7 @@ export const edgerosLogo: string = 'https://static.edgeros.com/logo.png'
 // show WebView
 export const edgerosWebResources: any = [
   {
-    url: 'https://www.edgeros.com/edgeros/api/overview.html',
+    url: 'https://www.edgeros.com/edgeros/api/overview/',
     title: 'API Documentation',
     'title_zh-cn': '参考手册'
   }

@@ -2,6 +2,7 @@
 	"welcome": "Not Edgeros Project.\n[Website](http://www.edgeros.com)\n[Create Project](command:edgeros.showCreateProView)",
 	"addDeviceView": "Add Device",
 	"CreateEdgerOSProject": "Create EdgerOS Project",
+  "RefreshThreeView":"Refresh",
 	"OpenBrowser": "Open EdgerOS destkop in browser",
 	"OpenConsole": "Open EdgerOS console",
 	"BuildEAP": "Build EdgerOS App",

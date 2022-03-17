@@ -52,11 +52,6 @@ export async function installEap (eapName: string, devIp: string, devPwd: string
     auth: {
       username: 'edger',
       password: devPwd
-    },
-    headers: {
-      common: {
-        'Content-Type': 'application/json'
-      }
     }
   }
   return httpClient

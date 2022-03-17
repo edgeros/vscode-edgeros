@@ -1,7 +1,7 @@
 {
   "name": "edgeros",
   "description": "EdgerOS development extension for VSCode",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "scripts": {
     "compile": "tsc -b",
     "watch": "tsc -b -w",
@@ -27,25 +27,25 @@
     "@types/requireindex": "^1.2.0",
     "@types/rimraf": "^3.0.0",
     "@types/vscode": "^1.57.1",
-    "@typescript-eslint/eslint-plugin": "^4.27.0",
-    "@typescript-eslint/parser": "^4.27.0",
-    "eslint": "^7.28.0",
+    "@typescript-eslint/eslint-plugin": "^5.15.0",
+    "@typescript-eslint/parser": "^5.15.0",
+    "eslint": "^8.10.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-vue": "^7.12.1",
     "glob": "^7.1.6",
-    "mocha": "^8.1.3",
+    "mocha": "^9.2.0",
     "nyc": "^15.1.0",
     "source-map-support": "^0.5.20",
     "ts-node": "^10.2.1",
-    "vsce": "^1.93.0",
+    "vsce": "^2.6.5",
     "vscode-test": "^1.5.2"
   },
   "dependencies": {
     "ansi-regex": "^6.0.0",
-    "axios": "^0.21.1",
+    "axios": "^0.26.1",
     "base64url": "^3.0.1",
     "compressing": "^1.5.1",
     "ejs": "^3.1.6",
@@ -55,7 +55,7 @@
     "gulp": "^4.0.2",
     "gulp-typescript": "^6.0.0-alpha.1",
     "image-size": "^1.0.0",
-    "isomorphic-git": "^1.8.2",
+    "isomorphic-git": "^1.13.0",
     "jsonschema": "^1.4.0",
     "moment": "^2.29.1",
     "requireindex": "^1.2.0",
@@ -102,6 +102,14 @@
         "icon": {
           "light": "resources/icon/light/command_createProject.svg",
           "dark": "resources/icon/dark/command_createProject.svg"
+        }
+      },
+      {
+        "command": "edgeros.refreshThreeView",
+        "title": "%RefreshThreeView%",
+        "icon": {
+          "light": "resources/icon/light/command_refresh.svg",
+          "dark": "resources/icon/dark/command_refresh.svg"
         }
       },
       {
@@ -155,6 +163,10 @@
     },
     "menus": {
       "view/title": [
+        {
+          "command": "edgeros.refreshThreeView",
+          "when": "view == eosManageView"
+        },
         {
           "command": "edgeros.showCreateProView",
           "when": "view == eosManageView",
