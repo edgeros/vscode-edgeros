@@ -1,4 +1,9 @@
 # Change Log
+## v.0.5.6
+
+1. Create project page UI optimization
+2. Add save path to save history items
+
 ## v.0.5.5
 
 1. Upgrade dependency module

@@ -22,7 +22,7 @@
       invalidEmailText: '<%=language.invalidEmailText%>',
       emailNotEmptyText: '<%=language.emailNotEmptyText%>',
       invalidPhoneText: '<%=language.invalidPhoneText%>',
-      invalidFaxText:'<%=language.invalidFaxText%>'
+      invalidFaxText: '<%=language.invalidFaxText%>'
     }
   </script>
 </head>
@@ -33,78 +33,85 @@
     <div v-if="plan == 'selectTemplate'" class="selectTemplate">
       <el-container>
         <!-- 标题 -->
-        <el-header style="position:relative;height: 20%;padding:20px 0px;">
+        <el-header height="15%">
           <div class="headStyle">
             <div class="title">
               <%=language.projectTemplateWarehouseTxt%>
             </div>
-            <div>
-              <%=language.projectTemplateHintTxt%>
+            <div class="info">
+              <div class="detail">
+                <%=language.projectTemplateHintTxt%>
+              </div>
+              <div>
+                <el-popover placement="top-start" width="539px" trigger="hover">
+                  <p>
+                    <%=language.switchTemplateSourceAlerText%>
+                  </p>
+                  <el-image style="color: #828282; width: 901px; height: 539px" :src="imageTemplateSource" fit="fill">
+                  </el-image>
+                  <i class="el-icon-warning-outline" style="font-size:large;" slot="reference"></i>
+                </el-popover>
+              </div>
+              <div class="refersh" @click="refreshTpl()">
+                <div class="el-icon-refresh-right iconRef"
+                  :style="{animation:(refreshTplStatus?'rotateIcon 1s infinite':'none')}"></div>
+                <div>
+                  {{refreshTplStatus?"<%=language.refreshTemplateingText%>":"<%=language.refreshTemplateText%>"}}
+                </div>
+              </div>
             </div>
-          </div>
-          <div style="position:absolute;top:20px;right: 20px;">
-            <el-popover
-              placement="top-start"
-              width="539px"
-              trigger="hover">
-              <p><%=language.switchTemplateSourceAlerText%></p>
-              <el-image style="color: #828282; width: 901px; height: 539px" :src="imageTemplateSource" fit="fill"></el-image>
-              <i class="el-icon-warning-outline" style="font-size:x-large;" slot="reference"></i>
-            </el-popover>              
           </div>
         </el-header>
 
         <!-- 主体 -->
-        <el-container style="height: 80%">
+        <el-container class="connetBody">
           <!-- 侧边栏 -->
-          <el-aside width="200px" height="100%" class="typeList">
+          <el-aside width="17%" height="85%">
             <div class="templateTypes">
               <div v-for="item in tplTypes" @click="selectTplType(item)" v-bind:key="item.type"
-                :class="[selectType.type == item.type?'selectItem':'']">{{
-                item.label }}
+                :class="[selectType.type == item.type?'selectItem':'']">
+                {{ item.label }}
               </div>
-            </div>
-            <div style="text-align: center;">
-              <el-button type="primary" :loading="refreshTplStatus" @click="refreshTpl()">
-                {{refreshTplStatus?"<%=language.refreshTemplateingText%>":"<%=language.refreshTemplateText%>"}}
-              </el-button>
             </div>
           </el-aside>
 
           <!-- 主要区域容器 -->
-          <el-main>
-            <el-row :gutter=" 20" v-for="(items, indexRow) in templates" v-bind:key="indexRow">
-              <el-col :span="6" v-for="item in items" v-bind:key="item.gitUrl">
-                <div class="carStyle">
-                  <div class="grid-content">
-                    <div style="position:relative;width: 160px; height: 96px;">
-                      <div style="position:absolute;background: #828282;z-index: 999;top:1px;right:3px;padding:0px 2px">
-                        {{item.location}}
-                      </div>
-                      <el-image style="color: #828282; width: 160px; height: 96px" :src="item.banner" fit="fill">
-                      </el-image>
+          <el-main width="83%">
+            <div ref="cardContainer" class="cardContain" :style="{padding:'0px '+sizePadding+'px'}">
+              <div class="carStyle" v-for="item in templates" v-bind:key="item.gitUrl" style="display: inline-block;">
+                <div class="grid-content">
+                  <!-- banner 图 -->
+                  <div class="imgBanner">
+                    <div class="local">
+                      {{item.location}}
                     </div>
+                    <el-image class="img" :src="item.banner" fit="fill">
+                    </el-image>
+                  </div>
+                  <!-- 卡片基础信息 -->
+                  <div class="document">
                     <div class="tempName"> {{ item.name }}</div>
-                    <div class="desc">{{ item.description.slice(0,35) + ' ... ' }}</div>
+                    <div  class="desc">{{ item.description.length>20? item.description.slice(0,20) + ' ... ':item.description }}</div>
                     <div class="applyBtn">
                       <div>
                         <%=language.applyTxt%>
                       </div>
                     </div>
-                    <div class="btnShow">
-                      <el-tooltip class="item" effect="dark" :content="item.name" placement="left">
-                        <div style="flex: 1;"></div>
-                      </el-tooltip>
-                      <div class="clickBtn" @click="selectTpl(item)">
-                        <div>
-                          <%=language.applyNowTxt%>
-                        </div>
+                  </div>
+                  <!-- 按钮 -->
+                  <div class="btnShow">
+                    <el-tooltip class="item" effect="dark" :content="item.name" placement="left">
+                      <div style="flex: 1;"></div>
+                    </el-tooltip>
+                    <div class="clickBtn" @click="selectTpl(item)">
+                      <div>
+                        <%=language.applyNowTxt%>
                       </div>
                     </div>
                   </div>
                 </div>
-              </el-col>
-            </el-row>
+              </div>
+            </div>
           </el-main>
         </el-container>
       </el-container>
@@ -114,28 +121,33 @@
     <div v-if="plan == 'enterDetails'" class="enterDetails">
       <el-container>
         <!-- 标题 -->
-        <el-header style="height: 20%;padding:20px 0px;">
+        <el-header height="15%">
           <div class="headStyle">
             <div class="title"><span @click="backTpl">
                 <%=language.projectTemplateWarehouseTxt%>
               </span> > {{selectType.label}}</div>
-            <div>
-              {{selectType.desc}}
+            <div  class="info">
+              <div class="detail">
+                {{selectType.desc}}
+              </div>
             </div>
           </div>
         </el-header>
 
-        <el-container style="height: 75%">
+        <!-- 主体 -->
+        <el-container class="connetBody">
           <!-- 侧边栏 -->
-          <el-aside width="200px" class="showTemplate">
-            <el-image style="background: #828282; width: 100%" :src="selectTemp.banner" fit="fill"></el-image>
-            <div class="tempName">{{ selectTemp.name }}</div>
-            <div class="desc">{{ selectTemp.description }}</div>
-            <div class="gitUrl">{{ selectTemp.gitUrl }}</div>
+          <el-aside width="17%" height="85%">
+            <div class="showTemplate">
+              <el-image style="width: 100%;" :src="selectTemp.banner" fit="fill"></el-image>
+              <div class="tempName">{{ selectTemp.name }}</div>
+              <div class="desc">{{ selectTemp.description }}</div>
+              <div class="gitUrl">{{ selectTemp.gitUrl }}</div>
+            </div>
           </el-aside>
 
-          <el-main>
-            <el-form ref="form" :rules="rules" :model="form" label-width="130px" style="width: 100%">
+          <el-main width="83%">
+            <el-form ref="form" :rules="rules" :model="form" label-width="130px" style="width: 100%;box-sizing: border-box;">
               <el-row :gutter="20">
                 <el-col :span="12">
                   <el-form-item label="<%=language.nameTxt%>" prop="name">
@@ -177,20 +189,23 @@
               <el-row :gutter="20">
                 <el-col :span="12">
                   <el-form-item label="<%=language.vendorIdTxt%>" prop="vendorId">
-                      <el-input v-model="form.vendorId" placeholder="10001" @change="inputChange" style="display: inline-block;width: 80%;"></el-input>
-                    <el-popover
-                      placement="top-start"
-                      width="450px"
-                      trigger="hover">
-                      <p><%=language.vendorIdAlertText%></p>
-                      <el-image style="color: #828282; width:420px; height: 242px" :src="imageProviderIdSource" fit="fill"></el-image>
-                      <i class="el-icon-warning-outline" style="font-size: x-large;margin-left: 10px;" slot="reference"></i>
+                    <el-input v-model="form.vendorId" placeholder="10001" @change="inputChange"
+                      style="display: inline-block;width: 80%;"></el-input>
+                    <el-popover placement="top-start" width="450px" trigger="hover">
+                      <p>
+                        <%=language.vendorIdAlertText%>
+                      </p>
+                      <el-image style="color: #828282; width:420px; height: 242px" :src="imageProviderIdSource"
+                        fit="fill"></el-image>
+                      <i class="el-icon-warning-outline" style="font-size: x-large;margin-left: 10px;"
+                        slot="reference"></i>
                     </el-popover>
-                   </el-form-item>
+                  </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="<%=language.vendorNameTxt%>" prop="vendorName">
-                    <el-input v-model="form.vendorName" placeholder="Username" @change="inputChange" style="display: block;"></el-input>
+                    <el-input v-model="form.vendorName" placeholder="Username" @change="inputChange"
+                      style="display: block;"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -224,7 +239,7 @@
                 </el-col>
               </el-row>
             </el-form>
-            <el-footer style="text-align: right;padding:20px 0px;">
+            <el-footer style="text-align: right;">
               <el-button type="info" @click="onSubmit" type="info" :loading="loading" style="background: #0e639c;">
                 <%=language.createButtonTxt%>
               </el-button>
@@ -235,8 +250,10 @@
     </div>
   </div>
   </body>
+
   <script type="text/javascript" src="<%=vueJsUri%>"></script>
   <script type="text/javascript" src="<%=elementUiJsUri%>"></script>
   <script type="text/javascript" src="<%=baseImagesUrl%>"></script>
   <script type="text/javascript" src="<%=indexJsUri%>"></script>
+
 </html>

@@ -26,8 +26,8 @@ export const edgerosGlobalStateKeyTemplates: string = 'edgeros.templatesInfo'
 // vscode version key
 export const edgerosVersionKey: string = 'edgeros.version'
 
-// EdgerOS log png, webview use
-export const edgerosLogo: string = 'https://static.edgeros.com/logo.png'
+// project definde path save key
+export const projectPathSave: string = 'edgeros.projectPathSave'
 
 // show WebView
 export const edgerosWebResources: any = [

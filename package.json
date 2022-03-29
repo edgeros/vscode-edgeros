@@ -1,7 +1,7 @@
 {
   "name": "edgeros",
   "description": "EdgerOS development extension for VSCode",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "scripts": {
     "compile": "tsc -b",
     "watch": "tsc -b -w",
@@ -124,7 +124,7 @@
         "command": "edgeros.openConsole",
         "title": "%OpenConsole%",
         "icon": {
-          "light": "resources/icon/dark/command_openConsole.svg",
+          "light": "resources/icon/light/command_openConsole.svg",
           "dark": "resources/icon/dark/command_openConsole.svg"
         }
       },
@@ -132,7 +132,7 @@
         "command": "edgeros.buildEap",
         "title": "%BuildEAP%",
         "icon": {
-          "light": "resources/icon/dark/command_buildEap.svg",
+          "light": "resources/icon/light/command_buildEap.svg",
           "dark": "resources/icon/dark/command_buildEap.svg"
         }
       },
@@ -140,7 +140,7 @@
         "command": "edgeros.installEap",
         "title": "%InstallEAP%",
         "icon": {
-          "light": "resources/icon/dark/command_upload.svg",
+          "light": "resources/icon/light/command_upload.svg",
           "dark": "resources/icon/dark/command_upload.svg"
         }
       },

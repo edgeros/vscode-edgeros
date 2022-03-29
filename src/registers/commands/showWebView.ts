@@ -7,8 +7,8 @@
 
 // edgeros.showWebView
 import * as vscode from 'vscode'
-import * as config from '../../config'
 import * as ejs from 'ejs'
+import * as path from 'path'
 
 export = function (context: vscode.ExtensionContext) {
   // addDevView example
@@ -21,7 +21,7 @@ export = function (context: vscode.ExtensionContext) {
     })
 
     // set title icon
-    currentPanel.iconPath = vscode.Uri.parse(config.edgerosLogo)
+    currentPanel.iconPath = vscode.Uri.file(path.join(context.extensionPath, 'resources', 'logo.png'))
     currentPanel.title = options[0].showTitle
     currentPanel.webview.html = ejs.render(iframeTmp, {
       openUrl: options[0].url

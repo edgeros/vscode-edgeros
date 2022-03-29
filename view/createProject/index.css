@@ -1,15 +1,282 @@
+/* 明亮风格 */
 body.vscode-light {
   color: black;
+  padding: 0px;
 }
 
+/* 暗色风格 */
 body.vscode-dark {
   color: white;
+  padding: 0px;
 }
 
+/* 高对比度风格 */
 body.vscode-high-contrast {
   color: red;
+  padding: 0px;
 }
 
+.selectTemplate, .enterDetails {
+  position: static;
+  height: 100vh;
+  width: 100vw;
+  padding: 0px 32px;
+  box-sizing: border-box;
+}
+
+.el-container {
+  height: 100%;
+  width: 100%;
+}
+
+.el-header {
+  padding: 32px 0px 32px 0px;
+  min-height: 120px;
+}
+
+.headStyle {
+  text-align: left;
+  /* color: var(--vscode-input-foreground); */
+  box-sizing: border-box;
+}
+
+.headStyle .title {
+  font-size: x-large;
+  padding-bottom: 8px;
+}
+
+.headStyle .info {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.headStyle .refersh {
+  position: absolute;
+  right: 0px;
+}
+
+.info .detail {
+  position: relative;
+  font-size: small;
+  padding-right: 10px;
+}
+
+.info .refersh {
+  display: flex;
+  align-items: center;
+  right: 0;
+}
+
+.refersh .iconRef {
+  margin-right: 5px;
+  font-size:large;
+  /* animation:rotate 1s infinite; */
+  /* animation-name: rotate1;
+  animation-duration: 1s;
+  animation-iteration-count: infinite; */
+}
+
+/* 旋转动画 */
+@keyframes rotateIcon {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 主题 */
+.connetBody{
+  position: relative;
+  height: 85%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.templateTypes{
+  height: 100%;
+  border-right: 1px solid var(--vscode-input-foreground);
+}
+
+.templateTypes div {
+  padding: 8px 0px;
+  font-size: large;
+}
+
+.templateTypes .selectItem {
+  color: var(--vscode-textLink-foreground)
+}
+
+.templateTypes div:hover {
+  color: var(--vscode-textLink-foreground);
+  cursor: pointer;
+}
+
+
+.el-main{
+  padding:0;
+}
+
+.cardContain{
+  box-sizing:border-box;
+  width:100%;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.carStyle {
+  position: relative;
+  overflow: hidden;
+  width: 198px;
+  height: 264px;
+  padding:32px 16px 0px 16px;
+  box-sizing: border-box;
+}
+
+.carStyle:hover {
+  animation: carStyleAni 0.3s ease forwards;
+}
+
+@keyframes carStyleAni {
+  from {
+    padding-top: 16px;
+    padding-bottom: 0px;
+  }
+
+  to {
+    padding-top: 0px;
+    padding-bottom: 16px;
+  }
+}
+
+.grid-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--vscode-editorSuggestWidget-background);
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+/* 亮色 */
+body.vscode-light .grid-content{
+  background: #eee;
+}
+
+/* 暗色风格 */
+body.vscode-dark .grid-content{
+  background: #000;
+}
+
+/* 高对比度风格 */
+body.vscode-high-contrast .grid-content{
+  background: #eee;
+}
+
+
+.imgBanner{
+  flex:1;
+  width: 100%;
+}
+
+.imgBanner .local{
+  position:absolute;
+  background: #828282;
+  z-index: 999;
+  top:5px;
+  right:5px;
+  padding:0px 2px;
+}
+
+.imgBanner .img{
+  color: #828282;
+  width:100%;
+  height:100%;
+}
+
+.document{
+  flex:1;
+  display: flex;
+  flex-direction: column;
+}
+
+.document .tempName {
+  font-size: large;
+  line-height:1em;
+  padding: 10px 15px 15px 15px;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.document .desc {
+  text-align: left;
+  padding: 0px 15px 0px 15px;
+  height: 2em;
+  line-height:1em;
+  overflow:hidden;
+  /* text-overflow:ellipsis; 
+  white-space:nowrap; */
+}
+
+.document .applyBtn {
+  flex:1;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+
+.applyBtn div {
+  border-radius: 7px;
+  border: 1px solid var(--vscode-input-foreground);
+  margin: 0 auto;
+  padding: 3px 0px;
+  width: 80%;
+  box-sizing: border-box;
+}
+
+.btnShow {
+  position: absolute;
+  display: flex;
+  height: calc(100% + 40px);
+  width: 100%;
+  /* border: 3px solid #ff0; */
+  box-sizing: border-box;
+  flex-direction: column;
+}
+
+.btnShow:hover {
+  top: -40px;
+  cursor: pointer;
+}
+
+.btnShow .clickBtn {
+  background: #12527e;
+  color: #fff;
+  height: 40px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.btnShow .clickBtn div {
+  width: 100%;
+  text-align: center;
+}
+
+
+/* ---------------------------------------------- */
 .el-form-item__label {
   color: var(--vscode-input-foreground);
 }
@@ -27,30 +294,6 @@ body.vscode-high-contrast {
   background-color: var(--vscode-input-placeholderForeground);
 }
 
-.el-col {
-  border-radius: 5px;
-  margin-bottom: 20px;
-}
-
-.el-container {
-  height: 100%;
-}
-
-.selectTemplate, .enterDetails {
-  padding: 20px;
-  height: 90vh;
-}
-
-.headStyle {
-  text-align: left;
-  color: var(--vscode-input-foreground);
-}
-
-.headStyle .title {
-  font-size: xx-large;
-  padding-bottom: 10px;
-  font-weight: bold;
-}
 
 .headStyle .title span {
   color: var(--vscode-textLink-foreground);
@@ -60,137 +303,15 @@ body.vscode-high-contrast {
   cursor: pointer;
 }
 
-.typeList {
-  color: var(--vscode-input-foreground);
-  margin-right: 20px;
-  width: 150px;
-  height: 100%;
-}
-
-.templateTypes {
-  height: 90%;
-  overflow: auto;
-}
-
-.templateTypes div {
-  padding: 5px 0px;
-  color: var(--vscode-input-foreground);
-  font-size: large;
-}
-
-.templateTypes .selectItem {
-  color: var(--vscode-textLink-foreground)
-}
-
-.templateTypes div:hover {
-  color: var(--vscode-textLink-foreground);
+.headStyle .info .refersh:hover {
   cursor: pointer;
-}
-
-.carStyle {
-  position: relative;
-  padding-top: 10px;
-  padding-bottom: 0px;
-  overflow: hidden;
-  height: 234px;
-  width: 160px;
-  box-sizing: border-box;
-  margin: 0 auto;
-}
-
-.carStyle:hover {
-  animation: carStyleAni 0.1s ease-in forwards;
-}
-
-.grid-content {
-  position: relative;
-  height: calc(100%);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--vscode-editorSuggestWidget-background);
-  border-radius: 5px;
-}
-
-.el-main {
-  border-left: 1px solid var(--vscode-input-foreground);
-}
-
-.grid-content .tempName {
-  font-size: x-large;
-  margin: 10px 15px 10px 15px;
-  text-align: left;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-}
-
-.grid-content .desc {
-  flex: 1;
-  font-size: small;
-  overflow: hidden;
-  text-align: left;
-  margin: 0px 15px 12px 15px;
-  overflow: hidden;
-}
-
-.btnShow {
-  position: absolute;
-  display: flex;
-  height: calc(100% + 35px);
-  width: 100%;
-  /* border: 3px solid #ff0; */
-  box-sizing: border-box;
-  flex-direction: column;
-}
-
-.applyBtn {
-  height: 30px;
-  text-align: center;
-  display: flex
-}
-
-.applyBtn div {
-  border: 1px solid var(--vscode-input-foreground);
-  margin: auto;
-  width: 70%
-}
-
-.btnShow:hover {
-  top: -35px;
-  cursor: pointer;
-}
-
-.btnShow .clickBtn {
-  background: #12527e;
-  color: #fff;
-  height: 35px;
-  display: flex;
-  width: 100%;
-  align-items: center;
-}
-
-.btnShow .clickBtn div {
-  width: 100%;
-  text-align: center;
-}
-
-@keyframes carStyleAni {
-  from {
-    padding-top: 10px;
-    padding-bottom: 0px;
-  }
-  to {
-    padding-top: 0px;
-    padding-bottom: 10px;
-  }
 }
 
 .showTemplate {
-  color: var(--vscode-input-foreground);
-  margin-right: 20px;
+  height: 100%;
+  border-right: 1px solid var(--vscode-input-foreground);
+  padding: 32px 32px 0px 0px;
+  box-sizing: border-box;
 }
 
 .showTemplate .tempName {
@@ -206,6 +327,7 @@ body.vscode-high-contrast {
 
 .showTemplate .gitUrl {
   margin-top: 50px;
+  margin-right: 50px;
   font-size: small;
   color: var(--vscode-textLink-foreground);
 }

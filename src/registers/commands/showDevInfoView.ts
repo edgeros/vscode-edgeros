@@ -7,7 +7,6 @@
 import * as vscode from 'vscode'
 import * as ejs from 'ejs'
 import * as path from 'path'
-import * as config from '../../config'
 import { EdgerosTreeItem } from '../../components/treeItem'
 import nlsConfig from '../../nls'
 import { getGlobalState, setGlobalState, changeUri, getWebViewBaseUris } from '../../common'
@@ -65,7 +64,7 @@ export = function (context: vscode.ExtensionContext) {
             devDeleteHintNoButtonText: localize('devDeleteHintNoButton.Text', 'Cancel')
           }
         })
-        currentPanel.iconPath = vscode.Uri.parse(config.edgerosLogo)
+        currentPanel.iconPath = vscode.Uri.file(path.join(context.extensionPath, 'resources', 'logo.png'))
         currentPanel.webview.onDidReceiveMessage(
           async message => {
             // update Device

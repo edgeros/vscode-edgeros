@@ -37,7 +37,7 @@ export = function (context: vscode.ExtensionContext) {
         enableScripts: true
       })
 
-      currentPanel.iconPath = vscode.Uri.parse(config.edgerosLogo)
+      currentPanel.iconPath = vscode.Uri.file(path.join(context.extensionPath, 'resources', 'logo.png'))
 
       // set html/js path
       const webViewFileName = 'createProject'
@@ -122,7 +122,9 @@ async function webCmdHandle (context: vscode.ExtensionContext, currentPanel: vsc
         title: '请选择项目保存目录',
         openLabel: '选择'
       })
+
       if (selectSavePath) {
+        context.globalState.update(config.projectPathSave, selectSavePath[0].fsPath)
         currentPanel?.webview.postMessage({
           type: '_selectSavePath',
           data: selectSavePath[0].fsPath
@@ -130,12 +132,13 @@ async function webCmdHandle (context: vscode.ExtensionContext, currentPanel: vsc
       }
     } else if (message.type === 'getInfoData') { // Send template list and template Types
       const templateInfo = await getTemplateInfo(context, message.refresh)
+      const savePath = context.globalState.get(config.projectPathSave) || path.join(os.homedir(), 'EdgerOSApps')
       currentPanel?.webview.postMessage({
         type: '_getInfoData',
         data: {
           templates: templateInfo.templates,
           templateTypes: templateInfo.templateTypes,
-          defaultSavePath: path.join(os.homedir(), 'EdgerOSApps'),
+          defaultSavePath: savePath,
           incloud: true
         }
       })

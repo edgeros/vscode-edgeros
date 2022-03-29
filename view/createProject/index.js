@@ -145,7 +145,9 @@ const app = new Vue({
         // eslint-disable-next-line no-undef
         imageTemplateSource: imagesCreatePro.imageTemplateSource[0],
         // eslint-disable-next-line no-undef
-        imageProviderIdSource: imagesCreatePro.imageProviderIdSource[0]
+        imageProviderIdSource: imagesCreatePro.imageProviderIdSource[0],
+        // 弹性适配 卡片框
+        sizePadding: 32
       }
     )
   },
@@ -170,6 +172,16 @@ const app = new Vue({
     if (this.templateAll.length === 0) {
       vscode.postMessage({ type: 'getInfoData' })
     }
+    // 刷新弹性界面
+    this.$nextTick(() => {
+      this.paddingChange()
+    })
+    // 保障刷新弹性界面
+    setTimeout(() => {
+      this.$nextTick(() => {
+        this.paddingChange()
+      })
+    }, 300)
   },
   created () { },
   methods: {
@@ -211,17 +223,18 @@ const app = new Vue({
       const tpls = this.templateAll.filter(item => {
         return item.type === type.type || type.type === 'all'
       })
-      let items = []
-      for (let i = 0; i < tpls.length; i++) {
-        items.push(tpls[i])
-        if (items.length === 4) {
-          this.templates.push(items)
-          items = []
-        }
-      }
-      if (items.length > 0) {
-        this.templates.push(items)
-      }
+      this.templates = tpls
+      // let items = []
+      // for (let i = 0; i < tpls.length; i++) {
+      //   items.push(tpls[i])
+      //   if (items.length === 4) {
+      //     this.templates.push(items)
+      //     items = []
+      //   }
+      // }
+      // if (items.length > 0) {
+      //   this.templates.push(items)
+      // }
       this.inputChange()
     },
     // 选择模板
@@ -253,13 +266,26 @@ const app = new Vue({
           })
         }
       })
+    },
+    paddingChange () {
+      const padNum = this.$refs.cardContainer.scrollWidth % 198
+      const paddingUn = parseInt((padNum - 10) / 2)
+      this.sizePadding = paddingUn
     }
   }
 })
+// 监听消息事件
 app.$on('onmessage', function (msg) {
   this.onMessageFn(msg)
 })
-
 window.onmessage = function (msg) {
   app.$emit('onmessage', msg.data)
+}
+
+// 监听窗口宽度改变事件
+app.$on('paddingChange', function (msg) {
+  this.paddingChange(msg)
+})
+window.onresize = function () {
+  app.$emit('paddingChange')
 }
