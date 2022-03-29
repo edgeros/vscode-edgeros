@@ -23,7 +23,7 @@ export class EdgerosTreeItem extends vscode.TreeItem {
     public options?: any
   ) {
     super(label, collapsibleState)
-    this.setIconPath(type)
+    this.setIconPath(type, options)
     this.setCommand(type)
     this.contextValue = type
   }
@@ -51,7 +51,7 @@ export class EdgerosTreeItem extends vscode.TreeItem {
     }
   }
 
-  setIconPath (type: string) {
+  setIconPath (type: string, options?: any) {
     let iconPath: { dark: string, light: string }
     const iconBaseUrl = path.join(__dirname, '..', '..', 'resources', 'icon')
     switch (type) {
@@ -66,6 +66,9 @@ export class EdgerosTreeItem extends vscode.TreeItem {
         break
       case 'buildEap':
         iconPath = { dark: path.join(iconBaseUrl, 'dark', 'command_buildEap.svg'), light: path.join(iconBaseUrl, 'light', 'command_buildEap.svg') }
+        break
+      case 'web':
+        iconPath = { dark: path.join(iconBaseUrl, 'dark', options?.icon), light: path.join(iconBaseUrl, 'light', options?.icon) }
         break
       default:
         iconPath = { dark: path.join(iconBaseUrl, 'dark', 'threeView_other.svg'), light: path.join(iconBaseUrl, 'light', 'threeView_other.svg') }

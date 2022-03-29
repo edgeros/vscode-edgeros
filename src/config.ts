@@ -24,7 +24,7 @@ export const edgerosBuildInfoKey: string = 'edgeros.buildInfo'
 export const edgerosGlobalStateKeyTemplates: string = 'edgeros.templatesInfo'
 
 // vscode version key
-export const edgerosVersionKey:string = 'edgeros.version'
+export const edgerosVersionKey: string = 'edgeros.version'
 
 // EdgerOS log png, webview use
 export const edgerosLogo: string = 'https://static.edgeros.com/logo.png'
@@ -32,6 +32,7 @@ export const edgerosLogo: string = 'https://static.edgeros.com/logo.png'
 // show WebView
 export const edgerosWebResources: any = [
   {
+    icon: 'command_handbook.svg',
     url: 'https://www.edgeros.com/edgeros/api/overview/',
     title: 'API Documentation',
     'title_zh-cn': '参考手册'
