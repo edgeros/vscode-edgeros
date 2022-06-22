@@ -329,6 +329,7 @@ function createDesc (buildFileTmp: string, eosAndpkgJson: any, options: any) {
     small: eosAndpkgJson.eos.assets.ico_small.split('/').pop()
   }
   descData.program = { ...eosAndpkgJson.eos.program }
+  descData.program.resource = descData.program.resource ? eosAndpkgJson.eos.program.resource : 'public'
   // 构建正式与测试类型  测试启动路径为 egeros.json test入口，正式启动路径为 package.json main入口
   descData.program.main = eosAndpkgJson.pkg.main
   if (options.buildType === 'test') {

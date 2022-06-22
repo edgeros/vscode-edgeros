@@ -1,4 +1,8 @@
 # Change Log
+## v.0.5.7
+
+1. App desc.json adds a "resource" attribute
+
 ## v.0.5.6
 
 1. Create project page UI optimization
