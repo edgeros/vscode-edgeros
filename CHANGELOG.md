@@ -1,4 +1,8 @@
 # Change Log
+## v.0.5.8
+
+1. Update the base template
+
 ## v.0.5.7
 
 1. App desc.json adds a "resource" attribute
