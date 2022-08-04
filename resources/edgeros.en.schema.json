@@ -25,6 +25,16 @@
       "additionalItems": false,
       "uniqueItems": true
     },
+    "native_modules": {
+      "type": "array",
+      "title": "Ths JS native package name array",
+      "description": "Package names that will packaged into the JSRE platform",
+      "items": {
+        "type": "string"
+      },
+      "additionalItems": false,
+      "uniqueItems": true
+    },
     "ignore_path": {
       "type": "array",
       "title": "Extra packaging files filter array",

@@ -25,6 +25,16 @@
       "additionalItems": false,
       "uniqueItems": true
     },
+    "native_modules": {
+      "type": "array",
+      "title": "Javascript 原生包名数组",
+      "description": "配置以使用原生的 Javascript 包，否则将不会打包",
+      "items": {
+        "type": "string"
+      },
+      "additionalItems": false,
+      "uniqueItems": true
+    },
     "ignore_path": {
       "type": "array",
       "title": "打包文件的过滤器数组",

@@ -48,10 +48,10 @@ export async function applyProjectConfig (projectPath: string, config: EdgerosPr
   ])
 }
 
-async function loadJson (filepath: string) {
+export async function loadJson<T = any> (filepath: string): Promise<T> {
   await fs.assertExist(filepath)
   const buff = await fs.readFile(filepath)
-  return JSON.parse(buff.toString())
+  return JSON.parse(buff.toString()) as T
 }
 
 function packagePath (projectPath: string, templateInfo?: Template) {

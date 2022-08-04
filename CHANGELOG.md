@@ -1,4 +1,10 @@
 # Change Log
+## v.0.5.9
+
+1. Support for packaging native JS modules by configuration file
+2. refactor built-in utility funtions `copyModules` 
+3. upgrade gif of demo in the `README.md`
+
 ## v.0.5.8
 
 1. Update the base template

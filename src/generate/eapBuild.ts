@@ -17,12 +17,18 @@ import * as compressing from 'compressing'
 import tsCompile from './tsCompile'
 import { promisify } from 'util'
 import { eapBuildVerify } from './eapBuildPre'
-
 import * as fs from '../utility/simpleFs'
 // import { copyProject, deleteFile } from './util'
-import { loadEosJson, loadPkgJson } from './jsonHandler'
+import { loadEosJson, loadPkgJson, loadJson } from './jsonHandler'
 
 const pipeline = promisify(stream.pipeline)
+
+interface CopyModuleOptions {
+  /** 复制时需要排除的包 */
+  excludeMods?: Set<string>
+  /** 复制时需要包含的包 */
+  includeMods?: Set<string>
+}
 
 /**
  * 构建项目包
@@ -43,9 +49,6 @@ export default async function buildEap (
   // eap build pre verify
   eapBuildVerify(projectPath, eosAndpkgJson)
 
-  // hard code modules filter name list
-  const blackModslist = ['@edgeros/vue']
-
   // default file / folder list to be ignored
   const blacklistFile = [
     '**',
@@ -60,9 +63,13 @@ export default async function buildEap (
   ]
 
   // User Select modules filter
-  const userFilterMods = eosAndpkgJson.eos.ignore_modules || []
+  const userFilterMods = (eosAndpkgJson.eos.ignore_modules || []) as string[]
+
+  const userJsNativeMods = (eosAndpkgJson.eos.native_modules || []) as string[]
+
   // typescript project judgment to compile
   await tsCompile(projectPath)
+
   // eap build
   const eapPathUrl: string = await vscode.window.withProgress(
     {
@@ -113,17 +120,13 @@ export default async function buildEap (
       // node_modules -> jsre_modules
       progress.report({ message: 'node_modules build jsre_modules' })
       if (fs.existsSync(path.join(projectPath, 'node_modules'))) {
-        const jsreMpath = path.join(buildFileTmp, 'program', 'jsre_modules')
-        fs.mkdirSync(jsreMpath)
+        const jsreModPath = path.join(buildFileTmp, 'program', 'jsre_modules')
+        fs.mkdirSync(jsreModPath)
         const sBasePath = path.join(projectPath, 'node_modules')
-        const mods = fs.readdirSync(sBasePath)
-        await copyModule(
-          sBasePath,
-          mods,
-          jsreMpath,
-          blackModslist,
-          userFilterMods
-        )
+
+        const excludeMods = new Set(userFilterMods)
+        const includeMods = new Set(userJsNativeMods)
+        await copyModule(sBasePath, jsreModPath, { excludeMods, includeMods })
       }
 
       // 将 ico 文件复制到根目录;
@@ -206,70 +209,41 @@ export default async function buildEap (
 }
 
 /**
- * @param {*} sBasePath 项目 nodemodels地址
- * @param {*} mods nodemodels 中含有的文件数组
- * @param {*} jsreMpath 要保存到的文件地址
+ * @param {*} srcBasePath 项目 nodemodels 地址
+ * @param {*} dstBasePath 要保存到的文件地址
+ * @param {*} opts Copy options
  */
-async function copyModule (
-  sBasePath: string,
-  mods: string[],
-  jsreMpath: string,
-  blackModslist: string[],
-  userFilterMods: string[]
-) {
-  for (let i = 0; i < mods.length; i++) {
-    const modulesPath = path.join(sBasePath, mods[i])
-    const fileStat = fs.statSync(modulesPath)
-    if (!fileStat.isDirectory()) {
-      continue
-    }
-    const files = fs.readdirSync(modulesPath)
-    const pkg = files.find(item => {
-      return item === 'package.json'
-    })
-    if (pkg) {
-      const pkgData = require(path.join(modulesPath, 'package.json'))
-      /**
-       * 过滤包
-       */
-      if (
-        pkgData.name.search(/@edgeros\/.*/g) !== -1 &&
-        blackModslist.indexOf(pkgData.name) === -1
-      ) {
-        const filterPackage = userFilterMods.find(item => {
-          return item === pkgData.name
-        })
-        if (!filterPackage) {
-          await fs.copy(modulesPath, path.join(jsreMpath, mods[i]))
-          generateIndex(jsreMpath, mods[i])
-        } else {
-          // console.log("[EdgerOS Cli]:", 'filter', "user filter package ->", pkgData.name)
-        }
-      } else {
-        // console.log("[EdgerOS Cli]:", 'info', "auto filter package ->", pkgData.name)
-      }
-    } else {
-      /**
-       * 过滤文件夹
-       */
-      const nextMods = fs.readdirSync(modulesPath)
-      const nextJsreMpath = path.join(jsreMpath, mods[i])
-      fs.mkdirSync(nextJsreMpath)
-      await copyModule(
-        modulesPath,
-        nextMods,
-        nextJsreMpath,
-        blackModslist,
-        userFilterMods
-      )
+async function copyModule (srcBasePath: string, dstBasePath: string, opts: CopyModuleOptions = {}): Promise<void> {
+  const { excludeMods = new Set<string>(), includeMods = new Set<string>() } = opts
+
+  const modFolderNames = await fs.readdir(srcBasePath)
+  for (const modFolder of modFolderNames) {
+    const modulesPath = path.join(srcBasePath, modFolder)
+    const fileStat = await fs.stat(modulesPath)
+    if (!fileStat.isDirectory()) continue
+
+    const files = await fs.readdir(modulesPath)
+    const isJsPkgFolder = files.find(item => item === 'package.json')
+
+    if (isJsPkgFolder) {
+      const { name: pkgName } = await loadJson<{ name: string }>(path.join(modulesPath, 'package.json'))
+
+      if (excludeMods.has(pkgName)) continue // 黑名单过滤
+
+      if (!includeMods.has(pkgName) && pkgName.search(/@edgeros\/.*/g) === -1) continue // 过滤不在白名单中且不属于 EdgerOS 的包
+
+      await fs.copy(modulesPath, path.join(dstBasePath, modFolder))
+      generateIndex(dstBasePath, modFolder)
+    } else { // 文件夹
+      const nextJsreMpath = path.join(dstBasePath, modFolder)
+      await fs.mkdir(nextJsreMpath)
+      await copyModule(modulesPath, nextJsreMpath, opts)
     }
   }
 
   // 若文件夹为空则删除
-  const dirArrylist = fs.readdirSync(jsreMpath)
-  if (dirArrylist.length === 0) {
-    await fs.remove(jsreMpath)
-  }
+  const dirArrylist = await fs.readdir(dstBasePath)
+  if (dirArrylist.length === 0) await fs.remove(dstBasePath)
 }
 
 /**
@@ -280,7 +254,7 @@ function updataJsonFile (
   projectPath: string,
   eosAndpkgJson: any,
   options: any,
-  userFilterMods: string
+  userFilterMods: string[]
 ) {
   // version add 1 nIncrease : no increase version
   if (options.buildType !== 'test' && options.configInfo?.versionIncrement) {
