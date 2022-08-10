@@ -3,6 +3,7 @@
   "description": "EdgerOS development extension for VSCode",
   "version": "0.5.9",
   "scripts": {
+    "commit": "cz",
     "compile": "tsc -b",
     "watch": "tsc -b -w",
     "lint": "eslint --ext ts --ext js src view/**/index.js",
@@ -29,6 +30,8 @@
     "@types/vscode": "^1.57.1",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/parser": "^5.15.0",
+    "commitizen": "^4.2.5",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.10.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.23.4",
@@ -72,6 +75,11 @@
   "icon": "resources/media/icon.png",
   "engines": {
     "vscode": "^1.57.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   },
   "categories": [
     "Other"
