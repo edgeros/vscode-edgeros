@@ -20,12 +20,9 @@ export = function (context: vscode.ExtensionContext) {
     const workspaceSettings = getWorkspaceSettings()
     try {
       if (vscode.workspace.workspaceFolders) {
-        const projectDir = await selectBuildPath(context)
         try {
           // get egeros config
-          let eapPath: string = await buildEap(projectDir, {
-            configInfo: workspaceSettings
-          })
+
           const devList = getGlobalState(context)
           const devInfo = devList?.find(item => {
             return item.devName === options[0].label
@@ -35,9 +32,9 @@ export = function (context: vscode.ExtensionContext) {
             return
           }
 
-          const installType = workspaceSettings.installEAP
+          let eapPath: string
           // 弹出选择框
-          if (installType === 'Manual') {
+          if (workspaceSettings.installEAP === 'Manual') {
             const eapNames: vscode.Uri[] | undefined = await vscode.window.showOpenDialog({
               canSelectMany: false,
               filters: {
@@ -50,8 +47,11 @@ export = function (context: vscode.ExtensionContext) {
             } else {
               throw new Error('File selection cancelled')
             }
-          } else if (installType === 'Auto') {
-            // 不做处理
+          } else if (workspaceSettings.installEAP === 'Auto') {
+            const projectDir = await selectBuildPath(context)
+            eapPath = await buildEap(projectDir, {
+              configInfo: workspaceSettings
+            })
           }
 
           // Progress 动效

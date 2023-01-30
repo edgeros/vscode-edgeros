@@ -11,6 +11,7 @@
 import { fileURLToPath } from 'url'
 import { applyProjectConfig } from './jsonHandler'
 import * as fs from '../utility/simpleFs'
+import * as path from 'path'
 
 /**
  * local temaple, new project
@@ -23,5 +24,7 @@ export default async function localMode (tplInfo: any, options: any): Promise<st
   await fs.assertNotExist(newProjectPath)
   await fs.copy(templatePath, newProjectPath)
   await applyProjectConfig(newProjectPath, options)
+  fs.removeSync(path.join(newProjectPath, '.git'))
+
   return newProjectPath
 }

@@ -1,4 +1,9 @@
 # Change Log
+## v0.5.10
+
+1. Remove '.git' related files when creating a project
+2. The project is not built again when you manually select the installation package
+
 ## v.0.5.9
 
 1. Support for packaging native JS modules by configuration file

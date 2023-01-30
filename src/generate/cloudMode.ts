@@ -11,6 +11,7 @@
 
 import { EdgerosProjectConfig, GitProgressCallback, Template } from '../types'
 import * as fs from '../utility/simpleFs'
+import * as path from 'path'
 import { gitClone } from '../utility/gitClient'
 import { applyProjectConfig } from './jsonHandler'
 
@@ -25,6 +26,7 @@ export default async function cloudMode (
   await fs.assertNotExist(newProjectPath)
   await gitClone(template.gitUrl, { directory: newProjectPath, onProgress })
   await applyProjectConfig(newProjectPath, config, template)
+  fs.removeSync(path.join(newProjectPath, '.git'))
 
   return newProjectPath
 }
