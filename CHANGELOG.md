@@ -1,4 +1,8 @@
 # Change Log
+## v0.5.11
+
+1. fixed banner for simple template
+
 ## v0.5.10
 
 1. Remove '.git' related files when creating a project
