@@ -12,28 +12,6 @@ import { getGlobalState, getEdgerOSProjectInfo } from '../../common'
 const localize = nlsConfig(__filename)
 
 /**
- *Edgeros device  view Tree
- */
-export = async function (context: vscode.ExtensionContext) {
-  if (vscode.workspace.workspaceFolders) {
-    // check Edgeros Project
-    const projectPathArray = await getEdgerOSProjectInfo(context)
-    if (projectPathArray.projectPaths.length > 0) {
-      const threeViewProvider = new EOSManageViewProvider(vscode.workspace.workspaceFolders[0].uri.fsPath, context)
-      vscode.window.registerTreeDataProvider(
-        'eosManageView',
-        threeViewProvider
-      )
-
-      // register Command
-      vscode.commands.registerCommand('edgeros.refreshThreeView', () =>
-        threeViewProvider.refresh()
-      )
-    }
-  }
-};
-
-/**
  * Eos Manage View Provider
  */
 class EOSManageViewProvider implements vscode.TreeDataProvider<EdgerosTreeItem> {
@@ -116,3 +94,45 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EdgerosTreeItem> 
     this._onDidChangeTreeData.fire()
   }
 }
+
+let threeViewProvider: EOSManageViewProvider
+
+/**
+ *Edgeros device  view Tree
+ *@param {object} context
+ *@param {boolean} manual 默认是false,在非爱智项目中用户可手动进入控制台界面
+ */
+ export = async function (context: vscode.ExtensionContext, manual = false) {
+   // 用户手动进入控制台
+   if (manual === true && !threeViewProvider) {
+     threeViewProvider = new EOSManageViewProvider('', context)
+     vscode.window.registerTreeDataProvider(
+       'eosManageView',
+       threeViewProvider
+     )
+
+     // register Command
+     vscode.commands.registerCommand('edgeros.refreshThreeView', () =>
+       threeViewProvider.refresh()
+     )
+
+     return
+   }
+
+   if (vscode.workspace.workspaceFolders) {
+     // check Edgeros Project
+     const projectPathArray = await getEdgerOSProjectInfo(context)
+     if (projectPathArray.projectPaths.length > 0) {
+       threeViewProvider = new EOSManageViewProvider(vscode.workspace.workspaceFolders[0].uri.fsPath, context)
+       vscode.window.registerTreeDataProvider(
+         'eosManageView',
+         threeViewProvider
+       )
+
+       // register Command
+       vscode.commands.registerCommand('edgeros.refreshThreeView', () =>
+         threeViewProvider.refresh()
+       )
+     }
+   }
+ };

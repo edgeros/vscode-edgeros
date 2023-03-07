@@ -1,4 +1,8 @@
 # Change Log
+## v0.5.12
+
+1. Console button added to Welcome page
+
 ## v0.5.11
 
 1. fixed banner for simple template

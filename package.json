@@ -1,7 +1,7 @@
 {
   "name": "edgeros",
   "description": "EdgerOS development extension for VSCode",
-  "version": "0.5.11",
+  "version": "0.5.12",
   "scripts": {
     "commit": "cz",
     "compile": "tsc -b",
@@ -159,6 +159,10 @@
       {
         "command": "edgeros.setBuildProject",
         "title": "%setBuildProject%"
+      },
+      {
+        "command": "edgeros.closeWelcome",
+        "title": "closeWelcome.EdgerOS"
       }
     ],
     "views": {
