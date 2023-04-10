@@ -1,4 +1,9 @@
 # Change Log
+## v0.5.13
+
+1. Modify the location of the splash file at compile time
+2. Adjusting the local template edgeros.json package.json file
+
 ## v0.5.12
 
 1. Console button added to Welcome page

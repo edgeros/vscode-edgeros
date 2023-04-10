@@ -70,11 +70,6 @@
     "loading": {
       "type": "object",
       "properties": {
-        "splash": {
-          "type": "string",
-          "title": "EdgerOS application startup image",
-          "description": "Reference image defined in 'assets' section via asset name"
-        },
         "background": {
           "type": "string",
           "title": "EdgerOS application startup image background color",

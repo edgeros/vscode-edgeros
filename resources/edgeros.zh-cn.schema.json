@@ -70,11 +70,6 @@
     "loading": {
       "type": "object",
       "properties": {
-        "splash": {
-          "type": "string",
-          "title": "EdgerOS 应用的欢迎页图片",
-          "description": "通过 'assets' 部分定义资源名称引用对应的图片资源"
-        },
         "background": {
           "type": "string",
           "title": "EdgerOS 应用的欢迎页图片背景色",

@@ -141,6 +141,16 @@ export default async function buildEap (
         path.join(buildFileTmp, 'program', eosAndpkgJson.eos.assets.ico_small),
         path.join(buildFileTmp, icoSmallName)
       )
+
+      // 将 splash 文件复制到根目录
+      if (eosAndpkgJson.eos.assets.splash) {
+        const splashName = eosAndpkgJson.eos.assets.splash.split('/').pop()
+        fs.renameSync(
+          path.join(buildFileTmp, 'program', eosAndpkgJson.eos.assets.splash),
+          path.join(buildFileTmp, splashName)
+        )
+      }
+
       if (eosAndpkgJson.eos.widget) {
         eosAndpkgJson.eos.widget.forEach((item: any) => {
           const assetWidgetIcon = expandAssetsMacro(
@@ -289,74 +299,134 @@ async function getEosAndPkgJson (projectPath: string) {
 /**
  * 生成desc.json 文件
  */
+interface DescIco {
+  big: string; // string 产品大图标
+  small: string; // string 产品小图标
+}
+
+interface DescProgram {
+  gss: boolean;
+  log: string; // '' | file | console
+  will: boolean;
+  reside: boolean;
+  mesv: number[]; // <number>[] 支持爱智系统最低版本号
+  experimental: boolean; // 是否为实验性产品
+  resource: string; // 'public' string 资源文件夹
+  main: string; // 程序入口文件
+  release: number; // 发布时间戳
+  version: number[];// 支持爱智系统最低版本号
+  splash: string;// splash 加载地址 Backward compatiblity for EdgerOS <= 1.5.5, which requires the splash field
+}
+
+interface DescVendor {
+  id: string; // 用户id
+  name: string; // 用户名称
+  email: string; // 用户邮箱
+  phone: string, // 用户手机
+  fax: string // 用户传真
+}
+
+interface DescLoading {
+  splash: string; // 加载图片地址
+  background: string; // 背景颜色
+  animation: string; // 动画地址
+}
+
+interface DescUpdate { // 更新时触发
+  remove: string[]; // ['public'] 更新时删除目录地址
+}
+
+interface DescWidgetItem {
+  ico: string;
+  name: string;
+  path: string;
+  rows: number;
+  columns: number;
+  category: string;
+}
+
+interface DescJSON {
+  id: string;// string 产品id
+  name: string; // string 产品名称
+  ico: DescIco;
+  program: DescProgram;
+  vendor: DescVendor;
+  loading: DescLoading;
+  update: DescUpdate;
+  widget: DescWidgetItem[]
+}
 
 function createDesc (buildFileTmp: string, eosAndpkgJson: any, options: any) {
-  const descpath = path.join(buildFileTmp, 'desc.json')
-  const descData: any = {}
-  descData.id = eosAndpkgJson.eos.bundleid || eosAndpkgJson.pkg.name
-  descData.name = eosAndpkgJson.eos.name || eosAndpkgJson.pkg.name
-  if (options.buildType === 'test') {
-    descData.name = '_test_' + descData.name
-  }
-  descData.ico = {
+  const descId: string = eosAndpkgJson.eos.bundleid || eosAndpkgJson.pkg.name
+  const descName: string = eosAndpkgJson.eos.name || eosAndpkgJson.pkg.name
+  const descIco: DescIco = {
     big: eosAndpkgJson.eos.assets.ico_big.split('/').pop(),
     small: eosAndpkgJson.eos.assets.ico_small.split('/').pop()
   }
-  descData.program = { ...eosAndpkgJson.eos.program }
-  descData.program.resource = descData.program.resource ? eosAndpkgJson.eos.program.resource : 'public'
-  // 构建正式与测试类型  测试启动路径为 egeros.json test入口，正式启动路径为 package.json main入口
-  descData.program.main = eosAndpkgJson.pkg.main
-  if (options.buildType === 'test') {
-    descData.program.main = createRunTestFile(
-      eosAndpkgJson.eos.test,
-      path.join(buildFileTmp, 'program')
-    )
+  const descProgram: DescProgram = {
+    gss: eosAndpkgJson.eos.program.gss,
+    log: eosAndpkgJson.eos.program.log,
+    will: eosAndpkgJson.eos.program.will,
+    reside: eosAndpkgJson.eos.program.reside,
+    mesv: eosAndpkgJson.eos.program.mesv.split('.').map((item: string) => Number(item)),
+    experimental: eosAndpkgJson.eos.program.experimental,
+    resource: eosAndpkgJson.eos.program.resource ? eosAndpkgJson.eos.program.resource : 'public',
+    main: eosAndpkgJson.pkg.main,
+    release: new Date().getTime(),
+    version: eosAndpkgJson.pkg.version.split('.').map((item: string) => Number(item)),
+    splash: eosAndpkgJson.eos.assets.splash?.split('/').pop() // Backward compatiblity for EdgerOS <= 1.5.5, which requires the splash field
   }
 
-  // Backward compatiblity for EdgerOS <= 1.5.5, which requires the splash field
-  descData.program.splash = eosAndpkgJson.eos.assets.splash
-
-  descData.program.mesv = eosAndpkgJson.eos.program.mesv
-    .split('.')
-    .map((item: string) => Number(item))
-  descData.program.release = new Date().getTime()
-  descData.program.version = eosAndpkgJson.pkg.version
-    .split('.')
-    .map((item: string) => Number(item))
-
-  if (eosAndpkgJson.eos.loading) {
-    descData.loading = Object.assign({}, eosAndpkgJson.eos.loading)
-    const assetSplash = expandAssetsMacro(
-      descData.loading.splash,
-      eosAndpkgJson.eos.assets
-    )
-    if (assetSplash) {
-      descData.program.splash = assetSplash // deprecated splash setting
-      descData.loading.splash = assetSplash // up coming, but not ready yet
-    }
-  }
-
-  descData.vendor = {
+  const descVendor: DescVendor = {
     id: eosAndpkgJson.eos.vendor.id,
     name: eosAndpkgJson.eos.vendor.name,
     email: eosAndpkgJson.eos.vendor.email,
     phone: eosAndpkgJson.eos.vendor.phone,
     fax: eosAndpkgJson.eos.vendor.fax
   }
-  descData.update = eosAndpkgJson.eos.update
-  if (eosAndpkgJson.eos.widget) {
-    descData.widget = []
-    for (const item of eosAndpkgJson.eos.widget || []) {
-      const tmpWidget = { ...item }
-      const widgetFile = eosAndpkgJson.eos.assets[tmpWidget.ico]
-      if (widgetFile) {
-        tmpWidget.ico = path.basename(eosAndpkgJson.eos.assets[tmpWidget.ico])
-        descData.widget.push(tmpWidget)
-      } else {
-        throw Error(`Cannot find ico in assets: ${tmpWidget.ico}`)
-      }
+
+  const descLoading: DescLoading = {
+    splash: eosAndpkgJson.eos.assets.splash?.split('/').pop(),
+    background: eosAndpkgJson.eos.loading?.background,
+    animation: eosAndpkgJson.eos.loading?.animation
+  }
+
+  const descUpdate: DescUpdate = {
+    remove: eosAndpkgJson.eos.update?.remove
+  }
+  const descWidget: DescWidgetItem[] = []
+  for (const item of eosAndpkgJson.eos.widget || []) {
+    const tmpWidget = { ...item } as DescWidgetItem
+    const widgetFile = eosAndpkgJson.eos.assets[tmpWidget.ico]
+    if (widgetFile) {
+      tmpWidget.ico = path.basename(eosAndpkgJson.eos.assets[tmpWidget.ico])
+      descWidget.push(tmpWidget)
+    } else {
+      throw Error(`Cannot find ico in assets: ${tmpWidget.ico}`)
     }
   }
+
+  const descData: DescJSON = {
+    id: descId,
+    name: descName,
+    ico: descIco,
+    program: descProgram,
+    vendor: descVendor,
+    loading: descLoading,
+    update: descUpdate,
+    widget: descWidget
+  }
+
+  // 构建正式与测试类型  测试启动路径为 egeros.json test入口，正式启动路径为 package.json main入口
+  if (options.buildType === 'test') {
+    descData.name = '_test_' + descData.name
+    descData.program.main = createRunTestFile(
+      eosAndpkgJson.eos.test,
+      path.join(buildFileTmp, 'program')
+    )
+  }
+
+  const descpath = path.join(buildFileTmp, 'desc.json')
   fs.writeFileSync(descpath, JSON.stringify(descData, null, 4))
 }
 
