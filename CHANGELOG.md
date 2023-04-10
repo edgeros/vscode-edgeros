@@ -1,4 +1,8 @@
 # Change Log
+## v0.5.14
+
+1. fix：Compatible past template
+
 ## v0.5.13
 
 1. Modify the location of the splash file at compile time

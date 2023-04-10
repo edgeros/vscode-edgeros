@@ -351,8 +351,8 @@ interface DescJSON {
   ico: DescIco;
   program: DescProgram;
   vendor: DescVendor;
-  loading: DescLoading;
-  update: DescUpdate;
+  loading: DescLoading | undefined;
+  update: DescUpdate | undefined;
   widget: DescWidgetItem[]
 }
 
@@ -385,15 +385,22 @@ function createDesc (buildFileTmp: string, eosAndpkgJson: any, options: any) {
     fax: eosAndpkgJson.eos.vendor.fax
   }
 
-  const descLoading: DescLoading = {
-    splash: eosAndpkgJson.eos.assets.splash?.split('/').pop(),
-    background: eosAndpkgJson.eos.loading?.background,
-    animation: eosAndpkgJson.eos.loading?.animation
+  let descLoading: DescLoading | undefined
+  if (eosAndpkgJson.eos.assets.splash) {
+    descLoading = {
+      splash: eosAndpkgJson.eos.assets.splash?.split('/').pop(),
+      background: eosAndpkgJson.eos.loading?.background,
+      animation: eosAndpkgJson.eos.loading?.animation
+    }
   }
 
-  const descUpdate: DescUpdate = {
-    remove: eosAndpkgJson.eos.update?.remove
+  let descUpdate: DescUpdate | undefined
+  if (eosAndpkgJson.eos.update) {
+    descUpdate = {
+      remove: eosAndpkgJson.eos.update?.remove
+    }
   }
+
   const descWidget: DescWidgetItem[] = []
   for (const item of eosAndpkgJson.eos.widget || []) {
     const tmpWidget = { ...item } as DescWidgetItem
