@@ -1,4 +1,8 @@
 # Change Log
+## v0.5.15
+
+1. fix: Adjust the splash importing mode
+
 ## v0.5.14
 
 1. fix：Compatible past template

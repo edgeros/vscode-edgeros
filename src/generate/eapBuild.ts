@@ -143,10 +143,11 @@ export default async function buildEap (
       )
 
       // 将 splash 文件复制到根目录
-      if (eosAndpkgJson.eos.assets.splash) {
-        const splashName = eosAndpkgJson.eos.assets.splash.split('/').pop()
+      const splashKey = eosAndpkgJson.eos.loading?.splash || eosAndpkgJson.eos.program.splash
+      if (eosAndpkgJson.eos.assets[splashKey]) {
+        const splashName = eosAndpkgJson.eos.assets[splashKey].split('/').pop()
         fs.renameSync(
-          path.join(buildFileTmp, 'program', eosAndpkgJson.eos.assets.splash),
+          path.join(buildFileTmp, 'program', eosAndpkgJson.eos.assets[splashKey]),
           path.join(buildFileTmp, splashName)
         )
       }
@@ -363,6 +364,17 @@ function createDesc (buildFileTmp: string, eosAndpkgJson: any, options: any) {
     big: eosAndpkgJson.eos.assets.ico_big.split('/').pop(),
     small: eosAndpkgJson.eos.assets.ico_small.split('/').pop()
   }
+
+  let descLoading: DescLoading | undefined
+  const splashKey = eosAndpkgJson.eos.loading?.splash || eosAndpkgJson.eos.program.splash
+  if (eosAndpkgJson.eos.assets[splashKey]) {
+    descLoading = {
+      splash: eosAndpkgJson.eos.assets[splashKey].split('/').pop(),
+      background: eosAndpkgJson.eos.loading?.background,
+      animation: eosAndpkgJson.eos.loading?.animation
+    }
+  }
+
   const descProgram: DescProgram = {
     gss: eosAndpkgJson.eos.program.gss,
     log: eosAndpkgJson.eos.program.log,
@@ -374,7 +386,7 @@ function createDesc (buildFileTmp: string, eosAndpkgJson: any, options: any) {
     main: eosAndpkgJson.pkg.main,
     release: new Date().getTime(),
     version: eosAndpkgJson.pkg.version.split('.').map((item: string) => Number(item)),
-    splash: eosAndpkgJson.eos.assets.splash?.split('/').pop() // Backward compatiblity for EdgerOS <= 1.5.5, which requires the splash field
+    splash: eosAndpkgJson.eos.assets[splashKey]?.split('/').pop() // Backward compatiblity for EdgerOS <= 1.5.5, which requires the splash field
   }
 
   const descVendor: DescVendor = {
@@ -383,15 +395,6 @@ function createDesc (buildFileTmp: string, eosAndpkgJson: any, options: any) {
     email: eosAndpkgJson.eos.vendor.email,
     phone: eosAndpkgJson.eos.vendor.phone,
     fax: eosAndpkgJson.eos.vendor.fax
-  }
-
-  let descLoading: DescLoading | undefined
-  if (eosAndpkgJson.eos.assets.splash) {
-    descLoading = {
-      splash: eosAndpkgJson.eos.assets.splash?.split('/').pop(),
-      background: eosAndpkgJson.eos.loading?.background,
-      animation: eosAndpkgJson.eos.loading?.animation
-    }
   }
 
   let descUpdate: DescUpdate | undefined
