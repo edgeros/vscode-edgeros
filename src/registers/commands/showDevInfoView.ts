@@ -38,7 +38,8 @@ export = function (context: vscode.ExtensionContext) {
       if (currentPanel) {
         currentPanel.reveal(columnToShowIn)
       } else {
-        currentPanel = vscode.window.createWebviewPanel('devInfoView', 'Device Info', vscode.ViewColumn.One, {
+        const title = localize('devInfo.txt', 'EdgerOS Information')
+        currentPanel = vscode.window.createWebviewPanel('devInfoView', title, vscode.ViewColumn.One, {
           enableScripts: true
         })
         const webViewFileName = 'deviceInfo'

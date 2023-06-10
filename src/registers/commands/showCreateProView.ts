@@ -33,7 +33,8 @@ export = function (context: vscode.ExtensionContext) {
     if (currentPanel) {
       currentPanel.reveal(columnToShowIn)
     } else {
-      currentPanel = vscode.window.createWebviewPanel('createProject', 'Create Project', vscode.ViewColumn.One, {
+      const title = localize('createProject.txt', 'Create Project')
+      currentPanel = vscode.window.createWebviewPanel('createProject', title, vscode.ViewColumn.One, {
         enableScripts: true
       })
 

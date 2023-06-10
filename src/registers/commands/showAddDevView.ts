@@ -26,7 +26,8 @@ export = function (context: vscode.ExtensionContext) {
       if (currentPanel) {
         currentPanel.reveal(columnToShowIn)
       } else {
-        currentPanel = vscode.window.createWebviewPanel('addDeviceView', 'Add Device', vscode.ViewColumn.One, {
+        const title = localize('addDev.txt', 'Add Device')
+        currentPanel = vscode.window.createWebviewPanel('addDeviceView', title, vscode.ViewColumn.One, {
           enableScripts: true
         })
         const webViewFileName = 'addDevice'
