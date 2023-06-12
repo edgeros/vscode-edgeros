@@ -1,4 +1,8 @@
 # Change Log
+## v0.5.16
+
+1. add view title localization and change "Device Info" to "Device Information"
+
 ## v0.5.15
 
 1. fix: Adjust the splash importing mode
