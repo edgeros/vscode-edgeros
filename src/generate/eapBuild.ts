@@ -182,7 +182,7 @@ export default async function buildEap (
       const eapName = path.join(
         projectPath,
         'temp',
-        eosAndpkgJson.pkg.name +
+        eosAndpkgJson.eos.bundleid +
         '_' +
         eosAndpkgJson.pkg.version +
         (options.buildType !== 'test' ? '' : '_test') +
@@ -359,7 +359,7 @@ interface DescJSON {
 
 function createDesc (buildFileTmp: string, eosAndpkgJson: any, options: any) {
   const descId: string = eosAndpkgJson.eos.bundleid || eosAndpkgJson.pkg.name
-  const descName: string = eosAndpkgJson.eos.name || eosAndpkgJson.pkg.name
+  const descName: string = eosAndpkgJson.eos.name
   const descIco: DescIco = {
     big: eosAndpkgJson.eos.assets.ico_big.split('/').pop(),
     small: eosAndpkgJson.eos.assets.ico_small.split('/').pop()

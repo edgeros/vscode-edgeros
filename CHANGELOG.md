@@ -1,4 +1,8 @@
 # Change Log
+## v0.5.17
+
+1. fix：build eap to rely on edgeros.json-related parameters
+
 ## v0.5.16
 
 1. add view title localization and change "Device Info" to "Device Information"
