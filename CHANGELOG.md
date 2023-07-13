@@ -1,4 +1,8 @@
 # Change Log
+## v0.5.18
+
+1. fix: TS Project Compilation Order
+
 ## v0.5.17
 
 1. fix：build eap to rely on edgeros.json-related parameters

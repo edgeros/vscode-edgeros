@@ -27,12 +27,13 @@ export async function tsCompile (projectPath: string): Promise<void> {
         title: 'Compile TypeScript EdgerOS App',
         cancellable: false
       },
-      async (progress, token) => {
+      (progress, token) => {
         return new Promise<void>((resolve, reject) => {
           progress.report({ message: 'runing...' })
           const tsProject = ts.createProject(path.join(projectPath, 'tsconfig.json'))
-          tsProject.src().pipe(tsProject()).js.pipe(gulp.dest(path.join(projectPath, tsProject.rawConfig?.compilerOptions?.outDir || 'dist')))
-          resolve()
+          const gulpStream = gulp.dest(path.join(projectPath, tsProject.rawConfig?.compilerOptions?.outDir || 'dist'))
+          gulpStream.on('finish', () => { resolve() })
+          tsProject.src().pipe(tsProject()).js.pipe(gulpStream)
         })
       })
   }
