@@ -1,7 +1,7 @@
 {
   "name": "edgeros",
   "description": "EdgerOS development extension for VSCode",
-  "version": "0.5.18",
+  "version": "0.5.19",
   "scripts": {
     "commit": "cz",
     "compile": "tsc -b",

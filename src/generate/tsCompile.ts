@@ -30,10 +30,15 @@ export async function tsCompile (projectPath: string): Promise<void> {
       (progress, token) => {
         return new Promise<void>((resolve, reject) => {
           progress.report({ message: 'runing...' })
-          const tsProject = ts.createProject(path.join(projectPath, 'tsconfig.json'))
+          const tsProject = ts.createProject(path.join(projectPath, 'tsconfig.json'), {
+            // noImplicitAny: true,
+            noEmitOnError: true
+          })
           const gulpStream = gulp.dest(path.join(projectPath, tsProject.rawConfig?.compilerOptions?.outDir || 'dist'))
+          const tsCompileStream = tsProject.src().pipe(tsProject())
+          tsCompileStream.on('error', (err) => { reject(err) })
           gulpStream.on('finish', () => { resolve() })
-          tsProject.src().pipe(tsProject()).js.pipe(gulpStream)
+          tsCompileStream.js.pipe(gulpStream)
         })
       })
   }

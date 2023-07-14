@@ -1,4 +1,9 @@
 # Change Log
+
+## v0.5.19
+
+1. fix: ts project syntax errors, build exceptions
+
 ## v0.5.18
 
 1. fix: TS Project Compilation Order
