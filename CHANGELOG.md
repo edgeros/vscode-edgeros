@@ -1,5 +1,11 @@
 # Change Log
 
+## v0.5.20
+
+1. fix: pack no d.ts file
+2. add compilation errors output terminal
+3. add pre executed commands - prebuild
+
 ## v0.5.19
 
 1. fix: ts project syntax errors, build exceptions

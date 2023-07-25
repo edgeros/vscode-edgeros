@@ -113,6 +113,16 @@
           }
         }
       }
+    },
+    "scripts": {
+      "type": "object",
+      "properties": {
+        "prebuild": {
+          "type": "string",
+          "title": "Pre executed command",
+          "description": "Pre executed command before compilation"
+        }
+      }
     }
   },
   "required": [

@@ -113,6 +113,16 @@
           }
         }
       }
+    },
+    "scripts": {
+      "type": "object",
+      "properties": {
+        "prebuild": {
+          "type": "string",
+          "title": "预执行的命令",
+          "description": "编译前预执行的命令"
+        }
+      }
     }
   },
   "required": [

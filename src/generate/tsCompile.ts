@@ -12,8 +12,21 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import * as vscode from 'vscode'
+import { appendLine } from '../components/output'
 import * as gulp from 'gulp'
 import * as ts from 'gulp-typescript'
+
+/**
+ *  Custom reporter
+ */
+const customReporter = ts.reporter.defaultReporter()
+customReporter.error = (error: ts.reporter.TypeScriptError) => {
+  const outputStr = error.message.replace(new RegExp([
+    '[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:[a-zA-Z\\d]*(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)',
+    '(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))'
+  ].join('|'), 'gim'), '')
+  appendLine(outputStr)
+}
 
 export async function tsCompile (projectPath: string): Promise<void> {
   const files: string[] = fs.readdirSync(projectPath)
@@ -35,7 +48,7 @@ export async function tsCompile (projectPath: string): Promise<void> {
             noEmitOnError: true
           })
           const gulpStream = gulp.dest(path.join(projectPath, tsProject.rawConfig?.compilerOptions?.outDir || 'dist'))
-          const tsCompileStream = tsProject.src().pipe(tsProject())
+          const tsCompileStream = tsProject.src().pipe(tsProject(customReporter))
           tsCompileStream.on('error', (err) => { reject(err) })
           gulpStream.on('finish', () => { resolve() })
           tsCompileStream.js.pipe(gulpStream)

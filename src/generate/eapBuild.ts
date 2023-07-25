@@ -20,6 +20,8 @@ import { eapBuildVerify } from './eapBuildPre'
 import * as fs from '../utility/simpleFs'
 // import { copyProject, deleteFile } from './util'
 import { loadEosJson, loadPkgJson, loadJson } from './jsonHandler'
+import * as cp from 'child_process'
+import { appendLine } from '../components/output'
 
 const pipeline = promisify(stream.pipeline)
 
@@ -66,6 +68,25 @@ export default async function buildEap (
   const userFilterMods = (eosAndpkgJson.eos.ignore_modules || []) as string[]
 
   const userJsNativeMods = (eosAndpkgJson.eos.native_modules || []) as string[]
+
+  // exec compile pre operation
+  const execShell = (cmd: string, cwd: string) =>
+    new Promise<string>((resolve, reject) => {
+      cp.exec(cmd, { cwd: cwd }, (err, stdout, stderr) => {
+        if (err) {
+          console.log(`执行指令出错:${err.message}`)
+          appendLine(err.message)
+          reject(err)
+        } else {
+          console.log(`执行结果：${stdout}`)
+          appendLine(stdout)
+          resolve(stdout)
+        }
+      })
+    })
+  if (eosAndpkgJson.eos?.scripts?.prebuild) {
+    await execShell(eosAndpkgJson.eos.scripts.prebuild, projectPath)
+  }
 
   // typescript project judgment to compile
   await tsCompile(projectPath)
