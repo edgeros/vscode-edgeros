@@ -1,5 +1,9 @@
 # Change Log
 
+## v0.5.21
+
+1. fix: update edgeros.schema.json
+
 ## v0.5.20
 
 1. fix: pack no d.ts file
