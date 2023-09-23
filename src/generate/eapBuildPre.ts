@@ -17,6 +17,7 @@ import * as fs from 'fs-extra'
 import imgSize from 'image-size'
 import { Validator } from 'jsonschema'
 
+const IMG_KB_MAX = 512
 const IMG_BIG_MAX = 512
 const IMG_BIG_MIN = 128
 const IMG_SML_MAX = 512
@@ -75,9 +76,9 @@ function icoVerify (projectPath: string, assets: Assets) {
         throw new Error(`${icoKey} ${localize('imageFormat.txt', ' image format is')}: ${imgFormat.join(',')}`)
       }
       const fileStat = fs.statSync(icoPath)
-      // 图片大小不能大于100KB
-      if (fileStat.size > 102400) {
-        throw new Error(`${icoKey} ${localize('imageMaximum.txt', 'images cannot exceed')} 100KB : ${icoPath}`)
+      // 图片大小不能大于 IMG_KB_MAX KB
+      if (fileStat.size > 1024 * IMG_KB_MAX) {
+        throw new Error(`${icoKey} ${localize('imageMaximum.txt', 'images cannot exceed')} ${IMG_KB_MAX}KB : ${icoPath}`)
       }
       const icoDimensions = imgSize(icoPath)
       if (!icoDimensions.height || !icoDimensions.width || !icoDimensions.type) {
