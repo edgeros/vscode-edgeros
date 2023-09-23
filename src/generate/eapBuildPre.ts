@@ -17,6 +17,11 @@ import * as fs from 'fs-extra'
 import imgSize from 'image-size'
 import { Validator } from 'jsonschema'
 
+const IMG_BIG_MAX = 512
+const IMG_BIG_MIN = 128
+const IMG_SML_MAX = 512
+const IMG_SML_MIN = 128
+
 const jsonSchema = require('../../resources/edgeros.en.schema.json')
 const localize = nlsConfig(__filename)
 
@@ -78,22 +83,20 @@ function icoVerify (projectPath: string, assets: Assets) {
       if (!icoDimensions.height || !icoDimensions.width || !icoDimensions.type) {
         throw new Error(`${localize('imageParsingFailure', 'Image parsing failure')}:${icoPath}`)
       }
-      // ico_small 图片不能大于180*180 不能小于 160*160
       if (icoKey === 'ico_small') {
-        if (!((icoDimensions.height <= 180) && (icoDimensions.width <= 180))) {
-          throw new Error(`${icoKey} ${localize('imageSizeLess.txt', 'image should be less than')} 180 * 180`)
+        if (!((icoDimensions.height <= IMG_SML_MAX) && (icoDimensions.width <= IMG_SML_MAX))) {
+          throw new Error(`${icoKey} ${localize('imageSizeLess.txt', 'image should be less than')} ${IMG_SML_MAX} * ${IMG_SML_MAX}`)
         }
-        if (!((icoDimensions.height >= 160) && (icoDimensions.width >= 160))) {
-          throw new Error(`${icoKey} ${localize('imageSizeNotLess.txt', 'image should be not less than')} 160 * 160`)
+        if (!((icoDimensions.height >= IMG_SML_MIN) && (icoDimensions.width >= IMG_SML_MIN))) {
+          throw new Error(`${icoKey} ${localize('imageSizeNotLess.txt', 'image should be not less than')} ${IMG_SML_MIN} * ${IMG_SML_MIN}`)
         }
       }
-      // ico_big 图片不能大于240*240 不能小于 160*160
       if (icoKey === 'ico_big') {
-        if (!((icoDimensions.height <= 240) && (icoDimensions.width <= 240))) {
-          throw new Error(`${icoKey} ${localize('imageSizeLess.txt', 'image should be  less than')} 240 * 240`)
+        if (!((icoDimensions.height <= IMG_BIG_MAX) && (icoDimensions.width <= IMG_BIG_MAX))) {
+          throw new Error(`${icoKey} ${localize('imageSizeLess.txt', 'image should be less than')} ${IMG_BIG_MAX} * ${IMG_BIG_MAX}`)
         }
-        if (!((icoDimensions.height >= 160) && (icoDimensions.width >= 160))) {
-          throw new Error(`${icoKey} ${localize('imageSizeNotLess.txt', 'image should be not less than')} 160 * 160`)
+        if (!((icoDimensions.height >= IMG_BIG_MIN) && (icoDimensions.width >= IMG_BIG_MIN))) {
+          throw new Error(`${icoKey} ${localize('imageSizeNotLess.txt', 'image should not be less than')} ${IMG_BIG_MIN} * ${IMG_BIG_MIN}`)
         }
       }
 
