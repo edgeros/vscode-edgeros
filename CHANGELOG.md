@@ -1,5 +1,9 @@
 # Change Log
 
+## v0.5.22
+
+1. fix: update icon size 24x24 --> 16x16
+
 ## v0.5.21
 
 1. fix: update edgeros.schema.json
