@@ -10,7 +10,6 @@
  */
 import * as vscode from 'vscode'
 import * as path from 'path'
-import * as nls from '../nls'
 
 /**
  * Device list tree view item
@@ -36,7 +35,6 @@ export class EdgerosTreeItem extends vscode.TreeItem {
         arguments: [this]
       }
     } else if (type === 'web') {
-      this.label = this.options['title_' + nls.languge] || this.options.title
       this.options.showTitle = this.label
       this.command = {
         command: 'edgeros.showWebView',

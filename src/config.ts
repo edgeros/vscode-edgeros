@@ -30,11 +30,6 @@ export const edgerosVersionKey: string = 'edgeros.version'
 export const projectPathSave: string = 'edgeros.projectPathSave'
 
 // show WebView
-export const edgerosWebResources: any = [
-  {
-    icon: 'command_handbook.svg',
-    url: 'https://www.edgeros.com/edgeros/api/overview/',
-    title: 'API Documentation',
-    'title_zh-cn': '参考手册'
-  }
-]
+export const edgerosWebResources = {
+  apiDoc: 'https://www.edgeros.com/edgeros/api/overview/'
+}

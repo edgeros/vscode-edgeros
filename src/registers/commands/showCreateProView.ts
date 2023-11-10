@@ -20,6 +20,13 @@ import { EdgerosProjectConfig, TemplateSource, TemplateType, TemplateViewItem, T
 import { appendLine } from '../../components/output'
 
 const localize = nlsConfig(__filename)
+const i18n = {
+  selectProjectDir: localize('selectProjectDir.txt', 'Open the project in a new window'),
+  templateViewAll: localize('templateViewAll.txt', 'All'),
+  templateViewAllDesc: localize('templateViewAllDesc.txt', 'All available project templates'),
+  templateViewBase: localize('templateViewBase.txt', 'Base'),
+  templateViewBaseDesc: localize('templateViewBaseDesc.txt', 'Basic project templates')
+}
 
 /**
  *command:  edgeros.showCreateProView
@@ -120,8 +127,7 @@ async function webCmdHandle (context: vscode.ExtensionContext, currentPanel: vsc
         canSelectFiles: false,
         canSelectFolders: true,
         canSelectMany: false,
-        title: '请选择项目保存目录',
-        openLabel: '选择'
+        title: i18n.selectProjectDir
       })
 
       if (selectSavePath) {

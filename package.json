@@ -1,7 +1,7 @@
 {
   "name": "edgeros",
   "description": "EdgerOS development extension for VSCode",
-  "version": "0.5.25",
+  "version": "0.5.26",
   "scripts": {
     "commit": "cz",
     "compile": "tsc -b",
@@ -85,7 +85,6 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:edgeros.helloEdgerOS",
     "onView:eosManageView",
     "workspaceContains:**/edgeros.json"
   ],
@@ -97,10 +96,6 @@
       }
     ],
     "commands": [
-      {
-        "command": "edgeros.helloEdgerOS",
-        "title": "hello.EdgerOS"
-      },
       {
         "command": "edgeros.showAddDevView",
         "title": "%addDeviceView%",
@@ -164,14 +159,6 @@
       {
         "command": "edgeros.installTestEap",
         "title": "%InstallTestEap%"
-      },
-      {
-        "command": "edgeros.setBuildProject",
-        "title": "%setBuildProject%"
-      },
-      {
-        "command": "edgeros.closeWelcome",
-        "title": "closeWelcome.EdgerOS"
       }
     ],
     "views": {

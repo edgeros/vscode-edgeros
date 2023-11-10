@@ -12,6 +12,14 @@ import buildEap from '../../generate/eapBuild'
 import { EdgerosTreeItem } from '../../components/treeItem'
 import { uploadEap, installEap } from '../../utility/edgerosApi'
 import { getGlobalState, getWorkspaceSettings, selectBuildPath } from '../../common'
+import nlsConfig from '../../nls'
+
+const localize = nlsConfig(__filename)
+const i18n = {
+  testEntrypointLost: localize('testEntrypointLost.txt', 'Test entrypoint not defined in edgeros.json'),
+  testFileLost: localize('testFileLost.txt.txt', 'Test entrypoint file not exist'),
+  testInstallOk: localize('testInstallOk.txt', 'Install test app success')
+}
 
 /**
  *command:  edgeros.testEap
@@ -27,12 +35,12 @@ export = function (context: vscode.ExtensionContext) {
         const eosJson = require(eosJsonPath)
 
         if (!eosJson.test) {
-          vscode.window.showErrorMessage('未发现测试脚本入口,请配置 edgeros.json 中 test 属性')
+          vscode.window.showErrorMessage(i18n.testEntrypointLost)
           return
         }
 
         if (!fs.existsSync(path.join(projectDir, eosJson.test))) {
-          vscode.window.showErrorMessage('没有找到test文件:' + eosJson.test)
+          vscode.window.showErrorMessage(`${i18n.testFileLost} ${eosJson.test}`)
           return
         }
 
@@ -60,7 +68,7 @@ export = function (context: vscode.ExtensionContext) {
           const installMsg = await installEap(eapPath.split(path.sep).pop() as string, devInfo.devIp, devInfo.devPwd)
           return installMsg
         })
-        vscode.window.showInformationMessage('Install test app success')
+        vscode.window.showInformationMessage(i18n.testInstallOk)
       }
     } catch (err:any) {
       vscode.window.showErrorMessage(err.message)

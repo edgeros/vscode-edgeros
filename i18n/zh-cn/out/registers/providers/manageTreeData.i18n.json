@@ -1,5 +1,6 @@
 {
   "deviceList.txt": "设备管理",
   "other.txt": "其他功能",
-  "buildEAP.txt": "构建安装包"
+  "buildEAP.txt": "构建安装包",
+  "apiDocument.txt": "参考手册"
 }

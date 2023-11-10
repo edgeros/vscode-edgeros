@@ -13,13 +13,21 @@ import * as ejs from 'ejs'
 import * as path from 'path'
 import * as fs from 'fs-extra'
 
+import { QuickPickItem } from 'vscode'
 import { EdgerosDevice, WorkspaceSettings, BuildInfo, TreeItemLike } from './types'
 import {
   edgerosGlobalStateKeyTypo,
   edgerosGlobalStateKey,
   edgerosBuildInfoKey
 } from './config'
-import { QuickPickItem } from 'vscode'
+import nlsConfig from './nls'
+
+const localize = nlsConfig(__filename)
+const i18n = {
+  deviceSelectTitle: localize('deviceSelectTitle.txt', 'Please select an EdgerOS device below'),
+  deviceSelectPlaceHold: localize('deviceSelectPlaceHold.txt', 'Use ↑ and ↓ key to move cursor and ↵ to confirm'),
+  deviceNotFound: localize('deviceNotFound.txt', 'EdgerOS device NOT found')
+}
 
 export const EXTENSION_NAME = 'edgeros'
 
@@ -75,15 +83,15 @@ export async function selectedDevice (context: vscode.ExtensionContext, options:
       } as vscode.QuickPickItem
     })
     const selectedItem = await vscode.window.showQuickPick<QuickPickItem>(deviceItems, {
-      title: 'Please select an EdgerOS device below',
-      placeHolder: 'Use ↑ and ↓ key to move cursor and ↵ to confirm',
+      title: i18n.deviceSelectTitle,
+      placeHolder: i18n.deviceSelectPlaceHold,
       canPickMany: false
     })
     if (selectedItem) {
       return udpateSelectedFlag(deviceList, selectedItem.label)
     }
   } else {
-    vscode.window.showInformationMessage('EdgerOS device NOT found')
+    vscode.window.showInformationMessage(i18n.deviceNotFound)
   }
 
   function udpateSelectedFlag (deviceList: EdgerosDevice[], selectedName: string) {

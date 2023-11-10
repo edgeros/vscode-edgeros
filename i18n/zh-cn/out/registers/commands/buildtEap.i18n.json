@@ -1,0 +1,5 @@
+{
+  "noProjectInWorkspace.txt": "当前工作区中不存在 EdgerOS 项目",
+  "buildEapOk.txt": "构建 EdgerOS 应用成功",
+  "buildEapFailed.txt": "构建 EdgerOS 应用失败"
+}

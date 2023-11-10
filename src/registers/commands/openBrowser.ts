@@ -5,9 +5,7 @@
  * @Last Modified time: 2021-04-12 20:02:29
  */
 import * as vscode from 'vscode'
-/**
- *command:  edgeros.helloEdgerOS
- */
+
 export = function (context: vscode.ExtensionContext) {
   const disposable = vscode.commands.registerCommand('edgeros.openBrowser', (...options: string[]) => {
     const url: string = (options[0] as any).options.url

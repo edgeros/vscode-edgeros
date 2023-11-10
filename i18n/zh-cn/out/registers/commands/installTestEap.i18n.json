@@ -1,0 +1,5 @@
+{
+  "testEntrypointLost.txt": "未发现测试脚本入口，请配置 edgeros.json 中 test 属性",
+  "testFileLost.txt": "没有找到 test 入口文件",
+  "testInstallOk.txt": "测试应用安装成功"
+}

@@ -1,5 +1,10 @@
 # Change Log
 
+## v0.5.26
+
+1. i18n updates
+2. house keeping
+
 ## v0.5.25
 
 1. edgeros.json accept program.mesv of integer array, like desc.json.

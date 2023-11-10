@@ -82,7 +82,7 @@ function icoVerify (projectPath: string, assets: Assets) {
       }
       const icoDimensions = imgSize(icoPath)
       if (!icoDimensions.height || !icoDimensions.width || !icoDimensions.type) {
-        throw new Error(`${localize('imageParsingFailure', 'Image parsing failure')}:${icoPath}`)
+        throw new Error(`${localize('imageParsingFailure.txt', 'Image parsing failure')}:${icoPath}`)
       }
       if (icoKey === 'ico_small') {
         if (!((icoDimensions.height <= IMG_SML_MAX) && (icoDimensions.width <= IMG_SML_MAX))) {
@@ -121,7 +121,7 @@ function icoVerify (projectPath: string, assets: Assets) {
       }
       const icoDimensions = imgSize(icoPath)
       if (!icoDimensions.height || !icoDimensions.width || !icoDimensions.type) {
-        throw new Error(`${localize('imageParsingFailure', 'Image parsing failure')}:${icoPath}`)
+        throw new Error(`${localize('imageParsingFailure.txt', 'Image parsing failure')}:${icoPath}`)
       }
       // splash 只迟滞 png jpg jpeg gif格式
       if (imgFormat.indexOf(icoDimensions.type) === -1) {

@@ -9,6 +9,7 @@ import * as config from '../../config'
 import { EdgerosTreeItem } from '../../components/treeItem'
 import nlsConfig from '../../nls'
 import { getGlobalState, getEdgerOSProjectInfo } from '../../common'
+
 const localize = nlsConfig(__filename)
 
 /**
@@ -67,14 +68,17 @@ class EOSManageViewProvider implements vscode.TreeDataProvider<EdgerosTreeItem> 
    * @returns
    */
   getOtherList (context: vscode.ExtensionContext) {
-    const devices: EdgerosTreeItem[] = []
-    // add web item
-    config.edgerosWebResources.forEach((webItem: any) => {
-      devices.push(new EdgerosTreeItem(webItem.url, vscode.TreeItemCollapsibleState.None, 'web', webItem))
+    const items = [{
+      icon: 'command_handbook.svg',
+      url: config.edgerosWebResources.apiDoc,
+      title: localize('apiDocument.txt', 'API Document')
+    }].map(webItem => {
+      return new EdgerosTreeItem(webItem.title, vscode.TreeItemCollapsibleState.None, 'web', webItem)
     })
 
-    devices.push(new EdgerosTreeItem(localize('buildEAP.txt', 'Build EdgerOS App'), vscode.TreeItemCollapsibleState.None, 'buildEap'))
-    return devices
+    items.push(new EdgerosTreeItem(localize('buildEAP.txt', 'Build EdgerOS App'),
+      vscode.TreeItemCollapsibleState.None, 'buildEap'))
+    return items
   }
 
   /**

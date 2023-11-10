@@ -18,6 +18,14 @@ import { uploadEap, installEap } from '../../utility/edgerosApi'
 import { selectedDevice, getWorkspaceSettings, selectBuildPath } from '../../common'
 import { assert } from '../../errors'
 
+import nlsConfig from '../../nls'
+
+const localize = nlsConfig(__filename)
+const i18n = {
+  installEapOk: localize('installEapOk.txt', 'Install EdgerOS App success'),
+  installEapFailed: localize('installEapFailed.txt', 'Install EdgerOS App failed')
+}
+
 export = function (context: vscode.ExtensionContext) {
   context.subscriptions.push(vscode.commands.registerCommand('edgeros.installEap',
     (...options: EdgerosTreeItem[]) => {
@@ -37,7 +45,7 @@ async function install (context: vscode.ExtensionContext, options: EdgerosTreeIt
     const workspaceSettings = getWorkspaceSettings()
 
     try {
-      const insideWorkspace = vscode.workspace.workspaceFolders
+      const insideWorkspace = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
       const devInfo = assert(await selectedDevice(context, options), 'No EdgerOS device is selected')
 
       let eapPath: string
@@ -64,12 +72,12 @@ async function install (context: vscode.ExtensionContext, options: EdgerosTreeIt
         return installMsg
       })
 
-      vscode.window.showInformationMessage('Install app success')
+      vscode.window.showInformationMessage(i18n.installEapOk)
     } catch (err) {
-      vscode.window.showErrorMessage('Install EdgerOS App : ' + err)
+      vscode.window.showErrorMessage(`${i18n.installEapFailed} ${err}`)
     }
-  } catch (err: any) {
-    vscode.window.showErrorMessage(err.message)
+  } catch (err) {
+    vscode.window.showErrorMessage(`${i18n.installEapFailed} ${err}`)
   }
 }
 

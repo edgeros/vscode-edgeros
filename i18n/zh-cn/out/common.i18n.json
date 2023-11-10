@@ -1,0 +1,5 @@
+{
+  "deviceSelectTitle.txt": "请从以下列表中选择一个 EdgerOS 设备",
+  "deviceSelectPlaceHold.txt": "使用 ↑ ↓ 键移动选择光标，使用 ↵ 键确认",
+  "deviceNotFound.txt": "没有找到可用的 EdgerOS 设备"
+}
