@@ -13,15 +13,16 @@ import * as path from 'path'
 import * as stream from 'stream'
 import * as globby from 'globby'
 import * as vscode from 'vscode'
+import * as cp from 'child_process'
 import * as compressing from 'compressing'
-import tsCompile from './tsCompile'
 import { promisify } from 'util'
+import tsCompile from './tsCompile'
 import { eapBuildVerify } from './eapBuildPre'
 import * as fs from '../utility/simpleFs'
 // import { copyProject, deleteFile } from './util'
 import { loadEosJson, loadPkgJson, loadJson } from './jsonHandler'
-import * as cp from 'child_process'
 import { appendLine } from '../components/output'
+import { assert } from '../errors'
 
 const pipeline = promisify(stream.pipeline)
 
@@ -192,6 +193,7 @@ export default async function buildEap (
           }
         })
       }
+
       //  生成desc.json
       createDesc(buildFileTmp, eosAndpkgJson, options)
 
@@ -396,14 +398,16 @@ function createDesc (buildFileTmp: string, eosAndpkgJson: any, options: any) {
     }
   }
 
+  const eosProgram = eosAndpkgJson.eos.program
+
   const descProgram: DescProgram = {
-    gss: eosAndpkgJson.eos.program.gss,
-    log: eosAndpkgJson.eos.program.log,
-    will: eosAndpkgJson.eos.program.will,
-    reside: eosAndpkgJson.eos.program.reside,
-    mesv: eosAndpkgJson.eos.program.mesv.split('.').map((item: string) => Number(item)),
-    experimental: eosAndpkgJson.eos.program.experimental,
-    resource: eosAndpkgJson.eos.program.resource ? eosAndpkgJson.eos.program.resource : 'public',
+    gss: eosProgram.gss,
+    log: eosProgram.log,
+    will: eosProgram.will,
+    reside: eosProgram.reside,
+    mesv: buildMesv(eosProgram.mesv),
+    experimental: eosProgram.experimental,
+    resource: eosProgram.resource ? eosProgram.resource : 'public',
     main: eosAndpkgJson.pkg.main,
     release: new Date().getTime(),
     version: eosAndpkgJson.pkg.version.split('.').map((item: string) => Number(item)),
@@ -459,6 +463,20 @@ function createDesc (buildFileTmp: string, eosAndpkgJson: any, options: any) {
 
   const descpath = path.join(buildFileTmp, 'desc.json')
   fs.writeFileSync(descpath, JSON.stringify(descData, null, 4))
+}
+
+function buildMesv (eosProgramMesv: any) {
+  if (Array.isArray(eosProgramMesv)) {
+    assert(eosProgramMesv.length === 3 && eosProgramMesv.every(Number.isInteger),
+      `program.mesv expect array of integers, but received ${JSON.stringify(eosProgramMesv)}`)
+    return eosProgramMesv
+  }
+  return eosProgramMesv.split('.').map((item: string) => {
+    const n = Number(item)
+    assert(Number.isInteger(n),
+      `program.mesv expect string of integers, but received ${JSON.stringify(eosProgramMesv)}`)
+    return n
+  })
 }
 
 /**

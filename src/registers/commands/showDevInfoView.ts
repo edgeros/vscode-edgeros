@@ -9,7 +9,7 @@ import * as ejs from 'ejs'
 import * as path from 'path'
 import { EdgerosTreeItem } from '../../components/treeItem'
 import nlsConfig from '../../nls'
-import { getGlobalState, setGlobalState, changeUri, getWebViewBaseUris } from '../../common'
+import { getGlobalState, setGlobalState, changeUri, getWebViewBaseUris, selectedDevice } from '../../common'
 const localize = nlsConfig(__filename)
 
 /**
@@ -27,9 +27,7 @@ export = function (context: vscode.ExtensionContext) {
       let devsArray = getGlobalState(context)
       if (!devsArray) return
 
-      const tmpDevInfo = devsArray.find(item => {
-        return item.devName === options[0].label
-      })
+      const tmpDevInfo = await selectedDevice(context, options)
       if (!tmpDevInfo) return
 
       if (deviceInfo?.devId !== tmpDevInfo.devId) { currentPanel?.dispose() }

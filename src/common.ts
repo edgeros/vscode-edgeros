@@ -13,12 +13,13 @@ import * as ejs from 'ejs'
 import * as path from 'path'
 import * as fs from 'fs-extra'
 
-import { EdgerosDevice, WorkspaceSettings, BuildInfo } from './types'
+import { EdgerosDevice, WorkspaceSettings, BuildInfo, TreeItemLike } from './types'
 import {
   edgerosGlobalStateKeyTypo,
   edgerosGlobalStateKey,
   edgerosBuildInfoKey
 } from './config'
+import { QuickPickItem } from 'vscode'
 
 export const EXTENSION_NAME = 'edgeros'
 
@@ -51,6 +52,50 @@ export function getGlobalState (context: vscode.ExtensionContext) {
 
 export function setGlobalState (context: vscode.ExtensionContext, value: any) {
   return context.globalState.update(edgerosGlobalStateKey, value)
+}
+
+export async function selectedDevice (context: vscode.ExtensionContext, options: TreeItemLike[]): Promise<EdgerosDevice | undefined> {
+  const deviceList = getGlobalState(context)
+  if (deviceList) {
+    if (options.length > 0) {
+      const selectedName = options[0].label as string
+      return udpateSelectedFlag(deviceList, selectedName)
+    } else {
+      // find last selected device
+      const selected = deviceList.find(item => item.selected)
+      if (selected) {
+        return selected
+      }
+    }
+
+    const deviceItems = deviceList.map(item => {
+      return {
+        label: item.devName,
+        description: item.devIp
+      } as vscode.QuickPickItem
+    })
+    const selectedItem = await vscode.window.showQuickPick<QuickPickItem>(deviceItems, {
+      title: 'Please select an EdgerOS device below',
+      placeHolder: 'Use ↑ and ↓ key to move cursor and ↵ to confirm',
+      canPickMany: false
+    })
+    if (selectedItem) {
+      return udpateSelectedFlag(deviceList, selectedItem.label)
+    }
+  } else {
+    vscode.window.showInformationMessage('EdgerOS device NOT found')
+  }
+
+  function udpateSelectedFlag (deviceList: EdgerosDevice[], selectedName: string) {
+    let selected
+    deviceList.forEach(item => {
+      // update .selected flag for every existing item
+      if ((item.selected = (item.devName === selectedName))) {
+        selected = item
+      }
+    })
+    return selected
+  }
 }
 
 /**

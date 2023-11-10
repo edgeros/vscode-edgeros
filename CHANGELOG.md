@@ -1,5 +1,11 @@
 # Change Log
 
+## v0.5.25
+
+1. edgeros.json accept program.mesv of integer array, like desc.json.
+2. remember last used EdgerOS device to target commands like "Install EdgerOS App".
+3. new context menu item "Install EdgerOS App from file" on the device tree.
+
 ## v0.5.22
 
 1. fix: update icon size 24x24 --> 16x16

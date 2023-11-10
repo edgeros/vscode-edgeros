@@ -100,11 +100,16 @@ export interface EdgerosProjectConfig { // web form
   vendorPhone?: string;
 }
 
+export interface TreeItemLike {
+  label?: string | vscode.TreeItemLabel;
+}
+
 export interface EdgerosDevice { // web form
   readonly devId: string, // auto generate
   devIp: string,
   devName: string,
-  devPwd: string
+  devPwd: string,
+  selected?: boolean
 }
 
 export interface EdgerosConsoleOptions {
