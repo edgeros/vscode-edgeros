@@ -1,5 +1,9 @@
 # Change Log
 
+## v0.5.27
+
+1. add desc.json param -> program.doctype
+
 ## v0.5.26
 
 1. i18n updates

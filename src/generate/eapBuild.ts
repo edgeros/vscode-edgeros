@@ -340,6 +340,7 @@ interface DescProgram {
   release: number; // 发布时间戳
   version: number[];// 支持爱智系统最低版本号
   splash: string;// splash 加载地址 Backward compatiblity for EdgerOS <= 1.5.5, which requires the splash field
+  doctype: string[] | undefined;// 可以处理什么类型的外部文件数据
 }
 
 interface DescVendor {
@@ -411,7 +412,8 @@ function createDesc (buildFileTmp: string, eosAndpkgJson: any, options: any) {
     main: eosAndpkgJson.pkg.main,
     release: new Date().getTime(),
     version: eosAndpkgJson.pkg.version.split('.').map((item: string) => Number(item)),
-    splash: eosAndpkgJson.eos.assets[splashKey]?.split('/').pop() // Backward compatiblity for EdgerOS <= 1.5.5, which requires the splash field
+    splash: eosAndpkgJson.eos.assets[splashKey]?.split('/').pop(), // Backward compatiblity for EdgerOS <= 1.5.5, which requires the splash field
+    doctype: eosProgram.doctype ? eosProgram.doctype : undefined
   }
 
   const descVendor: DescVendor = {
