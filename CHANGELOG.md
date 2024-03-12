@@ -1,5 +1,9 @@
 # Change Log
 
+## v0.5.28
+
+1. fix local project could not be created
+
 ## v0.5.27
 
 1. add desc.json param -> program.doctype
