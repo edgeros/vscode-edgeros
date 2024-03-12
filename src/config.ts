@@ -31,5 +31,5 @@ export const projectPathSave: string = 'edgeros.projectPathSave'
 
 // show WebView
 export const edgerosWebResources = {
-  apiDoc: 'https://www.edgeros.com/edgeros/api/overview/'
+  apiDoc: 'https://www.edgeros.com/edgeros/api/overview'
 }

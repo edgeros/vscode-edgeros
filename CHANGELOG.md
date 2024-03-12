@@ -1,5 +1,9 @@
 # Change Log
 
+## v0.5.29
+
+1. fix apiDoc URL
+
 ## v0.5.28
 
 1. fix local project could not be created
