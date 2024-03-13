@@ -91,7 +91,9 @@
                   <!-- 卡片基础信息 -->
                   <div class="document">
                     <div class="tempName"> {{ item.name }}</div>
-                    <div  class="desc">{{ item.description.length>20? item.description.slice(0,20) + ' ... ':item.description }}</div>
+                    <div class="desc">
+                      {{ item.description.length>20? item.description.slice(0,20) + ' ... ':item.description }}
+                    </div>
                     <div class="applyBtn">
                       <div>
                         <%=language.applyTxt%>
@@ -126,7 +128,7 @@
             <div class="title"><span @click="backTpl">
                 <%=language.projectTemplateWarehouseTxt%>
               </span> > {{selectType.label}}</div>
-            <div  class="info">
+            <div class="info">
               <div class="detail">
                 {{selectType.desc}}
               </div>
@@ -147,7 +149,8 @@
           </el-aside>
 
           <el-main width="83%">
-            <el-form ref="form" :rules="rules" :model="form" label-width="130px" style="width: 100%;box-sizing: border-box;">
+            <el-form ref="form" :rules="rules" :model="form" label-width="130px"
+              style="width: 100%;box-sizing: border-box;">
               <el-row :gutter="20">
                 <el-col :span="12">
                   <el-form-item label="<%=language.nameTxt%>" prop="name">

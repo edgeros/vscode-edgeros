@@ -8,6 +8,7 @@
 import * as vscode from 'vscode'
 import registers from './registers'
 import { upgradeReset } from './components/backstage'
+import createLoginStatusBar from './components/loginBar'
 // import nlsConfig from './lib/nls'
 
 // The example uses the file message format.
@@ -27,6 +28,9 @@ export function activate (context: vscode.ExtensionContext) {
   for (const provider in registers.providers) {
     registers.providers[provider](context)
   }
+
+  // create user login status bar item
+  createLoginStatusBar(context)
 }
 
 // this method is called when your extension is deactivated

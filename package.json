@@ -92,7 +92,8 @@
   "contributes": {
     "keybindings": [
       {
-        "command": "setContext", "key": "shift"
+        "command": "setContext",
+        "key": "shift"
       }
     ],
     "commands": [
@@ -290,6 +291,15 @@
             "%ConfigTemplateSoucreGitee%"
           ],
           "description": "%ConfigTemplateSoucreDescription%"
+        }
+      }
+    },
+    "icons": {
+      "edgeros-log": {
+        "description": "edgeros log",
+        "default": {
+          "fontPath": "./resources/woff/edgeros.woff",
+          "fontCharacter": "\\E000"
         }
       }
     }
