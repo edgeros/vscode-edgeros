@@ -187,6 +187,16 @@ async function webCmdHandle (context: vscode.ExtensionContext, currentPanel: vsc
         type: '_getUserInfo',
         data: { userInfo }
       })
+    } else if (message.type === 'geti18n') {
+      currentPanel?.webview.postMessage({
+        type: '_geti18n',
+        data: {
+          loginTitleText: localize('loginTitle.txt', 'Login prompt'),
+          loginAlertText: localize('loginAlert.txt', 'Login to the EdgerOS developer account to quickly add user information.'),
+          loginButText: localize('loginBut.txt', 'Login'),
+          loginButnoPromptText: localize('loginButnoPrompt.txt', 'No more reminders')
+        }
+      })
     }
   } catch (err: any) {
     currentPanel.dispose()

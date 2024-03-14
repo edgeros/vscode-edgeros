@@ -36,10 +36,13 @@
   "refreshTemplateText.txt": "刷新模板信息",
   "switchTemplateSourceAlert.txt": "模板来源可点击vscode\"文件 -> \"首选项\" -> \"设置\" 中进行切换",
   "vendorIdAlert.txt": "提供商ID(开发者ID) 可在EdgerOS 官网(https://www.edgeros.com)个人信息页面中获取",
-
   "selectProjectDir.txt": "请选择项目保存目录",
   "templateViewAll.txt": "全部",
   "templateViewAllDesc.txt": "所有的应用模板",
   "templateViewBase.txt": "基础",
-  "templateViewBaseDesc.txt": "较基础的应用模板"
+  "templateViewBaseDesc.txt": "较基础的应用模板",
+  "loginTitle.txt": "登录提示",
+  "loginAlert.txt": "登录 EdgerOS 开发者账号可快速补充用户信息。",
+  "loginBut.txt": "登录",
+  "loginButnoPrompt.txt": "不再提醒"
 }

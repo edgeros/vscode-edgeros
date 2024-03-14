@@ -149,7 +149,8 @@ const app = new Vue({
         // 弹性适配 卡片框
         sizePadding: 32,
         // 首次提示未登录
-        firstAlertLogin: false
+        firstAlertLogin: false,
+        i18n: {}
       }
     )
   },
@@ -186,6 +187,7 @@ const app = new Vue({
     }, 300)
 
     vscode.postMessage({ type: 'getUserInfo' })
+    vscode.postMessage({ type: 'geti18n' })
   },
   created () { },
   methods: {
@@ -226,6 +228,8 @@ const app = new Vue({
           this.form.vendorPhone = ''
           this.form.vendorEmail = ''
         }
+      } else if (msg.type === '_geti18n') {
+        this.i18n = msg.data
       }
     },
     selectSavePath () {
@@ -288,10 +292,10 @@ const app = new Vue({
      * 引导用户登录
      */
     showLoginAlert () {
-      this.$confirm('登录 EdgerOS 开发者账号可快速补充用户信息。', '登录提示', {
+      this.$confirm(this.i18n.loginAlertText, this.i18n.loginTitleText, {
         distinguishCancelAndClose: true,
-        confirmButtonText: '登录',
-        cancelButtonText: '不再提醒'
+        confirmButtonText: this.i18n.loginButText,
+        cancelButtonText: this.i18n.loginButnoPromptText
       })
         .then(() => {
           vscode.postMessage({ type: 'callLoginbar', refresh: true })

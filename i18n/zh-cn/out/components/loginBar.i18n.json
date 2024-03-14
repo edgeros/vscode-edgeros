@@ -1,0 +1,11 @@
+{
+  "notLogin.txt": "尚未登陆EdgerOS开发者账号",
+  "userInfo.txt": "用户信息",
+  "inputPhoneNumber.txt":"请输入手机号",
+  "developerlogin.txt":"EdgerOS 开发者账号登录",
+  "authDeveloperlhint.txt":"登录后自动开通 EdgerOS 开发者功能",
+  "phoneNumberError.txt":"请输入正确的手机号码",
+  "inputPhoneCode.txt":"请输入短信验证码",
+  "phoneCodeError.txt":"请输入正确的验证码",
+  "loginSuccess.txt":"登录成功"
+}

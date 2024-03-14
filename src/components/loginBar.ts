@@ -9,8 +9,12 @@
 * Desc   : File description
 */
 import * as vscode from 'vscode'
+import { nlsConfig } from '../nls'
+
 import httpClient from '../utility/httpClient'
 import { edgerosWebResources, edgerosGlobalUserInfoKey } from '../config'
+
+const localize = nlsConfig(__filename)
 
 interface LoginData {
   phoneNumber: string;
@@ -58,7 +62,7 @@ export default function createLoginStatusBar (context: vscode.ExtensionContext) 
   const disposable = vscode.commands.registerCommand(CommandId, (...options: string[]) => {
     const userInfo = getUserInfo(context)
     if (userInfo.describe === null) {
-      vscode.window.showInformationMessage('尚未登陆EdgerOS开发者账号', 'Login', 'Developer Agreement').then((selection) => {
+      vscode.window.showInformationMessage(`${localize('notLogin.txt', 'Not logged into EdgerOS developer account yet')}`, 'Login', 'Developer Agreement').then((selection) => {
         if (selection === 'Login') {
           loginInput(context)
         } else if (selection === 'Developer Agreement') {
@@ -66,7 +70,7 @@ export default function createLoginStatusBar (context: vscode.ExtensionContext) 
         }
       })
     } else {
-      vscode.window.showInformationMessage(`用户信息:${userInfo.describe.nickname}`, 'Logout').then((selection) => {
+      vscode.window.showInformationMessage(`${localize('userInfo.txt', 'User information')}:${userInfo.describe.nickname}`, 'Logout').then((selection) => {
         if (selection === 'Logout') {
           setUserInfo(context, {
             alert: true,
@@ -82,7 +86,7 @@ export default function createLoginStatusBar (context: vscode.ExtensionContext) 
   // show status bar
   const loginStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 999)
   loginStatusBarItem.command = CommandId
-  loginStatusBarItem.text = '$(edgeros-log) Login'
+  loginStatusBarItem.text = '$(edgeros-logo)'
   loginStatusBarItem.show()
 
   context.subscriptions.push(loginStatusBarItem)
@@ -106,9 +110,9 @@ function loginInput (context: vscode.ExtensionContext) {
   const loginInput = vscode.window.createInputBox()
   loginInput.totalSteps = 2
   loginInput.step = 1
-  loginInput.placeholder = '请输入手机号'
-  loginInput.title = 'EdgerOS 开发者账号登录'
-  loginInput.prompt = '登录自动开通 EdgerOS 开发者功能'
+  loginInput.placeholder = localize('inputPhoneNumber.txt', 'Please enter your phone number')
+  loginInput.title = localize('developerlogin.txt', 'EdgerOS Developer account login')
+  loginInput.prompt = localize('authDeveloperlhint.txt', 'The EdgerOS developer function is automatically opened after login')
   loginInput.show()
 
   loginInput.onDidAccept(loginHandle.bind(null, loginInput, loginData, context))
@@ -125,7 +129,7 @@ async function loginHandle (loginInput: vscode.InputBox, loginData: LoginData, c
     // step1: phone number
     if (loginInput.step === 1) {
       if (!/^1[3-9]\d{9}$/.test(loginInput.value)) {
-        loginInput.validationMessage = '请输入正确的手机号码'
+        loginInput.validationMessage = localize('phoneNumberError.txt', 'Please enter the correct mobile number')
         loginInput.show()
         return
       } else {
@@ -152,7 +156,7 @@ async function loginHandle (loginInput: vscode.InputBox, loginData: LoginData, c
       loginInput.busy = false
       loginInput.enabled = true
       loginInput.step = 2
-      loginInput.placeholder = '请输入短信验证码'
+      loginInput.placeholder = localize('inputPhoneCode.txt', 'Please enter the SMS verification code')
       loginInput.value = ''
       loginInput.show()
       return
@@ -161,7 +165,7 @@ async function loginHandle (loginInput: vscode.InputBox, loginData: LoginData, c
     // step2:phone code
     if (loginInput.step === 2) {
       if (!/^\d{6}$/.test(loginInput.value)) {
-        loginInput.validationMessage = '请输入正确的验证码'
+        loginInput.validationMessage = localize('phoneCodeError.txt', 'Please enter the correct verification code')
         loginInput.show()
         return
       } else {
@@ -190,10 +194,10 @@ async function loginHandle (loginInput: vscode.InputBox, loginData: LoginData, c
       userInfo.describe = res.data.data
       setUserInfo(context, userInfo)
 
-      vscode.window.showInformationMessage(`EdgerOS 开发者:${userInfo.describe!.nickname} 登录成功`)
+      vscode.window.showInformationMessage(`EdgerOS:${userInfo.describe!.nickname} ${localize('loginSuccess.txt', 'Login successful')}`)
     }
   } catch (err: any) {
-    vscode.window.showErrorMessage(err.message)
+    vscode.window.showErrorMessage('EdgerOS:' + err.message)
   }
 }
 

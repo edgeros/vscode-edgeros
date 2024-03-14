@@ -295,8 +295,8 @@
       }
     },
     "icons": {
-      "edgeros-log": {
-        "description": "edgeros log",
+      "edgeros-logo": {
+        "description": "Edgeros Logo",
         "default": {
           "fontPath": "./resources/woff/edgeros.woff",
           "fontCharacter": "\\E000"
