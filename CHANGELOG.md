@@ -1,5 +1,10 @@
 # Change Log
 
+## v0.6.0
+
+1. add user login related services
+
+
 ## v0.5.29
 
 1. fix apiDoc URL
