@@ -20,7 +20,7 @@ const packageJson = require('../../package.json')
 /**
  * 版本更新后需要完成的动作
  */
-export function upgradeReset(context: vscode.ExtensionContext) {
+export function upgradeReset (context: vscode.ExtensionContext) {
   // 版本改变后主动清空模板缓存
   const oldVersion: string | undefined = context.globalState.get(config.edgerosVersionKey)
   if (packageJson.version !== oldVersion) {
