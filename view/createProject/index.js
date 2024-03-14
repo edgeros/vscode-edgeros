@@ -147,7 +147,9 @@ const app = new Vue({
         // eslint-disable-next-line no-undef
         imageProviderIdSource: imagesCreatePro.imageProviderIdSource[0],
         // 弹性适配 卡片框
-        sizePadding: 32
+        sizePadding: 32,
+        // 首次提示未登录
+        firstAlertLogin: false
       }
     )
   },
@@ -182,6 +184,8 @@ const app = new Vue({
         this.paddingChange()
       })
     }, 300)
+
+    vscode.postMessage({ type: 'getUserInfo' })
   },
   created () { },
   methods: {
@@ -209,6 +213,19 @@ const app = new Vue({
         this.inputChange()
       } else if (msg.type === '_createProject') {
         this.loading = false
+      } else if (msg.type === '_getUserInfo') {
+        this.userInfo = msg.data.userInfo
+        if (this.userInfo.describe) {
+          this.form.vendorId = this.userInfo.describe.developer.vendorId
+          this.form.vendorName = this.userInfo.describe.nickname
+          this.form.vendorEmail = this.userInfo.describe.email ?? ''
+          this.form.vendorPhone = this.userInfo.describe.phone
+        } else {
+          this.form.vendorId = ''
+          this.form.vendorName = ''
+          this.form.vendorPhone = ''
+          this.form.vendorEmail = ''
+        }
       }
     },
     selectSavePath () {
@@ -224,21 +241,16 @@ const app = new Vue({
         return item.type === type.type || type.type === 'all'
       })
       this.templates = tpls
-      // let items = []
-      // for (let i = 0; i < tpls.length; i++) {
-      //   items.push(tpls[i])
-      //   if (items.length === 4) {
-      //     this.templates.push(items)
-      //     items = []
-      //   }
-      // }
-      // if (items.length > 0) {
-      //   this.templates.push(items)
-      // }
       this.inputChange()
     },
     // 选择模板
     selectTpl (item) {
+      if (!this.firstAlertLogin && this.userInfo.alert && this.userInfo.describe === null) {
+        this.firstAlertLogin = true
+        this.showLoginAlert()
+        return
+      }
+      vscode.postMessage({ type: 'getUserInfo' })
       this.selectTemp = item
       this.plan = 'enterDetails'
       this.selectType = this.tplTypes.find(typeItem => {
@@ -271,6 +283,24 @@ const app = new Vue({
       const padNum = this.$refs.cardContainer.scrollWidth % 198
       const paddingUn = parseInt((padNum - 10) / 2)
       this.sizePadding = paddingUn
+    },
+    /**
+     * 引导用户登录
+     */
+    showLoginAlert () {
+      this.$confirm('登录 EdgerOS 开发者账号可快速补充用户信息。', '登录提示', {
+        distinguishCancelAndClose: true,
+        confirmButtonText: '登录',
+        cancelButtonText: '不再提醒'
+      })
+        .then(() => {
+          vscode.postMessage({ type: 'callLoginbar', refresh: true })
+        })
+        .catch(action => {
+          if (action === 'cancel') {
+            vscode.postMessage({ type: 'cancelLoginAlert', refresh: true })
+          }
+        })
     }
   }
 })

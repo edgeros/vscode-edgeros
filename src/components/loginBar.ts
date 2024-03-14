@@ -18,31 +18,34 @@ interface LoginData {
 }
 
 interface UserInfo {
-  id: 239992,
-  acoid: '239992',
-  username: 'fuwenhao',
-  phone: '18616610153',
-  email: '495235118@qq.com',
-  accessToken: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJzYV8yNSJ9.eyJwaG9uZSI6IjE4NjE2NjEwMTUzIiwidXNlcm5hbWUiOiJmdXdlbmhhbyIsInNjb3BlIjpbImFsbCJdLCJwcm9maWxlIjoiaHR0cHM6Ly9kZXYtY2xvdWQtZWRnZXJvcy5vc3MtY24taGFuZ3pob3UuYWxpeXVuY3MuY29tL2VkZ2Vyb3MtcHVibGljLXJlc291cmNlLzU3ZTYyYTk3LWY5MGEtNDNjNi1hNWQwLTdhMjY1NzhiMzFhMy5qcGciLCJuaWNrbmFtZSI6IjE4NioqKiowMTUzIiwiZXhwIjoxNzEwMzk1MjM3LCJhY29pZCI6IjIzOTk5MiIsImp0aSI6IjM4YmFmZDE3LTVmNTUtNGIxZS04MjFmLTI4YmY5ZGMyOTIyYiIsImVtYWlsIjoiNDk1MjM1MTE4QHFxLmNvbSIsImNsaWVudF9pZCI6ImFjb2luZm9fdmlwIiwidXNlcm5hbWUiOiJmdXdlbmhhbyJ9.kikItZaS_MiUYUeHiegJAyeWGIJC3ab_aPiTyDhQjIVcGcJop798eSs_3kQfMdNiA7rDOigPkUF1WFOZEm9E3tSesod-Dd35MULOJw-yuTE6Xady9_e8Vkkm3Lpv12vhUCrIiWh5D6dulecK3gTlLdAmvMu4OZjv8t5v3c3yI5c-I4e_5dIPYEl_kWJJisbTLes46shTufZnupHG58Ov85ONgvZyKK-Nu18cVhSm6pEz4KHiACHFOLp3gdG_nnbSud0PvDzHc9gh4hiRkZFE7BdsZAKxcMRbqc5SkHZiSCB1nwkwTDx-_6bshPGWsfMLVV1iLCa6UwD1EN_8O2MQ4Q',
-  refreshToken: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJzYV8yNSJ9.eyJwaG9uZSI6IjE4NjE2NjEwMTUzIiwidXNlcm5hbWUiOiJmdXdlbmhhbyIsInNjb3BlIjpbImFsbCJdLCJwcm9maWxlIjoiaHR0cHM6Ly9kZXYtY2xvdWQtZWRnZXJvcy5vc3MtY24taGFuZ3pob3UuYWxpeXVuY3MuY29tL2VkZ2Vyb3MtcHVibGljLXJlc291cmNlLzU3ZTYyYTk3LWY5MGEtNDNjNi1hNWQwLTdhMjY1NzhiMzFhMy5qcGciLCJhdGkiOiIzOGJhZmQxNy01ZjU1LTRiMWUtODIxZi0yOGJmOWRjMjkyMmIiLCJuaWNrbmFtZSI6IjE4NioqKiowMTUzIiwiZXhwIjoxNzEwMzk4ODM3LCJhY29pZCI6IjIzOTk5MiIsImp0aSI6ImUwNzRlZThhLWU0OTItNDIxZi1hYmI5LWRlZGU0OWZmMTI3NCIsImVtYWlsIjoiNDk1MjM1MTE4QHFxLmNvbSIsImNsaWVudF9pZCI6ImFjb2luZm9fdmlwIiwidXNlcm5hbWUiOiJmdXdlbmhhbyJ9.cJ1VmAxcj4p7PMbkEH-UOWjjPTcmkIjkB8v1yVm1A3QgrurqCCZeJvr7ZYPjmSoBSRSQMzI9L_pSbhO6XecMAHVYgC7oGUpu5Gl5_5711rWbUMNLzR7AOgJa2-NHj63OiaESL4Kfw2CXQCe2qIgPbCfHOPEh-YBb6KoOS9ivNHMwbgMSqQNg1bnwmk3DvcfSJ3bAIJ1iSZ8LTlw45i7RVI3-LwdomFMPONnBHRGrOxtO5kOXB9sABVqUcpwSCdLZOfQJ1wk_5EdFq7ObIoEByKW9F3BzTbXbr11FGWScHNSnoOpJaY1y6f63EyjoAo-zPaLverCqb-xg1H_uvUioqA',
-  profile: 'https://dev-cloud-edgeros.oss-cn-hangzhou.aliyuncs.com/edgeros-public-resource/57e62a97-f90a-43c6-a5d0-7a26578b31a3.jpg',
-  nickname: '186****0153',
-  jti: '38bafd17-5f55-4b1e-821f-28bf9dc2922b',
-  deviceId: null,
-  registered: false,
-  expiresIn: 10799,
-  developer: {
-    status: 0,
-    certifyId: null,
-    activeAt: '2023-03-30 10:51:02',
-    certifiedAt: null,
-    signExpire: 31536000,
-    certifyExpire: null,
-    vendorId: '66a18aa70fc011ecb9d000163e0eccf4',
-    deviceVendorName: null,
-    deviceVendorId: null,
-    deviceVendorStatus: 0
-  }
+  alert: boolean // 用于网页前端是否提醒用户未登录
+  describe: {
+    id: number,
+    acoid: string,
+    username: string,
+    phone: string,
+    email: string,
+    accessToken: string,
+    refreshToken: string,
+    profile: string,
+    nickname: string,
+    jti: string,
+    deviceId: string | null,
+    registered: boolean,
+    expiresIn: number,
+    developer: {
+      status: number,
+      certifyId: string | null,
+      activeAt: string,
+      certifiedAt: string | null,
+      signExpire: 31536000,
+      certifyExpire: string | null,
+      vendorId: string,
+      deviceVendorName: string | null,
+      deviceVendorId: string | null,
+      deviceVendorStatus: number
+    }
+  } | null
 }
 
 /**
@@ -54,18 +57,21 @@ export default function createLoginStatusBar (context: vscode.ExtensionContext) 
   // registry cmd
   const disposable = vscode.commands.registerCommand(CommandId, (...options: string[]) => {
     const userInfo = getUserInfo(context)
-    if (userInfo === undefined) {
-      vscode.window.showInformationMessage('尚未登陆EdgerOS开发者账号', 'Login', 'Developer').then((selection) => {
+    if (userInfo.describe === null) {
+      vscode.window.showInformationMessage('尚未登陆EdgerOS开发者账号', 'Login', 'Developer Agreement').then((selection) => {
         if (selection === 'Login') {
           loginInput(context)
-        } else if (selection === 'Developer') {
+        } else if (selection === 'Developer Agreement') {
           vscode.env.openExternal(vscode.Uri.parse('https://www.edgeros.com/legal/developer'))
         }
       })
     } else {
-      vscode.window.showInformationMessage(`用户信息:${userInfo.nickname}`, 'Logout').then((selection) => {
+      vscode.window.showInformationMessage(`用户信息:${userInfo.describe.nickname}`, 'Logout').then((selection) => {
         if (selection === 'Logout') {
-          setUserInfo(context, undefined)
+          setUserInfo(context, {
+            alert: true,
+            describe: null
+          })
         }
       })
     }
@@ -80,6 +86,15 @@ export default function createLoginStatusBar (context: vscode.ExtensionContext) 
   loginStatusBarItem.show()
 
   context.subscriptions.push(loginStatusBarItem)
+
+  // init UserInfo
+  const userInfo = getUserInfo(context)
+  if (userInfo === undefined) {
+    setUserInfo(context, {
+      alert: true,
+      describe: null
+    })
+  }
 }
 
 function loginInput (context: vscode.ExtensionContext) {
@@ -169,33 +184,30 @@ async function loginHandle (loginInput: vscode.InputBox, loginData: LoginData, c
         }
       })
 
-      if (res.data.status !== 200) {
-        throw new Error('Authentication failure')
-      }
-
-      const userInfo:UserInfo = res.data.data
-
+      if (res.data.status !== 200) { throw new Error('Authentication failure') }
       loginInput.hide()
+      const userInfo = getUserInfo(context)
+      userInfo.describe = res.data.data
       setUserInfo(context, userInfo)
-      vscode.window.showInformationMessage(`EdgerOS 开发者:${userInfo.phone} 登录成功`)
+
+      vscode.window.showInformationMessage(`EdgerOS 开发者:${userInfo.describe!.nickname} 登录成功`)
     }
-  } catch (err) {
-    console.log('未知错误')
-    console.error(err)
+  } catch (err: any) {
+    vscode.window.showErrorMessage(err.message)
   }
 }
 
 /**
  * 设置用户信息
  */
-function setUserInfo (context: vscode.ExtensionContext, userInfo: UserInfo|undefined) {
+export function setUserInfo (context: vscode.ExtensionContext, userInfo: UserInfo | undefined) {
   context.globalState.update(edgerosGlobalUserInfoKey, userInfo)
 }
 
 /**
  * 获取用户信息
  */
-export function getUserInfo (context: vscode.ExtensionContext): UserInfo | undefined {
-  const userInfo = context.globalState.get<UserInfo>(edgerosGlobalUserInfoKey)
+export function getUserInfo (context: vscode.ExtensionContext): UserInfo {
+  const userInfo = context.globalState.get(edgerosGlobalUserInfoKey) as UserInfo
   return userInfo
 }

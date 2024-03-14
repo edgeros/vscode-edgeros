@@ -18,6 +18,7 @@ import { getLocalTemplates, getRemoteTemplates } from '../../generate/templatePr
 import { changeUri, getWebViewBaseUris, getWorkspaceSettings } from '../../common'
 import { EdgerosProjectConfig, TemplateSource, TemplateType, TemplateViewItem, TemplateTypeViewItem, Template, TemplateInfo } from '../../types'
 import { appendLine } from '../../components/output'
+import { getUserInfo, setUserInfo } from '../../components/loginBar'
 
 const localize = nlsConfig(__filename)
 const i18n = {
@@ -169,13 +170,23 @@ async function webCmdHandle (context: vscode.ExtensionContext, currentPanel: vsc
           }
         )
       }
-
-      // 创建完成返回数据
       currentPanel?.webview.postMessage({
         type: '_createProject',
         data: 'success'
       })
       currentPanel.dispose()
+    } else if (message.type === 'cancelLoginAlert') {
+      const userInfo = getUserInfo(context)
+      userInfo.alert = false
+      setUserInfo(context, userInfo)
+    } else if (message.type === 'callLoginbar') {
+      vscode.commands.executeCommand('edgeros.login')
+    } else if (message.type === 'getUserInfo') {
+      const userInfo = getUserInfo(context)
+      currentPanel?.webview.postMessage({
+        type: '_getUserInfo',
+        data: { userInfo }
+      })
     }
   } catch (err: any) {
     currentPanel.dispose()
