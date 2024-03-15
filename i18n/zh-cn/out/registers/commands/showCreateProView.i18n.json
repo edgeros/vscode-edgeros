@@ -40,9 +40,5 @@
   "templateViewAll.txt": "全部",
   "templateViewAllDesc.txt": "所有的应用模板",
   "templateViewBase.txt": "基础",
-  "templateViewBaseDesc.txt": "较基础的应用模板",
-  "loginTitle.txt": "登录提示",
-  "loginAlert.txt": "登录 EdgerOS 开发者账号可快速补充用户信息。",
-  "loginBut.txt": "登录",
-  "loginButnoPrompt.txt": "不再提醒"
+  "templateViewBaseDesc.txt": "较基础的应用模板"
 }

@@ -21,7 +21,7 @@ interface LoginData {
   phoneCode: string;
 }
 
-interface UserInfo {
+export interface UserInfo {
   alert: boolean // 用于网页前端是否提醒用户未登录
   describe: {
     id: number,
@@ -52,6 +52,7 @@ interface UserInfo {
   } | null
 }
 
+let userInfoUpdateCallBack:Function | null = null
 /**
  * create login bar
  */
@@ -62,7 +63,7 @@ export default function createLoginStatusBar (context: vscode.ExtensionContext) 
   const disposable = vscode.commands.registerCommand(CommandId, (...options: string[]) => {
     const userInfo = getUserInfo(context)
     if (userInfo.describe === null) {
-      vscode.window.showInformationMessage(`${localize('notLogin.txt', 'Not logged into EdgerOS developer account yet')}`, 'Login', 'Developer Agreement').then((selection) => {
+      vscode.window.showInformationMessage(`${localize('notLogin.txt', 'Hello dear developer, login to EdgerOS account can help you quickly supplement the project owner information.')}`, 'Login', 'Developer Agreement').then((selection) => {
         if (selection === 'Login') {
           loginInput(context)
         } else if (selection === 'Developer Agreement') {
@@ -194,6 +195,8 @@ async function loginHandle (loginInput: vscode.InputBox, loginData: LoginData, c
       userInfo.describe = res.data.data
       setUserInfo(context, userInfo)
 
+      if (userInfoUpdateCallBack)userInfoUpdateCallBack(userInfo)
+
       vscode.window.showInformationMessage(`EdgerOS:${userInfo.describe!.nickname} ${localize('loginSuccess.txt', 'Login successful')}`)
     }
   } catch (err: any) {
@@ -214,4 +217,11 @@ export function setUserInfo (context: vscode.ExtensionContext, userInfo: UserInf
 export function getUserInfo (context: vscode.ExtensionContext): UserInfo {
   const userInfo = context.globalState.get(edgerosGlobalUserInfoKey) as UserInfo
   return userInfo
+}
+
+/**
+ * 设置用户更新回调函数
+ */
+export function setUserInfoUpdateCallBack (cb:Function) {
+  userInfoUpdateCallBack = cb
 }

@@ -187,7 +187,6 @@ const app = new Vue({
     }, 300)
 
     vscode.postMessage({ type: 'getUserInfo' })
-    vscode.postMessage({ type: 'geti18n' })
   },
   created () { },
   methods: {
@@ -228,8 +227,6 @@ const app = new Vue({
           this.form.vendorPhone = ''
           this.form.vendorEmail = ''
         }
-      } else if (msg.type === '_geti18n') {
-        this.i18n = msg.data
       }
     },
     selectSavePath () {
@@ -249,12 +246,10 @@ const app = new Vue({
     },
     // 选择模板
     selectTpl (item) {
-      if (!this.firstAlertLogin && this.userInfo.alert && this.userInfo.describe === null) {
-        this.firstAlertLogin = true
-        this.showLoginAlert()
-        return
+      if (this.userInfo.describe === null) {
+        vscode.postMessage({ type: 'callLoginbar' })
       }
-      vscode.postMessage({ type: 'getUserInfo' })
+
       this.selectTemp = item
       this.plan = 'enterDetails'
       this.selectType = this.tplTypes.find(typeItem => {
@@ -287,24 +282,6 @@ const app = new Vue({
       const padNum = this.$refs.cardContainer.scrollWidth % 198
       const paddingUn = parseInt((padNum - 10) / 2)
       this.sizePadding = paddingUn
-    },
-    /**
-     * 引导用户登录
-     */
-    showLoginAlert () {
-      this.$confirm(this.i18n.loginAlertText, this.i18n.loginTitleText, {
-        distinguishCancelAndClose: true,
-        confirmButtonText: this.i18n.loginButText,
-        cancelButtonText: this.i18n.loginButnoPromptText
-      })
-        .then(() => {
-          vscode.postMessage({ type: 'callLoginbar', refresh: true })
-        })
-        .catch(action => {
-          if (action === 'cancel') {
-            vscode.postMessage({ type: 'cancelLoginAlert', refresh: true })
-          }
-        })
     }
   }
 })

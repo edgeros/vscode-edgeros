@@ -18,7 +18,7 @@ import { getLocalTemplates, getRemoteTemplates } from '../../generate/templatePr
 import { changeUri, getWebViewBaseUris, getWorkspaceSettings } from '../../common'
 import { EdgerosProjectConfig, TemplateSource, TemplateType, TemplateViewItem, TemplateTypeViewItem, Template, TemplateInfo } from '../../types'
 import { appendLine } from '../../components/output'
-import { getUserInfo, setUserInfo } from '../../components/loginBar'
+import { getUserInfo, setUserInfo, setUserInfoUpdateCallBack, UserInfo } from '../../components/loginBar'
 
 const localize = nlsConfig(__filename)
 const i18n = {
@@ -104,6 +104,14 @@ export = function (context: vscode.ExtensionContext) {
       currentPanel.webview.onDidReceiveMessage(async message => {
         webCmdHandle(context, currentPanel as vscode.WebviewPanel, message)
       })
+
+      setUserInfoUpdateCallBack((userInfo:UserInfo) => {
+        currentPanel?.webview.postMessage({
+          type: '_getUserInfo',
+          data: { userInfo }
+        })
+      })
+
       // webview close trigger
       currentPanel.onDidDispose(
         () => {
@@ -186,16 +194,6 @@ async function webCmdHandle (context: vscode.ExtensionContext, currentPanel: vsc
       currentPanel?.webview.postMessage({
         type: '_getUserInfo',
         data: { userInfo }
-      })
-    } else if (message.type === 'geti18n') {
-      currentPanel?.webview.postMessage({
-        type: '_geti18n',
-        data: {
-          loginTitleText: localize('loginTitle.txt', 'Login prompt'),
-          loginAlertText: localize('loginAlert.txt', 'Login to the EdgerOS developer account to quickly add user information.'),
-          loginButText: localize('loginBut.txt', 'Login'),
-          loginButnoPromptText: localize('loginButnoPrompt.txt', 'No more reminders')
-        }
       })
     }
   } catch (err: any) {
