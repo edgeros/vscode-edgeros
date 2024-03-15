@@ -84,7 +84,7 @@ export default function createLoginStatusBar (context: vscode.ExtensionContext) 
         }
       })
     } else {
-      vscode.window.showInformationMessage(`${localize('userInfo.txt', 'User information')}:${userInfo.describe.nickname}`, 'Logout').then((selection) => {
+      vscode.window.showInformationMessage(`${localize('userNickName.txt', 'User nickname:')} ${userInfo.describe.nickname}`, 'Logout').then((selection) => {
         if (selection === 'Logout') {
           setUserInfo(context, {
             alert: true,
@@ -253,10 +253,10 @@ async function loginHandle (loginInput: vscode.InputBox, loginData: LoginData, c
 
       if (userInfoUpdateCallBack) userInfoUpdateCallBack(userInfo)
 
-      vscode.window.showInformationMessage(`EdgerOS:${userInfo.describe!.nickname} ${localize('loginSuccess.txt', 'Login successful')}`)
+      vscode.window.showInformationMessage(`${userInfo.describe!.nickname} ${localize('loginSuccess.txt', 'login successful')}`)
     }
   } catch (err: any) {
-    vscode.window.showErrorMessage('EdgerOS:' + err.message)
+    vscode.window.showErrorMessage('Edger VSCode :' + err.message)
   }
 }
 
