@@ -74,7 +74,7 @@ export default function createLoginStatusBar (context: vscode.ExtensionContext) 
 
     const userInfo = getUserInfo(context)
     if (userInfo.describe === null) {
-      vscode.window.showInformationMessage(`${localize('notLogin.txt', 'Hi, dear developers, logging in to the EdgerOS account in the plugin can help you quickly replenish your developer information when creating a project.')}`, ...msgBut).then((selection) => {
+      vscode.window.showInformationMessage(`${localize('notLogin.txt', 'Hi, dear developers, come and log in to Edger account to experience more convenient functions!')}`, ...msgBut).then((selection) => {
         if (selection === 'Login') {
           loginInputhandle(context)
         }
@@ -130,15 +130,15 @@ interface LoginQuickPickItem extends vscode.QuickPickItem {
 function loginQuickBox () {
   return new Promise((resolve, reject) => {
     const pickItems: LoginQuickPickItem[] = [{
-      label: `$(device-mobile) ${localize('phoneNumberLogin.txt', '同意开发者文档')}`,
+      label: `$(device-mobile) ${localize('agreeDeveloper.txt', 'Agree to the Developer Agreement')}`,
       quickType: 'agree',
-      detail: localize('phoneNumberLoginDetail.txt', 'Use your mobile number to log in or register')
+      detail: localize('agreeDeveloperDetail.txt', 'Click to agree to the Developer Agreement')
     }, {
-      label: `$(remote-explorer-documentation) ${localize('openDeveloperAgreement.txt', 'View Developer Agreement')}`,
+      label: `$(remote-explorer-documentation) ${localize('openDeveloperAgreement.txt', 'Read the Developer Agreement')}`,
       quickType: 'openDoucment',
       detail: '西安翼辉爱智物联技术有限公司（以下简称“本公司”）在此特别提醒使用爱智开发者平台服务的开发者（以下简称“开发者”或“你”）认真阅读、充分理解《翼辉开发者协议》（以下简称“本协议”）各条款'
     }, {
-      label: '$(widget-close) 退出',
+      label: `$(widget-close) ${localize('exit.txt', 'Exit')}`,
       quickType: 'exit'
     }]
 
@@ -176,8 +176,8 @@ function loginInputhandle (context: vscode.ExtensionContext) {
   loginInput.totalSteps = 2
   loginInput.step = 1
   loginInput.placeholder = localize('inputPhoneNumber.txt', 'Please enter your phone number')
-  loginInput.title = localize('developerlogin.txt', 'EdgerOS Developer account login')
-  loginInput.prompt = localize('authDeveloperlhint.txt', 'The EdgerOS developer function is automatically opened after login')
+  loginInput.title = localize('developerlogin.txt', 'Edger account login')
+  loginInput.prompt = localize('authDeveloperlhint.txt', 'User authentication is carried out by receiving verification codes through mobile phones. If your phone number has not been registered yet, the system will automatically register and create an Edger account for you.')
   loginInput.buttons = [{ iconPath: new vscode.ThemeIcon('ports-open-browser-icon') }]
 
   loginInput.show()
@@ -196,7 +196,7 @@ async function loginHandle (loginInput: vscode.InputBox, loginData: LoginData, c
     // step1: phone number
     if (loginInput.step === 1) {
       if (!/^1[3-9]\d{9}$/.test(loginInput.value)) {
-        loginInput.validationMessage = localize('phoneNumberError.txt', 'Please enter the correct mobile number')
+        loginInput.validationMessage = localize('phoneNumberError.txt', 'Please enter the correct phone number')
         loginInput.show()
         return
       } else {
