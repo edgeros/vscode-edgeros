@@ -33,7 +33,6 @@ export const projectPathSave: string = 'edgeros.projectPathSave'
 // show WebView
 export const edgerosWebResources = {
   apiDoc: 'https://www.edgeros.com/edgeros/api/overview',
-  loginPhoneNumberSendCode: 'https://api.d.e0a.cc/auth/verificationCode',
-  loginPhoneCodeUserInfo: 'https://api.d.e0a.cc/auth/login/mobile',
-  DeveloperAgreement: 'https://www.edgeros.com/legal/developer'
+  DeveloperAgreement: 'https://www.edgeros.com/legal/developer',
+  cloudApiBase: 'https://api.d.e0a.cc'
 }

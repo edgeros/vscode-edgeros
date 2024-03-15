@@ -8,7 +8,7 @@
   "inputPhoneCode.txt": "请输入短信验证码",
   "phoneCodeError.txt": "请输入正确的验证码",
   "loginSuccess.txt": "登录成功",
-  "phoneNumberLogin.txt": "使用手机号码登录或注册",
+  "phoneNumberLogin.txt": "同意开发者文档",
   "phoneNumberLoginDetail.txt":"通过手机接收验证码的方式进行用户认证。若用户手机号未注册，则自动注册,并开启该账号 EdgerOS 开发者模式",
   "openDeveloperAgreement.txt": "查阅开发者协议"
 }

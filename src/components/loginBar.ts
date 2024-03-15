@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
 * Copyright (c) 2023 EdgerOS Team.
 * All rights reserved.
@@ -75,7 +76,7 @@ export default function createLoginStatusBar (context: vscode.ExtensionContext) 
     if (userInfo.describe === null) {
       vscode.window.showInformationMessage(`${localize('notLogin.txt', 'Hi, dear developers, logging in to the EdgerOS account in the plugin can help you quickly replenish your developer information when creating a project.')}`, ...msgBut).then((selection) => {
         if (selection === 'Login') {
-          loginQuickBox(context)
+          loginInputhandle(context)
         }
 
         if (selection === 'On not remind') {
@@ -126,28 +127,38 @@ interface LoginQuickPickItem extends vscode.QuickPickItem {
   quickType: string,
 }
 
-function loginQuickBox (context: vscode.ExtensionContext) {
-  const pickItems: LoginQuickPickItem[] = [{
-    label: `$(device-mobile) ${localize('phoneNumberLogin.txt', 'Use your mobile number to log in or register')}`,
-    quickType: 'login',
-    detail: localize('phoneNumberLoginDetail.txt', 'Use your mobile number to log in or register')
-  }, {
-    label: `$(remote-explorer-documentation) ${localize('openDeveloperAgreement.txt', 'View Developer Agreement')}`,
-    quickType: 'openDoucment',
-    detail: '西安翼辉爱智物联技术有限公司（以下简称“本公司”）在此特别提醒使用爱智开发者平台服务的开发者（以下简称“开发者”或“你”）认真阅读、充分理解《翼辉开发者协议》（以下简称“本协议”）各条款',
-    buttons: [{
-      iconPath: new vscode.ThemeIcon('gist-new')
+function loginQuickBox () {
+  return new Promise((resolve, reject) => {
+    const pickItems: LoginQuickPickItem[] = [{
+      label: `$(device-mobile) ${localize('phoneNumberLogin.txt', '同意开发者文档')}`,
+      quickType: 'agree',
+      detail: localize('phoneNumberLoginDetail.txt', 'Use your mobile number to log in or register')
+    }, {
+      label: `$(remote-explorer-documentation) ${localize('openDeveloperAgreement.txt', 'View Developer Agreement')}`,
+      quickType: 'openDoucment',
+      detail: '西安翼辉爱智物联技术有限公司（以下简称“本公司”）在此特别提醒使用爱智开发者平台服务的开发者（以下简称“开发者”或“你”）认真阅读、充分理解《翼辉开发者协议》（以下简称“本协议”）各条款'
+    }, {
+      label: '$(widget-close) 退出',
+      quickType: 'exit'
     }]
-  }]
 
-  vscode.window.showQuickPick(pickItems).then((pickItem: LoginQuickPickItem | undefined) => {
-    if (!pickItem) return
+    const accreditQuickPick = vscode.window.createQuickPick()
+    accreditQuickPick.items = pickItems
+    accreditQuickPick.ignoreFocusOut = true
+    accreditQuickPick.onDidChangeSelection((pickItemArr: any) => {
+      const pickItem = pickItemArr[0]
+      if (pickItem.quickType === 'agree') {
+        resolve(true)
+      } else if (pickItem.quickType === 'openDoucment') {
+        vscode.env.openExternal(vscode.Uri.parse(edgerosWebResources.DeveloperAgreement))
+      } else if (pickItem.quickType === 'exit') {
+        accreditQuickPick.dispose()
+        resolve(false)
+      }
+    })
 
-    if (pickItem.quickType === 'login') {
-      loginInputhandle(context)
-    } else if (pickItem.quickType === 'openDoucment') {
-      vscode.env.openExternal(vscode.Uri.parse(edgerosWebResources.DeveloperAgreement))
-    }
+    accreditQuickPick.onDidHide(() => { accreditQuickPick.dispose() })
+    accreditQuickPick.show()
   })
 }
 
@@ -172,7 +183,6 @@ function loginInputhandle (context: vscode.ExtensionContext) {
   loginInput.show()
 
   loginInput.onDidAccept(loginHandle.bind(null, loginInput, loginData, context))
-  loginInput.onDidHide(() => { loginInput.dispose() })
   loginInput.onDidTriggerButton(() => { vscode.env.openExternal(vscode.Uri.parse(edgerosWebResources.DeveloperAgreement)) })
 }
 
@@ -196,8 +206,30 @@ async function loginHandle (loginInput: vscode.InputBox, loginData: LoginData, c
       loginInput.busy = true
       loginInput.enabled = false
 
+      // 查看是否签约
+      const signStausRes = await httpClient({
+        url: edgerosWebResources.cloudApiBase + '/auth/user/developer/sign-status',
+        method: 'GET',
+        params: {
+          phone: loginInput.value
+        }
+      })
+
+      if (signStausRes.data.status !== 200) {
+        throw new Error(' Check whether the signing fails ')
+      }
+
+      if (!signStausRes.data.data) {
+        const status = await loginQuickBox()
+        if (!status) {
+          loginInput.dispose()
+          return
+        }
+      }
+
+      // 发送短信
       const res = await httpClient({
-        url: edgerosWebResources.loginPhoneNumberSendCode,
+        url: edgerosWebResources.cloudApiBase + '/auth/verificationCode',
         method: 'POST',
         data: {
           phoneNumber: loginInput.value,
@@ -216,6 +248,7 @@ async function loginHandle (loginInput: vscode.InputBox, loginData: LoginData, c
       loginInput.placeholder = localize('inputPhoneCode.txt', 'Please enter the SMS verification code')
       loginInput.value = ''
       loginInput.show()
+
       return
     }
 
@@ -235,7 +268,7 @@ async function loginHandle (loginInput: vscode.InputBox, loginData: LoginData, c
       loginInput.enabled = false
       // todo:开始登录获取信息
       const res = await httpClient({
-        url: edgerosWebResources.loginPhoneCodeUserInfo,
+        url: edgerosWebResources.cloudApiBase + '/auth/login/mobile',
         method: 'POST',
         data: {
           agreeDeveloper: true,
