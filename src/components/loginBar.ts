@@ -177,7 +177,7 @@ function loginInputhandle (context: vscode.ExtensionContext) {
   loginInput.step = 1
   loginInput.placeholder = localize('inputPhoneNumber.txt', 'Please enter your phone number')
   loginInput.title = localize('developerlogin.txt', 'Edger account login')
-  loginInput.prompt = localize('authDeveloperlhint.txt', 'User authentication is carried out by receiving verification codes through mobile phones. If your phone number has not been registered yet, the system will automatically register and create an Edger account for you.')
+  loginInput.prompt = localize('authDeveloperlhint.txt', 'If your phone number has not been registered yet, the system will automatically register and create an Edger account for you.')
   loginInput.buttons = [{ iconPath: new vscode.ThemeIcon('ports-open-browser-icon') }]
 
   loginInput.show()

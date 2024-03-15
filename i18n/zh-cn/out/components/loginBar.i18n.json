@@ -1,7 +1,7 @@
 {
   "notLogin.txt": "嗨，亲爱的开发者，快来登录爱智账号，体验更便捷的功能吧！",
   "userNickName.txt": "用户昵称：",
-  "authDeveloperlhint.txt": "通过手机接收短信验证码的方式进行用户认证。如果您的手机号尚未注册，系统将自动为您注册并创建爱智账号。",
+  "authDeveloperlhint.txt": "如果您的手机号尚未注册，系统将自动为您注册并创建爱智账号。",
   "phoneCodeError.txt": "请输入正确的短信验证码",
   "agreeDeveloper.txt": "同意开发者文档",
   "agreeDeveloperDetail.txt": "单击即表示同意开发者协议",
