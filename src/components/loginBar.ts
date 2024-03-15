@@ -52,7 +52,7 @@ export interface UserInfo {
   } | null
 }
 
-let userInfoUpdateCallBack:Function | null = null
+let userInfoUpdateCallBack: Function | null = null
 /**
  * create login bar
  */
@@ -61,13 +61,26 @@ export default function createLoginStatusBar (context: vscode.ExtensionContext) 
 
   // registry cmd
   const disposable = vscode.commands.registerCommand(CommandId, (...options: string[]) => {
+    const exeModel = options[0] // 触发方式目前有两种: 创建项目页:createProView  点击爱智图标:loginBar
+
+    const msgBut = []
+    if (exeModel === 'createProView') {
+      msgBut.push('Login')
+      msgBut.push('On not remind')
+    } else {
+      msgBut.push('Login')
+    }
+
     const userInfo = getUserInfo(context)
     if (userInfo.describe === null) {
-      vscode.window.showInformationMessage(`${localize('notLogin.txt', 'Hello dear developer, login to EdgerOS account can help you quickly supplement the project owner information.')}`, 'Login', 'Developer Agreement').then((selection) => {
+      vscode.window.showInformationMessage(`${localize('notLogin.txt', 'Hi, dear developers, logging in to the EdgerOS account in the plugin can help you quickly replenish your developer information when creating a project.')}`, ...msgBut).then((selection) => {
         if (selection === 'Login') {
-          loginInput(context)
-        } else if (selection === 'Developer Agreement') {
-          vscode.env.openExternal(vscode.Uri.parse('https://www.edgeros.com/legal/developer'))
+          loginQuickBox(context)
+        }
+
+        if (selection === 'On not remind') {
+          userInfo.alert = false
+          setUserInfo(context, userInfo)
         }
       })
     } else {
@@ -86,7 +99,11 @@ export default function createLoginStatusBar (context: vscode.ExtensionContext) 
 
   // show status bar
   const loginStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 999)
-  loginStatusBarItem.command = CommandId
+  loginStatusBarItem.command = {
+    command: CommandId,
+    title: 'EdgerOS User',
+    arguments: ['loginBar']
+  }
   loginStatusBarItem.text = '$(edgeros-logo)'
   loginStatusBarItem.show()
 
@@ -102,7 +119,43 @@ export default function createLoginStatusBar (context: vscode.ExtensionContext) 
   }
 }
 
-function loginInput (context: vscode.ExtensionContext) {
+/**
+ * 登录快速选择框
+ */
+interface LoginQuickPickItem extends vscode.QuickPickItem {
+  quickType: string,
+}
+
+function loginQuickBox (context: vscode.ExtensionContext) {
+  const pickItems: LoginQuickPickItem[] = [{
+    label: `$(device-mobile) ${localize('phoneNumberLogin.txt', 'Use your mobile number to log in or register')}`,
+    quickType: 'login',
+    detail: localize('phoneNumberLoginDetail.txt', 'Use your mobile number to log in or register')
+  }, {
+    label: `$(remote-explorer-documentation) ${localize('openDeveloperAgreement.txt', 'View Developer Agreement')}`,
+    quickType: 'openDoucment',
+    detail: '西安翼辉爱智物联技术有限公司（以下简称“本公司”）在此特别提醒使用爱智开发者平台服务的开发者（以下简称“开发者”或“你”）认真阅读、充分理解《翼辉开发者协议》（以下简称“本协议”）各条款',
+    buttons: [{
+      iconPath: new vscode.ThemeIcon('gist-new')
+    }]
+  }]
+
+  vscode.window.showQuickPick(pickItems).then((pickItem: LoginQuickPickItem | undefined) => {
+    if (!pickItem) return
+
+    if (pickItem.quickType === 'login') {
+      loginInputhandle(context)
+    } else if (pickItem.quickType === 'openDoucment') {
+      vscode.env.openExternal(vscode.Uri.parse(edgerosWebResources.DeveloperAgreement))
+    }
+  })
+}
+
+/**
+ * 执行登录输入手机密码操作
+ * @param context
+ */
+function loginInputhandle (context: vscode.ExtensionContext) {
   const loginData: LoginData = {
     phoneNumber: '',
     phoneCode: ''
@@ -114,10 +167,13 @@ function loginInput (context: vscode.ExtensionContext) {
   loginInput.placeholder = localize('inputPhoneNumber.txt', 'Please enter your phone number')
   loginInput.title = localize('developerlogin.txt', 'EdgerOS Developer account login')
   loginInput.prompt = localize('authDeveloperlhint.txt', 'The EdgerOS developer function is automatically opened after login')
+  loginInput.buttons = [{ iconPath: new vscode.ThemeIcon('ports-open-browser-icon') }]
+
   loginInput.show()
 
   loginInput.onDidAccept(loginHandle.bind(null, loginInput, loginData, context))
   loginInput.onDidHide(() => { loginInput.dispose() })
+  loginInput.onDidTriggerButton(() => { vscode.env.openExternal(vscode.Uri.parse(edgerosWebResources.DeveloperAgreement)) })
 }
 
 /**
@@ -195,7 +251,7 @@ async function loginHandle (loginInput: vscode.InputBox, loginData: LoginData, c
       userInfo.describe = res.data.data
       setUserInfo(context, userInfo)
 
-      if (userInfoUpdateCallBack)userInfoUpdateCallBack(userInfo)
+      if (userInfoUpdateCallBack) userInfoUpdateCallBack(userInfo)
 
       vscode.window.showInformationMessage(`EdgerOS:${userInfo.describe!.nickname} ${localize('loginSuccess.txt', 'Login successful')}`)
     }
@@ -222,6 +278,6 @@ export function getUserInfo (context: vscode.ExtensionContext): UserInfo {
 /**
  * 设置用户更新回调函数
  */
-export function setUserInfoUpdateCallBack (cb:Function) {
+export function setUserInfoUpdateCallBack (cb: Function) {
   userInfoUpdateCallBack = cb
 }

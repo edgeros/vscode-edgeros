@@ -188,7 +188,7 @@ async function webCmdHandle (context: vscode.ExtensionContext, currentPanel: vsc
       userInfo.alert = false
       setUserInfo(context, userInfo)
     } else if (message.type === 'callLoginbar') {
-      vscode.commands.executeCommand('edgeros.login')
+      vscode.commands.executeCommand('edgeros.login', 'createProView')
     } else if (message.type === 'getUserInfo') {
       const userInfo = getUserInfo(context)
       currentPanel?.webview.postMessage({

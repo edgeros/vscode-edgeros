@@ -1,11 +1,14 @@
 {
-  "notLogin.txt": "您好亲爱的开发者，登录EdgerOS账号可以帮您快速的补充项目所有者信息。",
+  "notLogin.txt": "嗨，亲爱的开发者，在插件中登录 EdgerOS 账号，可以在在创建项目时可以帮您快速的补充您的开发者信息。",
   "userInfo.txt": "用户信息",
-  "inputPhoneNumber.txt":"请输入手机号",
-  "developerlogin.txt":"EdgerOS 开发者账号登录",
-  "authDeveloperlhint.txt":"登录后自动开通 EdgerOS 开发者功能",
-  "phoneNumberError.txt":"请输入正确的手机号码",
-  "inputPhoneCode.txt":"请输入短信验证码",
-  "phoneCodeError.txt":"请输入正确的验证码",
-  "loginSuccess.txt":"登录成功"
+  "inputPhoneNumber.txt": "请输入手机号",
+  "developerlogin.txt": "EdgerOS 开发者账号登录",
+  "authDeveloperlhint.txt": "登录后自动开通 EdgerOS 开发者功能",
+  "phoneNumberError.txt": "请输入正确的手机号码",
+  "inputPhoneCode.txt": "请输入短信验证码",
+  "phoneCodeError.txt": "请输入正确的验证码",
+  "loginSuccess.txt": "登录成功",
+  "phoneNumberLogin.txt": "使用手机号码登录或注册",
+  "phoneNumberLoginDetail.txt":"通过手机接收验证码的方式进行用户认证。若用户手机号未注册，则自动注册,并开启该账号 EdgerOS 开发者模式",
+  "openDeveloperAgreement.txt": "查阅开发者协议"
 }

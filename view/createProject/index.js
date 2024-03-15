@@ -246,7 +246,7 @@ const app = new Vue({
     },
     // 选择模板
     selectTpl (item) {
-      if (this.userInfo.describe === null) {
+      if (this.userInfo.alert && this.userInfo.describe === null) {
         vscode.postMessage({ type: 'callLoginbar' })
       }
 
