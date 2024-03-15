@@ -174,7 +174,7 @@
       "view/title": [
         {
           "command": "edgeros.refreshThreeView",
-          "when": "view == eosManageView"
+          "when": "view == eosManageView && EdgerOSExtension.registRefresh"
         },
         {
           "command": "edgeros.showCreateProView",

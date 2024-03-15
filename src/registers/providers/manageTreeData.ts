@@ -1,8 +1,8 @@
 /*
  * @Author: FuWenHao
  * @Date: 2021-04-10 18:05:14
- * @Last Modified by: FuWenHao
- * @Last Modified time: 2021-06-07 14:37:28
+ * @Last Modified by:
+ * @Last Modified time: 2024-03-15 16:59:49
  */
 import * as vscode from 'vscode'
 import * as config from '../../config'
@@ -120,6 +120,8 @@ let threeViewProvider: EOSManageViewProvider
        threeViewProvider.refresh()
      )
 
+     vscode.commands.executeCommand('setContext', 'EdgerOSExtension.registRefresh', true)
+
      return
    }
 
@@ -137,6 +139,8 @@ let threeViewProvider: EOSManageViewProvider
        vscode.commands.registerCommand('edgeros.refreshThreeView', () =>
          threeViewProvider.refresh()
        )
+
+       vscode.commands.executeCommand('setContext', 'EdgerOSExtension.registRefresh', true)
      }
    }
  };
