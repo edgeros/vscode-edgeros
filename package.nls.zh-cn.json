@@ -1,5 +1,5 @@
 {
-	"welcome": "此项目并非Edgeros Project.\n[官网网站](http://www.edgeros.com)\n[创建项目](command:edgeros.showCreateProView)\n[进入控制台](command:edgeros.closeWelcome)",
+	"welcome": "此项目并非 EdgerOS Project.\n[官网网站](http://www.edgeros.com)\n[创建项目](command:edgeros.showCreateProView)\n[进入控制台](command:edgeros.closeWelcome)",
 	"addDeviceView": "添加设备",
 	"CreateEdgerOSProject": "新建项目",
   "RefreshThreeView":"刷新",

@@ -1,8 +1,8 @@
 /*
  * @Author: FuWenHao
  * @Date: 2021-04-12 20:00:47
- * @Last Modified by: FuWenHao
- * @Last Modified time: 2021-06-10 14:24:22
+ * @Last Modified by:
+ * @Last Modified time: 2024-03-18 12:04:39
  */
 import * as vscode from 'vscode'
 import * as ejs from 'ejs'
@@ -228,7 +228,7 @@ async function getTemplateInfo (context: vscode.ExtensionContext, refresh?: bool
     {
       type: 'base',
       label: languge === 'zh-cn' ? '基础' : 'Base',
-      desc: languge === 'zh-cn' ? '比较基础应用模板' : 'Basic project templates'
+      desc: languge === 'zh-cn' ? '基础的应用模板' : 'Basic project templates'
     }]
 
     const templateDataCache: TempTypeOriginal | undefined = context.globalState.get(config.edgerosGlobalStateKeyTemplates)

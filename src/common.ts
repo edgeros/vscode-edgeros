@@ -37,7 +37,7 @@ export function getWorkspaceSettings () {
     buildSuffix: workspaceConfig.get('buildSuffix', 'zip'),
     versionIncrement: workspaceConfig.get('versionIncrement', true),
     installEAP: workspaceConfig.get('installEAP', 'Auto'),
-    templateSource: workspaceConfig.get('templateSource', 'Github')
+    templateSource: workspaceConfig.get('templateSource', 'Gitee')
   }
   return settings
 }
