@@ -64,29 +64,38 @@ export default function createLoginStatusBar (context: vscode.ExtensionContext) 
   const disposable = vscode.commands.registerCommand(CommandId, (...options: string[]) => {
     const exeModel = options[0] // 触发方式目前有两种: 创建项目页:createProView  点击爱智图标:loginBar
 
+    const loginTxt = localize('login.txt', 'Login')
+    const notAgainTxt = localize('notAgain.txt', 'Do not remind again')
+    const logoutTxt = localize('logout.txt', 'Logout')
     const msgBut = []
     if (exeModel === 'createProView') {
-      msgBut.push('Login')
-      msgBut.push('On not remind')
+      msgBut.push(loginTxt)
+      msgBut.push(notAgainTxt)
     } else {
-      msgBut.push('Login')
+      msgBut.push(loginTxt)
     }
 
     const userInfo = getUserInfo(context)
     if (userInfo.describe === null) {
-      vscode.window.showInformationMessage(`${localize('notLogin.txt', 'Hi, dear developers, come and log in to Edger account to experience more convenient functions!')}`, ...msgBut).then((selection) => {
-        if (selection === 'Login') {
-          loginInputhandle(context)
-        }
+      vscode.window.showInformationMessage(`${localize('notLogin.txt', 'Hi, dear developers, come and log in to Edger account to experience more convenient functions!')}`, ...msgBut)
+        .then((selection) => {
+          if (selection === loginTxt) {
+            return loginQuickBox()
+          }
 
-        if (selection === 'On not remind') {
-          userInfo.alert = false
-          setUserInfo(context, userInfo)
-        }
-      })
+          if (selection === notAgainTxt) {
+            userInfo.alert = false
+            setUserInfo(context, userInfo)
+          }
+        })
+        .then((status) => {
+          if (status) {
+            loginInputhandle(context)
+          }
+        })
     } else {
-      vscode.window.showInformationMessage(`${localize('userNickName.txt', 'User nickname:')} ${userInfo.describe.nickname}`, 'Logout').then((selection) => {
-        if (selection === 'Logout') {
+      vscode.window.showInformationMessage(`${localize('userNickName.txt', 'User nickname:')} ${userInfo.describe.nickname}`, logoutTxt).then((selection) => {
+        if (selection === logoutTxt) {
           setUserInfo(context, {
             alert: true,
             describe: null
@@ -130,13 +139,13 @@ interface LoginQuickPickItem extends vscode.QuickPickItem {
 function loginQuickBox () {
   return new Promise((resolve, reject) => {
     const pickItems: LoginQuickPickItem[] = [{
-      label: `$(device-mobile) ${localize('agreeDeveloper.txt', 'Agree to the Developer Agreement')}`,
-      quickType: 'agree',
-      detail: localize('agreeDeveloperDetail.txt', 'Click to agree to the Developer Agreement')
-    }, {
-      label: `$(remote-explorer-documentation) ${localize('openDeveloperAgreement.txt', 'Read the Developer Agreement')}`,
+      label: `$(remote-explorer-documentation) ${localize('openDeveloperAgreement.txt', 'Please read the ACOINFO Developer Agreement before using the Edger platform')}`,
       quickType: 'openDoucment',
       detail: '西安翼辉爱智物联技术有限公司（以下简称“本公司”）在此特别提醒使用爱智开发者平台服务的开发者（以下简称“开发者”或“你”）认真阅读、充分理解《翼辉开发者协议》（以下简称“本协议”）各条款'
+    }, {
+      label: `$(device-mobile) ${localize('agreeDeveloper.txt', "I've read and agreed to the ACOINFO Developer Agreement")}`,
+      quickType: 'agree',
+      detail: localize('agreeDeveloperDetail.txt', 'Click to register / log in through phone number')
     }, {
       label: `$(widget-close) ${localize('exit.txt', 'Exit')}`,
       quickType: 'exit'
@@ -205,27 +214,6 @@ async function loginHandle (loginInput: vscode.InputBox, loginData: LoginData, c
       }
       loginInput.busy = true
       loginInput.enabled = false
-
-      // 查看是否签约
-      const signStausRes = await httpClient({
-        url: edgerosWebResources.cloudApiBase + '/auth/user/developer/sign-status',
-        method: 'GET',
-        params: {
-          phone: loginInput.value
-        }
-      })
-
-      if (signStausRes.data.status !== 200) {
-        throw new Error(' Check whether the signing fails ')
-      }
-
-      if (!signStausRes.data.data) {
-        const status = await loginQuickBox()
-        if (!status) {
-          loginInput.dispose()
-          return
-        }
-      }
 
       // 发送短信
       const res = await httpClient({

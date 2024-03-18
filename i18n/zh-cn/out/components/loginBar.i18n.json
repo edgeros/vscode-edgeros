@@ -3,8 +3,8 @@
   "userNickName.txt": "用户昵称：",
   "authDeveloperlhint.txt": "如果您的手机号尚未注册，系统将自动为您注册并创建爱智账号。",
   "phoneCodeError.txt": "请输入正确的短信验证码",
-  "agreeDeveloper.txt": "同意开发者文档",
-  "agreeDeveloperDetail.txt": "单击即表示同意开发者协议",
+  "agreeDeveloper.txt": "我已阅读并同意《翼辉开发者协议》",
+  "agreeDeveloperDetail.txt": "单击通过手机号注册 / 登录",
 
   "inputPhoneNumber.txt": "请输入手机号",
   "developerlogin.txt": "爱智账号登录",
@@ -12,6 +12,9 @@
   "inputPhoneCode.txt": "请输入短信验证码",
   "loginSuccess.txt": "登录成功",
   "phoneNumberLoginDetail.txt":"通过手机接收验证码的方式进行用户认证。若用户手机号未注册，则自动注册,并开启该账号 EdgerOS 开发者模式",
-  "openDeveloperAgreement.txt": "阅读开发者协议",
-  "exit.txt":"退出"
+  "openDeveloperAgreement.txt": "使用爱智开发者平台前请先阅读《翼辉开发者协议》",
+  "exit.txt":"退出",
+  "login.txt":"登录",
+  "notAgain.txt":"不再提醒",
+  "logout.txt":"退出登录"
 }

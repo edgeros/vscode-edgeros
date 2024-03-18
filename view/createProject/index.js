@@ -218,7 +218,7 @@ const app = new Vue({
         this.userInfo = msg.data.userInfo
         if (this.userInfo.describe) {
           this.form.vendorId = this.userInfo.describe.developer.vendorId
-          this.form.vendorName = this.userInfo.describe.nickname
+          this.form.vendorName = this.userInfo.describe.username
           this.form.vendorEmail = this.userInfo.describe.email ?? ''
           this.form.vendorPhone = this.userInfo.describe.phone
         } else {
