@@ -26,7 +26,7 @@ const i18n = {
   templateViewAll: localize('templateViewAll.txt', 'All'),
   templateViewAllDesc: localize('templateViewAllDesc.txt', 'All available project templates'),
   templateViewBase: localize('templateViewBase.txt', 'Base'),
-  templateViewBaseDesc: localize('templateViewBaseDesc.txt', 'Basic project templates')
+  templateViewBaseDesc: localize('templateViewBaseDesc.txt', 'Basic application templates to quickly build a minimal EdgerOS project')
 }
 
 /**
@@ -228,7 +228,7 @@ async function getTemplateInfo (context: vscode.ExtensionContext, refresh?: bool
     {
       type: 'base',
       label: languge === 'zh-cn' ? '基础' : 'Base',
-      desc: languge === 'zh-cn' ? '基础的应用模板' : 'Basic project templates'
+      desc: languge === 'zh-cn' ? '基础的应用模板, 可快速构建一个最小体量的 EdgerOS 项目。' : 'Basic application templates to quickly build a minimal EdgerOS project'
     }]
 
     const templateDataCache: TempTypeOriginal | undefined = context.globalState.get(config.edgerosGlobalStateKeyTemplates)

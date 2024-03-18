@@ -40,5 +40,5 @@
   "templateViewAll.txt": "全部",
   "templateViewAllDesc.txt": "所有的应用模板",
   "templateViewBase.txt": "基础",
-  "templateViewBaseDesc.txt": "较基础的应用模板"
+  "templateViewBaseDesc.txt": "基础的应用模板, 可快速构建一个最小体量的 EdgerOS 项目。"
 }
