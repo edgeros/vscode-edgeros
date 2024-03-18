@@ -281,7 +281,7 @@
         },
         "edgeros.templateSource": {
           "type": "string",
-          "default": "Github",
+          "default": "Gitee",
           "enum": [
             "Github",
             "Gitee"
