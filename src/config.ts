@@ -34,5 +34,5 @@ export const projectPathSave: string = 'edgeros.projectPathSave'
 export const edgerosWebResources = {
   apiDoc: 'https://www.edgeros.com/edgeros/api/overview',
   DeveloperAgreement: 'https://www.edgeros.com/legal/developer',
-  cloudApiBase: 'https://api.d.e0a.cc'
+  cloudApiBase: 'https://api.edgeros.com'
 }
