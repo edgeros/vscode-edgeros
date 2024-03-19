@@ -12,10 +12,11 @@
     "vscode:pretest": "npm run compile && npm run lint",
     "vscode:test": "node ./out/test/runTest.js",
     "pack": "vsce package",
-    "build": "npm run pack",
+    "build": "npm run clear & npm run pack",
     "publish": "vsce publish",
     "pre-release": "vsce publish --pre-release",
-    "vscode:prepublish": "npm run compile"
+    "vscode:prepublish": "npm run compile",
+    "clear":"npx rimraf out"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
@@ -41,6 +42,7 @@
     "glob": "^7.1.6",
     "mocha": "^9.2.0",
     "nyc": "^15.1.0",
+    "rimraf": "^3.0.0",
     "source-map-support": "^0.5.20",
     "ts-node": "^10.2.1",
     "vsce": "^2.15.0",

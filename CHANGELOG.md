@@ -3,7 +3,7 @@
 ## v0.6.0
 
 1. add user login related services
-
+2. fixed some bugs
 
 ## v0.5.29
 
