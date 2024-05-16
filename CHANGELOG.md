@@ -1,5 +1,9 @@
 # Change Log
 
+## v0.6.1
+
+1. update icon
+
 ## v0.6.0
 
 1. add user login related services
